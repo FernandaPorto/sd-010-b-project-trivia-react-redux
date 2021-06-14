@@ -27,7 +27,6 @@ export const inputEmail = (email) => ({
 export const getTrivia = (token) => {
   const URL = `https://opentdb.com/api.php?amount=5&token=${token}`;
   return (dispatch) => {
-    dispatch({ type: LOADING, isFetching: true });
     fetch(URL)
       .then((res) => res.json())
       .then(({ results }) => (

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { getTrivia } from '../actions';
 import GameHeader from '../components/GameHeader';
+import Questions from '../components/Questions';
 
 class TriviaGame extends Component {
   constructor() {
@@ -12,24 +14,38 @@ class TriviaGame extends Component {
   }
 
   componentDidMount() {
-    getTrivia();
+    const { token, updateTrivia } = this.props;
+    updateTrivia(localStorage.token);
   }
 
   render() {
-    const { questions, isFetching } = this.props;
-    if (isFetching) return <p>Loading...</p>;
-    console.log(questions);
+    const { index } = this.state;
+    const { isFetching, questions } = this.props;
+    if (isFetching) return 'Loading...';
     return (
       <div>
         <GameHeader />
+        <Questions { ...questions[index] } />
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ trivia: { results, isFetching } }) => ({
-  questions: results,
-  isFetching,
+const mapStateToProps = (state) => ({
+  token: state.user.token,
+  questions: state.trivia.results,
+  isFetching: state.trivia.isFetching,
 });
 
-export default connect(mapStateToProps)(TriviaGame);
+const mapDispatchToProps = (dispatch) => ({
+  updateTrivia: (token) => dispatch(getTrivia(token)),
+});
+
+TriviaGame.propTypes = {
+  token: PropTypes.string,
+  questions: PropTypes.arrayOf(PropTypes.object),
+  isFetching: PropTypes.bool,
+  updateTrivia: PropTypes.func,
+}.isRequired;
+
+export default connect(mapStateToProps, mapDispatchToProps)(TriviaGame);
