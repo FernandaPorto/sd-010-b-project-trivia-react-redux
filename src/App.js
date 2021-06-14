@@ -12,8 +12,8 @@ export default function App() {
         <img src={ logo } className="App-logo" alt="logo" />
         <div>
           <Switch>
-            <Route exact path="/" render={ Login } />
-            <Route path="/settings" render={ Settings } />
+            <Route exact path="/" component={ Login } />
+            <Route path="/settings" component={ Settings } />
           </Switch>
         </div>
       </header>
