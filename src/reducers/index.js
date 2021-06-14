@@ -1,8 +1,6 @@
 import { combineReducers } from 'redux';
 
-const reducer = () => {
-  return {};
-}
+const reducer = () => ({});
 
 const rootReducer = combineReducers({ reducer });
 
