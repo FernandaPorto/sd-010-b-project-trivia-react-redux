@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router';
+import fetchURL from '../services/API';
 
 export default class loginPage extends Component {
   constructor(props) {
@@ -7,10 +9,23 @@ export default class loginPage extends Component {
       emailAdress: '',
       name: '',
       buttonEnabler: true,
+      shouldRedirect: false,
     };
 
     this.validationFields = this.validationFields.bind(this);
-    // this.onClick = this.onClick.bind(this);
+    this.onClick = this.onClick.bind(this);
+  }
+
+  componentDidMount() {
+    fetchURL();
+    console.log(fetchURL);
+  }
+
+  onClick() {
+    const { emailAdress, name } = this.state;
+    // const { firstDispatch } = this.props;
+    // firstDispatch(emailAdress, passwordData);
+    this.setState({ shouldRedirect: true });
   }
 
   validationFields() {
@@ -23,7 +38,11 @@ export default class loginPage extends Component {
   }
 
   render() {
-    const { name, emailAdress, buttonEnabler } = this.state;
+    const { name, emailAdress, buttonEnabler, shouldRedirect } = this.state;
+    if (shouldRedirect) {
+      return <Redirect to="/gamepage" />;
+    }
+
     return (
       <div>
         <label htmlFor="name">
@@ -61,6 +80,7 @@ export default class loginPage extends Component {
           id="btn-submit"
           disabled={ buttonEnabler }
           data-testid="btn-play"
+          onClick={ () => this.onClick() }
         >
           Jogar
         </button>
