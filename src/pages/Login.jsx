@@ -1,33 +1,39 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 
 class Login extends Component {
   constructor(props) {
-    super(props)
-  
+    super(props);
+
     this.state = {
       name: '',
-      email: '',       
-    }
+      email: '',
+    };
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange = ({ target }) => {
+  handleChange({ target }) {
     const { name, value } = target;
     this.setState({
       [name]: value,
-    })
+    });
   }
-  
+
   render() {
     const { name, email } = this.state;
     const nameLength = 0;
     return (
-      <div>
-        <label data-testid="input-player-name" htmlFor="name">Nome</label>
-        <input id="name" name="name" type="text" onChange={ this.handleChange }></input>
-        <label data-testid="input-gravatar-email" htmlFor="email">Email</label>
-        <input type="email" name="email" onChange={ this.handleChange } id="email"></input>
+      <form>
+        <label data-testid="input-player-name" htmlFor="name">
+          Nome
+          <input id="name" name="name" type="text" onChange={ this.handleChange } />
+        </label>
+        <label data-testid="input-gravatar-email" htmlFor="email">
+          Email
+          <input type="email" name="email" onChange={ this.handleChange } id="email" />
+        </label>
         <button
+          type="button"
           data-testid="btn-play"
           disabled={
             !(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(email)
@@ -36,9 +42,9 @@ class Login extends Component {
         >
           Jogar
         </button>
-      </div>
-    )
+      </form>
+    );
   }
 }
 
-export default connect()(Login);
+export default Login;
