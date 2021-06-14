@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router';
 
 class Login extends Component {
   constructor(props) {
@@ -6,8 +7,16 @@ class Login extends Component {
 
     this.state = {
       isDisabled: true,
+      loginTrue: false,
     };
     this.validateLogin = this.validateLogin.bind(this);
+    this.btnPlay = this.btnPlay.bind(this);
+  }
+
+  btnPlay() {
+    this.setState({
+      loginTrue: true,
+    });
   }
 
   validateLogin() {
@@ -27,7 +36,11 @@ class Login extends Component {
   }
 
   render() {
-    const { isDisabled } = this.state;
+    const { loginTrue, isDisabled } = this.state;
+    if (loginTrue) {
+      return <Redirect to="/game" />;
+    }
+
     return (
       <form>
         <fieldset>
@@ -47,7 +60,7 @@ class Login extends Component {
           />
           <button
             type="button"
-            onClick={ () => {} }
+            onClick={ this.btnPlay }
             data-testid="btn-play"
             disabled={ isDisabled }
           >
