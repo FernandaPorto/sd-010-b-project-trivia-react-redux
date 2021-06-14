@@ -4,7 +4,7 @@ class Jogo extends React.Component {
   render() {
     return (
       <p>
-        Jogo
+        jogo aqui
       </p>
     );
   }
