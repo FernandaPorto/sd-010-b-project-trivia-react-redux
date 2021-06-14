@@ -7,9 +7,9 @@ class Login extends React.Component {
     this.nameValidation = this.nameValidation.bind(this);
     this.buttonAvaliable = this.buttonAvaliable.bind(this);
     this.state = {
-      name: "",
-      email: "",
-    }
+      name: '',
+      email: '',
+    };
   }
 
   emailValidation() {
@@ -41,30 +41,30 @@ class Login extends React.Component {
       <form>
         <label htmlFor="name">
           <input
-          name="name"
-          type="text"
-          data-testid="input-player-name"
-          onChange={ (e) => this.setState({ name: e.target.value }) }
-        />
+            name="name"
+            type="text"
+            data-testid="input-player-name"
+            onChange={ (e) => this.setState({ name: e.target.value }) }
+          />
         </label>
         <label htmlFor="email">
           <input
-          name="email"
-          type="text"
-          data-testid="input-gravatar-email"
-          onChange={ (e) => this.setState({ email: e.target.value }) }
-        />
+            name="email"
+            type="text"
+            data-testid="input-gravatar-email"
+            onChange={ (e) => this.setState({ email: e.target.value }) }
+          />
         </label>
         <button
           data-testid="btn-play"
           type="submit"
           disabled={ !this.buttonAvaliable() }
         >
-           Jogar 
+          Jogar
         </button>
       </form>
     );
   }
 }
 
-export default Login; 
+export default Login;
