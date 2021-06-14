@@ -23,7 +23,6 @@ class Jogo extends Component {
       <div>
         <Header />
         {!loading && <Questions { ...game[index] } />}
-        {/* {game.map((seila, idx) => <h2>{seila.correct_answer}</h2>)} */}
       </div>
     );
   }
