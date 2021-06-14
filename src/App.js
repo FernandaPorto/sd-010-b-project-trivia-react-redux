@@ -1,16 +1,22 @@
+// Requisitos de 01 a 07 feitos em 13/06 em sessão de estudos com Henrique Clementino.
+
 import React from 'react';
-import logo from './trivia.png';
-import './App.css';
+import { Route, Switch } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
+import Jogo from './pages/Jogo';
+import Home from './Home';
+import Settings from './pages/Settings';
 
 export default function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={ logo } className="App-logo" alt="logo" />
-        <p>
-          SUA VEZ
-        </p>
-      </header>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/jogo" component={ Jogo } />
+          <Route path="/settings" component={ Settings } />
+          <Route exact path="/" component={ Home } />
+        </Switch>
+      </BrowserRouter>
     </div>
   );
 }
