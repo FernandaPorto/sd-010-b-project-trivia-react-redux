@@ -41,6 +41,7 @@ class Login extends React.Component {
           value="Jogar"
           disabled={ !(name && email) }
           data-testid="btn-play"
+          //
         />
       </div>
     );
