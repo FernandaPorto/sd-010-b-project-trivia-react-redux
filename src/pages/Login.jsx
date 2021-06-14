@@ -65,7 +65,7 @@ class Login extends React.Component {
     const { disabled, redirect, settings } = this.state;
     if (redirect) {
       return (
-        <Redirect to="/pagina" />
+        <Redirect to="/start" />
       );
     }
 
