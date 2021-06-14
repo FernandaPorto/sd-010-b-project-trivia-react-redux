@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { loginAction } from '../actions/gameAction';
 
@@ -94,3 +95,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(null, mapDispatchToProps)(Form);
+
+Form.propTypes = {
+  login: PropTypes.func.isRequired,
+};
