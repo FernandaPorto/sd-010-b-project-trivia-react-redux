@@ -7,7 +7,7 @@ class Header extends Component {
         <header>
           <h1>nome</h1>
           <img />
-          <p>placar</p>
+          <p>placa</p>
         </header>
       </div>
     );
