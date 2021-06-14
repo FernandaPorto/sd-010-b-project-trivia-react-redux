@@ -22,7 +22,7 @@ class LoginForm extends Component {
   validateLogin() {
     const { name, email } = this.state;
 
-    if (name.length > 6) {
+    if (name.length > 3 && email.length > 3) {
       return false;
     }
     return true;
