@@ -33,14 +33,12 @@ class Questions extends Component {
 
       const checkIsCorrect = answer === c ? 'correct-answer' : `wrong-answer-${idx}`;
 
-      const dataTestId = { 'data-testid': checkIsCorrect };
-
       return (
         <button
           style={ { border: `${next ? checkColor : ''}` } }
           key={ answer }
           type="button"
-          { ...dataTestId }
+          data-testid={ checkIsCorrect }
           onClick={ () => this.setState({ next: true }) }
         >
           {answer}
