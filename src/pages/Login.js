@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router';
 
 import '../App.css';
 import logo from '../trivia.png';
@@ -11,10 +12,12 @@ export default class App extends Component {
       name: '',
       email: '',
       isDisable: false,
+      settings: false,
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
     this.validateEmail = this.validateEmail.bind(this);
+    this.goToSettings = this.goToSettings.bind(this);
   }
 
   validateEmail() {
@@ -29,11 +32,16 @@ export default class App extends Component {
     this.setState({ [name]: value }, this.validateEmail());
   }
 
+  goToSettings() {
+    this.setState({ settings: true });
+  }
+
   render() {
-    const { name, email, isDisable } = this.state;
+    const { name, email, isDisable, settings } = this.state;
 
     return (
       <div className="App-header">
+        { settings && <Redirect to="/settings" /> }
         <img src={ logo } className="App-logo" alt="logo" />
         <form>
           <input
@@ -44,6 +52,7 @@ export default class App extends Component {
             value={ name }
             data-testid="input-player-name"
           />
+          <br />
           <input
             name="email"
             onChange={ this.handleOnChange }
@@ -52,6 +61,7 @@ export default class App extends Component {
             value={ email }
             data-testid="input-gravatar-email"
           />
+          <br />
           <button
             type="button"
             // onClick={}
@@ -59,6 +69,13 @@ export default class App extends Component {
             data-testid="btn-play"
           >
             Jogar
+          </button>
+          <button
+            type="button"
+            onClick={ this.goToSettings }
+            data-testid="btn-settings"
+          >
+            Configurações
           </button>
         </form>
       </div>
