@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import Inputs from '../components/Inputs';
 
 class Login extends Component {
@@ -27,6 +28,13 @@ class Login extends Component {
           name={ name }
           email={ email }
         />
+        <button
+          type="button"
+          data-testid="btn-settings"
+          onClick={ <Redirect to="/settings" /> }
+        >
+          Configurações
+        </button>
       </div>
     );
   }
