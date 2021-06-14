@@ -1,3 +1,5 @@
+// Requisitos de 01 a 07 feitos em 13/06 em sessão de estudos com Henrique Clementino.
+
 import React from 'react';
 import { Route, Switch } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
