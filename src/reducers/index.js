@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
+import tokenState from './tokenReducer';
 
-const reducer = () => ({});
-
-const rootReducer = combineReducers({ reducer });
+const rootReducer = combineReducers({ tokenState });
 
 export default rootReducer;

@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
+import PropTypes from 'prop-types';
+import { sendTokenToRedux } from '../actions/index';
 
-export default class Login extends Component {
+class Login extends Component {
   constructor() {
     super();
     this.handleChange = this.handleChange.bind(this);
@@ -8,7 +12,27 @@ export default class Login extends Component {
       email: '',
       nome: '',
       buttonDisabled: true,
+      shouldRedirect: false,
     };
+  }
+
+  getToken() {
+    const { saveToken } = this.props;
+    const URL = 'https://opentdb.com/api_token.php?command=request';
+    fetch(URL)
+      .then((response) => response.json())
+      .then((data) => data.token)
+      .then((token) => {
+        if (!localStorage.getItem('token')) {
+          localStorage.setItem('token', JSON.stringify(token));
+        } else {
+          localStorage.removeItem(token);
+          localStorage.setItem('token', JSON.stringify(token));
+        }
+        return token;
+      })
+      .then((token) => saveToken(token))
+      .then(() => this.setState({ shouldRedirect: true }));
   }
 
   handleChange({ name, value }) {
@@ -30,7 +54,7 @@ export default class Login extends Component {
   }
 
   render() {
-    const { buttonDisabled } = this.state;
+    const { buttonDisabled, shouldRedirect } = this.state;
     return (
       <div>
         <section>
@@ -49,12 +73,24 @@ export default class Login extends Component {
           <button
             type="button"
             disabled={ buttonDisabled }
+            onClick={ () => this.getToken() }
             data-testid="btn-play"
           >
             Jogar
           </button>
+          { shouldRedirect && <Redirect to="/gameScreen" /> }
         </section>
       </div>
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  saveToken: (token) => dispatch(sendTokenToRedux(token)),
+});
+
+Login.propTypes = {
+  saveToken: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
