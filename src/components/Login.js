@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { fetchAPI } from '../actions/index';
 
 class Login extends React.Component {
@@ -10,7 +10,6 @@ class Login extends React.Component {
     this.state = {
       name: '',
       email: '',
-      redirect: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -32,7 +31,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const { name, email, redirect } = this.state;
+    const { name, email } = this.state;
     // if (redirect) return <Redirect to="/settings" />;
     return (
       <form>
