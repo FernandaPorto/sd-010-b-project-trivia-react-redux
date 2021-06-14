@@ -44,6 +44,7 @@ export default class App extends Component {
             value={ name }
             data-testid="input-player-name"
           />
+          <br />
           <input
             name="email"
             onChange={ this.handleOnChange }
@@ -52,6 +53,7 @@ export default class App extends Component {
             value={ email }
             data-testid="input-gravatar-email"
           />
+          <br />
           <button
             type="button"
             // onClick={}
