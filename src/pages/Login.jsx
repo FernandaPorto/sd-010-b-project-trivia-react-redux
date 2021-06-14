@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
+import { Link } from 'react-router-dom';
 import fetchURL from '../services/API';
 
 export default class loginPage extends Component {
@@ -15,6 +16,7 @@ export default class loginPage extends Component {
     this.validationFields = this.validationFields.bind(this);
     this.onClick = this.onClick.bind(this);
     this.setToken = this.setToken.bind(this);
+    this.settingsButton = this.settingsButton.bind(this);
   }
 
   onClick() {
@@ -28,6 +30,16 @@ export default class loginPage extends Component {
   async setToken() {
     const token = await fetchURL();
     localStorage.setItem('token', JSON.stringify(token));
+  }
+
+  settingsButton() {
+    return (
+      <Link to="/settings">
+        <button type="button" data-testid="btn-settings">
+          Configurações
+        </button>
+      </Link>
+    );
   }
 
   validationFields() {
@@ -76,7 +88,6 @@ export default class loginPage extends Component {
             required
           />
         </label>
-
         <button
           type="button"
           id="btn-submit"
@@ -86,6 +97,7 @@ export default class loginPage extends Component {
         >
           Jogar
         </button>
+        { this.settingsButton() }
       </div>
     );
   }
