@@ -21,7 +21,6 @@ class Jogo extends Component {
     const { game, index, loading } = this.state;
     return (
       <div>
-        <h1>rsrs</h1>
         <Header />
         {!loading && <Questions { ...game[index] } />}
         {/* {game.map((seila, idx) => <h2>{seila.correct_answer}</h2>)} */}

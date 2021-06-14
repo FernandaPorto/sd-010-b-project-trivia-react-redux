@@ -10,7 +10,7 @@ class Questions extends Component {
   randAnswers() {
     const { correct_answer: c, incorrect_answers: i } = this.state;
     const inc = [...i];
-    const rand = Math.floor(Math.random() * (inc.length - 1 + 1));
+    const rand = Math.floor(Math.random() * ((inc.length - 1) + 1));
     const swap = inc[rand];
     inc.splice(rand, 1);
     inc[rand] = c;
