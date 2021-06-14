@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import '../App.css';
 import logo from '../trivia.png';
 
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
 
@@ -65,3 +66,9 @@ export default class App extends Component {
     );
   }
 }
+
+const mapDispatchToProps = () => ({
+  
+});
+
+export default connect()(Login);
