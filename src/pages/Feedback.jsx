@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
 
 export class Feedback extends Component {
   render() {
@@ -15,5 +16,11 @@ export class Feedback extends Component {
     );
   }
 }
+
+Feedback.propTypes = {
+  gravatar: PropTypes.string.isRequired,
+  playerName: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+};
 
 export default Feedback;
