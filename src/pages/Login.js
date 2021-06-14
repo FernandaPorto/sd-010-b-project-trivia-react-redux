@@ -13,9 +13,6 @@ export default class Login extends Component {
     this.setDisabled = this.setDisabled.bind(this);
   }
 
-  componentDidUpdate(param1, param2) {
-    console.log(param1, param2);
-  }
 
   setDisabled() {
     this.setState((prevState) => {
