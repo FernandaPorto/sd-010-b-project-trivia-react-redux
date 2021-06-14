@@ -9,11 +9,13 @@ class Login extends React.Component {
       name: '',
       email: '',
       disabled: true,
+      redirect: false,
       settings: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSettings = this.handleSettings.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   verifyEmail(email) {
@@ -45,6 +47,14 @@ class Login extends React.Component {
     });
   }
 
+  async handleClick() {
+    const { token } = await (await fetch('https://opentdb.com/api_token.php?command=request')).json();
+    localStorage.setItem('token', token);
+    this.setState({
+      redirect: true,
+    });
+  }
+
   handleSettings() {
     this.setState({
       settings: true,
@@ -52,7 +62,12 @@ class Login extends React.Component {
   }
 
   render() {
-    const { disabled, settings } = this.state;
+    const { disabled, redirect, settings } = this.state;
+    if (redirect) {
+      return (
+        <Redirect to="/pagina" />
+      );
+    }
 
     if (settings) {
       return (
@@ -80,6 +95,7 @@ class Login extends React.Component {
           type="button"
           data-testid="btn-play"
           disabled={ disabled }
+          onClick={ this.handleClick }
         >
           Jogar
         </button>
