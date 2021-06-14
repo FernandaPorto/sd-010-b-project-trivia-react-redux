@@ -11,15 +11,13 @@ export class Login extends Component {
     this.checkName = this.checkName.bind(this);
   }
 
-  checkEmail({ target }) {
-    const { value } = target;
+  checkEmail({ target: { value } }) {
     const emailRegexp = RegExp(/[a-z]+@[a-z]+.com/g);
     const isEmail = emailRegexp.test(value);
     this.setState({ isEmail });
   }
 
-  checkName({ target }) {
-    const { value } = target;
+  checkName({ target: { value } }) {
     const LENGHT_VALID = 1;
     if (value.length >= LENGHT_VALID) this.setState({ isName: true });
   }
