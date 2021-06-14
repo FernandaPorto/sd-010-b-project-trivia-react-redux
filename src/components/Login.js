@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Redirect } from 'react-router';
 import { addToken, inputEmail, inputUsername } from '../actions';
 import getToken from '../services/trivia';
@@ -36,28 +37,28 @@ class Login extends Component {
     const isValid = username && email ? null : true;
     if (start) return <Redirect to="/game" />;
     return (
-      <form onSubmit={this.handleOnSubmit}>
+      <form onSubmit={ this.handleOnSubmit }>
         <input
           data-testid="input-player-name"
           type="text"
           name="name"
           placeholder="Input your name"
-          value={username}
-          onChange={(event) => changeUsername(event.target.value)}
+          value={ username }
+          onChange={ (event) => changeUsername(event.target.value) }
         />
         <input
           data-testid="input-gravatar-email"
           type="email"
           name="email"
           placeholder="Input your email"
-          value={email}
-          onChange={(event) => changeEmail(event.target.value)}
+          value={ email }
+          onChange={ (event) => changeEmail(event.target.value) }
         />
         <button
           data-testid="btn-play"
           type="submit"
-          disabled={isValid}
-          onClick={this.updateToken}
+          disabled={ isValid }
+          onClick={ this.updateToken }
         >
           Jogar
         </button>
@@ -76,5 +77,9 @@ const mapDispatchToProps = (dispatch) => ({
   changeEmail: (email) => dispatch(inputEmail(email)),
   changeUsername: (username) => dispatch(inputUsername(username)),
 });
+
+Login.propTypes = {
+  name: PropTypes.string,
+}.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
