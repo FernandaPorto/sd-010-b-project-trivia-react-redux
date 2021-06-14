@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { login } from '../redux/actions';
 
 class Login extends Component {
   constructor(props) {
@@ -15,9 +18,16 @@ class Login extends Component {
   }
 
   btnPlay() {
+    const { loginAction } = this.props;
     this.setState({
       loginTrue: true,
+      // user: '',
+      // email: ''
     });
+    const email = document.getElementById('email-input').value;
+    const name = document.getElementById('name-input').value;
+
+    loginAction({ email, name });
   }
 
   validateLogin() {
@@ -77,4 +87,12 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  loginAction: (data) => dispatch(login(data)),
+});
+
+Login.propTypes = {
+  loginAction: PropTypes.func,
+}.isRequired;
+
+export default connect(null, mapDispatchToProps)(Login);

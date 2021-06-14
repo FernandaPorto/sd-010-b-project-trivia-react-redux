@@ -12,6 +12,9 @@ class Game extends Component {
   render() {
     return (
       <div>
+        <header>
+          eita
+        </header>
         jogo
       </div>
     );
