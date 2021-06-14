@@ -50,34 +50,39 @@ class Login extends React.Component {
 
   render() {
     return (
-      <form>
-        <label htmlFor="name">
-          <input
-            name="name"
-            type="text"
-            data-testid="input-player-name"
-            onChange={ (e) => this.setState({ name: e.target.value }) }
-          />
-        </label>
-        <label htmlFor="email">
-          <input
-            name="email"
-            type="text"
-            data-testid="input-gravatar-email"
-            onChange={ (e) => this.setState({ email: e.target.value }) }
-          />
-        </label>
-        <Link to="/jogo">
-          <button
-            data-testid="btn-play"
-            type="submit"
-            disabled={ !this.buttonAvaliable() }
-            onClick={ () => this.fetchToken() }
-          >
-            Jogar
-          </button>
+      <section>
+        <Link to="/config">
+          <button type="button" data-testid="btn-settings">Configurações</button>
         </Link>
-      </form>
+        <form>
+          <label htmlFor="name">
+            <input
+              name="name"
+              type="text"
+              data-testid="input-player-name"
+              onChange={ (e) => this.setState({ name: e.target.value }) }
+            />
+          </label>
+          <label htmlFor="email">
+            <input
+              name="email"
+              type="text"
+              data-testid="input-gravatar-email"
+              onChange={ (e) => this.setState({ email: e.target.value }) }
+            />
+          </label>
+          <Link to="/jogo">
+            <button
+              data-testid="btn-play"
+              type="submit"
+              disabled={ !this.buttonAvaliable() }
+              onClick={ () => this.fetchToken() }
+            >
+              Jogar
+            </button>
+          </Link>
+        </form>
+      </section>
     );
   }
 }
