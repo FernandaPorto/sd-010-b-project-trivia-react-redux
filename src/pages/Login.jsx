@@ -14,18 +14,20 @@ export default class loginPage extends Component {
 
     this.validationFields = this.validationFields.bind(this);
     this.onClick = this.onClick.bind(this);
-  }
-
-  componentDidMount() {
-    fetchURL();
-    console.log(fetchURL);
+    this.setToken = this.setToken.bind(this);
   }
 
   onClick() {
-    const { emailAdress, name } = this.state;
+    // const { emailAdress, name } = this.state;
     // const { firstDispatch } = this.props;
     // firstDispatch(emailAdress, passwordData);
     this.setState({ shouldRedirect: true });
+    this.setToken();
+  }
+
+  async setToken() {
+    const token = await fetchURL();
+    localStorage.setItem('token', JSON.stringify(token));
   }
 
   validationFields() {
