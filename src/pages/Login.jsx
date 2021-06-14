@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router';
+import { Redirect } from 'react-router-dom';
 
 class Login extends React.Component {
   constructor(props) {
@@ -10,9 +10,11 @@ class Login extends React.Component {
       email: '',
       disabled: true,
       redirect: false,
+      settings: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleSettings = this.handleSettings.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
 
@@ -53,11 +55,26 @@ class Login extends React.Component {
     });
   }
 
+  handleSettings() {
+    this.setState({
+      settings: true,
+    });
+  }
+
   render() {
-    const { disabled, redirect } = this.state;
+    const { disabled, redirect, settings } = this.state;
     if (redirect) {
-      return <Redirect to="/pagina" />;
+      return (
+        <Redirect to="/pagina" />
+      );
     }
+
+    if (settings) {
+      return (
+        <Redirect to="/settings" />
+      );
+    }
+
     return (
       <section>
         <input
@@ -81,6 +98,13 @@ class Login extends React.Component {
           onClick={ this.handleClick }
         >
           Jogar
+        </button>
+        <button
+          type="button"
+          data-testid="btn-settings"
+          onClick={ this.handleSettings }
+        >
+          Configurações
         </button>
       </section>
     );
