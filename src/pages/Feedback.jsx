@@ -2,6 +2,17 @@ import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 
 export class Feedback extends Component {
+  constructor() {
+    super();
+    this.message = this.message.bind(this);
+  }
+
+  message(status) {
+    const badScore = 2;
+    if (status <= badScore) return 'Podia ser melhor...';
+    return 'Mandou bem!';
+  }
+
   render() {
     const { gravatar, playerName, score } = this.props;
     return (
@@ -11,8 +22,10 @@ export class Feedback extends Component {
           <h2 data-testid="header-player-name">{ playerName }</h2>
           <h3 data-testid="header-score">{ score }</h3>
         </header>
+        <section>
+          <h1 data-testid="feedback-text">{ this.message(score) }</h1>
+        </section>
       </div>
-
     );
   }
 }
