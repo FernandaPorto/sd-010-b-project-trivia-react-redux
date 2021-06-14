@@ -1,12 +1,18 @@
 import React from 'react';
-import './App.css';
+import { Switch, Route } from 'react-router-dom';
+import Settings from './components/Settings';
 import Login from './components/Login';
+import './App.css';
 
 export default function App() {
   return (
     <div>
-      <h1>ok</h1>
-      <Login />
+      <h1>ko</h1>
+      <Switch>
+        <Route exact path="/" component={ Login } />
+        <Route path="/settings" component={ Settings } />
+      </Switch>
     </div>
+
   );
 }

@@ -1,4 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { fetchAPI } from '../actions/index';
 
 class Login extends React.Component {
   constructor() {
@@ -8,16 +12,27 @@ class Login extends React.Component {
       email: '',
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  handleChange(event) {
+  async handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value,
     });
+    // const { requisitionLogin } = this.props;
+    // const result = await requisitionLogin();
+    // console.log(result);
+  }
+
+  async handleClick() {
+    const { requisitionLogin } = this.props;
+    const token = await requisitionLogin();
+    localStorage.setItem('token', token.result.token);
   }
 
   render() {
     const { name, email } = this.state;
+    // if (redirect) return <Redirect to="/settings" />;
     return (
       <form>
         <label htmlFor="name">
@@ -44,12 +59,29 @@ class Login extends React.Component {
           data-testid="btn-play"
           type="button"
           disabled={ !name || !email }
+          onClick={ this.handleClick }
         >
           Jogar
         </button>
+        <Link to="/settings">
+          <button
+            data-testid="btn-settings"
+            type="button"
+          >
+            Configurações
+          </button>
+        </Link>
       </form>
     );
   }
 }
 
-export default Login;
+Login.propTypes = {
+  requisitionLogin: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  requisitionLogin: () => dispatch(fetchAPI()),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
