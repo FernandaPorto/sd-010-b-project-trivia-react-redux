@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import './index.css';
-import Login from './pages/Login';
 import store from './store';
+import Login from './pages/Login';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
