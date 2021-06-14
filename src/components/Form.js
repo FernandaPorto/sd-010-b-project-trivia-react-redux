@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 export default class Form extends Component {
   constructor() {
@@ -37,6 +38,11 @@ export default class Form extends Component {
     this.setState({ [id]: value }, () => this.validateEmailAndPassword());
   }
 
+  async apiRequest() {
+    const result = await fetch('https://opentdb.com/api_token.php?command=request').then((resolve) => resolve.json());
+    localStorage.setItem('token', result.token);
+  }
+
   render() {
     const { active, nome, email } = this.state;
     return (
@@ -61,9 +67,16 @@ export default class Form extends Component {
             data-testid="input-gravatar-email"
           />
         </label>
-        <button type="submit" data-testid="btn-play" disabled={ active }>
-          Jogar
-        </button>
+        <Link to="/game">
+          <button
+            type="button"
+            data-testid="btn-play"
+            disabled={ active }
+            onClick={ this.apiRequest }
+          >
+            Jogar
+          </button>
+        </Link>
       </form>
     );
   }
