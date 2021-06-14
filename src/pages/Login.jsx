@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Inputs from '../components/Inputs';
 
-export class Login extends Component {
+class Login extends Component {
   constructor() {
     super();
     this.state = {
