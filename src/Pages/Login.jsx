@@ -15,10 +15,6 @@ class Login extends Component {
     };
   }
 
-  settingsButton() {
-    window.location.href = '/Configuracoes';
-  }
-
   fetchAndRedirect() {
     const shouldUpdate = fetchToken();
     if (shouldUpdate) {
@@ -75,14 +71,6 @@ class Login extends Component {
           onClick={ () => this.fetchAndRedirect() }
         >
           Jogar
-        </button>
-        <button
-          type="button"
-          className="btn-field"
-          data-testid="btn-settings"
-          onClick={ () => this.settingsButton() }
-        >
-          Configurações
         </button>
       </div>
     );
