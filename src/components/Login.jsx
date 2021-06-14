@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { login } from '../redux/actions';
+import { actionLogin } from '../redux/actions';
 
 class Login extends Component {
   constructor(props) {
@@ -18,16 +18,14 @@ class Login extends Component {
   }
 
   btnPlay() {
-    const { loginAction } = this.props;
+    const { login } = this.props;
     this.setState({
       loginTrue: true,
-      // user: '',
-      // email: ''
     });
     const email = document.getElementById('email-input').value;
-    const name = document.getElementById('name-input').value;
-
-    loginAction({ email, name });
+    const user = document.getElementById('name-input').value;
+    // o nome das variaveis "email" e "user" tem que ser igual ao que se encontra no objeto reducer/user
+    login({ email, user });
   }
 
   validateLogin() {
@@ -88,11 +86,11 @@ class Login extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  loginAction: (data) => dispatch(login(data)),
+  login: (data) => dispatch(actionLogin(data)),
 });
 
 Login.propTypes = {
-  loginAction: PropTypes.func,
+  login: PropTypes.func,
 }.isRequired;
 
 export default connect(null, mapDispatchToProps)(Login);
