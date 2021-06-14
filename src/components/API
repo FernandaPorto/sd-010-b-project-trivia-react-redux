@@ -1,0 +1,5 @@
+
+TOKEN
+https://opentdb.com/api_token.php?command=request
+PERGUNTAS
+https://opentdb.com/api.php?amount=5&token=${seu-token-aqui}
