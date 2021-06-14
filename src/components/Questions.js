@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 class Questions extends Component {
   constructor(props) {
     super(props);
-    console.log(props);
     this.state = { ...props, next: false, answers: [] };
     this.randAnswers = this.randAnswers.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);

@@ -15,7 +15,7 @@ class TriviaGame extends Component {
 
   componentDidMount() {
     const { token, updateTrivia } = this.props;
-    updateTrivia(localStorage.token);
+    updateTrivia(token);
   }
 
   render() {
