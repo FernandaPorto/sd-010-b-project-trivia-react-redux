@@ -13,10 +13,6 @@ export default class Login extends Component {
     this.setDisabled = this.setDisabled.bind(this);
   }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 1f35e2c4b66e27da195ca3bcab747cc5f55a339b
   setDisabled() {
     this.setState((prevState) => {
       if (prevState.name.length > 0 && prevState.email.length > 0) {
