@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import GameHeader from '../components/GameHeader';
 
 class TriviaGame extends Component {
   render() {
     return (
       <div>
-        <p>oi</p>
+        <GameHeader />
       </div>
     );
   }
