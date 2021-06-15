@@ -1,5 +1,8 @@
+import { REQUEST } from '../actions/gameAction';
+
 export const INITIAL_STATE = {
   token: '',
+  request: '',
 };
 
 // name é o nome da pessoa que joga
@@ -9,6 +12,11 @@ export const INITIAL_STATE = {
 
 const apiReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+  case REQUEST:
+    return {
+      ...state,
+      request: action.array,
+    };
   default:
     return state;
   }

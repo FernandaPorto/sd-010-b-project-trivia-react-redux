@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { loginAction } from '../actions/gameAction';
+import { loginAction, requestAction } from '../actions/gameAction';
 
 class Form extends Component {
   constructor() {
@@ -45,11 +44,15 @@ class Form extends Component {
   }
 
   async apiRequest() {
-    const { login } = this.props;
+    const { login, history, request } = this.props;
     const { email, nome } = this.state;
     const result = await fetch('https://opentdb.com/api_token.php?command=request').then((resolve) => resolve.json());
     localStorage.setItem('token', result.token);
     login(nome, email);
+    const api = await fetch(`https://opentdb.com/api.php?amount=5&token=${result.token}`);
+    const { results } = await api.json();
+    request(results);
+    history.push('/game');
   }
 
   render() {
@@ -76,16 +79,15 @@ class Form extends Component {
             data-testid="input-gravatar-email"
           />
         </label>
-        <Link to="/game">
-          <button
-            type="button"
-            data-testid="btn-play"
-            disabled={ active }
-            onClick={ this.apiRequest }
-          >
-            Jogar
-          </button>
-        </Link>
+
+        <button
+          type="button"
+          data-testid="btn-play"
+          disabled={ active }
+          onClick={ this.apiRequest }
+        >
+          Jogar
+        </button>
       </form>
     );
   }
@@ -93,10 +95,13 @@ class Form extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   login: (name, email) => dispatch(loginAction(name, email)),
+  request: (results) => dispatch(requestAction(results)),
 });
 
 export default connect(null, mapDispatchToProps)(Form);
 
 Form.propTypes = {
+  request: PropTypes.func.isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
   login: PropTypes.func.isRequired,
 };
