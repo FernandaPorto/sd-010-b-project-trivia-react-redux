@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import PropTypes from 'prop-types';
-import { sendTokenToRedux } from '../actions/index';
+import { sendTokenToRedux, sendEmailToRedux, sendNomeToRedux } from '../actions/index';
 
 class Login extends Component {
   constructor() {
     super();
     this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.state = {
       email: '',
       nome: '',
@@ -34,6 +35,18 @@ class Login extends Component {
       })
       .then((token) => saveToken(token))
       .then(() => this.setState({ shouldRedirect: true }));
+  }
+
+  sendInfoPlayer() {
+    const { saveEmail, saveNome } = this.props;
+    const { email, nome } = this.state;
+    saveEmail(email);
+    saveNome(nome);
+  }
+
+  handleClick() {
+    this.getToken();
+    this.sendInfoPlayer();
   }
 
   handleChange({ name, value }) {
@@ -74,7 +87,7 @@ class Login extends Component {
           <button
             type="button"
             disabled={ buttonDisabled }
-            onClick={ () => this.getToken() }
+            onClick={ () => this.handleClick() }
             data-testid="btn-play"
           >
             Jogar
@@ -96,10 +109,14 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   saveToken: (token) => dispatch(sendTokenToRedux(token)),
+  saveEmail: (email) => dispatch(sendEmailToRedux(email)),
+  saveNome: (nome) => dispatch(sendNomeToRedux(nome)),
 });
 
 Login.propTypes = {
   saveToken: PropTypes.func.isRequired,
+  saveEmail: PropTypes.func.isRequired,
+  saveNome: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
