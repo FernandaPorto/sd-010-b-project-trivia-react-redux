@@ -13,9 +13,9 @@ class Questions extends Component {
   }
 
   randAnswers() {
-    const { correct_answer: c, incorrect_answers: i } = this.state;
-    const answers = [c, ...i];
-    const newArr = [];
+    const { correct_answer: correct, incorrect_answers: incorrect } = this.state;
+    const answers = [correct, ...incorrect];
+    const newArr = ['salada', 'feijao', 'batata'];
     while (newArr.length < answers.length) {
       const rand = Math.floor(Math.random() * answers.length);
       if (!newArr.includes(answers[rand])) newArr.push(answers[rand]);
@@ -24,13 +24,15 @@ class Questions extends Component {
   }
 
   renderAnswers() {
-    const { correct_answer: c, next, answers } = this.state;
+    const { correct_answer: correct, next, answers } = this.state;
     return answers.map((answer, idx) => {
-      const checkColor = answer === c
+      const checkColor = answer === correct
         ? '3px solid rgb(6, 240, 15)'
         : '3px solid rgb(255, 0, 0)';
 
-      const checkIsCorrect = answer === c ? 'correct-answer' : `wrong-answer-${idx}`;
+      const checkIsCorrect = answer === correct
+        ? 'correct-answer'
+        : `wrong-answer-${idx}`;
 
       return (
         <button
