@@ -130,7 +130,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default connect(null, mapDispatchToProps)(Trivia);
 
-// backup map
+// backup map do Joao
 // questions.map((question, index) => (
 //   <ul key={ question.category }>
 //     <p data-testid="question-category">{question.category}</p>
