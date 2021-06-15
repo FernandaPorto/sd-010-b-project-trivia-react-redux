@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router';
+import { Redirect, Link } from 'react-router-dom';
 import { getToken } from '../services/triviaApi';
 import logo from '../trivia.png';
 import './CSS/login.css';
@@ -66,13 +66,21 @@ class Login extends Component {
         >
           Jogar
         </button>
+        <Link to="/settings">
+          <button
+            type="button"
+            data-testid="btn-settings"
+          >
+            Configurar
+          </button>
+        </Link>
       </form>
     );
   }
 
   render() {
     const { name, email, disabled, redirect } = this.state;
-    return redirect ? <Redirect to="/jogo" /> : (
+    return redirect ? <Redirect to="/game" /> : (
       <div className="App">
         <header className="App-header">
           <img src={ logo } className="App-logo" alt="logo" />
