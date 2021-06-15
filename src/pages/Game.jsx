@@ -8,14 +8,23 @@ class Game extends React.Component {
     super(props);
     this.state = ({
       indexQuestion: 0,
+      playerClicked: false,
     });
 
     this.renderPage = this.renderPage.bind(this);
   }
 
   renderPage() {
-    const { indexQuestion } = this.state;
+    const { indexQuestion, playerClicked } = this.state;
     const { apiResult } = this.props;
+    const correctAnswer = 'correct-answer';
+
+    function correctOrWrongAnswerClass(answer, resultadoAPI, indexQuestao) {
+      return answer
+      === resultadoAPI.results[indexQuestao].correct_answer
+        ? '3px solid rgb(6, 240, 15)' : '3px solid rgb(255, 0, 0)';
+    }
+
     if (apiResult.response_code === 0) {
       const NUMERO_PARA_SORTEAR_RESPOSTAS = 5.0;
       const answersArray = apiResult.results[indexQuestion].incorrect_answers
@@ -32,10 +41,15 @@ class Game extends React.Component {
           { answersArray.map((answer, index) => (
             <button
               data-testid={ answer === apiResult.results[indexQuestion].correct_answer
-                ? 'correct-answer' : `wrong-answer-${index}` }
+                ? correctAnswer : `wrong-answer-${index}` }
+              id={ answer === apiResult.results[indexQuestion].correct_answer
+                ? correctAnswer : 'wrong-answer' }
               key={ index }
               type="submit"
-              onClick={ () => this.setState({ indexQuestion: indexQuestion + 1 }) }
+              style={ { border: playerClicked
+                ? correctOrWrongAnswerClass(answer, apiResult, indexQuestion) : null } }
+              onClick={ () => this.setState({ playerClicked: true },
+                () => this.setState({ indexQuestion: indexQuestion + 1 })) }
             >
               {answer}
             </button>))}
