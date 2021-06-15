@@ -40,7 +40,7 @@ class Game extends React.Component {
 
   render() {
     const { results, count } = this.state;
-    const { name, imgPath, score } = this.props;
+    const { name, gravatarEmail, score } = this.props;
 
     if (count === NUMBER_FIVE) {
       return (<Redirect to="/" />);
@@ -49,7 +49,7 @@ class Game extends React.Component {
     if (results) {
       return (
         <section>
-          <GameHeader name={ name } imgPath={ imgPath } score={ score } />
+          <GameHeader name={ name } gravatarEmail={ gravatarEmail } score={ score } />
           <main>
             <Questions result={ results[count] } />
             <button
@@ -66,7 +66,7 @@ class Game extends React.Component {
 
     return (
       <section>
-        <GameHeader name={ name } imgPath={ imgPath } score={ score } />
+        <GameHeader name={ name } gravatarEmail={ gravatarEmail } score={ score } />
         <main>
           Loading...
         </main>
@@ -76,13 +76,13 @@ class Game extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const { player: { name, imgPath, score } } = state;
-  return { name, imgPath, score };
+  const { player: { name, gravatarEmail, score } } = state;
+  return { name, gravatarEmail, score };
 };
 
 Game.propTypes = {
   name: PropTypes.string.isRequired,
-  imgPath: PropTypes.string.isRequired,
+  gravatarEmail: PropTypes.string.isRequired,
   score: PropTypes.string.isRequired,
 };
 
