@@ -52,8 +52,8 @@ class Game extends React.Component {
 
   verifyAnswers(target) {
     const { updatePlayerPointsAction,
-      player: { name, assertions, score, gravatarEmail } } = this.props;
-    console.log(player);
+      player } = this.props;
+    const { name, assertions, score, gravatarEmail } = player;
     const answer = target.getAttribute('data-testid');
     if (answer === 'correct-answer') {
       const correctAnswer = 1;
@@ -204,7 +204,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   apiResult: state.game,
-  player: state,
+  player: state.player,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
