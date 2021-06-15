@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import GameAsks from '../components/GameAsks';
 import HeaderComponent from '../components/HeaderComponent';
 
 class GamePage extends Component {
@@ -8,7 +9,10 @@ class GamePage extends Component {
 
   render() {
     return (
-      <HeaderComponent />
+      <>
+        <HeaderComponent />
+        <GameAsks />
+      </>
     );
   }
 }
