@@ -52,17 +52,27 @@ class Login extends React.Component {
     });
   }
 
-  async handlePlay() {
+  async requestToken() {
     const { token } = await (await fetch('https://opentdb.com/api_token.php?command=request')).json();
     localStorage.setItem('token', token);
-    const { userLogin } = this.props;
-    const { name, email } = this.state;
+  }
+
+  requestGravatar(name, email) {
     const emailHash = md5(email).toString();
     const imgPath = `https://www.gravatar.com/avatar/${emailHash}`;
-    const nameAndImgPath = {
+    return {
       name,
       imgPath,
     };
+  }
+
+  handlePlay() {
+    const { userLogin } = this.props;
+    const { name, email } = this.state;
+
+    this.requestToken();
+    const nameAndImgPath = this.requestGravatar(name, email);
+
     userLogin(nameAndImgPath);
     this.setState({
       redirect: true,
