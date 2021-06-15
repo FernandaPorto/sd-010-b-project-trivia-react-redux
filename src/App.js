@@ -9,7 +9,8 @@ export default function App() {
   return (
     <Switch>
       <Route exact path="/" component={ Home } />
-      <Route exact path="/game" component={ Game } />
+      {/* <Route exact path="/game" component={ Game } /> */}
+      <Route path='/game/:id' render={(props) => <Game {...props}/>} />
       <Route exact path="/config" component={ Configurations } />
     </Switch>
 

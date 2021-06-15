@@ -3,10 +3,15 @@ import { connect } from 'react-redux';
 
 class Perguntas extends Component {
   render() {
-    const { perguntas } = this.props;
-    if (perguntas) {
-      const { question, correct_answer, incorrect_answers } = perguntas[0];
-      console.log(perguntas[0]);
+    // teste() {
+      
+    // }
+
+
+    const { perguntas, id } = this.props;
+      if (perguntas) {
+      const { question, correct_answer, incorrect_answers } = perguntas[id];
+      console.log(perguntas[id]);
       return (
         <div>
           <p>{question}</p>
@@ -14,6 +19,7 @@ class Perguntas extends Component {
           <p>{incorrect_answers[0]}</p>
           <p>{incorrect_answers[1]}</p>
           <p>{incorrect_answers[2]}</p>
+          {/* <button onClick={this.teste}>Proxima pergunta</button> */}
         </div>
       );
     }
