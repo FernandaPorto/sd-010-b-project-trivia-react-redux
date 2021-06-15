@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router';
 import Home from './pages/Home';
 import TriviaGame from './pages/TriviaGame';
 import Settings from './pages/Settings';
+import Ranking from './pages/Ranking';
 
 export default function App() {
   return (
@@ -10,6 +11,7 @@ export default function App() {
       <Route path="/game" component={ TriviaGame } />
       <Route path="/settings" component={ Settings } />
       <Route exact path="/" component={ Home } />
+      <Route path="/ranking" component={ Ranking } />
     </Switch>
   );
 }
