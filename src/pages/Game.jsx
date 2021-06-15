@@ -1,5 +1,6 @@
 import React from 'react';
 import Header from '../components/Header';
+import Question from '../components/Question';
 
 class Game extends React.Component {
   constructor(props) {
@@ -26,38 +27,7 @@ class Game extends React.Component {
     return (
       <>
         <Header />
-        { results.map((result) => (
-          <>
-            <span
-              key={ result.category }
-              data-testid="question-category"
-            >
-              Category:
-              {result.category}
-            </span>
-
-            <br />
-
-            <span
-              key={ result.type }
-              data-testid="question-text"
-            >
-              Question:
-              {result.question}
-            </span>
-
-            <br />
-
-            <span
-              key={ result.correct_answer }
-              data-testid="correct-answer"
-            >
-              {result.correct_answer}
-            </span>
-
-            <br />
-            <br />
-          </>)) }
+        <Question result={ results } />
       </>
     );
   }
