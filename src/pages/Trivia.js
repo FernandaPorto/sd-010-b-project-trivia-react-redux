@@ -9,7 +9,8 @@ class Trivia extends React.Component {
     super();
     this.state = {
       questions: [],
-      // answers: [],
+      answers: [],
+      nextQuestion: false,
     };
     this.renderQuestion = this.renderQuestion.bind(this);
     // this.funcao = this.funcao.bind(this);
@@ -21,7 +22,7 @@ class Trivia extends React.Component {
 
   async getQuestions() {
     const { thunkToken } = this.props;
-    const quantityQuestions = 5;
+    const quantityQuestions = 1;
     const token = await thunkToken();
     const tokenRequisition = token.result.token;
     const { apiQuestions } = this.props;
@@ -33,7 +34,28 @@ class Trivia extends React.Component {
     console.log(questions);
   }
 
-  // answer === correct ? 'correct-answer' : 'wrong-answer-${index}'
+  colorAnswers() {
+    const { correct_answer: correct, answers, nextQuestion } = this.state;
+    return answers.map((answer, index) => {
+      const testColor = answer === correct
+        ? '3px solid rgb(6, 240, 15)'
+        : '3px solid rgb(255, 0, 0)';
+
+      const verifyTestId = answer === correct
+        ? 'correct-answer' : `wrong-answer-${index}`;
+      return (
+        <button
+          type="button"
+          key={ answer }
+          data-testid={ verifyTestId }
+          style={ { border: `${nextQuestion && testColor}` } } // ???? ou ´´
+          onClick={ () => this.setState({ nextQuestion: true }) }
+        >
+          {answers}
+        </button>
+      );
+    });
+  }
 
   renderQuestion() {
     const { questions } = this.state;
@@ -64,20 +86,6 @@ class Trivia extends React.Component {
         </ul>
       )));
   }
-
-  // colorAnswers() {
-  //   const { correct_answer: correct, answer } = this.state;
-  //   return answers.map((answer, index) => {
-  //     const seeColor = answer === correct ? '3px solid rgb(6, 240, 15)' : '3px solid rgb(255, 0, 0)';
-
-  //     const verifyColor = answer === correct ? 'correct-answer' : `wrong-answer-${index}`;
-  //     return (
-  //       <button>
-  //
-
-  //     );
-  //   });
-  // }
 
   // funcao() {
   //   const { questions } = this.state;
