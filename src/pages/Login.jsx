@@ -20,6 +20,7 @@ class LoginPage extends Component {
     this.onClick = this.onClick.bind(this);
     this.setToken = this.setToken.bind(this);
     this.settingsButton = this.settingsButton.bind(this);
+    this.setToken = this.setToken.bind(this);
   }
 
   // componentDidMount() {
@@ -43,7 +44,14 @@ class LoginPage extends Component {
 
   async setToken() {
     const token = await fetchURL();
+    console.log(token);
     localStorage.setItem('token', JSON.stringify(token));
+    try {
+      const FetchTrivia = fetch(`https://opentdb.com/api.php?amount=5&token=${token}`).then((response) => response.JSON());
+      console.log(FetchTrivia);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   settingsButton() {

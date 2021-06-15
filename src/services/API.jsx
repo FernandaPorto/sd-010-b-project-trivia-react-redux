@@ -6,4 +6,10 @@ const fetchURL = async () => {
 };
 
 export default fetchURL;
-// oi
+
+// const APITRIVIA = `https://opentdb.com/api.php?amount=5&token=${token}`;
+
+// export const fetchAPITrivia = async () => {
+//   const result = await fetch(APITRIVIA);
+//   return result.json();
+// };
