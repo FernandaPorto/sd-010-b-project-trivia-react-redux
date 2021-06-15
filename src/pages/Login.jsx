@@ -48,12 +48,12 @@ class Login extends React.Component {
     this.setState({
       [key]: value,
     },
-    this.verifyEmailAndName());
+    () => this.verifyEmailAndName());
   }
 
   verifyEmailAndName() {
     const { email, name } = this.state;
-    if (email.length > 1 && name.length > 1) {
+    if (email.length && name.length) {
       this.setState({
         disabled: false,
       });
@@ -90,6 +90,11 @@ class Login extends React.Component {
               disabled={ disabled }
             >
               Jogar
+            </button>
+          </Link>
+          <Link to="/settings">
+            <button type="button" data-testid="btn-settings">
+              Configurações
             </button>
           </Link>
         </form>
