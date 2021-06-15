@@ -1,18 +1,36 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
+import Question from '../components/Question';
+import { requestQuestions } from '../actions';
 
 class GamePage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      index: 0,
+    };
+  }
+
+  componentDidMount() {
+    const { getQuestions } = this.props;
+    getQuestions();
+  }
+
   render() {
+    const { index } = this.state;
     const { name } = this.props;
     return (
-      <header>
-        <img src="https://www.gravatar.com/avatar/" data-testid="header-profile-picture" alt="gravatar" />
-        <p data-testid="header-player-name">
-          { name }
-        </p>
-        <p data-testid="header-score">0</p>
-      </header>
+      <>
+        <header>
+          <img src="https://www.gravatar.com/avatar/" data-testid="header-profile-picture" alt="gravatar" />
+          <p data-testid="header-player-name">
+            { name }
+          </p>
+          <p data-testid="header-score">0</p>
+        </header>
+        <Question index={ index } />
+      </>
     );
   }
 }
@@ -21,8 +39,13 @@ const mapStateToProps = (state) => ({
   name: state.player.name,
 });
 
-export default connect(mapStateToProps)(GamePage);
+const mapDispatchToProps = (dispatch) => ({
+  getQuestions: () => dispatch(requestQuestions()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(GamePage);
 
 GamePage.propTypes = {
   name: propTypes.string.isRequired,
+  getQuestions: propTypes.func.isRequired,
 };
