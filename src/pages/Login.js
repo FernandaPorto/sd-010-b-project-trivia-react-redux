@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login as loginAction } from '../redux/actions';
+import trivia from '../trivia.png';
 
 class Login extends React.Component {
   constructor() {
@@ -56,7 +57,7 @@ class Login extends React.Component {
   render() {
     return (
       <section className="login-section">
-        <h1>Trivia Game</h1>
+        <img src={ trivia } alt="trivia" />
         <form>
           <label htmlFor="name">
             <input

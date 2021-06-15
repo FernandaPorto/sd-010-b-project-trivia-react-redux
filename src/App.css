@@ -1,6 +1,8 @@
 /* Login page  */
 .login-section {
   align-items: center;
+  background-image: url('https://img.freepik.com/free-vector/abstract-colorful-minimalist-clean-background_173783-3.jpg?size=626&ext=jpg');
+  background-size: cover;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -12,6 +14,11 @@
   width: 400px;
 }
 
+.login-section img {
+  margin-bottom: 20px;
+  width: 500px;
+}
+
 .login-section input, .login-section button, .login-section a {
   box-sizing: border-box;
   height: 50px;
@@ -21,11 +28,6 @@
 
 .login-section input {
   font-size: 20px;
-}
-
-.login-section h1 {
-  color: purple;
-  font-size: 36px;
 }
 
 .play-btn:enabled {
