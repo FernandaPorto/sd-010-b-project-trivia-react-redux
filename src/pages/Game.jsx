@@ -10,45 +10,37 @@ class Game extends React.Component {
     this.state = ({
       indexQuestion: 0,
       buttonDisabled: false,
+      currentTime: 30,
     });
 
     this.renderPage = this.renderPage.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
-    this.startTimer = this.startTimer.bind(this);
+    this.timer = this.timer.bind(this);
+    this.settingState = this.settingState.bind(this);
     this.calculatePoints = this.calculatePoints.bind(this);
   }
 
   componentDidMount() {
-    const tempo = 30;
-
-    this.startTimer(tempo);
+    const ONE_SECOND = 1000;
+    const intervalId = setInterval(this.timer, ONE_SECOND);
+    this.settingState(intervalId);
   }
 
-  startTimer(duration) {
-    const ONE_SEC = 1000;
-    const MINUTO = 60;
-    const DIGITO_DECIMAL = 10;
-    let timer = duration;
-    const display = document.getElementById('timer');
-    let seconds;
-    setInterval(() => {
-      seconds = parseInt(timer % MINUTO, 10);
-
-      // a seguinte linha exibe, por exemplo, 03 ao invés de 3 no timer
-      seconds = seconds < DIGITO_DECIMAL ? `0${seconds}` : seconds;
-      display.textContent = `Tempo restante: ${seconds}`;
-      timer -= 1;
-      if (timer < 0) {
-        timer = 0;
-        this.setState({
-          buttonDisabled: true,
-        });
-      }
-    }, ONE_SEC);
+  settingState(intervalId) {
+    this.setState({
+      intervalId,
+    });
   }
 
-  calculatePoints(target) {
+  timer() {
+    const { currentTime } = this.state;
+    this.setState({
+      currentTime: currentTime - 1,
+    });
+  }
+
+  calculatePoints() {
     const { apiResult: { results: { difficulty } } } = this.props;
     const BASE_VALUE = 10;
     const HARD_NUMBER = 3;
@@ -74,13 +66,16 @@ class Game extends React.Component {
     const wrongAnswer = document.querySelectorAll('.answer-button-wrong');
     const correctAnswer = document.querySelector('.answer-button-correct');
     const buttonNext = document.querySelector('.next-button');
+
     correctAnswer.classList.add('answer-correct');
     wrongAnswer.forEach((answer) => {
       answer.classList.add('answer-wrong');
     });
-    buttonNext.style.display = 'initial';
 
+    buttonNext.style.display = 'initial';
     this.calculatePoints(target);
+    const { intervalId } = this.state;
+    clearInterval(intervalId);
   }
 
   nextQuestion() {
@@ -98,6 +93,12 @@ class Game extends React.Component {
         answer.classList.remove('answer-wrong');
       });
     }
+    this.setState({
+      currentTime: 30,
+    });
+    const ONE_SECOND = 1000;
+    const intervalId = setInterval(this.timer, ONE_SECOND);
+    this.settingState(intervalId);
   }
 
   renderPage() {
@@ -140,6 +141,8 @@ class Game extends React.Component {
   }
 
   render() {
+    const { currentTime } = this.state;
+
     return (
       <section>
         <GameHeader />
@@ -152,7 +155,7 @@ class Game extends React.Component {
         >
           Próxima
         </button>
-        <p id="timer">Tempo restante:</p>
+        <p id="timer">{`Tempo restante: ${currentTime}`}</p>
       </section>
 
     );
@@ -168,6 +171,8 @@ export default connect(mapStateToProps)(Game);
 Game.propTypes = {
   apiResult: PropTypes.shape({
     response_code: PropTypes.number.isRequired,
-    results: PropTypes.shape({}),
+    results: PropTypes.shape({
+      difficulty: PropTypes.number,
+    }),
   }).isRequired,
 };
