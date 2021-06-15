@@ -1,3 +1,3 @@
-const initialState = { nome: '' };
+const initialState = { token: {}, error: {} };
 
 export default initialState;
