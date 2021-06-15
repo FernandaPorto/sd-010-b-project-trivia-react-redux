@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
+import PropTypes from 'prop-types';
+import { fetchToken } from '../actions/index';
 
 import '../App.css';
 import logo from '../trivia.png';
 
-export default class App extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
 
@@ -38,7 +41,11 @@ export default class App extends Component {
 
   render() {
     const { name, email, isDisable, settings } = this.state;
-
+    const { fetchAPIToken } = this.props;
+    // console.log(IsRedirect);
+    // if (IsRedirect) {
+    //   return <Redirect to="/carteira" É isso aeee/>;
+    // }
     return (
       <div className="App-header">
         { settings && <Redirect to="/settings" /> }
@@ -67,6 +74,7 @@ export default class App extends Component {
             // onClick={}
             disabled={ !isDisable }
             data-testid="btn-play"
+            onClick={ () => fetchAPIToken() }
           >
             Jogar
           </button>
@@ -82,3 +90,17 @@ export default class App extends Component {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchAPIToken: () => dispatch(fetchToken()),
+});
+
+// const mapStateToProps = (state) => ({
+//   IsRedirect: state.triviaGame.IsRedirect,
+// });
+
+Login.propTypes = {
+  fetchAPIToken: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
