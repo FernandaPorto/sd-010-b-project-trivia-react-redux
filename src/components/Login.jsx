@@ -43,14 +43,14 @@ class Login extends Component {
       this.setState({ isDisabled: true });
     }
   }
-  
+
   render() {
     const { loginTrue, isDisabled } = this.state;
     if (loginTrue) {
       // const num = 0
       // num += 1
       // return <Redirect to={`/game/${num}`} />;
-      return <Redirect to='/game/0' />
+      return <Redirect to="/game/0" />;
     }
 
     return (

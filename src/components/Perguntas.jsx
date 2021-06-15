@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 
 class Perguntas extends Component {
+  teste() {
+   return <Redirect to="/game/1" />;
+  }
   render() {
-    // teste() {
-      
-    // }
-
 
     const { perguntas, id } = this.props;
-      if (perguntas) {
+    if (perguntas) {
       const { question, correct_answer, incorrect_answers } = perguntas[id];
       console.log(perguntas[id]);
       return (
@@ -19,7 +19,7 @@ class Perguntas extends Component {
           <p>{incorrect_answers[0]}</p>
           <p>{incorrect_answers[1]}</p>
           <p>{incorrect_answers[2]}</p>
-          {/* <button onClick={this.teste}>Proxima pergunta</button> */}
+          <button onClick={this.teste}>Proxima pergunta</button>
         </div>
       );
     }

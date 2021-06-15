@@ -13,11 +13,10 @@ class Game extends Component {
   }
 
   render() {
-    const { id } = this.props.match.params
+    const { id } = this.props.match.params;
 
     return (
       <div>
-
         <Header />
         <Perguntas id={ id } />
       </div>
