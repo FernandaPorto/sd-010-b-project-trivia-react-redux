@@ -11,4 +11,4 @@ export const getToken = () => fetch(URL)
   .then((res) => res.json())
   .then(({ results }) => results);
 
-export const getStorage = () => JSON.parse(localStorage.player);
+export const getStorage = () => JSON.parse(localStorage.state);

@@ -22,10 +22,14 @@ class Cronometro extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { funcao } = this.props;
+    const { funcao, funcaoStop, stop } = this.props;
     if (prevState.seconds === 1) {
       funcao();
       this.update();
+    }
+    if (!prevProps.stop && stop) {
+      this.update();
+      funcaoStop(prevState.seconds);
     }
   }
 
@@ -48,6 +52,8 @@ class Cronometro extends Component {
 
 Cronometro.propTypes = {
   funcao: PropTypes.func.isRequired,
+  funcaoStop: PropTypes.func.isRequired,
+  stop: PropTypes.bool.isRequired,
 };
 
 export default Cronometro;
