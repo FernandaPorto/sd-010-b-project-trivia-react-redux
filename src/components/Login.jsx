@@ -22,10 +22,12 @@ class Login extends Component {
     const { login } = this.props;
     fetToken.getToken().then((response) => {
       localStorage.setItem('token', `${response.token}`);
-    });
-    this.setState({
-      loginTrue: true,
-    });
+    })
+      .then(() => {
+        this.setState({
+          loginTrue: true,
+        });
+      });
     const email = document.getElementById('email-input').value;
     const user = document.getElementById('name-input').value;
     login({ email, user });
@@ -50,7 +52,7 @@ class Login extends Component {
       // const num = 0
       // num += 1
       // return <Redirect to={`/game/${num}`} />;
-      return <Redirect to="/game/0" />;
+      return <Redirect to="/game" />;
     }
 
     return (

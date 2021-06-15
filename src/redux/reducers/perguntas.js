@@ -1,5 +1,5 @@
 const initialState = {
-  perguntas: ['reducer perg'],
+  perguntas: [],
 };
 
 export default (state = initialState, action) => {

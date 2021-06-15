@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import Perguntas from '../components/Perguntas';
 import fetchPerguntas from '../redux/actions/perguntasThunk';
-// import * as fetToken from './Api';
 
 class Game extends Component {
   componentDidMount() {
@@ -13,12 +13,10 @@ class Game extends Component {
   }
 
   render() {
-    const { id } = this.props.match.params;
-
     return (
       <div>
         <Header />
-        <Perguntas id={ id } />
+        <Perguntas />
       </div>
     );
   }
@@ -28,4 +26,5 @@ const mapDispatchToProps = (dispatch) => ({
   pedePerguntas: (token) => dispatch(fetchPerguntas(token)),
 });
 
+Game.propTypes = PropTypes.func.isRequired;
 export default connect(null, mapDispatchToProps)(Game);

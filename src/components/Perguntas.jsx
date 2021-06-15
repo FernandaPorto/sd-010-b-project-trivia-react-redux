@@ -1,38 +1,55 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router';
+// import { Redirect } from 'react-router';
+import PropTypes from 'prop-types';
+import fetchPerguntas from '../redux/actions/perguntasThunk';
+import PerguntaCard from './PerguntaCard';
 
 class Perguntas extends Component {
-  teste() {
-   return <Redirect to="/game/1" />;
+  constructor(props) {
+    super(props);
+    this.state = {
+      perguntaIndex: 0,
+    };
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
-  render() {
 
-    const { perguntas, id } = this.props;
+  componentDidMount() {
+    const { pedePerguntas } = this.props;
+    pedePerguntas(localStorage.getItem('token'));
+  }
+
+  nextQuestion() {
+    this.setState((state) => ({ perguntaIndex: state.perguntaIndex + 1 }));
+  }
+
+  render() {
+    const { perguntas } = this.props;
+    const { perguntaIndex } = this.state;
     if (perguntas) {
-      const { question, correct_answer, incorrect_answers } = perguntas[id];
-      console.log(perguntas[id]);
       return (
         <div>
-          <p>{question}</p>
-          <p>{correct_answer}</p>
-          <p>{incorrect_answers[0]}</p>
-          <p>{incorrect_answers[1]}</p>
-          <p>{incorrect_answers[2]}</p>
-          <button onClick={this.teste}>Proxima pergunta</button>
+          <PerguntaCard
+            question={ perguntas[perguntaIndex] }
+            nextQuestion={ this.nextQuestion }
+          />
         </div>
       );
     }
-    return <p>Loading</p>;
+
+    return <p>Loading...</p>;
   }
 }
 
-const mapDispatchToProps = () => ({
-  // pedePerguntas: (token) => dispatch(fetchPerguntas(token)),
+const mapDispatchToProps = (dispatch) => ({
+  pedePerguntas: (token) => dispatch(fetchPerguntas(token)),
 });
 
 const mapStateToProps = (state) => ({
   perguntas: state.perguntas.perguntas.results,
 });
-
+Perguntas.propTypes = PropTypes.shape({
+  perguntas: PropTypes.instanceOf(Array),
+  pedePerguntas: PropTypes.func,
+}).isRequired;
 export default connect(mapStateToProps, mapDispatchToProps)(Perguntas);

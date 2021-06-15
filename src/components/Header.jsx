@@ -10,10 +10,18 @@ class Header extends Component {
     const avatar = `https://www.gravatar.com/avatar/${emailGravatar}`;
     return (
       <header>
-        <img data-testid="header-profile-picture" src={ avatar } alt="Avatar" />
-        <h1 data-testid="header-player-name">{ user.user }</h1>
+        <div style={ { display: 'flex', justifyContent: 'space-around' } }>
 
-        <h2 data-testid="header-score">0</h2>
+          <img
+            data-testid="header-profile-picture"
+            height="35"
+            src={ avatar }
+            alt="Avatar"
+          />
+          <p data-testid="header-player-name">{user.user}</p>
+
+          <p data-testid="header-score">0</p>
+        </div>
       </header>
     );
   }
@@ -23,8 +31,6 @@ const mapStateToProps = (state) => ({
   user: state.user,
 });
 
-Header.propTypes = {
-  user: PropTypes.objetc,
-}.isRequired;
+Header.propTypes = PropTypes.instanceOf(Object).isRequired;
 
 export default connect(mapStateToProps)(Header);
