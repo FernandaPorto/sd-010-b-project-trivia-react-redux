@@ -10,6 +10,7 @@ export default function App() {
     <Switch>
       <Route exact path="/" component={ Home } />
       <Route exact path="/game" component={ Game } />
+      {/* <Route path="/game/:id" render={ (props) => <Game { ...props } /> } /> */}
       <Route exact path="/config" component={ Configurations } />
     </Switch>
 
