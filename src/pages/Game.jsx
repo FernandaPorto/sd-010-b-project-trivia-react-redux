@@ -19,7 +19,6 @@ class Game extends React.Component {
     this.startTimer = this.startTimer.bind(this);
     this.calculatePoints = this.calculatePoints.bind(this);
     this.verifyAnswers = this.verifyAnswers.bind(this);
-    this.sendLocalStorage = this.sendLocalStorage.bind(this);
   }
 
   componentDidMount() {
@@ -51,20 +50,20 @@ class Game extends React.Component {
     }, ONE_SEC);
   }
 
-  sendLocalStorage() {
-    const { player } = this.props;
-    console.log(player);
-    localStorage.setItem('state', player);
-  }
-
   verifyAnswers(target) {
-    const { updatePlayerPointsAction } = this.props;
+    const { updatePlayerPointsAction, player: { name, assertions, score, gravatarEmail } } = this.props;
     const answer = target.getAttribute('data-testid');
     if (answer === 'correct-answer') {
       const correctAnswer = 1;
       const answerPoints = this.calculatePoints();
+      const estadoTemporario = {
+        name,
+        assertions: assertions + correctAnswer,
+        score: score + answerPoints,
+        gravatarEmail,
+      };
       updatePlayerPointsAction({ correctAnswer, answerPoints });
-      this.sendLocalStorage();
+      localStorage.setItem('state', JSON.stringify(estadoTemporario));
     }
   }
 
