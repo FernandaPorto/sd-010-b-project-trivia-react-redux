@@ -13,6 +13,7 @@ class Login extends Component {
       nome: '',
       buttonDisabled: true,
       shouldRedirect: false,
+      settingRedirect: false,
     };
   }
 
@@ -54,7 +55,7 @@ class Login extends Component {
   }
 
   render() {
-    const { buttonDisabled, shouldRedirect } = this.state;
+    const { buttonDisabled, shouldRedirect, settingRedirect } = this.state;
     return (
       <div>
         <section>
@@ -79,6 +80,14 @@ class Login extends Component {
             Jogar
           </button>
           { shouldRedirect && <Redirect to="/gameScreen" /> }
+          <button
+            type="button"
+            data-testid="btn-settings"
+            onClick={ () => this.setState({ settingRedirect: true }) }
+          >
+            Configurações
+          </button>
+          { settingRedirect && <Redirect to="/setting" /> }
         </section>
       </div>
     );
