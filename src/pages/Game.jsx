@@ -34,10 +34,17 @@ class Game extends React.Component {
   }
 
   timer() {
-    const { currentTime } = this.state;
-    this.setState({
-      currentTime: currentTime - 1,
-    });
+    const { currentTime, intervalId } = this.state;
+    if (currentTime > 0) {
+      this.setState({
+        currentTime: currentTime - 1,
+      });
+    } else {
+      this.setState({
+        buttonDisabled: true,
+      });
+      clearInterval(intervalId);
+    }
   }
 
   calculatePoints() {
