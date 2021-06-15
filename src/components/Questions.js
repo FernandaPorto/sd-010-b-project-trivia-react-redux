@@ -88,4 +88,4 @@ const mapStateToProps = ({ user: { triviaGame } }) => ({
 
 // });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Questions);
+export default connect(mapStateToProps)(Questions);
