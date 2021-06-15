@@ -44,7 +44,7 @@ class Login extends Component {
     const { fetchAPIToken } = this.props;
     // console.log(IsRedirect);
     // if (IsRedirect) {
-    //   return <Redirect to="/carteira" />;
+    //   return <Redirect to="/carteira" É isso aeee/>;
     // }
     return (
       <div className="App-header">
