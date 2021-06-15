@@ -1,4 +1,10 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
+
+import { playerLogin } from '../actions/index';
 
 class Login extends React.Component {
   constructor(props) {
@@ -8,9 +14,13 @@ class Login extends React.Component {
       name: '',
       email: '',
       disabled: true,
+      redirect: false,
+      settings: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleSettings = this.handleSettings.bind(this);
+    this.handlePlay = this.handlePlay.bind(this);
   }
 
   verifyEmail(email) {
@@ -42,8 +52,43 @@ class Login extends React.Component {
     });
   }
 
+  async handlePlay() {
+    const { token } = await (await fetch('https://opentdb.com/api_token.php?command=request')).json();
+    localStorage.setItem('token', token);
+    const { userLogin } = this.props;
+    const { name, email } = this.state;
+    const emailHash = md5(email).toString();
+    const imgPath = `https://www.gravatar.com/avatar/${emailHash}`;
+    const nameAndImgPath = {
+      name,
+      imgPath,
+    };
+    userLogin(nameAndImgPath);
+    this.setState({
+      redirect: true,
+    });
+  }
+
+  handleSettings() {
+    this.setState({
+      settings: true,
+    });
+  }
+
   render() {
-    const { disabled } = this.state;
+    const { disabled, redirect, settings } = this.state;
+    if (redirect) {
+      return (
+        <Redirect to="/start" />
+      );
+    }
+
+    if (settings) {
+      return (
+        <Redirect to="/settings" />
+      );
+    }
+
     return (
       <section>
         <input
@@ -64,12 +109,28 @@ class Login extends React.Component {
           type="button"
           data-testid="btn-play"
           disabled={ disabled }
+          onClick={ this.handlePlay }
         >
           Jogar
+        </button>
+        <button
+          type="button"
+          data-testid="btn-settings"
+          onClick={ this.handleSettings }
+        >
+          Configurações
         </button>
       </section>
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  userLogin: (email) => dispatch(playerLogin(email)),
+});
+
+Login.propTypes = {
+  userLogin: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
