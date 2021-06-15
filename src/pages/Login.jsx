@@ -5,6 +5,7 @@ import { Redirect } from 'react-router';
 import md5 from 'crypto-js/md5';
 
 import { loginActionCreator } from '../redux/actions';
+import SettingsButton from '../components/SettingsButton';
 import fetchToken from '../services/api';
 
 class Login extends React.Component {
@@ -45,29 +46,34 @@ class Login extends React.Component {
     const { name, email, redirect } = this.state;
     if (redirect) return <Redirect to="/Game" />;
     return (
-      <div>
-        <input
-          type="text"
-          data-testid="input-player-name"
-          name="name"
-          placeholder=""
-          onChange={ this.handleChange }
-        />
-        <input
-          type="email"
-          data-testid="input-gravatar-email"
-          name="email"
-          placeholder=""
-          onChange={ this.handleChange }
-        />
-        <input
-          type="button"
-          value="Jogar"
-          disabled={ !(name && email) }
-          data-testid="btn-play"
-          onClick={ this.handleClick }
-        />
-      </div>
+      <section>
+        <div>
+          <input
+            type="text"
+            data-testid="input-player-name"
+            name="name"
+            placeholder=""
+            onChange={ this.handleChange }
+          />
+          <input
+            type="email"
+            data-testid="input-gravatar-email"
+            name="email"
+            placeholder=""
+            onChange={ this.handleChange }
+          />
+          <input
+            type="button"
+            value="Jogar"
+            disabled={ !(name && email) }
+            data-testid="btn-play"
+            onClick={ this.handleClick }
+          />
+        </div>
+        <div>
+          <SettingsButton />
+        </div>
+      </section>
     );
   }
 }
