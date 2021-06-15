@@ -1,11 +1,11 @@
 export const TOKEN_SUCCESS = 'TOKEN_SUCCESS';
 export const TOKEN_FAILURE = 'TOKEN_FAILURE';
 
-export const requestTokenSuccess = (payload) => ({
+const requestTokenSuccess = (payload) => ({
   type: TOKEN_SUCCESS,
   payload,
 });
-export const requestTokenFailure = (payload) => ({
+const requestTokenFailure = (payload) => ({
   type: TOKEN_FAILURE,
   payload,
 });
