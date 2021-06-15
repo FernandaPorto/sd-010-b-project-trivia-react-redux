@@ -1,6 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
-// import { Redirect } from 'react-router';
+import PropTypes from 'prop-types';
+
 import Questions from '../components/Questions';
 
 const NUMBER_FIVE = 5;
@@ -10,7 +12,6 @@ class Game extends React.Component {
     super(props);
     this.state = {
       count: 0,
-      // redirect: false,
     };
     this.getQuestions = this.getQuestions.bind(this);
     this.handleNext = this.handleNext.bind(this);
@@ -37,7 +38,8 @@ class Game extends React.Component {
 
   render() {
     const { results, count } = this.state;
-    console.log(results);
+    const { name, imgPath, score } = this.props;
+    
     if (count === NUMBER_FIVE) {
       return (<Redirect to="/" />);
     }
@@ -45,6 +47,21 @@ class Game extends React.Component {
     if (results) {
       return (
         <div>
+         <section>
+          <header>
+          <span data-testid="header-player-name">
+            { name }
+          </span>
+          <img
+            src={ imgPath }
+            alt="Foto de perfil do usuário"
+            data-testid="header-profile-picture"
+          />
+          <span data-testid="header-score">
+            { score }
+          </span>
+          </header>
+          <div>
           <Questions result={ results[count] } />
           <button
             type="button"
@@ -52,15 +69,44 @@ class Game extends React.Component {
           >
             Next
           </button>
-        </div>
+          </div>
+        </section>
+       </div>
       );
     }
+    
     return (
-      <div>
+      <section>
+        <header>
+          <span data-testid="header-player-name">
+            { name }
+          </span>
+          <img
+            src={ imgPath }
+            alt="Foto de perfil do usuário"
+            data-testid="header-profile-picture"
+          />
+          <span data-testid="header-score">
+            { score }
+          </span>
+        </header>
+      </section>
+      <main>
         Loading...
-      </div>
-    );
+      </main>
+      );
   }
 }
 
-export default Game;
+const mapStateToProps = (state) => {
+  const { player: { name, imgPath, score } } = state;
+  return { name, imgPath, score };
+};
+
+Game.propTypes = {
+  name: PropTypes.string.isRequired,
+  imgPath: PropTypes.string.isRequired,
+  score: PropTypes.string.isRequired,
+};
+
+export default connect(mapStateToProps)(Game);

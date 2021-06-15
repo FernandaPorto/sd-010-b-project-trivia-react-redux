@@ -1,5 +1,10 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
+
+import { playerLogin } from '../actions/index';
 
 class Login extends React.Component {
   constructor(props) {
@@ -15,7 +20,7 @@ class Login extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSettings = this.handleSettings.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.handlePlay = this.handlePlay.bind(this);
   }
 
   verifyEmail(email) {
@@ -47,9 +52,18 @@ class Login extends React.Component {
     });
   }
 
-  async handleClick() {
+  async handlePlay() {
     const { token } = await (await fetch('https://opentdb.com/api_token.php?command=request')).json();
     localStorage.setItem('token', token);
+    const { userLogin } = this.props;
+    const { name, email } = this.state;
+    const emailHash = md5(email).toString();
+    const imgPath = `https://www.gravatar.com/avatar/${emailHash}`;
+    const nameAndImgPath = {
+      name,
+      imgPath,
+    };
+    userLogin(nameAndImgPath);
     this.setState({
       redirect: true,
     });
@@ -95,7 +109,7 @@ class Login extends React.Component {
           type="button"
           data-testid="btn-play"
           disabled={ disabled }
-          onClick={ this.handleClick }
+          onClick={ this.handlePlay }
         >
           Jogar
         </button>
@@ -111,4 +125,12 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  userLogin: (email) => dispatch(playerLogin(email)),
+});
+
+Login.propTypes = {
+  userLogin: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
