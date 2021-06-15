@@ -1,35 +1,37 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Header from '../components/Header';
 import PerguntaAtual from '../components/PerguntaAtual';
 
 class Jogo extends React.Component {
   constructor(props) {
     super(props);
-    this.fetchQuestions = this.fetchQuestions.bind(this);
     this.answers = this.answers.bind(this);
     this.somaPergunta = this.somaPergunta.bind(this);
     this.state = {
-      perguntas: {},
+      // perguntas: {},
       randomAnswer: [],
       perguntaNumber: 0,
     };
   }
 
   componentDidMount() {
-    this.fetchQuestions().then(() => this.answers());
+    this.answers();
   }
 
-  fetchQuestions() {
-    const userToken = JSON.parse(localStorage.getItem('token'));
-    return fetch(`https://opentdb.com/api.php?amount=5&token=${userToken}`)
-      .then((response) => response.json())
-      .then((response) => {
-        this.setState({ perguntas: response });
-      });
-  }
+  // fetchQuestions() {
+  //   const userToken = JSON.parse(localStorage.getItem('token'));
+  //   return fetch(`https://opentdb.com/api.php?amount=5&token=${userToken}`)
+  //     .then((response) => response.json())
+  //     .then((response) => {
+  //       this.setState({ perguntas: response }, () => this.answers());
+  //     });
+  // }
 
   answers() {
-    const { perguntas: { results }, perguntaNumber } = this.state;
+    const { perguntaNumber } = this.state;
+    const { perguntas: { results } } = this.props;
+    console.log(this);
     const allAnswers = [...results[perguntaNumber].incorrect_answers];
     const numberOfQuestions = 5;
     const randomPosition = Math.floor(Math.random() * numberOfQuestions);
@@ -70,8 +72,8 @@ class Jogo extends React.Component {
   // // https://www.horadecodar.com.br/2021/05/10/como-embaralhar-um-array-em-javascript-shuffle/
 
   render() {
-    const { perguntas: { results }, randomAnswer } = this.state;
-    console.log(results);
+    const { randomAnswer } = this.state;
+    // console.log(results);
     console.log(randomAnswer);
     return (
       <section>
@@ -83,4 +85,8 @@ class Jogo extends React.Component {
   }
 }
 
-export default Jogo;
+const mapStateToProps = (state) => ({
+  perguntas: state.questionReducer.perguntas,
+});
+
+export default connect(mapStateToProps)(Jogo);

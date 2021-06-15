@@ -1,20 +1,22 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { login as loginAction } from '../redux/actions';
+import { getQuestions as questionsAction, login as loginAction } from '../redux/actions';
 import trivia from '../trivia.png';
 
 class Login extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.emailValidation = this.emailValidation.bind(this);
     this.nameValidation = this.nameValidation.bind(this);
     this.buttonAvaliable = this.buttonAvaliable.bind(this);
     this.fetchToken = this.fetchToken.bind(this);
+    // this.loginAction = this.loginAction.bind(this);
     this.state = {
       name: '',
       email: '',
+      perguntas: {},
     };
   }
 
@@ -43,13 +45,19 @@ class Login extends React.Component {
   }
 
   fetchToken() {
-    const { login } = this.props;
+    const { getQuestions, login } = this.props;
     fetch('https://opentdb.com/api_token.php?command=request')
       .then((response) => response.json())
       .then((response) => {
         localStorage.setItem('token', JSON.stringify(response.token));
+        return fetch(`https://opentdb.com/api.php?amount=5&token=${response.token}`)
+          .then((resp) => resp.json())
+          .then((resp) => {
+            getQuestions(resp);
+            login(this.state);
+          })
+          .then(this.props.history.push('/jogo'));
       });
-    login(this.state);
   }
 
   // https://opentdb.com/api.php?amount=${quantidade-de-perguntas-retornadas}&token=${seu-token-aqui}
@@ -77,17 +85,15 @@ class Login extends React.Component {
               placeholder="Email"
             />
           </label>
-          <Link to="/jogo">
-            <button
-              data-testid="btn-play"
-              type="submit"
-              disabled={ !this.buttonAvaliable() }
-              onClick={ () => this.fetchToken() }
-              className="play-btn"
-            >
-              Jogar
-            </button>
-          </Link>
+          <button
+            data-testid="btn-play"
+            type="button"
+            disabled={ !this.buttonAvaliable() }
+            onClick={ () => this.fetchToken() }
+            className="play-btn"
+          >
+            Jogar
+          </button>
         </form>
         <Link to="/config">
           <button
@@ -105,10 +111,12 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   login: (e) => dispatch(loginAction(e)),
+  getQuestions: (q) => dispatch(questionsAction(q)),
 });
 
-Login.propTypes = {
-  login: PropTypes.func.isRequired,
-};
+// Login.propTypes = {
+//   // login: PropTypes.func.isRequired,
+//   getQuestions: PropTypes.func.isRequired,
+// };
 
 export default connect(null, mapDispatchToProps)(Login);
