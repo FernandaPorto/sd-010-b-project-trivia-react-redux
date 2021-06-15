@@ -1,42 +1,46 @@
 import React from 'react';
-import md5 from 'crypto-js/md5';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import Header from '../components/Header';
+import Question from '../components/Question';
 
 class Game extends React.Component {
-  convert() {
-    const { email } = this.props;
-    const converted = md5(email).toString();
-    return `https://www.gravatar.com/avatar/${converted}`;
+  constructor(props) {
+    super(props);
+    this.state = {
+      results: [],
+      numQuestion: 0,
+    };
+  }
+
+  componentDidMount() {
+    this.requestTrivia();
+  }
+
+  requestTrivia() {
+    const token = localStorage.getItem('token');
+    return fetch(`https://opentdb.com/api.php?amount=5&token=${token}`)
+      .then((response) => response.json())
+      .then((data) => this.setState({ results: data.results }));
   }
 
   render() {
-    const { name } = this.props;
+    const { results, numQuestion } = this.state;
     return (
       <>
-        <img
-          src={ this.convert() }
-          alt="foto de perfil do jogador"
-          data-testid="header-profile-picture"
-        />
-        <h3 data-testid="header-player-name">
-          { name }
-        </h3>
-
-        <span data-testid="header-score">0</span>
+        <Header />
+        {results.map(
+          (result, index) => numQuestion === index && (
+            <Question result={ result } key={ numQuestion } />
+          ),
+        )}
+        {/* {results.map(
+          (result, index) =>{
+            if(            numQuestion === index){
+              return  <Question result={result} key={result.category} />
+            }}
+        )} */}
       </>
     );
   }
 }
 
-Game.propTypes = {
-  email: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  email: state.user.email,
-  name: state.user.name,
-});
-
-export default connect(mapStateToProps)(Game);
+export default Game;

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { saveUserInfo } from '../actions/index';
+import history from '../history';
 
 class Login extends React.Component {
   constructor(props) {
@@ -32,10 +33,10 @@ class Login extends React.Component {
     this.setState({ [event.target.name]: event.target.value }, this.handleButton);
   }
 
-  requestToken() {
-    return fetch('https://opentdb.com/api_token.php?command=request')
-      .then((response) => response.json())
-      .then((data) => localStorage.setItem('token', JSON.stringify(data)));
+  async requestToken() {
+    const result = await fetch('https://opentdb.com/api_token.php?command=request');
+    const data = await result.json(); localStorage.setItem('token', data.token);
+    if (data.token) { history.push('/game'); }
   }
 
   render() {
@@ -62,16 +63,16 @@ class Login extends React.Component {
           />
         </label>
 
-        <Link to="/game">
-          <button
-            type="button"
-            data-testid="btn-play"
-            disabled={ isDisabled }
-            onClick={ () => { this.requestToken(); saveInfo(email, name); } }
-          >
-            Jogar
-          </button>
-        </Link>
+        {/* <Link to="/game"> */}
+        <button
+          type="button"
+          data-testid="btn-play"
+          disabled={ isDisabled }
+          onClick={ () => { this.requestToken(); saveInfo(email, name); } }
+        >
+          Jogar
+        </button>
+        {/* </Link> */}
 
         <Link to="/config">
           <button
