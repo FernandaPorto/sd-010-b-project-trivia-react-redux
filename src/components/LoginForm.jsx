@@ -33,7 +33,6 @@ class LoginForm extends Component {
   }
 
   render() {
-    const { disable } = this.state;
     return (
       <main>
         <h1>Trivia</h1>
