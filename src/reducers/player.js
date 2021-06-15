@@ -2,7 +2,7 @@ import { ENVIA_DADOS_USUARIO, UPDATE_PLAYER_POINTS } from '../actions/index';
 
 const INITIAL_STATE = {
   name: 'qualquernome',
-  assertions: '',
+  assertions: 0,
   score: 0,
   gravatarEmail: '',
 };
@@ -17,8 +17,8 @@ export default function player(state = INITIAL_STATE, action) {
   case UPDATE_PLAYER_POINTS:
     return {
       ...state,
-      assertions: assertions + action.payload.correctAnswer,
-      score: score + action.payload.answerPoints,
+      assertions: state.assertions + action.payload.correctAnswer,
+      score: state.score + action.payload.answerPoints,
     };
   default:
     return state;

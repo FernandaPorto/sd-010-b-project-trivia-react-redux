@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import GameHeader from '../components/GameHeader';
 import './style.css';
-import updatePlayerPoints from '../actions'
+import { updatePlayerPoints } from '../actions/index';
 
 class Game extends React.Component {
   constructor(props) {
@@ -19,6 +19,7 @@ class Game extends React.Component {
     this.startTimer = this.startTimer.bind(this);
     this.calculatePoints = this.calculatePoints.bind(this);
     this.verifyAnswers = this.verifyAnswers.bind(this);
+    this.sendLocalStorage = this.sendLocalStorage.bind(this);
   }
 
   componentDidMount() {
@@ -50,12 +51,20 @@ class Game extends React.Component {
     }, ONE_SEC);
   }
 
+  sendLocalStorage() {
+    const { player } = this.props;
+    console.log(player);
+    localStorage.setItem('state', player);
+  }
+
   verifyAnswers(target) {
+    const { updatePlayerPointsAction } = this.props;
     const answer = target.getAttribute('data-testid');
     if (answer === 'correct-answer') {
       const correctAnswer = 1;
-      const answerPoints = calculatePoints();
+      const answerPoints = this.calculatePoints();
       updatePlayerPointsAction({ correctAnswer, answerPoints });
+      this.sendLocalStorage();
     }
   }
 
@@ -175,6 +184,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
   apiResult: state.game,
+  player: state.player,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
