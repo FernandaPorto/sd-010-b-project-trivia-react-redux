@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import propTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { requestAPI } from '../actions';
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,6 +36,7 @@ export default class Login extends Component {
 
   render() {
     const { name, email, isDisabled } = this.state;
+    const { requestTriviaToken } = this.props;
     return (
       <main>
         <form>
@@ -66,6 +70,7 @@ export default class Login extends Component {
             type="button"
             data-testid="btn-play"
             disabled={ isDisabled }
+            onClick={ () => requestTriviaToken() }
           >
             Jogar
           </button>
@@ -74,3 +79,13 @@ export default class Login extends Component {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  requestTriviaToken: () => dispatch(requestAPI()),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
+
+Login.propTypes = {
+  requestTriviaToken: propTypes.func.isRequired,
+};
