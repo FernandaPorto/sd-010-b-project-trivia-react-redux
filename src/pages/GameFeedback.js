@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import GameHeader from '../components/GameHeader';
 
 class GameFeedback extends Component {
@@ -34,14 +33,14 @@ class GameFeedback extends Component {
           <button
             type="button"
             data-testid="btn-play-again"
-            onClick={ history.push('/') }
+            onClick={ () => history.push('/') }
           >
             Jogar novamente
           </button>
           <button
             type="button"
             data-testid="btn-ranking"
-            onClick={ history.push('/ranking') }
+            onClick={ () => history.push('/ranking') }
           >
             Ver Ranking
           </button>
