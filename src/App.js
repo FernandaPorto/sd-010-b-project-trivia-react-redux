@@ -1,15 +1,13 @@
 import React from 'react';
+import { Route, Switch } from 'react-router-dom';
 import Login from './pages/Login';
-import logo from './trivia.png';
-import './App.css';
+import Jogo from './pages/Jogo';
 
 export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={ logo } className="App-logo" alt="logo" />
-        <Login />
-      </header>
-    </div>
+    <Switch>
+      <Route exact path="/" component={ Login } />
+      <Route path="/jogo" component={ Jogo } />
+    </Switch>
   );
 }
