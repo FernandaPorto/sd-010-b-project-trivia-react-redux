@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
-import { enviaDadosUsuario } from '../actions';
+import { enviaDadosUsuario, getApiResultAction } from '../actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -30,9 +30,12 @@ class Login extends React.Component {
 
   async requisitarAPI() {
     const { name } = this.state;
-    const { actionEnviaDadosUsuario } = this.props;
+    const { actionEnviaDadosUsuario, requestApi } = this.props;
     const { token } = await fetch('https://opentdb.com/api_token.php?command=request').then((resp) => resp.json());
     localStorage.setItem('token', token);
+    const apiResults = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`)
+      .then((resp) => resp.json());
+    await requestApi(apiResults);
     const gravatar = await this.getGravatar();
     actionEnviaDadosUsuario({
       name,
@@ -97,10 +100,12 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   actionEnviaDadosUsuario: (state) => dispatch(enviaDadosUsuario(state)),
+  requestApi: (resultApi) => dispatch(getApiResultAction(resultApi)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
 
 Login.propTypes = {
   actionEnviaDadosUsuario: PropTypes.func.isRequired,
+  requestApi: PropTypes.func.isRequired,
 };
