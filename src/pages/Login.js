@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
+import PropTypes from 'prop-types';
+import { fetchToken } from '../actions/index';
 
 import '../App.css';
 import logo from '../trivia.png';
 
-class App extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
 
@@ -12,10 +15,12 @@ class App extends Component {
       name: '',
       email: '',
       isDisable: false,
+      settings: false,
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
     this.validateEmail = this.validateEmail.bind(this);
+    this.goToSettings = this.goToSettings.bind(this);
   }
 
   validateEmail() {
@@ -30,11 +35,20 @@ class App extends Component {
     this.setState({ [name]: value }, this.validateEmail());
   }
 
-  render() {
-    const { name, email, isDisable } = this.state;
+  goToSettings() {
+    this.setState({ settings: true });
+  }
 
+  render() {
+    const { name, email, isDisable, settings } = this.state;
+    const { fetchAPIToken } = this.props;
+    // console.log(IsRedirect);
+    // if (IsRedirect) {
+    //   return <Redirect to="/carteira" />;
+    // }
     return (
       <div className="App-header">
+        { settings && <Redirect to="/settings" /> }
         <img src={ logo } className="App-logo" alt="logo" />
         <form>
           <input
@@ -45,6 +59,7 @@ class App extends Component {
             value={ name }
             data-testid="input-player-name"
           />
+          <br />
           <input
             name="email"
             onChange={ this.handleOnChange }
@@ -53,13 +68,22 @@ class App extends Component {
             value={ email }
             data-testid="input-gravatar-email"
           />
+          <br />
           <button
             type="button"
             // onClick={}
             disabled={ !isDisable }
             data-testid="btn-play"
+            onClick={ () => fetchAPIToken() }
           >
             Jogar
+          </button>
+          <button
+            type="button"
+            onClick={ this.goToSettings }
+            data-testid="btn-settings"
+          >
+            Configurações
           </button>
         </form>
       </div>
@@ -67,8 +91,16 @@ class App extends Component {
   }
 }
 
-const mapDispatchToProps = () => ({
-  
+const mapDispatchToProps = (dispatch) => ({
+  fetchAPIToken: () => dispatch(fetchToken()),
 });
 
-export default connect()(Login);
+// const mapStateToProps = (state) => ({
+//   IsRedirect: state.triviaGame.IsRedirect,
+// });
+
+Login.propTypes = {
+  fetchAPIToken: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
