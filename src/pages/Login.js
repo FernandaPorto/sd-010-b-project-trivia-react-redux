@@ -2,6 +2,7 @@ import React from 'react';
 
 import logo from '../trivia.png';
 import '../App.css';
+
 import Form from '../components/Form';
 import Setting from '../components/Setting';
 
