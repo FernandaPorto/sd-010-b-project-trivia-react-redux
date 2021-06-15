@@ -1,6 +1,7 @@
 const initialState = {
   email: '',
   name: '',
+  questions: {},
 };
 
 function loginReducer(state = initialState, action) {
@@ -10,6 +11,11 @@ function loginReducer(state = initialState, action) {
       ...state,
       email: action.value.email,
       name: action.value.name,
+    });
+  case 'FETCH_QUESTIONS':
+    return ({
+      ...state,
+      questions: action.value,
     });
   default:
     return state;

@@ -12,15 +12,14 @@ class PerguntaAtual extends React.Component {
     return allAnswers.map((answer, i) => {
       if (answer !== correctAnswer) {
         index += 1;
-        return (<button type="button" data-testid={ `wrong-answer-${index - 1}` }>{answer}</button>);
+        return (<button type="button" data-testid={ `wrong-answer-${index - 1}` } key={index + 10 } >{ answer }</button>);
       }
-      return (<button key={ i } type="button" data-testid="correct-answer">{answer}</button>);
+      return (<button key={ i } type="button" data-testid="correct-answer">{ answer }</button>);
     });
   }
 
   render() {
-    const { randomAnswer: { allAnswers, category, question, correctAnswer } } = this.props;
-    console.log(allAnswers);
+    const { randomAnswer: { allAnswers, category, question} } = this.props;
     return (
       <div>
         <div data-testid="question-category">{ category }</div>

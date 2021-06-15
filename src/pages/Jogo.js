@@ -1,11 +1,12 @@
 import React from 'react';
 import Header from '../components/Header';
 import PerguntaAtual from '../components/PerguntaAtual';
+import { connect } from 'react-redux'
 
 class Jogo extends React.Component {
   constructor(props) {
     super(props);
-    this.fetchQuestions = this.fetchQuestions.bind(this);
+    // this.fetchQuestions = this.fetchQuestions.bind(this);
     this.answers = this.answers.bind(this);
     this.somaPergunta = this.somaPergunta.bind(this);
     this.state = {
@@ -16,20 +17,21 @@ class Jogo extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchQuestions().then(() => this.answers());
+    return this.answers();
   }
 
-  fetchQuestions() {
-    const userToken = JSON.parse(localStorage.getItem('token'));
-    return fetch(`https://opentdb.com/api.php?amount=5&token=${userToken}`)
-      .then((response) => response.json())
-      .then((response) => {
-        this.setState({ perguntas: response });
-      });
-  }
+  // fetchQuestions() {
+  //   const userToken = JSON.parse(localStorage.getItem('token'));
+  //   return fetch(`https://opentdb.com/api.php?amount=5&token=${userToken}`)
+  //     .then((response) => response.json())
+  //     .then((response) => {
+  //       this.setState({ perguntas: response }, () => this.answers());
+  //     });
+  // }
 
   answers() {
-    const { perguntas: { results }, perguntaNumber } = this.state;
+    const { perguntaNumber } = this.state;
+    const { questions: { results } } = this.props;
     const allAnswers = [...results[perguntaNumber].incorrect_answers];
     const numberOfQuestions = 5;
     const randomPosition = Math.floor(Math.random() * numberOfQuestions);
@@ -47,7 +49,6 @@ class Jogo extends React.Component {
     this.setState((previ) => ({
       perguntaNumber: previ.perguntaNumber + 1,
     }), () => this.answers());
-    // this.answers();
   }
 
   // answers() {
@@ -70,9 +71,7 @@ class Jogo extends React.Component {
   // // https://www.horadecodar.com.br/2021/05/10/como-embaralhar-um-array-em-javascript-shuffle/
 
   render() {
-    const { perguntas: { results }, randomAnswer } = this.state;
-    console.log(results);
-    console.log(randomAnswer);
+    const { randomAnswer } = this.state;
     return (
       <section>
         <Header />
@@ -83,4 +82,8 @@ class Jogo extends React.Component {
   }
 }
 
-export default Jogo;
+const mapStateToProps = (state) => ({
+  questions: state.user.questions,
+});
+
+export default connect(mapStateToProps)(Jogo);
