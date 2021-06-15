@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import PropTypes from 'prop-types';
 import { fetchToken } from '../actions/index';
+import gravatarAction from '../actions/gravatarAction';
 
 import '../App.css';
 import logo from '../trivia.png';
@@ -41,14 +42,12 @@ class Login extends Component {
 
   render() {
     const { name, email, isDisable, settings } = this.state;
-    const { fetchAPIToken } = this.props;
-    // console.log(IsRedirect);
-    // if (IsRedirect) {
-    //   return <Redirect to="/carteira" É isso aeee/>;
-    // }
+    const { fetchAPIToken, Gravatar, isRedirect } = this.props;
+    console.log(isRedirect);
     return (
       <div className="App-header">
         { settings && <Redirect to="/settings" /> }
+        { isRedirect && <Redirect to="/game" /> }
         <img src={ logo } className="App-logo" alt="logo" />
         <form>
           <input
@@ -74,7 +73,7 @@ class Login extends Component {
             // onClick={}
             disabled={ !isDisable }
             data-testid="btn-play"
-            onClick={ () => fetchAPIToken() }
+            onClick={ () => { fetchAPIToken(); Gravatar(name, email); } }
           >
             Jogar
           </button>
@@ -93,14 +92,21 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   fetchAPIToken: () => dispatch(fetchToken()),
+  Gravatar: (name, email) => dispatch(gravatarAction(name, email)),
 });
 
-// const mapStateToProps = (state) => ({
-//   IsRedirect: state.triviaGame.IsRedirect,
-// });
+const mapStateToProps = (state) => ({
+  isRedirect: state.triviaGame.isRedirect,
+});
 
 Login.propTypes = {
   fetchAPIToken: PropTypes.func.isRequired,
+  Gravatar: PropTypes.func.isRequired,
+  isRedirect: PropTypes.bool,
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+Login.defaultProps = {
+  isRedirect: undefined,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

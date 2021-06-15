@@ -1,9 +1,17 @@
-import { ACTION_TOKEN, ACTION_REDIRECT, ACTION_QUESTIONS } from '../actions/index';
+import {
+  ACTION_TOKEN,
+  ACTION_REDIRECT,
+  ACTION_QUESTIONS,
+  ACTION_URL,
+} from '../actions/index';
 
 const INITIALSTATE = {
   token: '',
   isRedirect: false,
-  questions: [],
+  questions: false,
+  url: '',
+  name: '',
+  score: 0,
 };
 
 function triviaGame(state = INITIALSTATE, action) {
@@ -22,6 +30,12 @@ function triviaGame(state = INITIALSTATE, action) {
     return {
       ...state,
       questions: action.questions,
+    };
+  case ACTION_URL:
+    return {
+      ...state,
+      url: action.payload.url,
+      name: action.payload.name,
     };
   default:
     return state;
