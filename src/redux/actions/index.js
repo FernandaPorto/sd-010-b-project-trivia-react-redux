@@ -1,6 +1,6 @@
 export const LOGIN = 'LOGIN';
 
-export const loginAC = (payload) => ({
+export const loginActionCreator = (payload) => ({
   type: LOGIN,
   payload,
 });
