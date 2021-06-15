@@ -108,6 +108,7 @@ class Trivia extends React.Component {
 
 Trivia.propTypes = {
   apiQuestions: PropTypes.func.isRequired,
+  thunkToken: PropTypes.string.isRequired,
 };
 
 // const mapStateToProps = (state) => ({
