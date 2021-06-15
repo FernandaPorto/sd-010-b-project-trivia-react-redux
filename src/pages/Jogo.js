@@ -6,9 +6,11 @@ class Jogo extends React.Component {
     super(props);
     this.fetchQuestions = this.fetchQuestions.bind(this);
     this.answers = this.answers.bind(this);
+    this.somaPergunta = this.somaPergunta.bind(this);
     this.state = {
       perguntas: {},
       randomAnswer: [],
+      perguntaNumber: 0,
     };
   }
 
@@ -26,14 +28,20 @@ class Jogo extends React.Component {
   }
 
   answers() {
-    const { perguntas: { results } } = this.state;
-    const allAnswers = [...results[0].incorrect_answers];
+    const { perguntas: { results }, perguntaNumber } = this.state;
+    const allAnswers = [...results[perguntaNumber].incorrect_answers];
     const numberOfQuestions = 5;
     const randomPosition = Math.floor(Math.random() * numberOfQuestions);
-    allAnswers.splice(randomPosition, 0, results[0].correct_answer);
+    allAnswers.splice(randomPosition, 0, results[perguntaNumber].correct_answer);
     this.setState({
-      randomAnswer: allAnswers,
+      randomAnswer: { allAnswers, question: results[perguntaNumber].question },
     });
+  }
+
+  somaPergunta() {
+    this.setState((previ) => ({
+      perguntaNumber: previ.perguntaNumber + 1,
+    }));
   }
 
   // answers() {
@@ -56,20 +64,16 @@ class Jogo extends React.Component {
   // // https://www.horadecodar.com.br/2021/05/10/como-embaralhar-um-array-em-javascript-shuffle/
 
   render() {
-    const { perguntas: { results }, randomAnswer } = this.state;
-    console.log(randomAnswer);
+    const { perguntas: { results }, randomAnswer, perguntaNumber } = this.state;
+    console.log(results);
     return (
       <section>
         <Header />
         <ol className="questions-section">
-          {!results ? <p>carregando</p> : results.map((question, index) => (
-            <li key={ index }>
-              <div>
-                {question.question}
-              </div>
-              <button type="button" onClick={ () => this.answers() }>random</button>
-            </li>))}
+          {!results ? <p>carregando</p>
+            : results.question[perguntaNumber]}
         </ol>
+        <button type="button" onClick={ () => this.somaPergunta() }>random</button>}
       </section>
     );
   }
