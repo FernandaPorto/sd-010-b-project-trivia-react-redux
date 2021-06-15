@@ -19,12 +19,26 @@ class Game extends React.Component {
     this.startTimer = this.startTimer.bind(this);
     this.calculatePoints = this.calculatePoints.bind(this);
     this.verifyAnswers = this.verifyAnswers.bind(this);
+    this.setDifficulty = this.setDifficulty.bind(this);
   }
 
   componentDidMount() {
     const tempo = 30;
 
     this.startTimer(tempo);
+  }
+
+  setDifficulty(difficulty) {
+    const HARD_NUMBER = 3;
+    let difficultyValue = 0;
+    if (difficulty === 'easy') {
+      difficultyValue = 1;
+    } else if (difficulty === 'medium') {
+      difficultyValue = 2;
+    } else {
+      difficultyValue = HARD_NUMBER;
+    }
+    return difficultyValue;
   }
 
   startTimer(duration) {
@@ -68,17 +82,11 @@ class Game extends React.Component {
   }
 
   calculatePoints() {
-    const { apiResult: { results: { difficulty } } } = this.props;
+    const { indexQuestion } = this.state;
+    const { apiResult: { results } } = this.props;
+    const a = results[indexQuestion];
     const BASE_VALUE = 10;
-    const HARD_NUMBER = 3;
-    let difficultyValue = 0;
-    if (difficulty === 'easy') {
-      difficultyValue = 1;
-    } else if (difficulty === 'medium') {
-      difficultyValue = 2;
-    } else {
-      difficultyValue = HARD_NUMBER;
-    }
+    const difficultyValue = this.setDifficulty(a.difficulty);
     const currentTimeTagP = document.querySelector('#timer').innerHTML;
     const currentTime = currentTimeTagP.split(' ')[2];
     if (currentTime.startsWith('0')) {
@@ -124,7 +132,7 @@ class Game extends React.Component {
     const { apiResult } = this.props;
 
     if (apiResult.response_code === 0) {
-      const NUMERO_PARA_SORTEAR_RESPOSTAS = 0.5;
+      const NUMERO_PARA_SORTEAR_RESPOSTAS = 5;
       const answersArray = apiResult.results[indexQuestion].incorrect_answers
         .concat(apiResult.results[indexQuestion].correct_answer);
       const newRandomArray = answersArray
@@ -171,7 +179,7 @@ class Game extends React.Component {
         >
           Próxima
         </button>
-        <p id="timer">Tempo restante:</p>
+        <p id="timer">Tempo restante: 30</p>
       </section>
 
     );
