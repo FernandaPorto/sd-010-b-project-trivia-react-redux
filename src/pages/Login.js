@@ -1,62 +1,116 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { userLogin, triviaFetching } from '../actions/index';
 
-export class Login extends Component {
+class Login extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      isName: false,
-      isEmail: false,
+      name: '',
+      email: '',
+      btnValidadeFields: true,
+      redirect: false,
     };
-    this.checkEmail = this.checkEmail.bind(this);
-    this.checkName = this.checkName.bind(this);
+
+    this.handleChange = this.handleChange.bind(this);
+    this.btnValidadeFields = this.btnValidadeFields.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  checkEmail({ target: { value } }) {
-    const emailRegexp = RegExp(/[a-z]+@[a-z]+.com/g);
-    const isEmail = emailRegexp.test(value);
-    this.setState({ isEmail });
+  handleChange({ target }) {
+    const { name, value } = target;
+    this.setState({
+      [name]: value,
+    }, () => this.btnValidadeFields());
   }
 
-  checkName({ target: { value } }) {
-    const LENGHT_VALID = 1;
-    if (value.length >= LENGHT_VALID) this.setState({ isName: true });
+  btnValidadeFields() {
+    const { name, email } = this.state;
+    const emailValidate = /^[\S.]+@[a-z]+\.\w{2,3}$/g.test(email);
+    const userValidate = /[0-9a-zA-Z$*&@#]{4}/.test(name);
+    if (emailValidate && userValidate) {
+      this.setState({
+        btnValidadeFields: false,
+      });
+    } else {
+      this.setState({
+        btnValidadeFields: true,
+      });
+    }
+  }
+
+  handleClick(name, email) {
+    const { dispatchUserLogin, fetchingAsks } = this.props;
+    dispatchUserLogin(name, email);
+    fetchingAsks();
+    this.setState({
+      redirect: true,
+    });
+    const state = {
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: email,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(state));
   }
 
   render() {
-    const { isEmail, isName } = this.state;
-    const enableButton = isEmail && isName;
+    const { name, email, btnValidadeFields, redirect } = this.state;
+    if (redirect) {
+      return (<Redirect to="/game" />);
+    }
     return (
-      <>
-        <label htmlFor="name">
+      <form>
+        <label htmlFor="inputName">
+          Nome
           <input
             type="text"
-            name="name"
-            id="name"
             data-testid="input-player-name"
-            onChange={ (e) => this.checkName(e) }
+            id="inputName"
+            onChange={ this.handleChange }
+            value={ name }
+            name="name"
           />
         </label>
-        <br />
-        <label htmlFor="email">
+        <label htmlFor="inputEmail">
+          Email
           <input
-            type="text"
-            name="email"
-            id="email"
+            type="email"
             data-testid="input-gravatar-email"
-            onChange={ (e) => this.checkEmail(e) }
+            id="inputEmail"
+            onChange={ this.handleChange }
+            value={ email }
+            name="email"
           />
         </label>
-        <br />
         <button
           type="button"
-          disabled={ !enableButton }
+          disabled={ btnValidadeFields }
+          onClick={ () => this.handleClick(name, email) }
           data-testid="btn-play"
         >
-          Entrar
+          JOGAR
         </button>
-      </>
+      </form>
     );
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  dispatchUserLogin: (name, email, gravatar) => (
+    dispatch(userLogin(name, email, gravatar))),
+  fetchingAsks: () => dispatch(triviaFetching()),
+});
+
+Login.propTypes = {
+  dispatchUserLogin: PropTypes.func.isRequired,
+  fetchingAsks: PropTypes.func.isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
