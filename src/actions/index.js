@@ -1,5 +1,6 @@
 export const ACTION_TOKEN = 'ACTION_TOKEN';
 export const ACTION_REDIRECT = 'ACTION_REDIRECT';
+export const ACTION_URL = 'ACTION_URL';
 
 const actionRedirect = () => ({
   type: ACTION_REDIRECT,
