@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
-import { sendGravatarToRedux } from '../actions/index';
+import { sendGravatarToRedux, changeStyles, resetStyles } from '../actions/index';
+import TrueButtonIsCorrect from '../components/TrueButtonIsCorrect';
+import FalseButtonIsCorrect from '../components/FalseButtonIsCorrect';
 
 class Game extends Component {
   constructor() {
@@ -10,22 +12,17 @@ class Game extends Component {
     this.state = {
       results: [],
       indexQuestion: 0,
-      right: '',
-      wrong: '',
     };
     this.saveQuestionsInState = this.saveQuestionsInState.bind(this);
     this.renderQuestion = this.renderQuestion.bind(this);
-    this.trueOrFalseAnswers = this.renderQuestion.bind(this);
   }
 
   componentDidMount() {
     const { saveGravatar, email, token } = this.props;
-
     const hashEmail = md5(email).toString();
     const URL = `https://www.gravatar.com/avatar/${hashEmail}`;
     fetch(URL)
       .then(({ url }) => saveGravatar(url));
-
     const urlTrivia = `https://opentdb.com/api.php?amount=5&token=${token}`;
     fetch(urlTrivia)
       .then((data) => data.json())
@@ -39,41 +36,31 @@ class Game extends Component {
   }
 
   nextIndex() {
-    this.setState({
-      right: 'initial',
-      wrong: 'initial',
-    });
+    const { resetColors } = this.props;
+    resetColors();
     const { indexQuestion, results } = this.state;
     if (indexQuestion === results.length - 1) {
       return false;
     }
-
     this.setState((oldState) => ({
       indexQuestion: oldState.indexQuestion + 1,
     }));
-  }
-
-  changeStyle() {
-    this.setState({
-      right: '3px solid rgb(6, 240, 15)',
-      wrong: '3px solid rgb(255, 0, 0)',
-    });
   }
 
   multipleAnswers({
     correct_answer: correctAnswer,
     incorrect_answers: incorrectAnswers,
   }) {
-    const { wrong, right } = this.state;
+    const { wrong, rigth, showColors } = this.props;
     const rightAnswer = (
       <button
         type="button"
         data-testid="correct-answer"
         key="4"
         style={ {
-          border: right,
+          border: rigth,
         } }
-        onClick={ () => this.changeStyle() }
+        onClick={ () => showColors() }
       >
         { correctAnswer }
       </button>
@@ -87,7 +74,7 @@ class Game extends Component {
           style={ {
             border: wrong,
           } }
-          onClick={ () => this.changeStyle() }
+          onClick={ () => showColors() }
         >
           { answer }
         </button>
@@ -104,75 +91,10 @@ class Game extends Component {
     );
   }
 
-  trueButtonIsCorrect() {
-    const { right, wrong } = this.state;
-    let buttonTrue = '';
-    let buttonFalse = '';
-    buttonTrue = (
-      <button
-        type="button"
-        data-testid="correct-answer"
-        style={ {
-          border: right,
-        } }
-        onClick={ () => this.changeStyle() }
-      >
-        True
-      </button>
-    );
-    buttonFalse = (
-      <button
-        type="button"
-        data-testid="wrong-answer"
-        style={ {
-          border: wrong,
-        } }
-        onClick={ () => this.changeStyle() }
-      >
-        False
-      </button>
-    );
-    return ([buttonTrue, buttonFalse]);
-  }
-
-  falseButtonIsRight() {
-    const { right, wrong } = this.state;
-    let buttonTrue = '';
-    let buttonFalse = '';
-    buttonTrue = (
-      <button
-        type="button"
-        data-testid="wrong-answer"
-        style={ {
-          border: wrong,
-        } }
-        onClick={ () => this.changeStyle() }
-      >
-        True
-      </button>
-    );
-    buttonFalse = (
-      <button
-        type="button"
-        data-testid="correct-answer"
-        style={ {
-          border: right,
-        } }
-        onClick={ () => this.changeStyle() }
-      >
-        False
-      </button>
-    );
-    return ([buttonTrue, buttonFalse]);
-  }
-
-  trueOrFalseAnswers({
-    correct_answer: correctAnswer,
-  }) {
+  trueOrFalseAnswers({ correct_answer: correctAnswer }) {
     return (
       <div>
-        {correctAnswer === 'True'
-          ? this.trueButtonIsCorrect() : this.falseButtonIsRight() }
+        { correctAnswer === 'True' ? <TrueButtonIsCorrect /> : <FalseButtonIsCorrect /> }
       </div>
     );
   }
@@ -180,6 +102,7 @@ class Game extends Component {
   renderQuestion() {
     const { results, indexQuestion } = this.state;
     const question = results[indexQuestion];
+    console.log(question);
     if (question !== undefined) {
       return (
         <div>
@@ -217,6 +140,8 @@ class Game extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   saveGravatar: (gravatar) => dispatch(sendGravatarToRedux(gravatar)),
+  showColors: () => dispatch(changeStyles()),
+  resetColors: () => dispatch(resetStyles()),
 });
 
 const mapStateToProps = (state) => ({
@@ -224,6 +149,8 @@ const mapStateToProps = (state) => ({
   nome: state.playerReducer.nome,
   gravatar: state.playerReducer.gravatar,
   token: state.tokenState.token,
+  rigth: state.gameReducer.styles.rigth,
+  wrong: state.gameReducer.styles.wrong,
 });
 
 Game.propTypes = {
