@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import GameHeader from '../components/GameHeader';
 import './style.css';
+import updatePlayerPoints from '../actions'
 
 class Game extends React.Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class Game extends React.Component {
     this.nextQuestion = this.nextQuestion.bind(this);
     this.startTimer = this.startTimer.bind(this);
     this.calculatePoints = this.calculatePoints.bind(this);
+    this.verifyAnswers = this.verifyAnswers.bind(this);
   }
 
   componentDidMount() {
@@ -48,7 +50,16 @@ class Game extends React.Component {
     }, ONE_SEC);
   }
 
-  calculatePoints(target) {
+  verifyAnswers(target) {
+    const answer = target.getAttribute('data-testid');
+    if (answer === 'correct-answer') {
+      const correctAnswer = 1;
+      const answerPoints = calculatePoints();
+      updatePlayerPointsAction({ correctAnswer, answerPoints });
+    }
+  }
+
+  calculatePoints() {
     const { apiResult: { results: { difficulty } } } = this.props;
     const BASE_VALUE = 10;
     const HARD_NUMBER = 3;
@@ -80,7 +91,7 @@ class Game extends React.Component {
     });
     buttonNext.style.display = 'initial';
 
-    this.calculatePoints(target);
+    this.verifyAnswers(target);
   }
 
   nextQuestion() {
@@ -158,12 +169,15 @@ class Game extends React.Component {
     );
   }
 }
+const mapDispatchToProps = (dispatch) => ({
+  updatePlayerPointsAction: (points) => dispatch(updatePlayerPoints(points)),
+});
 
 const mapStateToProps = (state) => ({
   apiResult: state.game,
 });
 
-export default connect(mapStateToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
 
 Game.propTypes = {
   apiResult: PropTypes.shape({
