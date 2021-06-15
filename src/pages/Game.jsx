@@ -8,10 +8,41 @@ class Game extends React.Component {
     super(props);
     this.state = ({
       indexQuestion: 0,
+      buttonDisabled: false,
     });
 
     this.renderPage = this.renderPage.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.startTimer = this.startTimer.bind(this);
+  }
+
+  componentDidMount() {
+    const tempo = 30;
+
+    this.startTimer(tempo);
+  }
+
+  startTimer(duration) {
+    const ONE_SEC = 1000;
+    const MINUTO = 60;
+    const DIGITO_DECIMAL = 10;
+    let timer = duration;
+    const display = document.getElementById('timer');
+    let seconds;
+    setInterval(() => {
+      seconds = parseInt(timer % MINUTO, 10);
+
+      // a seguinte linha exibe, por exemplo, 03 ao invés de 3 no timer
+      seconds = seconds < DIGITO_DECIMAL ? `0${seconds}` : seconds;
+      display.textContent = `Tempo restante: ${seconds}`;
+      timer -= 1;
+      if (timer < 0) {
+        timer = 0;
+        this.setState({
+          buttonDisabled: true,
+        });
+      }
+    }, ONE_SEC);
   }
 
   handleClick() {
@@ -25,14 +56,14 @@ class Game extends React.Component {
   }
 
   renderPage() {
-    const { indexQuestion } = this.state;
+    const { indexQuestion, buttonDisabled } = this.state;
     const { apiResult } = this.props;
 
     if (apiResult.response_code === 0) {
-      const NUMERO_PARA_SORTEAR_RESPOSTAS = 5.0;
+      const NUMERO_PARA_SORTEAR_RESPOSTAS = 0.5;
       const answersArray = apiResult.results[indexQuestion].incorrect_answers
         .concat(apiResult.results[indexQuestion].correct_answer);
-      answersArray.sort(() => Math.random() - NUMERO_PARA_SORTEAR_RESPOSTAS);
+      answersArray.sort(() => NUMERO_PARA_SORTEAR_RESPOSTAS - Math.random());
       return (
         <section>
           <p
@@ -48,6 +79,7 @@ class Game extends React.Component {
                   ? 'correct-answer' : `wrong-answer-${index}` }
                 key={ index }
                 type="submit"
+                disabled={ buttonDisabled }
                 className={ answer === apiResult.results[indexQuestion].correct_answer
                   ? 'answer-button-correct' : 'answer-button-wrong' }
                 onClick={ this.handleClick }
@@ -55,7 +87,6 @@ class Game extends React.Component {
                 {answer}
               </button>))}
           </section>
-
         </section>
       );
     }
@@ -66,6 +97,7 @@ class Game extends React.Component {
       <section>
         <GameHeader />
         {this.renderPage()}
+        <p id="timer">Tempo restante:</p>
       </section>
 
     );
