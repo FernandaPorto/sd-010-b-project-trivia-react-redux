@@ -8,8 +8,8 @@ class LoginForm extends Component {
     this.validateLogin = this.validateLogin.bind(this);
 
     this.state = {
-      name: '',
-      email: '',
+      // name: '',
+      // email: '',
       disable: true,
     };
   }
