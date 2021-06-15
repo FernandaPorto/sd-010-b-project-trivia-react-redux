@@ -8,35 +8,29 @@ class LoginForm extends Component {
     this.validateLogin = this.validateLogin.bind(this);
 
     this.state = {
-      // name: '',
-      // email: '',
-      disable: true,
+      name: '',
+      email: '',
     };
   }
 
   onHandleChange({ target }) {
-    if (target.value.length > 0) {
-      this.setState({
-        disable: true,
-      });
-    }
     this.setState({
       [target.id]: target.value,
     });
   }
 
-  // validateLogin() {
-  //   const zero = 0;
-  //   // https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
-  //   // const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  validateLogin() {
+    const zero = 0;
+    // https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
+    // const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-  //   // const re = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
-  //   const { name, email } = this.state;
-  //   if (name.length > zero && email.length > zero) {
-  //     return false;
-  //   }
-  //   return true;
-  // }
+    const re = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
+    const { name, email } = this.state;
+    if (name.length > zero && re.test(email)) {
+      return false;
+    }
+    return true;
+  }
 
   render() {
     const { disable } = this.state;
@@ -65,7 +59,7 @@ class LoginForm extends Component {
           <button
             type="button"
             data-testid="btn-play"
-            disabled={ disable }
+            disabled={ this.validateLogin() }
           >
             Jogar
           </button>
