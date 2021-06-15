@@ -79,7 +79,7 @@ class Login extends React.Component {
     const { disabled, redirect, settings } = this.state;
     if (redirect) {
       return (
-        <Redirect to="/game" />
+        <Redirect to="/start" />
       );
     }
 
