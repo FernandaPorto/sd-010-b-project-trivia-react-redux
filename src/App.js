@@ -10,15 +10,17 @@ import Ranking from './pages/Ranking';
 import Settings from './pages/Settings';
 
 export default class App extends React.Component {
-  return (
-    <div className="App">
-      <Switch>
-        <Route path="/setting" component={ Settings } />
-        <Route path="/feedback" component={ Feedback } />
-        <Route path="/ranking" component={ Ranking } />
-        <Route path="/game" component={ Game } />
-        <Route path="/" component={ Login } />
-      </Switch>
-    </div>
-  );
+  render() {
+    return (
+      <div className="App">
+        <Switch>
+          <Route path="/setting" component={ Settings } />
+          <Route path="/feedback" component={ Feedback } />
+          <Route path="/ranking" component={ Ranking } />
+          <Route path="/game" component={ Game } />
+          <Route path="/" component={ Login } />
+        </Switch>
+      </div>
+    );
+  }
 }
