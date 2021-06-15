@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 
-import { playerLogin } from '../actions/index';
+import { playerLogin, addToken } from '../actions/index';
 
 class Login extends React.Component {
   constructor(props) {
@@ -52,9 +52,10 @@ class Login extends React.Component {
     });
   }
 
-  async requestToken() {
+  async requestToken(dispatchToken) {
     const { token } = await (await fetch('https://opentdb.com/api_token.php?command=request')).json();
     localStorage.setItem('token', token);
+    dispatchToken(token);
   }
 
   requestGravatar(name, email) {
@@ -66,10 +67,10 @@ class Login extends React.Component {
     };
   }
 
-  async handleStart(userLogin) {
+  async handleStart(userLogin, dispatchToken) {
     const { name, email } = this.state;
 
-    await this.requestToken();
+    await this.requestToken(dispatchToken);
     const nameAndImgPath = this.requestGravatar(name, email);
 
     userLogin(nameAndImgPath);
@@ -85,7 +86,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const { userLogin } = this.props;
+    const { userLogin, dispatchToken } = this.props;
     const { disabled, redirect, settings } = this.state;
     if (redirect) {
       return (
@@ -119,7 +120,7 @@ class Login extends React.Component {
           type="button"
           data-testid="btn-play"
           disabled={ disabled }
-          onClick={ () => this.handleStart(userLogin) }
+          onClick={ () => this.handleStart(userLogin, dispatchToken) }
         >
           Jogar
         </button>
@@ -137,10 +138,12 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   userLogin: (userInfo) => dispatch(playerLogin(userInfo)),
+  dispatchToken: (token) => dispatch(addToken(token)),
 });
 
 Login.propTypes = {
   userLogin: PropTypes.func.isRequired,
+  dispatchToken: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
