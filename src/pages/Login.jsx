@@ -20,7 +20,7 @@ class Login extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSettings = this.handleSettings.bind(this);
-    this.handlePlay = this.handlePlay.bind(this);
+    this.handlePlay = this.handleStart.bind(this);
   }
 
   verifyEmail(email) {
@@ -66,11 +66,10 @@ class Login extends React.Component {
     };
   }
 
-  handlePlay() {
-    const { userLogin } = this.props;
+  async handleStart(userLogin) {
     const { name, email } = this.state;
 
-    this.requestToken();
+    await this.requestToken();
     const nameAndImgPath = this.requestGravatar(name, email);
 
     userLogin(nameAndImgPath);
@@ -86,10 +85,11 @@ class Login extends React.Component {
   }
 
   render() {
+    const { userLogin } = this.props;
     const { disabled, redirect, settings } = this.state;
     if (redirect) {
       return (
-        <Redirect to="/game" />
+        <Redirect to="/start" />
       );
     }
 
@@ -119,7 +119,7 @@ class Login extends React.Component {
           type="button"
           data-testid="btn-play"
           disabled={ disabled }
-          onClick={ this.handlePlay }
+          onClick={ () => this.handleStart(userLogin) }
         >
           Jogar
         </button>
@@ -136,7 +136,7 @@ class Login extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  userLogin: (email) => dispatch(playerLogin(email)),
+  userLogin: (userInfo) => dispatch(playerLogin(userInfo)),
 });
 
 Login.propTypes = {
