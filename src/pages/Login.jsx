@@ -35,7 +35,7 @@ class Login extends React.Component {
     localStorage.setItem('token', token);
     const apiResults = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`)
       .then((resp) => resp.json());
-    await requestApi(apiResults);
+    requestApi(apiResults);
     const gravatar = await this.getGravatar();
     actionEnviaDadosUsuario({
       name,
