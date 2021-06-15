@@ -1,42 +1,26 @@
 import React from 'react';
-import md5 from 'crypto-js/md5';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import Header from '../components/Header';
 
 class Game extends React.Component {
-  convert() {
-    const { email } = this.props;
-    const converted = md5(email).toString();
-    return `https://www.gravatar.com/avatar/${converted}`;
+  componentDidMount() {
+    this.requestTrivia();
+  }
+
+  requestTrivia() {
+    const token = localStorage.getItem('token');
+    return fetch(`https://opentdb.com/api.php?amount=5&token=${token}`)
+      .then((response) => response.json())
+      .then((data) => console.log(data));
   }
 
   render() {
-    const { name } = this.props;
     return (
       <>
-        <img
-          src={ this.convert() }
-          alt="foto de perfil do jogador"
-          data-testid="header-profile-picture"
-        />
-        <h3 data-testid="header-player-name">
-          { name }
-        </h3>
-
-        <span data-testid="header-score">0</span>
+        <Header />
+        <h1>temp</h1>
       </>
     );
   }
 }
 
-Game.propTypes = {
-  email: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  email: state.user.email,
-  name: state.user.name,
-});
-
-export default connect(mapStateToProps)(Game);
+export default Game;
