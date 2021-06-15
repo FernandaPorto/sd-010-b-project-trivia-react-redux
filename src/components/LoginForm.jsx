@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class LoginForm extends Component {
   constructor(props) {
@@ -6,7 +7,6 @@ class LoginForm extends Component {
 
     this.onHandleChange = this.onHandleChange.bind(this);
     this.validateLogin = this.validateLogin.bind(this);
-
     this.state = {
       name: '',
       email: '',
@@ -33,6 +33,7 @@ class LoginForm extends Component {
   }
 
   render() {
+    const { config } = this.props;
     return (
       <main>
         <h1>Trivia</h1>
@@ -62,10 +63,21 @@ class LoginForm extends Component {
           >
             Jogar
           </button>
+          <button
+            type="button"
+            data-testid="btn-settings"
+            onClick={ () => config() }
+          >
+            Configurar
+          </button>
         </form>
       </main>
     );
   }
 }
+
+LoginForm.propTypes = {
+  config: PropTypes.func,
+}.isRequired;
 
 export default LoginForm;
