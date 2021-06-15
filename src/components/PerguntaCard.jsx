@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Timer from './Timer';
 
 export default class PerguntaCard extends Component {
   constructor(props) {
@@ -7,6 +8,8 @@ export default class PerguntaCard extends Component {
     this.state = {
       correctAnswer: {},
       wrongAnswer: {},
+      isDisable: false,
+      // timer: 3,
     };
     this.checkAnswer = this.checkAnswer.bind(this);
     this.handleNext = this.handleNext.bind(this);
@@ -34,16 +37,33 @@ export default class PerguntaCard extends Component {
       ...oldState,
       correctAnswer: { border: '3px solid rgb(6, 240, 15)' },
       wrongAnswer: { border: '3px solid rgb(255, 0, 0)' },
+      isDisable: true,
     }));
   }
 
+  componentDidMount() {
+    // this.setTimer();
+  }
+
+  // setTimer() {
+  //   const ONE_SECOND = 1000;
+  //   setInterval(() => {
+  //     this.setState((oldState) => ({
+  //       ...oldState,
+  //       timer: oldState.timer - 1,
+  //     }));
+  //     clearInterval(setTimer);
+  //   }, ONE_SECOND);
+  // }
+
   render() {
     const { question, options } = this.props;
-    const { correctAnswer, wrongAnswer } = this.state;
+    const { correctAnswer, wrongAnswer, isDisable } = this.state;
 
     return (
       <>
         <blockquote data-testid="question-category">{question.category}</blockquote>
+        <Timer checkAnswer={ this.checkAnswer } />
         <h4 data-testid="question-text">{this.decodeHtml(question.question)}</h4>
         <ul>
           {
@@ -59,13 +79,14 @@ export default class PerguntaCard extends Component {
                       : `wrong-answer-${options.indexOf(opt)}`
                   }
                   onClick={ this.checkAnswer }
+                  className="optionsButtons"
+                  disabled={ isDisable }
                 >
                   {this.decodeHtml(opt)}
 
                 </button>
               </li>))
           }
-
         </ul>
         <button type="button" onClick={ this.handleNext }>Proxima pergunta</button>
       </>
