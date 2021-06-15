@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import md5 from 'crypto-js/md5';
+import PropTypes from 'prop-types';
 import { enviaDadosUsuario } from '../actions';
 
 class Login extends React.Component {
@@ -28,13 +29,13 @@ class Login extends React.Component {
   }
 
   async requisitarAPI() {
-    const { name } = this.state;
+    const { nome } = this.state;
     const { actionEnviaDadosUsuario } = this.props;
     const { token } = await fetch('https://opentdb.com/api_token.php?command=request').then((resp) => resp.json());
     localStorage.setItem('token', token);
     const gravatar = await this.getGravatar();
     actionEnviaDadosUsuario({
-      name,
+      nome,
       email: gravatar,
     });
   }
@@ -49,7 +50,7 @@ class Login extends React.Component {
 
   verifyEmailAndName() {
     const { email, nome } = this.state;
-    if (email.length && nome.length) {
+    if (email.length > 1 && nome.length > 1) {
       this.setState({
         disabled: false,
       });
@@ -65,6 +66,7 @@ class Login extends React.Component {
             data-testid="input-player-name"
             type="email"
             id="email"
+            name="email"
             value={ email }
             onChange={ this.handleChange }
           />
@@ -72,6 +74,7 @@ class Login extends React.Component {
             data-testid="input-gravatar-email"
             type="text"
             id="nome"
+            name="nome"
             value={ nome }
             onChange={ this.handleChange }
           />
@@ -97,3 +100,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(null, mapDispatchToProps)(Login);
+
+Login.propTypes = {
+  actionEnviaDadosUsuario: PropTypes.func.isRequired,
+};
