@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import logo from '../trivia.png';
 import '../App.css';
@@ -8,6 +9,7 @@ import SettingBtn from '../components/SettingBtn';
 
 export default class Login extends React.Component {
   render() {
+    const { history } = this.props;
     return (
       <header className="App-header">
         <img src={ logo } className="App-logo" alt="logo" />
@@ -15,8 +17,12 @@ export default class Login extends React.Component {
         <p>
           SUA VEZ
         </p>
-        <Form />
+        <Form history={ history } />
       </header>
     );
   }
 }
+
+Login.propTypes = {
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
+};

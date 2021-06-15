@@ -2,16 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 class Answer extends React.Component {
-  handleClick() {}
+  handleClick({ target }) {
+    console.log(target.parentElement.children);
+  }
 
   render() {
     const { number, results } = this.props;
+    if (!results[number]) {
+      return <div>Carregando...</div>;
+    }
     return (
       <div>
-        { results[number]?.incorrect_answers.map((answer, idx) => (
+        { results[number].incorrect_answers.map((answer, idx) => (
           <button
-            // data-testid={ `wrong-answer-${idx}` }
-            data-testid="wrong-answer"
+            onClick={ this.handleClick }
+            data-testid={ `wrong-answer-${idx}` }
             type="button"
             key={ idx }
           >
@@ -19,27 +24,12 @@ class Answer extends React.Component {
           </button>
         )) }
         <button
+          onClick={ this.handleClick }
           type="button"
-          className="correct-answer"
           data-testid="correct-answer"
         >
-          {results[number]?.correct_answer}
+          {results[number].correct_answer}
         </button>
-        {/* <button
-          type="button"
-          className="correct-answer"
-          data-testid="correct-answer"
-          // onClick={}
-        >
-          Respostas
-        </button>
-        <button
-          type="button"
-          className="wrong-answer-0"
-          data-testid="wrong-answer-0"
-        >
-          Respostas
-        </button> */}
       </div>
     );
   }

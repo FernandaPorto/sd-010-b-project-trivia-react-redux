@@ -2,31 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
-import Answer from '../components/Answer';
 import Question from '../components/Question';
+import Answer from '../components/Answer';
 
 class Game extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       number: 0,
-      results: undefined,
+      results: props.request,
     };
-  }
-
-  componentDidMount() {
-    this.fetchApi();
-  }
-
-  async fetchApi() {
-    const token = localStorage.getItem('token');
-    const api = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
-    const { results } = await api.json();
-    console.log(results);
-    this.setState({
-      results,
-    });
   }
 
   render() {
@@ -67,12 +53,14 @@ const mapStateToProps = (state) => ({
   count: state.player.score,
   name: state.player.name,
   email: state.player.gravatarEmail,
+  request: state.apiReducer.request,
 });
 
 export default connect(mapStateToProps)(Game);
 
 Game.propTypes = {
-  count: PropTypes.string.isRequired,
+  count: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
+  request: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
