@@ -1,7 +1,7 @@
 import { ENVIA_DADOS_USUARIO } from '../actions/index';
 
 const INITIAL_STATE = {
-  name: '',
+  name: 'qualquernome',
   assertions: '',
   score: 0,
   gravatarEmail: '',
@@ -12,7 +12,7 @@ export default function player(state = INITIAL_STATE, action) {
   case ENVIA_DADOS_USUARIO:
     return {
       ...state,
-      name: action.payload.nome,
+      name: action.payload.name,
       gravatarEmail: action.payload.email };
   default:
     return state;
