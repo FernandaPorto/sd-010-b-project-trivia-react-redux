@@ -9,7 +9,6 @@ class Game extends Component {
   componentDidMount() {
     const { pedePerguntas } = this.props;
     const token = localStorage.getItem('token');
-    console.log(token);
     pedePerguntas(token);
   }
 
@@ -17,7 +16,7 @@ class Game extends Component {
     return (
       <div>
         <Header />
-        <Perguntas />
+        <Perguntas/>
       </div>
     );
   }

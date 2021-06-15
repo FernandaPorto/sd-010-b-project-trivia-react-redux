@@ -4,11 +4,15 @@ import { connect } from 'react-redux';
 class Perguntas extends Component {
   render() {
     const { perguntas } = this.props;
-    return (
-      <div>
-        {console.log(perguntas)}
+    if (perguntas) {
+      console.log(perguntas[0])
+      return (
+        <div>
+        {/* {perguntas.find((pergunta) => pergunta === 0)} */}
       </div>
     );
+  }
+    return <p>Loading</p>
   }
 }
 
