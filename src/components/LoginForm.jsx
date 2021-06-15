@@ -10,25 +10,36 @@ class LoginForm extends Component {
     this.state = {
       name: '',
       email: '',
+      disable: true,
     };
   }
 
   onHandleChange({ target }) {
+    if (target.value.length > 0) {
+      this.setState({
+        disable: true,
+      });
+    }
     this.setState({
       [target.id]: target.value,
     });
   }
 
-  validateLogin() {
-    const { name, email } = this.state;
+  // validateLogin() {
+  //   const zero = 0;
+  //   // https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
+  //   // const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    if (name.length > 3 && email.length > 3) {
-      return false;
-    }
-    return true;
-  }
+  //   // const re = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/;
+  //   const { name, email } = this.state;
+  //   if (name.length > zero && email.length > zero) {
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   render() {
+    const { disable } = this.state;
     return (
       <main>
         <h1>Trivia</h1>
@@ -51,12 +62,13 @@ class LoginForm extends Component {
               onChange={ this.onHandleChange }
             />
           </label>
-          <input
-            data-testid="btn-play"
+          <button
             type="button"
-            value="Jogar"
-            disabled={ this.validateLogin() }
-          />
+            data-testid="btn-play"
+            disabled={ disable }
+          >
+            Jogar
+          </button>
         </form>
       </main>
     );
