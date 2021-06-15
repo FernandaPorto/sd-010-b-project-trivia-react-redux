@@ -1,38 +1,16 @@
 import React from 'react';
 
 class PerguntaAtual extends React.Component {
-  constructor() {
-    super();
-    this.answers = this.answers.bind(this);
-    this.somaPergunta = this.somaPergunta.bind(this);
-    this.somaPergunta = this.somaPergunta.bind(this);
-    this.state = {
-      perguntas: {},
-      randomAnswer: [],
-      perguntaNumber: 0,
-    };
-  }
-
-  answers() {
-    const { perguntas: { results }, perguntaNumber } = this.state;
-    const allAnswers = [...results[perguntaNumber].incorrect_answers];
-    const numberOfQuestions = 5;
-    const randomPosition = Math.floor(Math.random() * numberOfQuestions);
-    allAnswers.splice(randomPosition, 0, results[perguntaNumber].correct_answer);
-    this.setState({
-      randomAnswer: allAnswers,
-    });
-  }
-
-  somaPergunta() {
-    this.setState((previ) => ({
-      perguntaNumber: previ.perguntaNumber + 1,
-    }));
-  }
-
   render() {
+    const { randomAnswer: { allAnswers, category, question, correctAnswer } } = this.props;
+    console.log(allAnswers);
     return (
-      <div>pergunta aqui</div>
+      <div>
+        <div data-testid="question-category">{ category }</div>
+        <br />
+        <div data-testid="question-text">{ question }</div>
+        { !allAnswers ? <div>Carregando...</div> : allAnswers.map((answer, index) => (answer === correctAnswer ? <button type="button" data-testid="correct-answer">{answer}</button> : <button type="button" data-testid={ `wrong-answer-${index}` }>{answer}</button>))}
+      </div>
     );
   }
 }

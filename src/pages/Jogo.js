@@ -1,5 +1,6 @@
 import React from 'react';
 import Header from '../components/Header';
+import PerguntaAtual from '../components/PerguntaAtual';
 
 class Jogo extends React.Component {
   constructor(props) {
@@ -15,7 +16,7 @@ class Jogo extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchQuestions();
+    this.fetchQuestions().then(() => this.answers());
   }
 
   fetchQuestions() {
@@ -34,14 +35,19 @@ class Jogo extends React.Component {
     const randomPosition = Math.floor(Math.random() * numberOfQuestions);
     allAnswers.splice(randomPosition, 0, results[perguntaNumber].correct_answer);
     this.setState({
-      randomAnswer: { allAnswers, question: results[perguntaNumber].question },
+      randomAnswer: { allAnswers,
+        category: results[perguntaNumber].category,
+        question: results[perguntaNumber].question,
+        correctAnswer: results[perguntaNumber].correct_answer,
+      },
     });
   }
 
   somaPergunta() {
     this.setState((previ) => ({
       perguntaNumber: previ.perguntaNumber + 1,
-    }));
+    }), () => this.answers());
+    // this.answers();
   }
 
   // answers() {
@@ -64,16 +70,14 @@ class Jogo extends React.Component {
   // // https://www.horadecodar.com.br/2021/05/10/como-embaralhar-um-array-em-javascript-shuffle/
 
   render() {
-    const { perguntas: { results }, randomAnswer, perguntaNumber } = this.state;
+    const { perguntas: { results }, randomAnswer } = this.state;
     console.log(results);
+    console.log(randomAnswer);
     return (
       <section>
         <Header />
-        <ol className="questions-section">
-          {!results ? <p>carregando</p>
-            : results.question[perguntaNumber]}
-        </ol>
-        <button type="button" onClick={ () => this.somaPergunta() }>random</button>}
+        <PerguntaAtual randomAnswer={ randomAnswer } />
+        <button type="button" onClick={ () => this.somaPergunta() }>random</button>
       </section>
     );
   }
