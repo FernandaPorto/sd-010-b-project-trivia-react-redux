@@ -37,7 +37,9 @@ class Trivia extends React.Component {
   colorAnswers() {
     const { correct_answer: correct, answers, nextQuestion } = this.state;
     return answers.map((answer, index) => {
-      const testColor = answer === correct ? '3px solid rgb(6, 240, 15)' : '3px solid rgb(255, 0, 0)';
+      const testColor = answer === correct
+        ? '3px solid rgb(6, 240, 15)'
+        : '3px solid rgb(255, 0, 0)';
 
       const verifyTestId = answer === correct
         ? 'correct-answer' : `wrong-answer-${index}`;
