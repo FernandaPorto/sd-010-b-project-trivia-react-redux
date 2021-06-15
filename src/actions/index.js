@@ -1,10 +1,13 @@
 export const LOGIN = 'login';
 export const GRAVATAR = 'gravatar';
 
-export default function loginAction({ name, email }) {
+export function loginAction({ name, email }) {
   return ({
     type: LOGIN,
-    payload: { name, email },
+    payload: {
+      name,
+      email,
+    },
   });
 }
 

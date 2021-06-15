@@ -18,6 +18,7 @@ export default function user(state = INITIAL_STATE, action) {
     return {
       ...state,
       gravatar: action.gravatar,
+
     };
   default:
     return state;
