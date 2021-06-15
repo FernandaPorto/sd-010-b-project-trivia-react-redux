@@ -6,7 +6,11 @@ import Cronometro from './Cronometro';
 class Questions extends Component {
   constructor(props) {
     super(props);
-    this.state = { ...props, next: false, isValid: false, value: false };
+    this.state = { ...props,
+      next: false,
+      isValid: false,
+      value: false,
+      isToggleOn: false };
     this.randAnswers = this.randAnswers.bind(this);
     this.listenerChange = this.listenerChange.bind(this);
     this.somaPontuacao = this.somaPontuacao.bind(this);
@@ -18,13 +22,13 @@ class Questions extends Component {
     const inc = [...i];
     const rand = Math.floor(Math.random() * ((inc.length - 1) + 1));
     const swap = inc[rand];
-    inc.splice(rand, 1);
+    inc.splice(rand, 0);
     inc[rand] = c;
     return [...inc, swap];
   }
 
   listenerChange() {
-    this.setState({ isValid: true });
+    this.setState({ isValid: true, isToggleOn: true });
   }
 
   teste(state) {
@@ -64,14 +68,16 @@ class Questions extends Component {
   }
 
   somaPontuacao(answer, difficulty) {
+    this.setState((prevState) => ({
+      isToggleOn: !prevState.isToggleOn,
+    }));
     this.setState({ value: true, next: true, difficulty, answer });
   }
 
   render() {
     const { correct_answer: c,
       category, question, value,
-      isValid, difficulty, next } = this.state;
-    console.log(this.state);
+      isValid, difficulty, next, isToggleOn } = this.state;
     return (
       <div>
         <h3 data-testid="question-category">{category}</h3>
@@ -99,6 +105,14 @@ class Questions extends Component {
           funcaoStop={ this.teste }
           stop={ value }
         />
+        { isToggleOn ? (
+          <button
+            type="button"
+            data-testid="btn-next"
+            // onClick={ () =>  }
+          >
+            Próxima
+          </button>) : null }
       </div>
     );
   }
