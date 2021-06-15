@@ -10,6 +10,7 @@ import Ranking from './pages/Ranking';
 import Settings from './pages/Settings';
 
 export default class App extends React.Component {
+<<<<<<< HEAD
   render() {
     return (
       <div className="App">
@@ -23,4 +24,17 @@ export default class App extends React.Component {
       </div>
     );
   }
+=======
+  return (
+    <div className="App">
+      <Switch>
+        <Route path="/setting" component={ Settings } />
+        <Route path="/feedback" component={ Feedback } />
+        <Route path="/ranking" component={ Ranking } />
+        <Route path="/game" component={ Game } />
+        <Route path="/" component={ Login } />
+      </Switch>
+    </div>
+  );
+>>>>>>> 19304d55a72f747b484cfc95022a5eaf671b3177
 }
