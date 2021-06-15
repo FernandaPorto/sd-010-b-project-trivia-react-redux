@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import Cronometro from './Cronometro';
 
 class Questions extends Component {
   constructor(props) {
     super(props);
-    this.state = { ...props, next: false, isValid: false };
+    this.state = { ...props, next: false };
     this.randAnswers = this.randAnswers.bind(this);
-    this.listenerChange = this.listenerChange.bind(this);
   }
 
   randAnswers() {
@@ -14,17 +12,13 @@ class Questions extends Component {
     const inc = [...i];
     const rand = Math.floor(Math.random() * ((inc.length - 1) + 1));
     const swap = inc[rand];
-    inc.splice(rand, 0);
+    inc.splice(rand, 1);
     inc[rand] = c;
     return [...inc, swap];
   }
 
-  listenerChange() {
-    this.setState({ isValid: true });
-  }
-
   render() {
-    const { correct_answer: c, category, question, isValid, next } = this.state;
+    const { correct_answer: c, category, question, next } = this.state;
     console.log(this.state);
     return (
       <div>
@@ -41,14 +35,12 @@ class Questions extends Component {
               key={ answer }
               type="button"
               { ...dataTestId }
-              disabled={ isValid }
               onClick={ () => this.setState({ next: true }) }
             >
               {answer}
             </button>
           );
         })}
-        <Cronometro funcao={ this.listenerChange } />
       </div>
     );
   }
