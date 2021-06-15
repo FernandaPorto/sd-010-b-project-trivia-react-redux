@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// comentario p add
 
 class Question extends React.Component {
   render() {
@@ -30,7 +31,7 @@ class Question extends React.Component {
 
         <br />
 
-        { arrRandom.map((answer, index = 0) => (
+        { arrRandom.map((answer, index) => (
           <button
             type="button"
             key={ answer }
