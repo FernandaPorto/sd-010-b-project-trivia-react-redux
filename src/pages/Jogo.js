@@ -10,19 +10,26 @@ class Jogo extends Component {
       game: [],
       index: 0,
       loading: true,
+      value: 0,
     };
+    this.change = this.change.bind(this);
   }
 
   componentDidMount() {
     getToken().then((game) => this.setState({ game, loading: false }));
   }
 
+  change(val) {
+    console.log(val);
+    this.setState({ value: val });
+  }
+
   render() {
-    const { game, index, loading } = this.state;
+    const { game, index, loading, value } = this.state;
     return (
       <div>
-        <Header />
-        {!loading && <Questions { ...game[index] } />}
+        <Header pontuacao={ value } />
+        {!loading && <Questions { ...game[index] } funcao={ this.change } />}
       </div>
     );
   }
