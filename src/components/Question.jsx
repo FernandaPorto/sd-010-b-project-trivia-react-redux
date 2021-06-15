@@ -34,7 +34,7 @@ class Question extends React.Component {
           <button
             type="button"
             key={ answer }
-            datatest-id={ check(answer, index) }
+            data-testid={ check(answer, index) }
           >
             { answer }
           </button>
