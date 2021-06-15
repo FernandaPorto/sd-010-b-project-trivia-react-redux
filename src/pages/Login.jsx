@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import Inputs from '../components/Inputs';
+import logo from '../trivia.png';
 
 class Login extends Component {
   constructor() {
@@ -9,8 +10,8 @@ class Login extends Component {
       name: '',
       email: '',
       redirect: false,
+      score: 0,
     };
-
     this.handleOnChange = this.handleOnChange.bind(this);
     this.redirectSettings = this.redirectSettings.bind(this);
   }
@@ -28,25 +29,28 @@ class Login extends Component {
   }
 
   render() {
-    const { name, email, redirect } = this.state;
-
+    const { name, email, score, redirect } = this.state;
     if (redirect) {
       return <Redirect to="/settings" />;
     }
     return (
       <div>
-        <Inputs
-          handleOnChange={ this.handleOnChange }
-          name={ name }
-          email={ email }
-        />
-        <button
-          type="button"
-          data-testid="btn-settings"
-          onClick={ this.redirectSettings }
-        >
-          Configurações
-        </button>
+        <header className="App-header">
+          <img src={ logo } className="App-logo" alt="logo" />
+          <Inputs
+            handleOnChange={ this.handleOnChange }
+            name={ name }
+            email={ email }
+            score={ score }
+          />
+          <button
+            type="button"
+            data-testid="btn-settings"
+            onClick={ this.redirectSettings }
+          >
+            Configurações
+          </button>
+        </header>
       </div>
     );
   }
