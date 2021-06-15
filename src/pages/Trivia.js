@@ -129,3 +129,30 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(null, mapDispatchToProps)(Trivia);
+
+// backup map
+// questions.map((question, index) => (
+//   <ul key={ question.category }>
+//     <p data-testid="question-category">{question.category}</p>
+//     <li data-testid="question-text">
+//       {question.question}
+//       {' '}
+//       <button type="button">
+//         <p
+//           data-testid="correct-answer"
+//         >
+//           {question.correct_answer}
+//         </p>
+//       </button>
+//       {question.incorrect_answers.map((incorrect) => (
+//         <button key={ incorrect } type="button">
+//           <p
+//             data-testid={ `wrong-answer-${index}` }
+//           >
+//             {incorrect}
+//           </p>
+//         </button>
+//       ))}
+//     </li>
+//   </ul>
+// ))
