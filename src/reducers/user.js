@@ -4,9 +4,13 @@ const INITIAL_STATE = {
   username: '',
   email: '',
   token: '',
+  triviaGame: {
+    score: 0,
+    hits: 0,
+  },
 };
 
-const trivia = (state = INITIAL_STATE, action) => {
+const user = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case INPUT_EMAIL:
     return {
@@ -28,4 +32,4 @@ const trivia = (state = INITIAL_STATE, action) => {
   }
 };
 
-export default trivia;
+export default user;
