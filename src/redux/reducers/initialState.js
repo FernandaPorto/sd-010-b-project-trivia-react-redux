@@ -1,3 +1,3 @@
-const initialState = { token: {}, error: {} };
+const initialState = { token: {}, error: {}, question: {} };
 
 export default initialState;

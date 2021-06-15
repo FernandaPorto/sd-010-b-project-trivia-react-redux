@@ -1,11 +1,20 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
+import { fetchQuestions } from '../redux/actions';
 
 class Game extends React.Component {
+  componentDidMount() {
+    const { payload } = this.props;
+    const name = localStorage.getItem('token');
+    payload(name);
+  }
+
   render() {
-    const { location: { aboutProps: { name: { name },
+    const { questions, location: { aboutProps: { name: { name },
       email: { email }, score: { score } } } } = this.props;
+      // console.log(questions.results.incorrect_answers);
     const convert = md5(email).toString();
     const endpoint = `https://www.gravatar.com/avatar/${convert}`;
     return (
@@ -17,6 +26,32 @@ class Game extends React.Component {
         </span>
         <span data-testid="header-profile-picture">{` Email: ${email}`}</span>
         <span data-testid="header-score">{` Pontuação: ${score}`}</span>
+        {
+          !questions === false
+          && questions.results.map((item, index) => (
+            <div key={ index }>
+              <p data-testid="question-category">{item.question}</p>
+              <p data-testid="question-text">{item.category}</p>
+              <button
+                type="button"
+                data-testid="correct-answer"
+              >
+                {item.correct_answer}
+              </button>
+              {
+                item.incorrect_answers.map((incorret, position) => (
+                  <button
+                    type="button"
+                    key={ position }
+                    data-testid={ `wrong-answer-${position}` }
+                  >
+                    {incorret}
+                  </button>
+                ))
+              }
+            </div>
+          ))
+        }
       </div>
     );
   }
@@ -38,4 +73,13 @@ Game.propTypes = {
   }).isRequired,
 };
 
-export default Game;
+const mapStateToProps = (state) => ({
+  token: state.token.token,
+  questions: state.questions,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  payload: (token) => dispatch(fetchQuestions(token)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
