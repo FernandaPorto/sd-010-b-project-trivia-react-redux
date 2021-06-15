@@ -1,4 +1,4 @@
-export const REQUEST_API = 'REQUEST_API';
+export const ADD_PLAYER_NAME = 'ADD_PLAYER_NAME';
 export const RECEIVE_TOKEN = 'RECEIVE_TOKEN';
 
 const receiveToken = (token) => ({ type: RECEIVE_TOKEN, token });
@@ -11,3 +11,8 @@ export function requestAPI() {
     dispatch(receiveToken(token));
   };
 }
+
+export const saveNamePlayer = (name) => ({
+  type: ADD_PLAYER_NAME,
+  payload: { name },
+});

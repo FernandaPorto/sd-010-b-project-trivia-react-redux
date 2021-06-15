@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { requestAPI } from '../actions';
+import { requestAPI, saveNamePlayer } from '../actions';
 
 class Login extends Component {
   constructor(props) {
@@ -15,6 +15,7 @@ class Login extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.setDisabled = this.setDisabled.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   setDisabled() {
@@ -35,9 +36,15 @@ class Login extends Component {
     });
   }
 
+  handleClick() {
+    const { name } = this.state;
+    const { requestTriviaToken, registerName } = this.props;
+    requestTriviaToken();
+    registerName(name);
+  }
+
   render() {
     const { name, email, isDisabled } = this.state;
-    const { requestTriviaToken } = this.props;
     return (
       <main>
         <form>
@@ -67,14 +74,16 @@ class Login extends Component {
               } }
             />
           </label>
-          <button
-            type="button"
-            data-testid="btn-play"
-            disabled={ isDisabled }
-            onClick={ () => requestTriviaToken() }
-          >
-            Jogar
-          </button>
+          <Link to="/game">
+            <button
+              type="button"
+              data-testid="btn-play"
+              disabled={ isDisabled }
+              onClick={ this.handleClick }
+            >
+              Jogar
+            </button>
+          </Link>
         </form>
         <Link to="/setting">
           <button data-testid="btn-settings" type="button">Configuração</button>
@@ -86,10 +95,12 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   requestTriviaToken: () => dispatch(requestAPI()),
+  registerName: (name) => dispatch(saveNamePlayer(name)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
 
 Login.propTypes = {
   requestTriviaToken: propTypes.func.isRequired,
+  registerName: propTypes.func.isRequired,
 };
