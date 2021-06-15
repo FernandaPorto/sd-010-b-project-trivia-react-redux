@@ -18,7 +18,11 @@ export class Feedback extends Component {
     return (
       <div>
         <header>
-          <img data-testid="header-profile-picture" src={ gravatarEmail } alt="gravatarEmail" />
+          <img
+            data-testid="header-profile-picture"
+            src={ gravatarEmail }
+            alt="gravatarEmail"
+          />
           <h2 data-testid="header-player-name">{ name }</h2>
           <h3 data-testid="header-score">{ score }</h3>
         </header>
