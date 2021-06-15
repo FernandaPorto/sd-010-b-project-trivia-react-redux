@@ -1,14 +1,17 @@
 const initialState = {
   name: '',
+  imgPath: '',
+  score: '0',
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
-  case ('USER_LOGIN'): {
-    const name = action.payload;
+  case ('PLAYER_LOGIN'): {
+    const { name, imgPath } = action.payload;
     return {
       ...state,
       name,
+      imgPath,
     };
   }
   default:
