@@ -25,7 +25,6 @@ class Header extends React.Component {
   render() {
     const { name } = this.props;
     const { photo } = this.state;
-    console.log(`resposta aqui ${photo}`);
     return (
       <header>
         <img src={ `https://www.gravatar.com/avatar/${photo}` } data-testid="header-profile-picture" alt="my profile" width="50px" />
