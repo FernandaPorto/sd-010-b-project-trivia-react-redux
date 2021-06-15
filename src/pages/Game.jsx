@@ -32,9 +32,17 @@ class Game extends React.Component {
   }
 
   handleNext() {
+    const correct = document.querySelector('.correct');
+    const wrong = document.querySelectorAll('.wrong');
+
     const { count } = this.state;
     this.setState({
       count: count + 1,
+    });
+
+    correct.style.border = '3px solid black';
+    wrong.forEach((answer) => {
+      answer.style.border = '3px solid black';
     });
   }
 
