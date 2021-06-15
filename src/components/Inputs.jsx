@@ -1,19 +1,28 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { fetchToken } from '../redux/actions';
 
 class Inputs extends Component {
-  render() {
-    const { handleOnChange, name, email, fetchApiToken } = this.props;
+  constructor() {
+    super();
+    this.verify = this.verify.bind(this);
+  }
+
+  verify() {
+    const { name, email } = this.props;
     let verify = true;
     if (name.length > 0 && email.length) {
       verify = false;
     }
+    return verify;
+  }
 
+  render() {
+    const { handleOnChange, name, email, fetchApiToken, score } = this.props;
     return (
       <div>
-
         <form action="">
           <label htmlFor="name">
             Name
@@ -35,14 +44,25 @@ class Inputs extends Component {
               onChange={ handleOnChange }
             />
           </label>
-          <button
-            data-testid="btn-play"
-            type="button"
-            disabled={ verify }
-            onClick={ () => fetchApiToken() }
+          <Link
+            to={ {
+              pathname: '/game',
+              aboutProps: {
+                name: { name },
+                email: { email },
+                score: { score },
+              },
+            } }
           >
-            Jogar
-          </button>
+            <button
+              data-testid="btn-play"
+              type="button"
+              disabled={ this.verify() }
+              onClick={ () => fetchApiToken() }
+            >
+              Jogar
+            </button>
+          </Link>
         </form>
       </div>
     );
@@ -56,6 +76,7 @@ Inputs.propTypes = {
   handleOnChange: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
   fetchApiToken: PropTypes.func.isRequired,
 };
 
