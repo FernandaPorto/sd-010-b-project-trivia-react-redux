@@ -11,6 +11,7 @@ export default function App() {
         <p>
           <Login />
         </p>
+        <button type="button" data-testid="btn-settings">Configurações</button>
       </header>
     </div>
   );
