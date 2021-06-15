@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import GameHeader from '../components/GameHeader';
+import './style.css';
 
 class Game extends React.Component {
   constructor(props) {
@@ -12,16 +13,35 @@ class Game extends React.Component {
 
     this.renderPage = this.renderPage.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   handleClick() {
     const wrongAnswer = document.querySelectorAll('.answer-button-wrong');
     const correctAnswer = document.querySelector('.answer-button-correct');
-    correctAnswer.style.border = '3px solid rgb(6, 240, 15)';
+    const buttonNext = document.querySelector('#next-button');
+    correctAnswer.classList.add('answer-correct');
     wrongAnswer.forEach((answer) => {
-      answer.style.border = '3px solid rgb(255, 0, 0)';
-      /* botão de próxima pergunta = () => this.setState({ indexQuestion: indexQuestion + 1 }) */
+      answer.classList.add('answer-wrong');
     });
+    buttonNext.style.display = 'initial';
+  }
+
+  nextQuestion() {
+    const { indexQuestion } = this.state;
+    const NUMERO_MAX_RESPOSTAS = 4;
+    if (indexQuestion < NUMERO_MAX_RESPOSTAS) {
+      this.setState({ indexQuestion: indexQuestion + 1 });
+      const wrongAnswer = document.querySelectorAll('.answer-button-wrong');
+      const correctAnswer = document.querySelector('.answer-button-correct');
+      correctAnswer.classList.remove('answer-correct');
+      wrongAnswer.forEach((answer) => {
+        answer.classList.remove('answer-wrong');
+      });
+    } else {
+      const buttonNext = document.querySelector('#next-button');
+      buttonNext.style.display = 'none';
+    }
   }
 
   renderPage() {
@@ -55,6 +75,7 @@ class Game extends React.Component {
               >
                 {answer}
               </button>))}
+
           </section>
         </section>
       );
@@ -66,6 +87,14 @@ class Game extends React.Component {
       <section>
         <GameHeader />
         {this.renderPage()}
+        <button
+          data-testid="btn-next"
+          type="button"
+          id="next-button"
+          onClick={ this.nextQuestion }
+        >
+          Próxima
+        </button>
       </section>
 
     );
