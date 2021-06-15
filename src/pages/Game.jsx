@@ -1,11 +1,13 @@
 import React from 'react';
 import Header from '../components/Header';
+import Question from '../components/Question';
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       results: [],
+      numQuestion: 0,
     };
   }
 
@@ -21,43 +23,21 @@ class Game extends React.Component {
   }
 
   render() {
-    const { results } = this.state;
-    // console.log(results);
+    const { results, numQuestion } = this.state;
     return (
       <>
         <Header />
-        { results.map((result) => (
-          <>
-            <span
-              key={ result.category }
-              data-testid="question-category"
-            >
-              Category:
-              {result.category}
-            </span>
-
-            <br />
-
-            <span
-              key={ result.type }
-              data-testid="question-text"
-            >
-              Question:
-              {result.question}
-            </span>
-
-            <br />
-
-            <span
-              key={ result.correct_answer }
-              data-testid="correct-answer"
-            >
-              {result.correct_answer}
-            </span>
-
-            <br />
-            <br />
-          </>)) }
+        {results.map(
+          (result, index) => numQuestion === index && (
+            <Question result={ result } key={ numQuestion } />
+          ),
+        )}
+        {/* {results.map(
+          (result, index) =>{
+            if(            numQuestion === index){
+              return  <Question result={result} key={result.category} />
+            }}
+        )} */}
       </>
     );
   }

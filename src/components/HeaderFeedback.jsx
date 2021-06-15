@@ -12,10 +12,21 @@ class HeaderFeedback extends React.Component {
   }
 
   render() {
+    const { name } = this.props;
     return (
-      null
-    );
-  }
+      <header>
+        <img
+          src={ this.convert() }
+          alt="foto de perfil do jogador"
+          data-testid="header-profile-picture"
+        />
+        <h3 data-testid="header-player-name">
+          { name }
+        </h3>
+
+        <span data-testid="header-score">0</span>
+      </header>
+    
 }
 
 HeaderFeedback.propTypes = {
