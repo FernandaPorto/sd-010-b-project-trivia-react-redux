@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 class LoginForm extends Component {
   constructor(props) {
@@ -7,6 +8,8 @@ class LoginForm extends Component {
 
     this.onHandleChange = this.onHandleChange.bind(this);
     this.validateLogin = this.validateLogin.bind(this);
+    this.saveLocalStorage = this.saveLocalStorage.bind(this);
+
     this.state = {
       name: '',
       email: '',
@@ -17,6 +20,12 @@ class LoginForm extends Component {
     this.setState({
       [target.id]: target.value,
     });
+  }
+
+  saveLocalStorage() {
+    const { name, email } = this.state;
+    const testObject = { name, assertions: 0, score: 0, gravatarEmail: email };
+    localStorage.setItem('player', JSON.stringify(testObject));
   }
 
   validateLogin() {
@@ -56,13 +65,16 @@ class LoginForm extends Component {
               onChange={ this.onHandleChange }
             />
           </label>
-          <button
-            type="button"
-            data-testid="btn-play"
-            disabled={ this.validateLogin() }
-          >
-            Jogar
-          </button>
+          <Link to="/game">
+            <button
+              type="button"
+              data-testid="btn-play"
+              disabled={ this.validateLogin() }
+              onClick={ () => this.saveLocalStorage() }
+            >
+              Jogar
+            </button>
+          </Link>
           <button
             type="button"
             data-testid="btn-settings"
