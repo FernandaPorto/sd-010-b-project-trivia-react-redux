@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { requestAPI } from '../actions';
+import { Link } from 'react-router-dom';
 
 class Login extends Component {
   constructor(props) {
@@ -75,6 +76,9 @@ class Login extends Component {
             Jogar
           </button>
         </form>
+        <Link to="/setting">
+          <button data-testid="btn-settings" type="button">Configuração</button>
+        </Link>
       </main>
     );
   }
