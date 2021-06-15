@@ -11,7 +11,7 @@ class Game extends React.Component {
 
     this.state = {
       number: 0,
-      results: [],
+      results: undefined,
     };
   }
 
