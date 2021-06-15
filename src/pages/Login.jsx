@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import Inputs from '../components/Inputs';
 
 class Login extends Component {
@@ -7,8 +8,11 @@ class Login extends Component {
     this.state = {
       name: '',
       email: '',
+      redirect: false,
     };
+
     this.handleOnChange = this.handleOnChange.bind(this);
+    this.redirectSettings = this.redirectSettings.bind(this);
   }
 
   handleOnChange({ target: { value, name } }) {
@@ -17,9 +21,18 @@ class Login extends Component {
     });
   }
 
-  render() {
-    const { name, email } = this.state;
+  redirectSettings() {
+    this.setState({
+      redirect: true,
+    });
+  }
 
+  render() {
+    const { name, email, redirect } = this.state;
+
+    if (redirect) {
+      return <Redirect to="/settings" />;
+    }
     return (
       <div>
         <Inputs
@@ -27,6 +40,13 @@ class Login extends Component {
           name={ name }
           email={ email }
         />
+        <button
+          type="button"
+          data-testid="btn-settings"
+          onClick={ this.redirectSettings }
+        >
+          Configurações
+        </button>
       </div>
     );
   }
