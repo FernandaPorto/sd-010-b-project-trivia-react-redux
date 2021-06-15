@@ -1,6 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import md5 from 'crypto-js/md5';
+import PropTypes from 'prop-types';
+import { enviaDadosUsuario } from '../actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -8,13 +11,33 @@ class Login extends React.Component {
 
     this.state = {
       email: '',
-      nome: '',
+      name: '',
       disabled: true,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.verifyEmailAndName = this.verifyEmailAndName.bind(this);
     this.requisitarAPI = this.requisitarAPI.bind(this);
+    this.getGravatar = this.getGravatar.bind(this);
+  }
+
+  async getGravatar() {
+    const { email } = this.state;
+    const emailFormatado = md5(email).toString();
+    const gravatar = await fetch(`https://www.gravatar.com/avatar/${emailFormatado}`).then((objeto) => objeto.url);
+    return gravatar;
+  }
+
+  async requisitarAPI() {
+    const { name } = this.state;
+    const { actionEnviaDadosUsuario } = this.props;
+    const { token } = await fetch('https://opentdb.com/api_token.php?command=request').then((resp) => resp.json());
+    localStorage.setItem('token', token);
+    const gravatar = await this.getGravatar();
+    actionEnviaDadosUsuario({
+      name,
+      email: gravatar,
+    });
   }
 
   handleChange(event) {
@@ -26,37 +49,33 @@ class Login extends React.Component {
   }
 
   verifyEmailAndName() {
-    const { email, nome } = this.state;
-    console.log(email, nome);
-    if (email.length && nome.length) {
+    const { email, name } = this.state;
+    if (email.length > 1 && name.length > 1) {
       this.setState({
         disabled: false,
       });
     }
   }
 
-  async requisitarAPI() {
-    const { token } = await fetch('https://opentdb.com/api_token.php?command=request').then((resp) => resp.json());
-    localStorage.setItem('token', token);
-  }
-
   render() {
-    const { email, nome, disabled } = this.state;
+    const { email, name, disabled } = this.state;
     return (
       <main>
         <form>
           <input
-            data-testid="input-player-name"
+            data-testid="input-gravatar-email"
             type="email"
             id="email"
+            name="email"
             value={ email }
             onChange={ this.handleChange }
           />
           <input
-            data-testid="input-gravatar-email"
+            data-testid="input-player-name"
             type="text"
-            id="nome"
-            value={ nome }
+            id="name"
+            name="name"
+            value={ name }
             onChange={ this.handleChange }
           />
           <Link to="/game">
@@ -76,4 +95,12 @@ class Login extends React.Component {
   }
 }
 
-export default connect()(Login);
+const mapDispatchToProps = (dispatch) => ({
+  actionEnviaDadosUsuario: (state) => dispatch(enviaDadosUsuario(state)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
+
+Login.propTypes = {
+  actionEnviaDadosUsuario: PropTypes.func.isRequired,
+};
