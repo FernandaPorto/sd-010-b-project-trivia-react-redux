@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { enviaDadosUsuario } from '../actions';
 
 class Login extends React.Component {
   constructor(props) {
@@ -27,7 +28,6 @@ class Login extends React.Component {
 
   verifyEmailAndName() {
     const { email, nome } = this.state;
-    console.log(email, nome);
     if (email.length && nome.length) {
       this.setState({
         disabled: false,
@@ -36,8 +36,10 @@ class Login extends React.Component {
   }
 
   async requisitarAPI() {
+    const { actionEnviaDadosUsuario } = this.props;
     const { token } = await fetch('https://opentdb.com/api_token.php?command=request').then((resp) => resp.json());
     localStorage.setItem('token', token);
+    actionEnviaDadosUsuario(this.state);
   }
 
   render() {
@@ -76,4 +78,8 @@ class Login extends React.Component {
   }
 }
 
-export default connect()(Login);
+const mapDispatchToProps = (dispatch) => ({
+  actionEnviaDadosUsuario: (state) => dispatch(enviaDadosUsuario(state)),
+});
+
+export default connect(null, mapDispatchToProps)(Login);
