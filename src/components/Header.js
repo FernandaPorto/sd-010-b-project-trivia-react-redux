@@ -12,7 +12,7 @@ class Header extends Component {
 
   render() {
     const { name, email, pontos } = this.props;
-    console.log(name);
+    // console.log(name);
     const gravatar = `https://www.gravatar.com/avatar/${md5(email).toString()}`;
     return (
       <header>
