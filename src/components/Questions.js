@@ -43,6 +43,15 @@ class Questions extends Component {
     this.setState({ answers: newArr });
   }
 
+  calcAnswerValue() {
+    const { difficulty, updateScore } = this.props;
+    const { timer } = this.state;
+    const CONSTANT = 10;
+    const answerValue = CONSTANT + timer * difficulty;
+
+    updateScore(answerValue);
+  }
+
   renderAnswers() {
     const { correct_answer: correct, next, answers, timer } = this.state;
     return answers.map((answer, idx) => {
@@ -60,7 +69,12 @@ class Questions extends Component {
           key={ answer }
           type="button"
           data-testid={ checkIsCorrect }
-          onClick={ () => !next && this.setState({ next: true }) }
+          onClick={ () => {
+            if (!next) {
+              this.setState({ next: true });
+              calcAnswerValue();
+            }
+          } }
           disabled={ !timer }
         >
           {answer}
