@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { userLogin, triviaFetching } from '../actions/index';
 
@@ -66,38 +66,45 @@ class Login extends React.Component {
       return (<Redirect to="/game" />);
     }
     return (
-      <form>
-        <label htmlFor="inputName">
-          Nome
-          <input
-            type="text"
-            data-testid="input-player-name"
-            id="inputName"
-            onChange={ this.handleChange }
-            value={ name }
-            name="name"
-          />
-        </label>
-        <label htmlFor="inputEmail">
-          Email
-          <input
-            type="email"
-            data-testid="input-gravatar-email"
-            id="inputEmail"
-            onChange={ this.handleChange }
-            value={ email }
-            name="email"
-          />
-        </label>
-        <button
-          type="button"
-          disabled={ btnValidadeFields }
-          onClick={ () => this.handleClick(name, email) }
-          data-testid="btn-play"
-        >
-          JOGAR
-        </button>
-      </form>
+      <div>
+        <form>
+          <label htmlFor="inputName">
+            Nome
+            <input
+              type="text"
+              data-testid="input-player-name"
+              id="inputName"
+              onChange={ this.handleChange }
+              value={ name }
+              name="name"
+            />
+          </label>
+          <label htmlFor="inputEmail">
+            Email
+            <input
+              type="email"
+              data-testid="input-gravatar-email"
+              id="inputEmail"
+              onChange={ this.handleChange }
+              value={ email }
+              name="email"
+            />
+          </label>
+          <button
+            type="button"
+            disabled={ btnValidadeFields }
+            onClick={ () => this.handleClick(name, email) }
+            data-testid="btn-play"
+          >
+            JOGAR
+          </button>
+        </form>
+        <div>
+          <Link to="/settings">
+            <button type="button" data-testid="btn-settings">Configurações</button>
+          </Link>
+        </div>
+      </div>
     );
   }
 }
