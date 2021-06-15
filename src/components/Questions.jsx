@@ -19,7 +19,7 @@ class Questions extends React.Component {
     });
   }
 
-  createAnswers(quest, index, correctAnswer) {
+  createAnswers(quest, index, correctAnswer, disabled) {
     if (quest === correctAnswer) {
       return (
         <button
@@ -28,10 +28,14 @@ class Questions extends React.Component {
           onClick={ this.colorAnswer }
           data-testid="correct-answer"
           className="correct"
+          disabled={ disabled }
         >
           { quest }
         </button>
       );
+    }
+    if (disabled) {
+      this.colorAnswer();
     }
     return (
       <button
@@ -40,6 +44,7 @@ class Questions extends React.Component {
         onClick={ this.colorAnswer }
         data-testid={ `wrong-answer-${index}` }
         className="wrong"
+        disabled={ disabled }
       >
         { quest }
       </button>
@@ -53,6 +58,7 @@ class Questions extends React.Component {
          correct_answer: correctAnswer,
          incorrect_answers: incorrectAnswers,
        },
+    disabled,
     } = this.props;
 
     if (correctAnswer) {
@@ -70,7 +76,7 @@ class Questions extends React.Component {
             className="answers"
           >
             {allQuestions.map((quest,
-              index) => (this.createAnswers(quest, index, correctAnswer))) }
+              index) => (this.createAnswers(quest, index, correctAnswer, disabled))) }
           </section>
         </>
       );
@@ -82,6 +88,7 @@ Questions.propTypes = {
   result: PropTypes.shape({
     category: PropTypes.string,
   }),
+  disabled: PropTypes.bool,
 }.isRequired;
 
 Questions.default = {
