@@ -16,6 +16,7 @@ class Game extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.startTimer = this.startTimer.bind(this);
+    this.calculatePoints = this.calculatePoints.bind(this);
   }
 
   componentDidMount() {
@@ -47,7 +48,29 @@ class Game extends React.Component {
     }, ONE_SEC);
   }
 
-  handleClick() {
+  calculatePoints(target) {
+    const { apiResult: { results: { difficulty } } } = this.props;
+    const BASE_VALUE = 10;
+    const HARD_NUMBER = 3;
+    let difficultyValue = 0;
+    if (difficulty === 'easy') {
+      difficultyValue = 1;
+    } else if (difficulty === 'medium') {
+      difficultyValue = 2;
+    } else {
+      difficultyValue = HARD_NUMBER;
+    }
+    const currentTimeTagP = document.querySelector('#timer').innerHTML;
+    const currentTime = currentTimeTagP.split(' ')[2];
+    if (currentTime.startsWith('0')) {
+      const result = BASE_VALUE + ((Number(currentTime[1]) * difficultyValue));
+      return result;
+    }
+    const result = BASE_VALUE + (Number(currentTime) * difficultyValue);
+    return result;
+  }
+
+  handleClick({ target }) {
     const wrongAnswer = document.querySelectorAll('.answer-button-wrong');
     const correctAnswer = document.querySelector('.answer-button-correct');
     const buttonNext = document.querySelector('.next-button');
@@ -56,6 +79,8 @@ class Game extends React.Component {
       answer.classList.add('answer-wrong');
     });
     buttonNext.style.display = 'initial';
+
+    this.calculatePoints(target);
   }
 
   nextQuestion() {
@@ -103,7 +128,7 @@ class Game extends React.Component {
                 disabled={ buttonDisabled }
                 className={ answer === apiResult.results[indexQuestion].correct_answer
                   ? 'answer-button-correct' : 'answer-button-wrong' }
-                onClick={ this.handleClick }
+                onClick={ (evento) => this.handleClick(evento) }
               >
                 {answer}
               </button>))}
