@@ -8,18 +8,21 @@ export default class PerguntaCard extends Component {
     this.state = {
       correctAnswer: {},
       wrongAnswer: {},
-      isDisable: false,
-      // timer: 3,
+      timer: 30,
     };
     this.checkAnswer = this.checkAnswer.bind(this);
     this.handleNext = this.handleNext.bind(this);
+    this.setTimer = this.setTimer.bind(this);
   }
 
-  // https://stackoverflow.com/questions/7394748/whats-the-right-way-to-decode-a-string-that-has-special-html-entities-in-it
-  decodeHtml(html) {
-    const txt = document.createElement('textarea');
-    txt.innerHTML = html;
-    return txt.value;
+  setTimer() {
+    const ONE_SECOND = 1000;
+    this.timer = setInterval(() => {
+      this.setState((oldState) => ({
+        ...oldState,
+        timer: oldState.timer - 1,
+      }));
+    }, ONE_SECOND);
   }
 
   handleNext() {
@@ -28,8 +31,10 @@ export default class PerguntaCard extends Component {
       ...oldState,
       correctAnswer: {},
       wrongAnswer: {},
+      timer: 30,
     }));
     nextQuestion();
+    this.setTimer();
   }
 
   checkAnswer() {
@@ -37,33 +42,34 @@ export default class PerguntaCard extends Component {
       ...oldState,
       correctAnswer: { border: '3px solid rgb(6, 240, 15)' },
       wrongAnswer: { border: '3px solid rgb(255, 0, 0)' },
-      isDisable: true,
     }));
+    clearInterval(this.timer);
   }
 
-  componentDidMount() {
-    // this.setTimer();
+  decodeHtml(html) {
+    const txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
   }
 
-  // setTimer() {
-  //   const ONE_SECOND = 1000;
-  //   setInterval(() => {
-  //     this.setState((oldState) => ({
-  //       ...oldState,
-  //       timer: oldState.timer - 1,
-  //     }));
-  //     clearInterval(setTimer);
-  //   }, ONE_SECOND);
-  // }
+  renderTimer() {
+    const { timer } = this.state;
+    if (timer === 0) {
+      clearInterval(this.timer);
+    }
+    return (<Timer
+      timer={ timer }
+      setTimer={ this.setTimer }
+    />);
+  }
 
-  render() {
+  renderQuestion() {
     const { question, options } = this.props;
-    const { correctAnswer, wrongAnswer, isDisable } = this.state;
-
+    const { correctAnswer, wrongAnswer, timer } = this.state;
+    const disab = timer === 0;
     return (
       <>
         <blockquote data-testid="question-category">{question.category}</blockquote>
-        <Timer checkAnswer={ this.checkAnswer } />
         <h4 data-testid="question-text">{this.decodeHtml(question.question)}</h4>
         <ul>
           {
@@ -80,7 +86,7 @@ export default class PerguntaCard extends Component {
                   }
                   onClick={ this.checkAnswer }
                   className="optionsButtons"
-                  disabled={ isDisable }
+                  disabled={ disab }
                 >
                   {this.decodeHtml(opt)}
 
@@ -92,9 +98,20 @@ export default class PerguntaCard extends Component {
       </>
     );
   }
+
+  render() {
+    return (
+      <>
+        {this.renderQuestion()}
+        {this.renderTimer()}
+      </>
+    );
+  }
 }
 
 PerguntaCard.propTypes = PropTypes.shape({
   question: PropTypes.instanceOf(Object),
   nextQuestion: PropTypes.func,
 }).isRequired;
+
+// https://stackoverflow.com/questions/7394748/whats-the-right-way-to-decode-a-string-that-has-special-html-entities-in-it
