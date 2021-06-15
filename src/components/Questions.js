@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { getScore } from '../actions';
 
 class Questions extends Component {
   constructor(props) {
@@ -47,7 +48,12 @@ class Questions extends Component {
     const { difficulty, updateScore } = this.props;
     const { timer } = this.state;
     const CONSTANT = 10;
-    const answerValue = CONSTANT + timer * difficulty;
+    const difficultyValues = {
+      hard: 3,
+      medium: 2,
+      easy: 1,
+    };
+    const answerValue = CONSTANT + timer * difficultyValues[difficulty];
 
     updateScore(answerValue);
   }
@@ -72,9 +78,10 @@ class Questions extends Component {
           onClick={ () => {
             if (!next) {
               this.setState({ next: true });
-              calcAnswerValue();
+              this.calcAnswerValue();
             }
           } }
+
           disabled={ !timer }
         >
           {answer}
@@ -100,8 +107,8 @@ const mapStateToProps = ({ user: { triviaGame } }) => ({
   triviaGame,
 });
 
-// const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch) => ({
+  updateScore: (token) => dispatch(getScore(token)),
+});
 
-// });
-
-export default connect(mapStateToProps)(Questions);
+export default connect(mapStateToProps, mapDispatchToProps)(Questions);
