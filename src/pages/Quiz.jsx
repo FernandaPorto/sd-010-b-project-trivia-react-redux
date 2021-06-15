@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
+import Question from '../components/Question';
 
 class Quiz extends Component {
   constructor(props) {
@@ -21,11 +22,12 @@ class Quiz extends Component {
   // }
 
   render() {
-    const { questions } = this.state;
+    // const { questions } = this.state;
 
     return (
       <div>
         <Header />
+        <Question />
         {/* <h1>{questions[0].question}</h1> */}
       </div>
     );
@@ -42,9 +44,17 @@ class Quiz extends Component {
 //       'https://opentdb.com/api.php?amount=10&category=11&difficulty=medium',
 //     )
 //       .then((res) => res.json())
-//       .then((data) => {
-//         console.log(data);
-//         setQuestions(data.results);
+// //       .then((data) => {
+//           const questions = data.results.map((question) => 
+//           ({
+//             ...question,
+//             answers: [
+//               correct_answer,
+//               ...incorrect_answer
+//             ].sort(() => Math.Random())
+//           }))
+//       
+//         setQuestions(questions);
 //       });
 //   }, []);
 //   return (

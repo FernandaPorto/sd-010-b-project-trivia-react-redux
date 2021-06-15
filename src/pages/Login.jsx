@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import logo from '../trivia.png';
 import '../Login.css';
 import { loginPlayer } from '../actions/index';
-import { fetchToken, fetchQuestions } from '../services';
+import { fetchToken } from '../services';
 
 class Login extends Component {
   constructor(props) {
@@ -27,7 +27,7 @@ class Login extends Component {
 
   render() {
     const { name, email } = this.state;
-    const { Token, Player, questions } = this.props;
+    const { Token, Player } = this.props;
     const nameLength = 0;
     return (
       <div className="Login">
@@ -77,13 +77,8 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  // token: state.apiReducer.token,
-});
-
 const mapDispatchToProps = (dispatch) => ({
   Token: () => dispatch(fetchToken()),
-  // questions: (token) => dispatch(fetchQuestions(token)),
   Player: (name, email) => dispatch(loginPlayer(name, email)),
 });
 
@@ -92,4 +87,4 @@ Login.propTypes = {
   Player: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(Login);
