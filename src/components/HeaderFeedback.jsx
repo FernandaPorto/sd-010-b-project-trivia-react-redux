@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 class HeaderFeedback extends React.Component {
-
   convert() {
     const { email } = this.props;
     const converted = md5(email).toString();
@@ -26,7 +25,8 @@ class HeaderFeedback extends React.Component {
 
         <span data-testid="header-score">0</span>
       </header>
-    
+    );
+  }
 }
 
 HeaderFeedback.propTypes = {
