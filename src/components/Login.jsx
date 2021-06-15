@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { actionLogin } from '../redux/actions';
+import { actionLogin } from '../redux/actions/index';
 
 class Login extends Component {
   constructor(props) {
@@ -24,7 +24,6 @@ class Login extends Component {
     });
     const email = document.getElementById('email-input').value;
     const user = document.getElementById('name-input').value;
-    // o nome das variaveis "email" e "user" tem que ser igual ao que se encontra no objeto reducer/user
     login({ email, user });
   }
 
@@ -32,14 +31,11 @@ class Login extends Component {
     const emailInput = document.getElementById('email-input').value;
     const nameInput = document.getElementById('name-input').value;
     const ONE_CHAR = 1;
-    // Regex para email https://regexr.com/3e48o
     const validEmail = (/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/).test(emailInput);
     const validName = nameInput.length >= ONE_CHAR;
     if (validEmail && validName) {
-      // document.getElementById('formButton').disabled = false;
       this.setState({ isDisabled: false });
     } else {
-      // document.getElementById('formButton').disabled = true;
       this.setState({ isDisabled: true });
     }
   }

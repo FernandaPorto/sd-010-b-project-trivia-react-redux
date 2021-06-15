@@ -12,6 +12,7 @@ class Header extends Component {
       <header>
         <img data-testid="header-profile-picture" src={ avatar } alt="Avatar" />
         <h1 data-testid="header-player-name">{ user.user }</h1>
+
         <h2 data-testid="header-score">0</h2>
       </header>
     );
