@@ -19,7 +19,7 @@ class Game extends React.Component {
   handleClick() {
     const wrongAnswer = document.querySelectorAll('.answer-button-wrong');
     const correctAnswer = document.querySelector('.answer-button-correct');
-    const buttonNext = document.querySelector('#next-button');
+    const buttonNext = document.querySelector('.next-button');
     correctAnswer.classList.add('answer-correct');
     wrongAnswer.forEach((answer) => {
       answer.classList.add('answer-wrong');
@@ -39,7 +39,7 @@ class Game extends React.Component {
         answer.classList.remove('answer-wrong');
       });
     } else {
-      const buttonNext = document.querySelector('#next-button');
+      const buttonNext = document.querySelector('.next-button');
       buttonNext.style.display = 'none';
     }
   }
@@ -90,7 +90,7 @@ class Game extends React.Component {
         <button
           data-testid="btn-next"
           type="button"
-          id="next-button"
+          className="next-button"
           onClick={ this.nextQuestion }
         >
           Próxima
