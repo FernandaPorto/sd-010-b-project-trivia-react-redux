@@ -1,7 +1,9 @@
+import { LOGIN } from '../actions/gameAction';
+
 export const INITIAL_STATE = {
   name: '',
   assertions: '',
-  score: '',
+  score: 0,
   gravatarEmail: '',
 };
 
@@ -10,11 +12,15 @@ export const INITIAL_STATE = {
 // score é a pontuação
 // gravatarEmail é o email da pessoa que joga
 
-const playerReducer = (state = INITIAL_STATE, action) => {
+const player = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+  case LOGIN:
+    return {
+      ...state,
+      ...action.payload };
   default:
     return state;
   }
 };
 
-export default playerReducer;
+export default player;

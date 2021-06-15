@@ -4,14 +4,14 @@ import logo from '../trivia.png';
 import '../App.css';
 
 import Form from '../components/Form';
-import Setting from '../components/Setting';
+import SettingBtn from '../components/SettingBtn';
 
 export default class Login extends React.Component {
   render() {
     return (
       <header className="App-header">
         <img src={ logo } className="App-logo" alt="logo" />
-        <Setting />
+        <SettingBtn />
         <p>
           SUA VEZ
         </p>

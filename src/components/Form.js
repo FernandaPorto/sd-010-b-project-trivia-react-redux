@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-export default class Form extends Component {
+import { loginAction } from '../actions/gameAction';
+
+class Form extends Component {
   constructor() {
     super();
+
+    this.apiRequest = this.apiRequest.bind(this);
 
     this.state = {
       active: true,
@@ -39,8 +45,11 @@ export default class Form extends Component {
   }
 
   async apiRequest() {
+    const { login } = this.props;
+    const { email, nome } = this.state;
     const result = await fetch('https://opentdb.com/api_token.php?command=request').then((resolve) => resolve.json());
     localStorage.setItem('token', result.token);
+    login(nome, email);
   }
 
   render() {
@@ -81,3 +90,13 @@ export default class Form extends Component {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  login: (name, email) => dispatch(loginAction(name, email)),
+});
+
+export default connect(null, mapDispatchToProps)(Form);
+
+Form.propTypes = {
+  login: PropTypes.func.isRequired,
+};
