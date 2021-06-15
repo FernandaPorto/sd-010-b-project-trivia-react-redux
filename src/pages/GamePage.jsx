@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import Header from '../components/Header';
 
-export default class GamePage extends Component {
+class GamePage extends Component {
   render() {
     return (
       <div>
-        Oi
+        <Header />
       </div>
     );
   }
 }
+export default GamePage;

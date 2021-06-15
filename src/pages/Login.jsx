@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { loginAction } from '../actions';
 import fetchURL from '../services/API';
 
-export default class loginPage extends Component {
+class LoginPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -19,7 +22,18 @@ export default class loginPage extends Component {
     this.settingsButton = this.settingsButton.bind(this);
   }
 
+  // componentDidMount() {
+  //   const { name, emailAdress } = this.state;
+  //   const { userPlay } = this.props;
+  //   console.log(name, emailAdress);
+  //   userPlay(name, emailAdress);
+  // }
+
   onClick() {
+    const { name, emailAdress } = this.state;
+    const { userPlay } = this.props;
+    console.log(name, emailAdress);
+    userPlay(name, emailAdress);
     // const { emailAdress, name } = this.state;
     // const { firstDispatch } = this.props;
     // firstDispatch(emailAdress, passwordData);
@@ -53,10 +67,10 @@ export default class loginPage extends Component {
 
   render() {
     const { name, emailAdress, buttonEnabler, shouldRedirect } = this.state;
+    const { emailPlay } = this.props;
     if (shouldRedirect) {
       return <Redirect to="/gamepage" />;
     }
-
     return (
       <div>
         <label htmlFor="name">
@@ -66,6 +80,7 @@ export default class loginPage extends Component {
             data-testid="input-player-name"
             placeholder="insert your name"
             value={ name }
+            onInput={ emailPlay }
             onChange={ ({ target: { value } }) => {
               this.setState({ name: value });
               this.validationFields();
@@ -90,7 +105,6 @@ export default class loginPage extends Component {
         </label>
         <button
           type="button"
-          id="btn-submit"
           disabled={ buttonEnabler }
           data-testid="btn-play"
           onClick={ () => this.onClick() }
@@ -102,3 +116,16 @@ export default class loginPage extends Component {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  userPlay: (name, email) => dispatch(loginAction({ name, email })),
+});
+
+LoginPage.propTypes = ({
+  userPlay: PropTypes.func.isRequired,
+  emailPlay: PropTypes.shape({
+    email: PropTypes.string,
+  }).isRequired,
+});
+
+export default connect(null, mapDispatchToProps)(LoginPage);
