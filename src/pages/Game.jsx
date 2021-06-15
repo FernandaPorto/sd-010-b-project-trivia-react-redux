@@ -7,6 +7,7 @@ class Game extends React.Component {
     super(props);
     this.state = {
       results: [],
+      numQuestion: 0,
     };
   }
 
@@ -22,12 +23,21 @@ class Game extends React.Component {
   }
 
   render() {
-    const { results } = this.state;
-    // console.log(results);
+    const { results, numQuestion } = this.state;
     return (
       <>
         <Header />
-        <Question result={ results } />
+        {results.map(
+          (result, index) => numQuestion === index && (
+            <Question result={ result } key={ numQuestion } />
+          ),
+        )}
+        {/* {results.map(
+          (result, index) =>{
+            if(            numQuestion === index){
+              return  <Question result={result} key={result.category} />
+            }}
+        )} */}
       </>
     );
   }
