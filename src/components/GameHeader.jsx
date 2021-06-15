@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 class GameHeader extends React.Component {
   render() {
-    const { name, imgPath, score } = this.props;
+    const { name, gravatarEmail, score } = this.props;
 
     return (
       <header>
@@ -11,7 +11,7 @@ class GameHeader extends React.Component {
           { name }
         </span>
         <img
-          src={ imgPath }
+          src={ gravatarEmail }
           alt="Foto de perfil do usuário"
           data-testid="header-profile-picture"
         />
@@ -25,7 +25,7 @@ class GameHeader extends React.Component {
 
 GameHeader.propTypes = {
   name: PropTypes.string.isRequired,
-  imgPath: PropTypes.string.isRequired,
+  gravatarEmail: PropTypes.string.isRequired,
   score: PropTypes.string.isRequired,
 };
 

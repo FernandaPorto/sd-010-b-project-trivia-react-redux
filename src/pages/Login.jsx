@@ -59,10 +59,10 @@ class Login extends React.Component {
 
   requestGravatar(name, email) {
     const emailHash = md5(email).toString();
-    const imgPath = `https://www.gravatar.com/avatar/${emailHash}`;
+    const gravatarEmail = `https://www.gravatar.com/avatar/${emailHash}`;
     return {
       name,
-      imgPath,
+      gravatarEmail,
     };
   }
 
