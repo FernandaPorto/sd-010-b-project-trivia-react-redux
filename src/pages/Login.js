@@ -22,9 +22,13 @@ class Login extends Component {
   submit() {
     const { nome, email } = this.state;
     const hash = md5(email).toString();
-    localStorage.player = JSON.stringify({
-      name: nome,
-      gravatarEmail: `https://www.gravatar.com/avatar/${hash}`,
+    localStorage.state = JSON.stringify({
+      player: {
+        name: nome,
+        gravatarEmail: `https://www.gravatar.com/avatar/${hash}`,
+        score: 0,
+        assertions: 0,
+      },
     });
     this.setState({ redirect: true });
   }
