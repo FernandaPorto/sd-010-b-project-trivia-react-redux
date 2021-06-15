@@ -4,6 +4,7 @@ import { Redirect } from 'react-router';
 import PropTypes from 'prop-types';
 
 import Questions from '../components/Questions';
+import GameHeader from '../components/GameHeader';
 
 const NUMBER_FIVE = 5;
 
@@ -13,6 +14,7 @@ class Game extends React.Component {
     this.state = {
       count: 0,
     };
+
     this.getQuestions = this.getQuestions.bind(this);
     this.handleNext = this.handleNext.bind(this);
   }
@@ -39,62 +41,37 @@ class Game extends React.Component {
   render() {
     const { results, count } = this.state;
     const { name, imgPath, score } = this.props;
-    
+
     if (count === NUMBER_FIVE) {
       return (<Redirect to="/" />);
     }
 
     if (results) {
       return (
-        <div>
-         <section>
-          <header>
-          <span data-testid="header-player-name">
-            { name }
-          </span>
-          <img
-            src={ imgPath }
-            alt="Foto de perfil do usuário"
-            data-testid="header-profile-picture"
-          />
-          <span data-testid="header-score">
-            { score }
-          </span>
-          </header>
-          <div>
-          <Questions result={ results[count] } />
-          <button
-            type="button"
-            onClick={ () => this.handleNext() }
-          >
-            Next
-          </button>
-          </div>
+        <section>
+          <GameHeader name={ name } imgPath={ imgPath } score={ score } />
+          <main>
+            <Questions result={ results[count] } />
+            <button
+              type="button"
+              onClick={ () => this.handleNext() }
+            >
+              Next
+            </button>
+          </main>
         </section>
-       </div>
+
       );
     }
-    
+
     return (
       <section>
-        <header>
-          <span data-testid="header-player-name">
-            { name }
-          </span>
-          <img
-            src={ imgPath }
-            alt="Foto de perfil do usuário"
-            data-testid="header-profile-picture"
-          />
-          <span data-testid="header-score">
-            { score }
-          </span>
-        </header>
+        <GameHeader name={ name } imgPath={ imgPath } score={ score } />
+        <main>
+          Loading...
+        </main>
       </section>
-      <main>
-        Loading...
-      </main>
-      );
+    );
   }
 }
 

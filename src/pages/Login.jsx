@@ -20,7 +20,7 @@ class Login extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSettings = this.handleSettings.bind(this);
-    this.handlePlay = this.handlePlay.bind(this);
+    this.handlePlay = this.handleStart.bind(this);
   }
 
   verifyEmail(email) {
@@ -52,17 +52,26 @@ class Login extends React.Component {
     });
   }
 
-  async handlePlay() {
+  async requestToken() {
     const { token } = await (await fetch('https://opentdb.com/api_token.php?command=request')).json();
     localStorage.setItem('token', token);
-    const { userLogin } = this.props;
-    const { name, email } = this.state;
+  }
+
+  requestGravatar(name, email) {
     const emailHash = md5(email).toString();
     const imgPath = `https://www.gravatar.com/avatar/${emailHash}`;
-    const nameAndImgPath = {
+    return {
       name,
       imgPath,
     };
+  }
+
+  async handleStart(userLogin) {
+    const { name, email } = this.state;
+
+    await this.requestToken();
+    const nameAndImgPath = this.requestGravatar(name, email);
+
     userLogin(nameAndImgPath);
     this.setState({
       redirect: true,
@@ -76,6 +85,7 @@ class Login extends React.Component {
   }
 
   render() {
+    const { userLogin } = this.props;
     const { disabled, redirect, settings } = this.state;
     if (redirect) {
       return (
@@ -109,7 +119,7 @@ class Login extends React.Component {
           type="button"
           data-testid="btn-play"
           disabled={ disabled }
-          onClick={ this.handlePlay }
+          onClick={ () => this.handleStart(userLogin) }
         >
           Jogar
         </button>
@@ -126,7 +136,7 @@ class Login extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  userLogin: (email) => dispatch(playerLogin(email)),
+  userLogin: (userInfo) => dispatch(playerLogin(userInfo)),
 });
 
 Login.propTypes = {
