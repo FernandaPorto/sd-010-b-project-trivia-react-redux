@@ -1,4 +1,5 @@
 export const LOGIN = 'login';
+export const GRAVATAR = 'gravatar';
 
 export default function loginAction({ name, email }) {
   return ({
@@ -6,6 +7,14 @@ export default function loginAction({ name, email }) {
     payload: { name, email },
   });
 }
+
+export function gravatarAction(gravatar) {
+  return ({
+    type: GRAVATAR,
+    gravatar,
+  });
+}
+
 // export function currencyNow(currency) {
 //     return async (dispatch) => {
 //       const resultAPI = await getAPICurrency();
