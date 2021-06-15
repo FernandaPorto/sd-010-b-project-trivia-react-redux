@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { loginActionCreator } from '../redux/actions';
+import SettingsButton from '../components/SettingsButton';
 
 class Login extends React.Component {
   constructor(props) {
@@ -32,29 +33,34 @@ class Login extends React.Component {
   render() {
     const { name, email } = this.state;
     return (
-      <div>
-        <input
-          type="text"
-          data-testid="input-player-name"
-          name="name"
-          placeholder=""
-          onChange={ this.handleChange }
-        />
-        <input
-          type="email"
-          data-testid="input-gravatar-email"
-          name="email"
-          placeholder=""
-          onChange={ this.handleChange }
-        />
-        <input
-          type="button"
-          value="Jogar"
-          disabled={ !(name && email) }
-          data-testid="btn-play"
-          onClick={ this.handleClick }
-        />
-      </div>
+      <section>
+        <div>
+          <input
+            type="text"
+            data-testid="input-player-name"
+            name="name"
+            placeholder=""
+            onChange={ this.handleChange }
+          />
+          <input
+            type="email"
+            data-testid="input-gravatar-email"
+            name="email"
+            placeholder=""
+            onChange={ this.handleChange }
+          />
+          <input
+            type="button"
+            value="Jogar"
+            disabled={ !(name && email) }
+            data-testid="btn-play"
+            onClick={ this.handleClick }
+          />
+        </div>
+        <div>
+          <SettingsButton />
+        </div>
+      </section>
     );
   }
 }
