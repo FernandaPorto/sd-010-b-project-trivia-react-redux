@@ -73,12 +73,15 @@ class Questions extends Component {
         <button
           style={ { border: `${next || !timer ? checkColor : ''}` } }
           key={ answer }
+          id={ answer }
           type="button"
           data-testid={ checkIsCorrect }
-          onClick={ () => {
+          onClick={ (event) => {
             if (!next) {
               this.setState({ next: true });
-              this.calcAnswerValue();
+            }
+            if (event.target.id === 'correct-answer') {
+              calcAnswerValue();
             }
           } }
 

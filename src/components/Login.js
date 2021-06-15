@@ -31,6 +31,10 @@ class Login extends Component {
     localStorage.token = token;
   }
 
+  localstorageSaveUserInfo() {
+    const { username, email } = this.props;
+  }
+
   render() {
     const { start } = this.state;
     const { username, email, changeEmail, changeUsername } = this.props;
