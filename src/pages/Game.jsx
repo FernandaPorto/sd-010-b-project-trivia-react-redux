@@ -102,7 +102,6 @@ class Game extends Component {
   renderQuestion() {
     const { results, indexQuestion } = this.state;
     const question = results[indexQuestion];
-    console.log(question);
     if (question !== undefined) {
       return (
         <div>
@@ -159,6 +158,10 @@ Game.propTypes = {
   nome: PropTypes.string.isRequired,
   gravatar: PropTypes.string.isRequired,
   token: PropTypes.string.isRequired,
+  resetColors: PropTypes.func.isRequired,
+  showColors: PropTypes.func.isRequired,
+  wrong: PropTypes.string.isRequired,
+  rigth: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

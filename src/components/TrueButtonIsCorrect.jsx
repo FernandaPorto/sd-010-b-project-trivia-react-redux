@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { changeStyles } from '../actions/index';
 
 class TrueButtonIsCorrect extends Component {
@@ -40,5 +41,11 @@ const mapStateToProps = (state) => ({
   rigth: state.gameReducer.styles.rigth,
   wrong: state.gameReducer.styles.wrong,
 });
+
+TrueButtonIsCorrect.propTypes = {
+  rigth: PropTypes.string.isRequired,
+  wrong: PropTypes.string.isRequired,
+  showColors: PropTypes.func.isRequired,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(TrueButtonIsCorrect);
