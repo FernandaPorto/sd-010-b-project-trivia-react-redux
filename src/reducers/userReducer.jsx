@@ -1,3 +1,9 @@
+import {
+  LOGIN_PLAYER,
+  SCORE_PLAYER,
+  ASSERTIONS_PLAYER,
+} from '../actions/index';
+
 const INITIAL_STATE = {
   name: '',
   gravatarEmail: '',
@@ -7,18 +13,18 @@ const INITIAL_STATE = {
 
 function userReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
-  case 'LOGIN':
+  case LOGIN_PLAYER:
     return {
       ...state,
       name: action.name,
       gravatarEmail: action.email,
     };
-  case 'SCORE':
+  case SCORE_PLAYER:
     return {
       ...state,
       score: action.score,
     };
-  case 'ASSERTIONS':
+  case ASSERTIONS_PLAYER:
     return {
       ...state,
       assertions: action.assertions,
