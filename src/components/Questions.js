@@ -14,6 +14,8 @@ class Questions extends Component {
     this.renderAnswers = this.renderAnswers.bind(this);
   }
 
+  // REFERÊNCIA https://github.com/tryber/sd-10b-live-lectures/blob/lecture/13.1/cronometer/src/components/Cronometer.jsx
+
   componentDidMount() {
     const second = 1000;
     this.randAnswers();
