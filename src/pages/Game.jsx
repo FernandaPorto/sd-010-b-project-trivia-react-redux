@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Header from '../components/Header';
 import Perguntas from '../components/Perguntas';
-import { connect } from 'react-redux'
-import fetchPerguntas from '../redux/actions/perguntasThunk'
-import * as fetToken from './Api';
+import fetchPerguntas from '../redux/actions/perguntasThunk';
+// import * as fetToken from './Api';
 
 class Game extends Component {
   componentDidMount() {
-    const { pedePerguntas } = this.props
-    fetToken.getToken().then((response) => {
-      localStorage.setItem('token', `${response.token}`)
-       pedePerguntas(response.token);
-    })}
+    const { pedePerguntas } = this.props;
+    const token = localStorage.getItem('token');
+    console.log(token);
+    pedePerguntas(token);
+  }
 
   render() {
     return (
@@ -24,7 +24,7 @@ class Game extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
- pedePerguntas: (token) => dispatch(fetchPerguntas(token))
-})
- 
+  pedePerguntas: (token) => dispatch(fetchPerguntas(token)),
+});
+
 export default connect(null, mapDispatchToProps)(Game);

@@ -1,13 +1,23 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 class Perguntas extends Component {
   render() {
+    const { perguntas } = this.props;
     return (
       <div>
-        <h2 data-testid='question-category'>perguntas</h2>
+        {console.log(perguntas)}
       </div>
-    )
+    );
   }
 }
 
-export default Perguntas
+const mapDispatchToProps = () => ({
+  // pedePerguntas: (token) => dispatch(fetchPerguntas(token)),
+});
+
+const mapStateToProps = (state) => ({
+  perguntas: state.perguntas.perguntas.results,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Perguntas);

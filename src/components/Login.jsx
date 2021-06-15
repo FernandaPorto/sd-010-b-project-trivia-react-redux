@@ -4,6 +4,7 @@ import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { actionLogin } from '../redux/actions/index';
+import * as fetToken from './Api';
 
 class Login extends Component {
   constructor(props) {
@@ -19,6 +20,9 @@ class Login extends Component {
 
   btnPlay() {
     const { login } = this.props;
+    fetToken.getToken().then((response) => {
+      localStorage.setItem('token', `${response.token}`);
+    });
     this.setState({
       loginTrue: true,
     });
