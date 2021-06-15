@@ -1,57 +1,90 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.red-border {
-  border: 1px solid red;
-}
-
-.green-border {
-  border: 1px solid green;
-}
-
-@media ( prefers-reduced-motion : no-preference ) {
-
-  .App-logo {
-    animation: shake infinite 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-  }
-}
-
-.App-header {
+/* Login page  */
+.login-section {
   align-items: center;
-  background-color: #282c34;
-  color: white;
+  background-image: url('https://img.freepik.com/free-vector/abstract-colorful-minimalist-clean-background_173783-3.jpg?size=626&ext=jpg');
+  background-size: cover;
   display: flex;
   flex-direction: column;
-  font-size: calc(10px + 2vmin);
+  height: 100vh;
   justify-content: center;
-  min-height: 100vh;
+  margin: auto;
 }
 
-.App-link {
-  color: #61dafb;
+.login-section form {
+  width: 400px;
 }
 
-@keyframes shake {
+.login-section img {
+  margin-bottom: 20px;
+  width: 500px;
+}
 
-  10%, 90% {
-    transform: translate3d(-1px, 0, 0);
-  }
+.login-section input, .login-section button, .login-section a {
+  box-sizing: border-box;
+  height: 50px;
+  margin-top: 5px;
+  width: 400px;
+}
 
-  20%, 80% {
-    transform: translate3d(2px, 0, 0);
-  }
+.login-section input {
+  font-size: 20px;
+}
 
-  30%, 50%, 70% {
-    transform: translate3d(-4px, 0, 0);
-  }
+.play-btn:enabled {
+  background-color: rgb(0, 255, 115);
+  border-color: transparent;
+  border-radius: 10px;
+  color: darkgreen;
+  font-size: 20px;
+}
 
-  40%, 60% {
-    transform: translate3d(4px, 0, 0);
-  }
+.play-btn:disabled {
+  border-radius: 10px;
+  font-size: 20px;
+}
+
+.config-btn:enabled {
+  background-color: rgb(255, 230, 0);
+  border-color: transparent;
+  border-radius: 10px;
+  color: rgb(148, 96, 0);
+  font-size: 20px;
+}
+
+.play-btn:hover, .config-btn:hover {
+  cursor: pointer;
+}
+
+/* Config-page */
+.config-section {
+  background-color: rgb(238, 238, 238);
+  border-radius: 10px;
+  box-shadow: 0 5px 5px darkgreen;
+  height: 500px;
+  margin: 20px auto;
+  padding-top: 10px;
+  text-align: center;
+  width: 400px;
+}
+
+/* Header component */
+.header-component {
+  background-color: lightgray;
+  box-shadow: 10px 5px 5px black;
+  display: flex;
+  font-size: 28px;
+  justify-content: space-evenly;
+  margin-bottom: 30px;
+  padding: 20px 0;
+}
+
+.header-component img {
+  border-radius: 10px;
+}
+
+/* Jogo page */
+.questions-section {
+  font-size: 20px;
+  margin: auto;
+  width: fit-content;
 }

@@ -6,7 +6,6 @@ class Jogo extends React.Component {
     super(props);
     this.fetchQuestions = this.fetchQuestions.bind(this);
     this.answers = this.answers.bind(this);
-    this.shuffleArray = this.shuffleArray.bind(this);
     this.state = {
       perguntas: {},
       randomAnswer: [],
@@ -27,23 +26,34 @@ class Jogo extends React.Component {
   }
 
   answers() {
-    const { perguntas } = this.state;
-    const allAnswers = [...perguntas.results[0].incorrect_answers, perguntas.results[0].correct_answer];
-    this.shuffleArray(allAnswers);
+    const { perguntas: { results } } = this.state;
+    const allAnswers = [...results[0].incorrect_answers];
+    const numberOfQuestions = 5;
+    const randomPosition = Math.floor(Math.random() * numberOfQuestions);
+    allAnswers.splice(randomPosition, 0, results[0].correct_answer);
+    this.setState({
+      randomAnswer: allAnswers,
+    });
   }
 
-  shuffleArray(arr) {
-    // Loop em todos os elementos
-    for (let i = arr.length - 1; i > 0; i -= 1) {
-      // Escolhendo elemento aleatório
-      const j = Math.floor(Math.random() * (i + 1));
-      // Reposicionando elemento
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    // Retornando array com aleatoriedade
-    this.setState({ randomAnswer: arr });
-  }
-  // https://www.horadecodar.com.br/2021/05/10/como-embaralhar-um-array-em-javascript-shuffle/
+  // answers() {
+  //   const { perguntas } = this.state;
+  //   const allAnswers = [...perguntas.results[0].incorrect_answers, perguntas.results[0].correct_answer];
+  //   this.shuffleArray(allAnswers);
+  // }
+
+  // shuffleArray(arr) {
+  //   // Loop em todos os elementos
+  //   for (let i = arr.length - 1; i > 0; i -= 1) {
+  //     // Escolhendo elemento aleatório
+  //     const j = Math.floor(Math.random() * (i + 1));
+  //     // Reposicionando elemento
+  //     [arr[i], arr[j]] = [arr[j], arr[i]];
+  //   }
+  //   // Retornando array com aleatoriedade
+  //   this.setState({ randomAnswer: arr });
+  // }
+  // // https://www.horadecodar.com.br/2021/05/10/como-embaralhar-um-array-em-javascript-shuffle/
 
   render() {
     const { perguntas: { results }, randomAnswer } = this.state;
@@ -51,7 +61,7 @@ class Jogo extends React.Component {
     return (
       <section>
         <Header />
-        <ol>
+        <ol className="questions-section">
           {!results ? <p>carregando</p> : results.map((question, index) => (
             <li key={ index }>
               <div>

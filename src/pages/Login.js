@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login as loginAction } from '../redux/actions';
+import trivia from '../trivia.png';
 
 class Login extends React.Component {
   constructor() {
@@ -55,10 +56,8 @@ class Login extends React.Component {
 
   render() {
     return (
-      <section>
-        <Link to="/config">
-          <button type="button" data-testid="btn-settings">Configurações</button>
-        </Link>
+      <section className="login-section">
+        <img src={ trivia } alt="trivia" />
         <form>
           <label htmlFor="name">
             <input
@@ -66,6 +65,7 @@ class Login extends React.Component {
               type="text"
               data-testid="input-player-name"
               onChange={ (e) => this.setState({ name: e.target.value }) }
+              placeholder="Nome"
             />
           </label>
           <label htmlFor="email">
@@ -74,6 +74,7 @@ class Login extends React.Component {
               type="text"
               data-testid="input-gravatar-email"
               onChange={ (e) => this.setState({ email: e.target.value }) }
+              placeholder="Email"
             />
           </label>
           <Link to="/jogo">
@@ -82,11 +83,21 @@ class Login extends React.Component {
               type="submit"
               disabled={ !this.buttonAvaliable() }
               onClick={ () => this.fetchToken() }
+              className="play-btn"
             >
               Jogar
             </button>
           </Link>
         </form>
+        <Link to="/config">
+          <button
+            type="button"
+            data-testid="btn-settings"
+            className="config-btn"
+          >
+            Configurações
+          </button>
+        </Link>
       </section>
     );
   }
