@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+
 import player from './playerReducer';
 import apiReducer from './apiReducer';
 

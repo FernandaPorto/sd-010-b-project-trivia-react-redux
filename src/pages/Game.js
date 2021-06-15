@@ -8,7 +8,7 @@ class Game extends React.Component {
     const { count, name, email } = this.props;
     const hashEmail = md5(email).toString();
     return (
-      <>
+      <header>
         <img
           src={ `https://www.gravatar.com/avatar/${hashEmail}` }
           alt="foto"
@@ -24,15 +24,15 @@ class Game extends React.Component {
         >
           { count }
         </span>
-      </>
+      </header>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  count: state.score,
-  name: state.name,
-  email: state.gravatarEmail,
+  count: state.player.score,
+  name: state.player.name,
+  email: state.player.gravatarEmail,
 });
 
 export default connect(mapStateToProps)(Game);
