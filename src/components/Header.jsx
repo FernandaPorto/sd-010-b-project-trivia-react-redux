@@ -13,6 +13,7 @@ class Header extends Component {
         <div>
           <h1 data-testid="header-player-name">{playerName}</h1>
         </div>
+        {/* store será obtido da store ou do localStorage */}
         <div data-testid="header-score">{score}</div>
       </header>
     );
