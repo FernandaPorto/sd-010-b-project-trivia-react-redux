@@ -2,12 +2,14 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import Login from './pages/Login';
+import React from 'react'
+
 import Game from './pages/Game';
 import Feedback from './pages/Feedback';
 import Ranking from './pages/Ranking';
 import Settings from './pages/Settings';
 
-export default function App() {
+export default class App extends React.Component {
   return (
     <div className="App">
       <Switch>
