@@ -11,7 +11,7 @@ class Login extends React.Component {
 
     this.state = {
       email: '',
-      nome: '',
+      name: '',
       disabled: true,
     };
 
@@ -29,13 +29,13 @@ class Login extends React.Component {
   }
 
   async requisitarAPI() {
-    const { nome } = this.state;
+    const { name } = this.state;
     const { actionEnviaDadosUsuario } = this.props;
     const { token } = await fetch('https://opentdb.com/api_token.php?command=request').then((resp) => resp.json());
     localStorage.setItem('token', token);
     const gravatar = await this.getGravatar();
     actionEnviaDadosUsuario({
-      nome,
+      name,
       email: gravatar,
     });
   }
@@ -49,8 +49,8 @@ class Login extends React.Component {
   }
 
   verifyEmailAndName() {
-    const { email, nome } = this.state;
-    if (email.length > 1 && nome.length > 1) {
+    const { email, name } = this.state;
+    if (email.length > 1 && name.length > 1) {
       this.setState({
         disabled: false,
       });
@@ -58,12 +58,12 @@ class Login extends React.Component {
   }
 
   render() {
-    const { email, nome, disabled } = this.state;
+    const { email, name, disabled } = this.state;
     return (
       <main>
         <form>
           <input
-            data-testid="input-player-name"
+            data-testid="input-gravatar-email"
             type="email"
             id="email"
             name="email"
@@ -71,11 +71,11 @@ class Login extends React.Component {
             onChange={ this.handleChange }
           />
           <input
-            data-testid="input-gravatar-email"
+            data-testid="input-player-name"
             type="text"
-            id="nome"
-            name="nome"
-            value={ nome }
+            id="name"
+            name="name"
+            value={ name }
             onChange={ this.handleChange }
           />
           <Link to="/game">
