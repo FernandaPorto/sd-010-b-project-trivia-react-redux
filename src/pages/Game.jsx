@@ -16,7 +16,7 @@ class Game extends Component {
     return (
       <div>
         <Header />
-        <Perguntas/>
+        <Perguntas />
       </div>
     );
   }

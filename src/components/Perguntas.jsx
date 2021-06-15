@@ -5,14 +5,19 @@ class Perguntas extends Component {
   render() {
     const { perguntas } = this.props;
     if (perguntas) {
-      console.log(perguntas[0])
+      const { question, correct_answer, incorrect_answers } = perguntas[0];
+      console.log(perguntas[0]);
       return (
         <div>
-        {/* {perguntas.find((pergunta) => pergunta === 0)} */}
-      </div>
-    );
-  }
-    return <p>Loading</p>
+          <p>{question}</p>
+          <p>{correct_answer}</p>
+          <p>{incorrect_answers[0]}</p>
+          <p>{incorrect_answers[1]}</p>
+          <p>{incorrect_answers[2]}</p>
+        </div>
+      );
+    }
+    return <p>Loading</p>;
   }
 }
 
