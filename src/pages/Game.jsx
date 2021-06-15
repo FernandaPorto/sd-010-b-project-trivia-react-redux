@@ -10,9 +10,12 @@ class Game extends Component {
     this.state = {
       results: [],
       indexQuestion: 0,
+      right: '',
+      wrong: '',
     };
     this.saveQuestionsInState = this.saveQuestionsInState.bind(this);
     this.renderQuestion = this.renderQuestion.bind(this);
+    this.trueOrFalseAnswers = this.renderQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -36,6 +39,10 @@ class Game extends Component {
   }
 
   nextIndex() {
+    this.setState({
+      right: 'initial',
+      wrong: 'initial',
+    });
     const { indexQuestion, results } = this.state;
     if (indexQuestion === results.length - 1) {
       return false;
@@ -46,18 +53,42 @@ class Game extends Component {
     }));
   }
 
+  changeStyle() {
+    this.setState({
+      right: '3px solid rgb(6, 240, 15)',
+      wrong: '3px solid rgb(255, 0, 0)',
+    });
+  }
+
   multipleAnswers({
     correct_answer: correctAnswer,
     incorrect_answers: incorrectAnswers,
   }) {
+    const { wrong, right } = this.state;
     const rightAnswer = (
-      <button type="button" data-testid="correct-answer" key="4">
+      <button
+        type="button"
+        data-testid="correct-answer"
+        key="4"
+        style={ {
+          border: right,
+        } }
+        onClick={ () => this.changeStyle() }
+      >
         { correctAnswer }
       </button>
     );
     const wrongAnswers = (
       incorrectAnswers.map((answer, index) => (
-        <button type="button" data-testid={ `wrong-answer-${index}` } key={ index }>
+        <button
+          type="button"
+          data-testid={ `wrong-answer-${index}` }
+          key={ index }
+          style={ {
+            border: wrong,
+          } }
+          onClick={ () => this.changeStyle() }
+        >
           { answer }
         </button>
       ))
@@ -73,8 +104,77 @@ class Game extends Component {
     );
   }
 
-  trueOrFalseAnswers() {
-    return (<p>aaaaaaaaa</p>);
+  trueButtonIsCorrect() {
+    const { right, wrong } = this.state;
+    let buttonTrue = '';
+    let buttonFalse = '';
+    buttonTrue = (
+      <button
+        type="button"
+        data-testid="correct-answer"
+        style={ {
+          border: right,
+        } }
+        onClick={ () => this.changeStyle() }
+      >
+        True
+      </button>
+    );
+    buttonFalse = (
+      <button
+        type="button"
+        data-testid="wrong-answer"
+        style={ {
+          border: wrong,
+        } }
+        onClick={ () => this.changeStyle() }
+      >
+        False
+      </button>
+    );
+    return ([buttonTrue, buttonFalse]);
+  }
+
+  falseButtonIsRight() {
+    const { right, wrong } = this.state;
+    let buttonTrue = '';
+    let buttonFalse = '';
+    buttonTrue = (
+      <button
+        type="button"
+        data-testid="wrong-answer"
+        style={ {
+          border: wrong,
+        } }
+        onClick={ () => this.changeStyle() }
+      >
+        True
+      </button>
+    );
+    buttonFalse = (
+      <button
+        type="button"
+        data-testid="correct-answer"
+        style={ {
+          border: right,
+        } }
+        onClick={ () => this.changeStyle() }
+      >
+        False
+      </button>
+    );
+    return ([buttonTrue, buttonFalse]);
+  }
+
+  trueOrFalseAnswers({
+    correct_answer: correctAnswer,
+  }) {
+    return (
+      <div>
+        {correctAnswer === 'True'
+          ? this.trueButtonIsCorrect() : this.falseButtonIsRight() }
+      </div>
+    );
   }
 
   renderQuestion() {
@@ -86,7 +186,7 @@ class Game extends Component {
           <h3 data-testid="question-category">{ question.category }</h3>
           <h4 data-testid="question-text">{ question.question }</h4>
           { question.type === 'multiple'
-            ? this.multipleAnswers(question) : this.trueOrFalseAnswers() }
+            ? this.multipleAnswers(question) : this.trueOrFalseAnswers(question) }
         </div>
       );
     }
