@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
@@ -22,20 +23,20 @@ class Game extends Component {
       score: 0,
       assertions: 0,
       showNextButton: false,
+      redirectToFeedback: false,
     };
     this.saveQuestionsInState = this.saveQuestionsInState.bind(this);
     this.renderQuestion = this.renderQuestion.bind(this);
+    this.allowShowNextButton = this.allowShowNextButton.bind(this);
   }
 
   componentDidMount() {
     const { saveGravatar, email, token } = this.props;
     const hashEmail = md5(email).toString();
     const URL = `https://www.gravatar.com/avatar/${hashEmail}`;
-    fetch(URL)
-      .then(({ url }) => saveGravatar(url));
+    fetch(URL).then(({ url }) => saveGravatar(url));
     const urlTrivia = `https://opentdb.com/api.php?amount=5&token=${token}`;
-    fetch(urlTrivia)
-      .then((data) => data.json())
+    fetch(urlTrivia).then((data) => data.json())
       .then((questions) => this.saveQuestionsInState(questions));
   }
 
@@ -62,13 +63,17 @@ class Game extends Component {
     this.setState({ results });
   }
 
+  allowShowNextButton() {
+    this.setState({ showNextButton: true });
+  }
+
   nextIndex() {
     const { resetColors, restartCount } = this.props;
     resetColors();
     restartCount();
     const { indexQuestion, results } = this.state;
     if (indexQuestion === results.length - 1) {
-      return false;
+      this.setState({ redirectToFeedback: true });
     }
     this.setState((oldState) => ({ indexQuestion: oldState.indexQuestion + 1 }));
     this.setState({ showNextButton: false });
@@ -78,13 +83,13 @@ class Game extends Component {
     const { showColors } = this.props;
     showColors();
     this.calculatePoints();
-    this.setState({ showNextButton: true });
+    this.allowShowNextButton();
   }
 
   selectedWrongAnswer() {
     const { showColors } = this.props;
     showColors();
-    this.setState({ showNextButton: true });
+    this.allowShowNextButton();
   }
 
   multipleAnswers({
@@ -136,7 +141,9 @@ class Game extends Component {
   trueOrFalseAnswers({ correct_answer: correctAnswer }) {
     return (
       <div>
-        { correctAnswer === 'True' ? <TrueButtonIsCorrect /> : <FalseButtonIsCorrect /> }
+        { correctAnswer === 'True'
+          ? <TrueButtonIsCorrect allowButton={ () => this.allowShowNextButton() } />
+          : <FalseButtonIsCorrect allowButton={ () => this.allowShowNextButton() } /> }
       </div>
     );
   }
@@ -160,7 +167,6 @@ class Game extends Component {
   renderNextButton() {
     const { actualCount } = this.props;
     const { showNextButton } = this.state;
-    console.log(actualCount);
     if (actualCount === 0 || showNextButton === true) {
       return (
         <button
@@ -176,7 +182,7 @@ class Game extends Component {
 
   render() {
     const { nome, gravatar } = this.props;
-    const { results, score, assertions } = this.state;
+    const { results, score, assertions, redirectToFeedback } = this.state;
     return (
       <div>
         <header>
@@ -193,6 +199,7 @@ class Game extends Component {
           { results !== [] && this.renderQuestion() }
         </main>
         { this.renderNextButton() }
+        { redirectToFeedback && <Redirect to="/feedback" />}
       </div>
     );
   }
