@@ -56,8 +56,9 @@ class Game extends Component {
 
   handleLocalStorage(score) {
     const player = JSON.parse(localStorage.getItem('state'));
-    player.assertions += 1;
-    player.score += score;
+    player.player.assertions += 1;
+    player.player.score += score;
+    console.log(player);
     localStorage.setItem('state', JSON.stringify(player));
   }
 

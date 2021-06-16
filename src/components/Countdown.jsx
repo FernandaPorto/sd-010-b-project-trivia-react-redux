@@ -9,7 +9,7 @@ class Countdown extends Component {
   }
 
   countdown() {
-    const ONE_SECOND = 1000;
+    const ONE_SECOND = 100000;
     this.myInterval = setInterval(() => {
       const { decreaseCount, actualCount, disabledButtons, showColors } = this.props;
       decreaseCount();
