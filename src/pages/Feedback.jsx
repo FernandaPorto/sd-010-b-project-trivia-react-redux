@@ -7,7 +7,7 @@ class Feedback extends Component {
     return (
       // <HeaderFeedback /> aqui sera importado o header de feedback
       <div>
-        <button type="button">
+        <button type="button" data-testid="btn-play-again">
           <Link to="/">Jogar novamente</Link>
         </button>
       </div>
