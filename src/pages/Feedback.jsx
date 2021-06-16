@@ -20,7 +20,7 @@ class Feedback extends React.Component {
           <span data-testid="feedback-total-score">{score}</span>
         </div>
         <button type="button" data-testid="btn-play-again">
-          <Link to="/">Jogar novamente</Link>
+          <Link to="/game">Jogar novamente</Link>
         </button>
         <button type="button" data-testid="btn-ranking">
           <Link to="/ranking">Ver Ranking</Link>
