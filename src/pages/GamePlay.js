@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import HeaderGame from '../components/HeaderGame';
 import Answers from '../components/Answers';
+import Stopwatch from '../components/Stopwatch';
 
 class GamePlay extends React.Component {
   constructor() {
@@ -10,13 +11,22 @@ class GamePlay extends React.Component {
 
     this.state = {
       questionIndex: 0,
+      timer: 30,
     };
+
+    this.runTimer = this.runTimer.bind(this);
+  }
+
+  runTimer() {
+    const { timer: timerS } = this.state;
+    if (timerS > 0) {
+      this.setState({ timer: timerS - 1 });
+    }
   }
 
   render() {
-    const { questionIndex } = this.state;
+    const { questionIndex, timer } = this.state;
     const { questions } = this.props;
-    // console.log('GamePlay', questions[0].category);
 
     return (
       <div>
@@ -38,6 +48,9 @@ class GamePlay extends React.Component {
             correct={ questions[questionIndex].correct_answer }
             incorrect={ questions[questionIndex].incorrect_answers }
           /> }
+        </div>
+        <div>
+          <Stopwatch runTimer={ this.runTimer } timer={ timer } />
         </div>
       </div>
     );
