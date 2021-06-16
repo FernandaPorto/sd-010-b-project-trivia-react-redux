@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class Questions extends Component {
   constructor(props) {
@@ -95,8 +96,8 @@ const mapStateToProps = ({ user: { triviaGame } }) => ({
   triviaGame,
 });
 
-// const mapDispatchToProps = (dispatch) => ({
-
-// });
+Questions.propTypes = {
+  next: PropTypes.bool,
+}.isRequired;
 
 export default connect(mapStateToProps)(Questions);
