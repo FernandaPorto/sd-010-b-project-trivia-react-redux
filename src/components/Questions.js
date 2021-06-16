@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { getScore } from '../actions';
 
 class Questions extends Component {
   constructor(props) {
@@ -52,6 +53,24 @@ class Questions extends Component {
     this.setState({ answers: newArr });
   }
 
+  calcAnswerValue() {
+    const { difficulty, updateScore } = this.props;
+    const { timer } = this.state;
+    const CONSTANT = 10;
+    const difficultyValues = {
+      hard: 3,
+      medium: 2,
+      easy: 1,
+    };
+    const answerValue = CONSTANT + timer * difficultyValues[difficulty];
+
+    updateScore(answerValue);
+
+    const state = JSON.parse(localStorage.getItem('state'));
+    state.player.score += answerValue;
+    localStorage.setItem('state', JSON.stringify(state));
+  }
+
   renderAnswers() {
     const { correct_answer: correct, answers, timer, nextAnswer } = this.state;
     const { next } = this.props;
@@ -70,7 +89,12 @@ class Questions extends Component {
           key={ answer }
           type="button"
           data-testid={ checkIsCorrect }
-          onClick={ () => !next && nextAnswer(true) }
+          onClick={ () => {
+            if (!next) nextAnswer(true);
+            if (answer === correct) {
+              this.calcAnswerValue();
+            }
+          } }
           disabled={ !timer }
         >
           {answer}
@@ -96,8 +120,14 @@ const mapStateToProps = ({ user: { triviaGame } }) => ({
   triviaGame,
 });
 
-Questions.propTypes = {
-  next: PropTypes.bool,
-}.isRequired;
+const mapDispatchToProps = (dispatch) => ({
+  updateScore: (token) => dispatch(getScore(token)),
+});
 
-export default connect(mapStateToProps)(Questions);
+Questions.propTypes = {
+  difficulty: PropTypes.string.isRequired,
+  updateScore: PropTypes.func.isRequired,
+  next: PropTypes.bool.isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Questions);
