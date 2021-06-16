@@ -8,7 +8,6 @@ import './App.css';
 export default function App() {
   return (
     <div>
-      <h1>ko</h1>
       <Switch>
         <Route exact path="/" component={ Login } />
         <Route path="/settings" component={ Settings } />

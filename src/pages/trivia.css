@@ -1,0 +1,12 @@
+.correct_answer {
+  border: solid 3.00625px rgb(6, 240, 15);
+  /* border-width: 3px; */
+}
+
+.incorrect_answer {
+  /* border-color: 3px solid rgb(255, 0, 0) ; */
+  border: solid 3.00625px rgb(255, 0, 0);
+  /* border-width: 3px; */
+      
+}
+
