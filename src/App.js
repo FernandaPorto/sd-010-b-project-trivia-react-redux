@@ -4,6 +4,7 @@ import './App.css';
 import Configurations from './pages/Configurations';
 import Game from './pages/Game';
 import Home from './pages/Home';
+import Feedback from './pages/Feedback';
 
 export default function App() {
   return (
@@ -11,6 +12,7 @@ export default function App() {
       <Route exact path="/" component={ Home } />
       <Route exact path="/game" component={ Game } />
       {/* <Route path="/game/:id" render={ (props) => <Game { ...props } /> } /> */}
+      <Route exact path="/feedback" component={ Feedback } />
       <Route exact path="/config" component={ Configurations } />
     </Switch>
 
