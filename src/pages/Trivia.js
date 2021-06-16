@@ -7,26 +7,33 @@ import { fetchApiQuestions, fetchAPI } from '../actions/index';
 import './trivia.css';
 
 class Trivia extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       questions: [],
       correct: '',
       reject: '',
       seconds: 30,
       disable: false,
+      pontosState: 0,
+      next: true,
     };
+
     this.renderQuestion = this.renderQuestion.bind(this);
     this.colorAnswers = this.colorAnswers.bind(this);
     this.update = this.update.bind(this);
+    this.scoreTrivia = this.scoreTrivia.bind(this);
+    this.storange = this.storange.bind(this);
+    this.teste = this.teste.bind(this);
   }
 
   componentDidMount() {
+    // const { pontosState } = this.state;
+    // localStorage.setItem('player', JSON.stringify(pontosState));
     this.getQuestions();
     const ONE_SECOND = 1000; // 1 second in miliseconds
     const { seconds } = this.state;
     this.cronometerInterval = setInterval(() => {
-      console.log('interval rodando');
       this.setState((state) => {
         if (seconds) {
           return { seconds: state.seconds - 1 };
@@ -35,7 +42,7 @@ class Trivia extends React.Component {
     }, ONE_SECOND);
   }
 
-  componentDidUpdate(_prevProps, prevState) {
+  componentDidUpdate(_props, prevState) {
     this.update(prevState);
   }
 
@@ -66,8 +73,56 @@ class Trivia extends React.Component {
     }
   }
 
+  storange() {
+    const { pontosState } = this.state;
+    const { name, email } = this.props;
+
+    const player = {
+      name,
+      // assertions: '',
+      score: pontosState,
+      gravatarEmail: email,
+    };
+
+    localStorage.setItem('player', JSON.stringify(player));
+  }
+
+  scoreTrivia() {
+    const { questions, seconds } = this.state;
+    const { difficulty } = questions[0];
+    const levelQuestion = difficulty;
+    const pointsHard = 3;
+    const pointsMedium = 2;
+    const pointsEasy = 1;
+    const somaPontos = 10;
+    let pontosRender = 0;
+    console.log(pontosRender);
+    if (levelQuestion === 'hard') {
+      pontosRender = somaPontos + (seconds * pointsHard);
+    } else if (levelQuestion === 'medium') {
+      pontosRender = somaPontos + (seconds * pointsMedium);
+    } else if (levelQuestion === 'easy') {
+      pontosRender = somaPontos + (seconds * pointsEasy);
+    } else {
+      return pontosRender;
+    }
+    this.setState((state) => ({ pontosState: state.pontosState + pontosRender }));
+  }
+
   colorAnswers() {
-    this.setState({ correct: 'correct_answer', reject: 'incorrect_answer' });
+    this.setState((prevState) => ({ ...prevState,
+      correct: 'correct_answer',
+      reject: 'incorrect_answer',
+      next: false }));
+    // const { pontosState } = this.state;
+    // localStorage.setItem('player', JSON.stringify(pontosState));
+    // console.log(pontosState);
+  }
+
+  async teste() {
+    await this.scoreTrivia();
+    this.colorAnswers();
+    this.storange();
   }
 
   renderQuestion() {
@@ -84,10 +139,13 @@ class Trivia extends React.Component {
               disabled={ disable }
               className={ correct }
               data-testid="correct-answer"
-              onClick={ this.colorAnswers }
+              onClick={ async () => {
+                await this.scoreTrivia();
+                this.storange();
+                this.colorAnswers();
+              } }
               type="button"
             >
-
               {question.correct_answer}
 
             </button>
@@ -95,7 +153,7 @@ class Trivia extends React.Component {
               <button
                 disabled={ disable }
                 data-testid={ `wrong-answer-${index}` }
-                onClick={ this.colorAnswers }
+                onClick={ this.teste }
                 key={ incorrect }
                 type="button"
                 className={ reject }
@@ -111,14 +169,25 @@ class Trivia extends React.Component {
   }
 
   render() {
-    const { seconds } = this.state;
+    const { seconds, pontosState, next } = this.state;
+    console.log(pontosState);
+    // console.log(seconds);
     return (
       <div>
         <Header />
         <h3>
           {seconds}
+          {' '}
+          {pontosState}
         </h3>
         {this.renderQuestion()}
+        <button
+          type="button"
+          data-testid="btn-next"
+          hidden={ next }
+        >
+          Próxima
+        </button>
       </div>
     );
   }
@@ -127,14 +196,20 @@ class Trivia extends React.Component {
 Trivia.propTypes = {
   apiQuestions: PropTypes.func.isRequired,
   thunkToken: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
 };
+
+const mapStateToProps = (state) => ({
+  name: state.reducerName.name,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   apiQuestions: (token, perguntas) => dispatch(fetchApiQuestions(token, perguntas)),
   thunkToken: () => dispatch(fetchAPI()),
 });
 
-export default connect(null, mapDispatchToProps)(Trivia);
-// errei o nome do commit
+export default connect(mapStateToProps, mapDispatchToProps)(Trivia);
+// errei o nome do commitS
 
 /* para criação do cronômetro, utilizamos como referência o exercício do bloco 13.1 feito pelo instrutor Ícaro <https://github1s.com/tryber/sd-10b-live-lectures/tree/lecture/13.1> */
