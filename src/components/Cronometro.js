@@ -14,10 +14,14 @@ class Cronometro extends Component {
   componentDidMount() {
     const SECOND = 1000;
     this.interval = setInterval(() => {
-      this.setState((state) => ({
-        seconds: state.seconds - 1,
-      }));
-    }, SECOND);
+      const { restart } = this.props;
+      if (restart) {
+        this.setState((state) => ({
+          seconds: state.seconds - 1,
+        }));
+      }
+    },
+    SECOND);
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -33,7 +37,10 @@ class Cronometro extends Component {
   }
 
   update() {
-    clearInterval(this.interval);
+    const SECOND = 30;
+    this.setState({
+      seconds: SECOND,
+    });
   }
 
   render() {
@@ -49,6 +56,7 @@ class Cronometro extends Component {
 Cronometro.propTypes = {
   funcao: PropTypes.func.isRequired,
   funcaoStop: PropTypes.func.isRequired,
+  restart: PropTypes.number.isRequired,
   stop: PropTypes.bool.isRequired,
 };
 

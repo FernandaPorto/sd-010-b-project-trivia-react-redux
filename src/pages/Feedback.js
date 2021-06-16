@@ -7,6 +7,7 @@ class Feedback extends Component {
     const { player: { score } } = getStorage();
     return (
       <div>
+        <p data-testid="feedback-text">Feedback</p>
         <Header pontuacao={ score } />
       </div>
     );
