@@ -89,7 +89,7 @@
 /* Jogo page */
 .game-section {
   align-items: center;
-  background-image: url('https://files.wallpaperpass.com/2019/10/low%20poly%20wallpaper%20052%20-%201920x1080.jpg');
+  /* background-image: url('https://files.wallpaperpass.com/2019/10/low%20poly%20wallpaper%20052%20-%201920x1080.jpg'); */
   background-size: 100%;
   display: flex;
   flex-direction: column;
@@ -121,7 +121,7 @@
 /* PerguntaAtual component */
 .questions-section {
   align-items: center;
-  color: white;
+  color: black;
   display: flex;
   flex-direction: column;
   margin-top: 30px;
