@@ -12,12 +12,14 @@ class PerguntaAtual extends React.Component {
   paintAnswerCorrect() {
     const correct = document.getElementById('correct');
     correct.style.border = '3px solid rgb(6, 240, 15)';
+    correct.style.boxShadow = '0px 0px 30px green';
   }
 
   paintAnswerIncorrect() {
     const branco = document.getElementsByClassName('incorrect');
     for (let key = 0; key < branco.length; key += 1) {
       branco[key].style.border = '3px solid rgb(255, 0, 0)';
+      branco[key].style.boxShadow = '0px 0px 30px green';
     }
   }
 
