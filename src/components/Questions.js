@@ -71,7 +71,7 @@ class Questions extends Component {
     this.setState((prevState) => ({
       isToggleOn: !prevState.isToggleOn,
     }));
-    this.setState({ value: true, next: true, difficulty, answer });
+    this.setState({ value: true, next: true, difficulty, answer, isValid: true });
   }
 
   render() {
@@ -109,7 +109,7 @@ class Questions extends Component {
           <button
             type="button"
             data-testid="btn-next"
-            // onClick={ () =>  }
+            // onClick={ }
           >
             Próxima
           </button>) : null }
