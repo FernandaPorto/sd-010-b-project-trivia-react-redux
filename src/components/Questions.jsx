@@ -7,6 +7,7 @@ class Questions extends React.Component {
 
     this.colorAnswer = this.colorAnswer.bind(this);
     this.createAnswers = this.createAnswers.bind(this);
+    this.handleAnswerClick = this.handleAnswerClick.bind(this);
   }
 
   colorAnswer() {
@@ -19,13 +20,18 @@ class Questions extends React.Component {
     });
   }
 
-  createAnswers(quest, index, correctAnswer, disabled) {
+  handleAnswerClick(stopTimer) {
+    this.colorAnswer();
+    stopTimer();
+  }
+
+  createAnswers({ quest, index, correctAnswer, disabled, stopTimer }) {
     if (quest === correctAnswer) {
       return (
         <button
           key={ index }
           type="button"
-          onClick={ this.colorAnswer }
+          onClick={ () => this.handleAnswerClick(stopTimer) }
           data-testid="correct-answer"
           className="correct"
           disabled={ disabled }
@@ -41,7 +47,7 @@ class Questions extends React.Component {
       <button
         key={ index }
         type="button"
-        onClick={ this.colorAnswer }
+        onClick={ () => this.handleAnswerClick(stopTimer) }
         data-testid={ `wrong-answer-${index}` }
         className="wrong"
         disabled={ disabled }
@@ -59,6 +65,7 @@ class Questions extends React.Component {
          incorrect_answers: incorrectAnswers,
        },
     disabled,
+    stopTimer,
     } = this.props;
 
     if (correctAnswer) {
@@ -75,8 +82,16 @@ class Questions extends React.Component {
             role="link"
             className="answers"
           >
-            {allQuestions.map((quest,
-              index) => (this.createAnswers(quest, index, correctAnswer, disabled))) }
+            { allQuestions.map((quest, index) => {
+              const info = {
+                quest,
+                index,
+                correctAnswer,
+                disabled,
+                stopTimer,
+              };
+              return this.createAnswers(info);
+            }) }
           </section>
         </>
       );
@@ -89,6 +104,7 @@ Questions.propTypes = {
     category: PropTypes.string,
   }),
   disabled: PropTypes.bool,
+  stopTimer: PropTypes.func,
 }.isRequired;
 
 Questions.default = {
