@@ -1,4 +1,4 @@
-import { ADD_PLAYER_NAME } from '../actions';
+import { ADD_PLAYER_NAME } from '../actions/actionsType';
 
 const INITIAL_STATE = {
   name: '',

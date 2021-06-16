@@ -1,4 +1,4 @@
-import { RECEIVE_QUESTIONS, RECEIVE_TOKEN } from '../actions';
+import { RECEIVE_QUESTIONS, RECEIVE_TOKEN } from '../actions/actionsType';
 
 const initialState = {
   token: '',
