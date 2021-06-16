@@ -21,7 +21,7 @@ class Question extends Component {
   generateRandomAnswers(correctAnswer, incorrectAnswer) {
     const range = 20;
     const getRandom = () => Math.ceil(Math.random() * range);
-    if (inc.length < 2) {
+    if (incorrectAnswer.length < 2) {
       return [
         { id: getRandom(), answer: correctAnswer, dataTestId: 'correct-answer' },
         { id: getRandom(), answer: incorrectAnswer, dataTestId: 'wrong-answer-0' },
