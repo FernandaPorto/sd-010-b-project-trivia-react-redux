@@ -56,6 +56,7 @@ class Question extends Component {
 
 const mapStateToProps = (state) => ({
   questions: state.trivia.questions,
+  token: state.trivia.token,
 });
 
 const mapDispatchToProps = (dispatch) => ({
