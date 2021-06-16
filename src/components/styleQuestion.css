@@ -1,7 +1,7 @@
-#correctAnswer {
+.correctButton {
   border: 3px solid rgb(6, 240, 15);
 }
 
-.wrongAnswer {
+.wrongButton {
   border: 3px solid rgb(255, 0, 0);
 }

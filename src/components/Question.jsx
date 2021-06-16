@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './styleQuestion.css';
 // comentario p add
 
 class Question extends React.Component {
@@ -17,7 +18,7 @@ class Question extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({ arrRandom: this.handleResult() });
+    this.handleResult();
   }
 
   handleButtonColor() {
@@ -32,7 +33,7 @@ class Question extends React.Component {
     const arrAnswers = [result.correct_answer, ...result.incorrect_answers];
     const half = 0.5;
     const shuffleArray = (array) => array.sort(() => Math.random() - half);
-    return shuffleArray(arrAnswers);
+    this.setState({ arrRandom: shuffleArray(arrAnswers) });
   }
 
   insertDataTestId(answer, index) {
@@ -43,16 +44,17 @@ class Question extends React.Component {
     return `wrong-answer-${index}`;
   }
 
-  insertClass(answer) {
+  insertClass(event) {
     const { result } = this.props;
-    if (answer === result.correct_answer) {
-      return 'correctButton';
+    if (event.target.value === result.correct_answer) {
+      event.target.className = 'correctButton';
+    } else {
+      event.target.className = 'wrongButton';
     }
-    return 'wrongButton';
   }
 
   render() {
-    const { result } = this.props;
+    const { props: { result }, state: { arrRandom } } = this;
     return (
       <>
         <span data-testid="question-category">
@@ -69,13 +71,13 @@ class Question extends React.Component {
 
         <br />
 
-        { this.state.arrRandom.map((answer, index) => (
+        { arrRandom.map((answer, index) => (
           <button
             type="button"
             key={ answer }
+            value={ answer }
             data-testid={ this.insertDataTestId(answer, index) }
-            className={ this.insertClass(answer) }
-            onClick={ this.handleButtonColor }
+            onClick={ this.insertClass }
           >
             { answer }
           </button>
