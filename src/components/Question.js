@@ -40,10 +40,11 @@ class Question extends Component {
           <div data-testid="question-category">{ category }</div>
           <div data-testid="question-text">{ question }</div>
           <div>
-            <button type="button" data-testid="correct-answer">
-              { correct }
-            </button>
-            <button type="button" data-testid="wrong-answer">2</button>
+            {randonAnswers.map(({ id, answer, dataTestId }) => (
+              <button type="button" data-testid={ `${dataTestId}` } key={ id }>
+                {answer}
+              </button>
+            ))}
           </div>
         </section>
       );
