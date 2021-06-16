@@ -1,9 +1,13 @@
 import React from 'react';
+import Trivia from '../components/TriviaGame';
 
 class Game extends React.Component {
   render() {
     return (
-      <h1>Game</h1>
+      <div>
+        <h1>Game</h1>
+        <Trivia />
+      </div>
     );
   }
 }
