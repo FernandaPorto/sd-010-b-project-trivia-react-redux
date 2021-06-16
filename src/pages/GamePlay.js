@@ -16,7 +16,6 @@ class GamePlay extends React.Component {
   render() {
     const { questionIndex } = this.state;
     const { questions } = this.props;
-    // console.log('GamePlay', questions[0].category);
 
     return (
       <div>
