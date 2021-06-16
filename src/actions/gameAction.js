@@ -1,6 +1,7 @@
 export const SCORE = 'SCORE';
 export const LOGIN = 'LOGIN';
 export const REQUEST = 'REQUEST';
+export const REVEALED = 'REVEALED';
 
 const gameAction = (point) => ({
   type: SCORE,
@@ -17,6 +18,13 @@ export const loginAction = (name, email) => ({
   payload: {
     name,
     gravatarEmail: email,
+  },
+});
+
+export const revealedAction = (result) => ({
+  type: REVEALED,
+  payload: {
+    isRevealed: result,
   },
 });
 

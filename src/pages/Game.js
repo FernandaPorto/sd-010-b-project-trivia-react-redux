@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
+
 import Question from '../components/Question';
 import Answer from '../components/Answer';
+import Timer from '../components/Timer';
 
 class Game extends React.Component {
   constructor(props) {
@@ -42,6 +44,7 @@ class Game extends React.Component {
           <div>
             <Question number={ number } results={ results } />
             <Answer number={ number } results={ results } />
+            <Timer />
           </div>
         )}
       </div>

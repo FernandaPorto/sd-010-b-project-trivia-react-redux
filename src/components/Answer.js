@@ -1,24 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+import { revealedAction } from '../actions/gameAction';
 
 class Answer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isRevealed: false,
-    };
     this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick() {
-    this.setState({
-      isRevealed: true,
-    });
+    const { dispatchRevealed } = this.props;
+    dispatchRevealed(true);
+    // if (acertou) {
+    //   count += 1
+    // } else {
+    //   coint -= 1
+    // }
   }
 
   render() {
-    const { number, results } = this.props;
-    const { isRevealed } = this.state;
+    const { number, results, isRevealed } = this.props;
     const incorrectAnswerStyles = { border: '3px solid rgb(255, 0, 0)' };
     const correctAnswerStyles = { border: '3px solid rgb(6, 240, 15)' };
     if (!results[number]) {
@@ -32,6 +35,7 @@ class Answer extends React.Component {
             data-testid={ `wrong-answer-${idx}` }
             type="button"
             key={ idx }
+            disabled={ isRevealed }
             style={ isRevealed ? incorrectAnswerStyles : null }
           >
             {answer}
@@ -41,6 +45,7 @@ class Answer extends React.Component {
           onClick={ this.handleClick }
           type="button"
           data-testid="correct-answer"
+          disabled={ isRevealed }
           style={ isRevealed ? correctAnswerStyles : null }
         >
           {results[number].correct_answer}
@@ -53,6 +58,16 @@ class Answer extends React.Component {
 Answer.propTypes = {
   number: PropTypes.number.isRequired,
   results: PropTypes.arrayOf(PropTypes.object).isRequired,
+  dispatchRevealed: PropTypes.func.isRequired,
+  isRevealed: PropTypes.bool.isRequired,
 };
 
-export default Answer;
+const mapStateToProps = (state) => ({
+  isRevealed: state.game.isRevealed,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  dispatchRevealed: (payload) => dispatch(revealedAction(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Answer);
