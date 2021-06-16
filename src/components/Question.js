@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import { receiveToken, requestQuestions } from '../actions';
+import '../style/question.css';
 
 class Question extends Component {
   constructor() {
@@ -10,6 +11,7 @@ class Question extends Component {
       index: 0,
     };
     this.generateRandomAnswers = this.generateRandomAnswers.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -35,6 +37,13 @@ class Question extends Component {
     ].sort((a, b) => +(a.id > b.id) || +(a.id === b.id) - 1); // https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/sort
   }
 
+  handleClick() {
+    const correctButton = document.querySelector('button[data-testid="correct-answer"]');
+    const wrongButton = document.querySelectorAll('button[data-testid*="wrong-answer"]');
+    correctButton.classList.add('correct');
+    wrongButton.forEach((button) => button.classList.add('incorrect'));
+  }
+
   render() {
     const { questions } = this.props;
     const { index } = this.state;
@@ -52,7 +61,12 @@ class Question extends Component {
           <div data-testid="question-text">{ question }</div>
           <div>
             {randonAnswers.map(({ id, answer, dataTestId }) => (
-              <button type="button" data-testid={ `${dataTestId}` } key={ id }>
+              <button
+                onClick={ this.handleClick }
+                type="button"
+                data-testid={ `${dataTestId}` }
+                key={ id }
+              >
                 {answer}
               </button>
             ))}
