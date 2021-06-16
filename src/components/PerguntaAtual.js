@@ -4,6 +4,26 @@ class PerguntaAtual extends React.Component {
   constructor() {
     super();
     this.renderAnswers = this.renderAnswers.bind(this);
+    this.paintAnswerCorrect = this.paintAnswerCorrect.bind(this);
+    this.paintAnswerIncorrect = this.paintAnswerIncorrect.bind(this);
+    this.paintAll = this.paintAll.bind(this);
+  }
+
+  paintAnswerCorrect() {
+    const correct = document.getElementById('correct');
+    correct.style.border = '3px solid rgb(6, 240, 15)';
+  }
+
+  paintAnswerIncorrect() {
+    const branco = document.getElementsByClassName('incorrect');
+    for (let key = 0; key < branco.length; key += 1) {
+      branco[key].style.border = '3px solid rgb(255, 0, 0)';
+    }
+  }
+
+  paintAll() {
+    this.paintAnswerIncorrect();
+    this.paintAnswerCorrect();
   }
 
   renderAnswers() {
@@ -12,9 +32,9 @@ class PerguntaAtual extends React.Component {
     return allAnswers.map((answer, i) => {
       if (answer !== correctAnswer) {
         index += 1;
-        return (<button type="button" data-testid={ `wrong-answer-${index - 1}` } key={index + 10 } >{ answer }</button>);
+        return (<button type="button" className="incorrect" onClick={ () => this.paintAll() } data-testid={ `wrong-answer-${index - 1}` } key={ index + 10 }>{ answer }</button>);
       }
-      return (<button key={ i } type="button" data-testid="correct-answer">{ answer }</button>);
+      return (<button key={ i } type="button" id="correct" onClick={ () => this.paintAll() } data-testid="correct-answer">{ answer }</button>);
     });
   }
 
