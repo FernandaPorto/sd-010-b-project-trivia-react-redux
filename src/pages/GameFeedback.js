@@ -7,7 +7,7 @@ class GameFeedback extends Component {
   render() {
     const { hits, score, history } = this.props;
     const MIN_HITS = 3;
-
+    console.log(hits);
     return (
       <div>
         <GameHeader />
@@ -61,8 +61,8 @@ GameFeedback.propTypes = {
 
 // state.user.triviaGame
 const mapStateToProps = ({ user: { triviaGame: { score, hits } } }) => ({
-  userScore: score,
-  userHits: hits,
+  score,
+  hits,
 });
 
 export default connect(mapStateToProps)(GameFeedback);

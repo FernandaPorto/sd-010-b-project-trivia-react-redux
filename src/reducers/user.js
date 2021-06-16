@@ -28,11 +28,13 @@ const user = (state = INITIAL_STATE, action) => {
       token: action.token,
     };
   case UPDATE_SCORE:
+    console.log(state.triviaGame.hits);
     return {
       ...state,
       triviaGame: {
         ...state.triviaGame,
-        score: state.triviaGame.score + action.payload.score,
+        score: state.triviaGame.score + action.score,
+        hits: state.triviaGame.hits + 1,
       },
     };
   default:

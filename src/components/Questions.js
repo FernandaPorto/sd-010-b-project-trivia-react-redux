@@ -118,6 +118,7 @@ class Questions extends Component {
 
 const mapStateToProps = ({ user: { triviaGame } }) => ({
   triviaGame,
+  score: triviaGame.score,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -27,9 +27,7 @@ export const inputEmail = (email) => ({
 
 export const getScore = (score) => ({
   type: UPDATE_SCORE,
-  payload: {
-    score,
-  },
+  score,
 });
 
 export const getTrivia = (token) => {
