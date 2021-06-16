@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { changeStyles } from '../actions/index';
 
 class FalseButtonIsCorrect extends Component {
-
   handleClick() {
     const { showColors, allowButton } = this.props;
     showColors();
@@ -58,6 +57,7 @@ FalseButtonIsCorrect.propTypes = {
   wrong: PropTypes.string.isRequired,
   showColors: PropTypes.func.isRequired,
   disableButtons: PropTypes.bool.isRequired,
+  allowButton: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FalseButtonIsCorrect);

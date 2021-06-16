@@ -11,7 +11,7 @@ class TrueButtonIsCorrect extends Component {
   }
 
   render() {
-    const { rigth, wrong, showColors, disableButtons } = this.props;
+    const { rigth, wrong, disableButtons } = this.props;
     return (
       <div>
         <button
@@ -56,6 +56,7 @@ TrueButtonIsCorrect.propTypes = {
   wrong: PropTypes.string.isRequired,
   showColors: PropTypes.func.isRequired,
   disableButtons: PropTypes.bool.isRequired,
+  allowButton: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TrueButtonIsCorrect);
