@@ -1,3 +1,9 @@
+import {
+  REQUEST_API,
+  GET_TOKEN,
+  GET_QUESTIONS,
+} from '../actions';
+
 const INITIAL_STATE = {
   token: '',
   questions: [],
@@ -5,6 +11,10 @@ const INITIAL_STATE = {
 
 function apiReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
+  case REQUEST_API:
+    return {
+      ...state,
+    };
   case GET_TOKEN:
     return {
       ...state,
