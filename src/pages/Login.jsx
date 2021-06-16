@@ -1,12 +1,12 @@
 import React from 'react';
+import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router';
 import md5 from 'crypto-js/md5';
 
+import { fetchToken } from '../services/api';
 import { loginActionCreator } from '../redux/actions';
 import SettingsButton from '../components/SettingsButton';
-import fetchData from '../services/api';
 
 class Login extends React.Component {
   constructor(props) {
@@ -31,13 +31,12 @@ class Login extends React.Component {
   async handleClick() {
     const { name, email } = this.state;
     const { login } = this.props;
-    const URL = 'https://opentdb.com/api_token.php?command=request';
 
     const hash = md5(email).toString();
     const gravatarURL = `https://www.gravatar.com/avatar/${hash}`;
     login({ name, email, gravatarURL });
 
-    const { token } = await fetchData(URL);
+    const { token } = await fetchToken();
     localStorage.setItem('token', token);
 
     this.setState({ redirect: true });

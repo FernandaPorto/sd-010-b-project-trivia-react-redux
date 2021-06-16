@@ -1,111 +1,112 @@
 import React from 'react';
-import fetchData from '../services/api';
+import { fetchQuestions } from '../services/api';
 
 class Trivia extends React.Component {
   constructor(props) {
     super(props);
-    this.updateState = this.updateState.bind(this);
-    this.handleAnswerClick = this.handleAnswerClick.bind(this);
+
+    this.getQuestions = this.getQuestions.bind(this);
+    this.answerQuestion = this.answerQuestion.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
     this.renderQuestion = this.renderQuestion.bind(this);
 
     this.state = {
-      answerColor: false,
-      deactivateButtons: false,
       loading: true,
+      isResolved: false,
       probabilityBase: 0.5,
       questionIndex: 0,
       questions: [],
     };
   }
 
-  async componentDidMount() {
-    const { token } = localStorage;
-    const URL = `https://opentdb.com/api.php?amount=5&token=${token}`;
-
-    const requestQuestions = await fetchData(URL);
-    this.updateState(requestQuestions);
+  componentDidMount() {
+    this.getQuestions();
   }
 
-  updateState({ results }) {
+  async getQuestions() {
+    const { token } = localStorage;
+    const { results: questions } = await fetchQuestions(token);
     this.setState({
       loading: false,
-      questions: results,
+      questions,
     });
   }
 
-  handleAnswerClick() {
-    this.setState({
-      answerColor: true,
-      deactivateButtons: true,
-    });
+  answerQuestion() {
+    this.setState({ isResolved: true });
   }
 
-  renderQuestion() {
-    const { questions, probabilityBase,
-      questionIndex, answerColor, deactivateButtons } = this.state;
-    const randomizer = (array) => (array.sort(() => Math.random() - probabilityBase));
+  nextQuestion() {
+    let { questionIndex } = this.state;
+    const { questions } = this.state;
 
-    const answers = [
-      questions[questionIndex].correct_answer,
-      ...questions[questionIndex].incorrect_answers,
-    ];
+    if (questionIndex < questions.length - 1) {
+      questionIndex += 1;
+      this.setState({ isResolved: false, questionIndex });
+    }
+  }
 
-    const randomAnswers = randomizer(answers).map((answer, index) => {
-      const answerChecker = questions[questionIndex].correct_answer;
+  renderQuestion(questionIndex) {
+    const { questions, probabilityBase, isResolved } = this.state;
 
-      if (answer === answerChecker) {
-        return (
-          <button
-            type="button"
-            key={ index }
-            data-testid="correct-answer"
-            onClick={ this.handleAnswerClick }
-            className={ answerColor ? 'green-border' : 'default-button' }
-            disabled={ deactivateButtons }
-          >
-            { answer }
-          </button>
-        );
-      }
+    const {
+      category,
+      question,
+      correct_answer: correctAnswer,
+      incorrect_answers: incorrectAnswers,
+    } = questions[questionIndex];
+
+    const randomizer = (array) => array.sort(() => Math.random() - probabilityBase);
+
+    const answers = randomizer([correctAnswer, ...incorrectAnswers]);
+
+    const randomAnswers = answers.map((answer, index) => {
+      const isCorrect = answer === correctAnswer;
+      const coloredStyle = isCorrect ? 'green-border' : 'red-border';
+      const testId = isCorrect ? 'correct-answer' : `wrong-answer-${index}`;
+
       return (
         <button
           type="button"
           key={ index }
-          data-testid={ `wrong-answer-${index}` }
-          onClick={ this.handleAnswerClick }
-          className={ answerColor ? 'red-border' : 'default-button' }
-          disabled={ deactivateButtons }
+          data-testid={ testId }
+          onClick={ this.answerQuestion }
+          className={ isResolved ? coloredStyle : 'default-button' }
+          disabled={ isResolved }
         >
-          { answer }
+          {answer}
         </button>
       );
     });
 
     return (
       <div>
-        <h2 data-testid="question-category">{ questions[questionIndex].category }</h2>
-        <h3 data-testid="question-text">{ questions[questionIndex].question }</h3>
-        { randomAnswers }
+        <h2 data-testid="question-category">{category}</h2>
+        <h3 data-testid="question-text">{question}</h3>
+        {randomAnswers}
       </div>
     );
   }
 
-  render() {
-    const { loading } = this.state;
-
-    if (loading) {
-      return (
-        <div>
-          <h3>
-            LOADING...
-          </h3>
-        </div>
-      );
-    }
+  renderNextButton() {
     return (
-      <div>
-        { this.renderQuestion() }
-      </div>
+      <button
+        type="button"
+        onClick={ this.nextQuestion }
+        data-testid="btn-next"
+      >
+        Próxima pergunta
+      </button>
+    );
+  }
+
+  render() {
+    const { loading, isResolved, questionIndex } = this.state;
+    return (
+      <section>
+        {loading ? <h3>LOADING...</h3> : this.renderQuestion(questionIndex)}
+        { isResolved && this.renderNextButton() }
+      </section>
     );
   }
 }
