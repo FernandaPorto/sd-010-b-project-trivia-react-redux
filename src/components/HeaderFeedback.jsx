@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-class Header extends Component {
+class HeaderFeedback extends Component {
   render() {
     const { playerName, gravatarURL, score } = this.props;
     return (
@@ -33,4 +33,4 @@ Header.propTypes = {
   score: PropTypes.number.isRequired,
 };
 
-export default connect(mapStateToProps, null)(Header);
+export default connect(mapStateToProps, null)(HeaderFeedback);
