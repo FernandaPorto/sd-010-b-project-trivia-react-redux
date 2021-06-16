@@ -2,12 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchToken } from '../redux/actions';
+import { fetchQuestions, fetchToken } from '../redux/actions';
 
 class Inputs extends Component {
   constructor() {
     super();
     this.verify = this.verify.bind(this);
+  }
+
+  componentDidMount() {
+    const { fetchQuestions: getQuestions } = this.props;
+    getQuestions();
   }
 
   verify() {
@@ -20,7 +25,8 @@ class Inputs extends Component {
   }
 
   render() {
-    const { handleOnChange, name, email, fetchApiToken, score } = this.props;
+    const { handleOnChange,
+      name, email, fetchApiToken, score } = this.props;
     return (
       <div>
         <form action="">
@@ -70,6 +76,7 @@ class Inputs extends Component {
 }
 const mapDispatchToProps = (dispatch) => ({
   fetchApiToken: () => dispatch(fetchToken()),
+  fetchQuestions: () => dispatch(fetchQuestions()),
 });
 
 Inputs.propTypes = {
@@ -78,6 +85,7 @@ Inputs.propTypes = {
   email: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
   fetchApiToken: PropTypes.func.isRequired,
+  fetchQuestions: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Inputs);
