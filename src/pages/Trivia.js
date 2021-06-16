@@ -58,7 +58,11 @@ class Trivia extends React.Component {
   update(state) {
     const MIN_SECONDS = 0;
     if (state.seconds === MIN_SECONDS) {
-      this.setState({ seconds: 30, correct: 'correct_answer', reject: 'incorrect_answer', disable: true });
+      this.setState({
+        seconds: 30,
+        correct: 'correct_answer',
+        reject: 'incorrect_answer',
+        disable: true });
     }
   }
 
