@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
+import { receiveToken, requestQuestions } from '../actions';
 
 class Question extends Component {
   constructor() {
@@ -57,7 +58,12 @@ const mapStateToProps = (state) => ({
   questions: state.trivia.questions,
 });
 
-export default connect(mapStateToProps)(Question);
+const mapDispatchToProps = (dispatch) => ({
+  getQuestions: (token) => dispatch(requestQuestions(token)),
+  getToken: () => dispatch(receiveToken()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Question);
 
 Question.propTypes = {
   questions: propTypes.arrayOf(propTypes.object).isRequired,
