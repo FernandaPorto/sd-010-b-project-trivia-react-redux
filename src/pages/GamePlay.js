@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import HeaderGame from '../components/HeaderGame';
 import Answers from '../components/Answers';
@@ -46,5 +47,9 @@ class GamePlay extends React.Component {
 const mapStateToProps = (state) => ({
   questions: state.triviaGame.questions,
 });
+
+GamePlay.propTypes = {
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 
 export default connect(mapStateToProps)(GamePlay);
