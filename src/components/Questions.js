@@ -3,12 +3,13 @@ import { connect } from 'react-redux';
 
 class Questions extends Component {
   constructor(props) {
+    console.log(props);
     super(props);
     this.state = {
       ...props,
-      next: false,
       answers: [],
       timer: 30,
+      feedback: false,
     };
     this.randAnswers = this.randAnswers.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
@@ -17,6 +18,8 @@ class Questions extends Component {
   // REFERÊNCIA https://github.com/tryber/sd-10b-live-lectures/blob/lecture/13.1/cronometer/src/components/Cronometer.jsx
 
   componentDidMount() {
+    const { nextAnswer } = this.state;
+    nextAnswer(false);
     const second = 1000;
     this.randAnswers();
     this.cronometerInterval = setInterval(() => {
@@ -26,10 +29,16 @@ class Questions extends Component {
 
   componentDidUpdate(_, prev) {
     const clear = () => {
-      this.setState({ timer: 0, next: true });
+      const { nextAnswer } = this.state;
+      nextAnswer(true);
+      this.setState({ timer: 0 });
       clearInterval(this.cronometerInterval);
     };
     if (prev.timer === 0) clear();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.cronometerInterval);
   }
 
   randAnswers() {
@@ -44,7 +53,8 @@ class Questions extends Component {
   }
 
   renderAnswers() {
-    const { correct_answer: correct, next, answers, timer } = this.state;
+    const { correct_answer: correct, answers, timer, nextAnswer } = this.state;
+    const { next } = this.props;
     return answers.map((answer, idx) => {
       const checkColor = answer === correct
         ? '3px solid rgb(6, 240, 15)'
@@ -60,7 +70,7 @@ class Questions extends Component {
           key={ answer }
           type="button"
           data-testid={ checkIsCorrect }
-          onClick={ () => !next && this.setState({ next: true }) }
+          onClick={ () => !next && nextAnswer(true) }
           disabled={ !timer }
         >
           {answer}
@@ -73,7 +83,7 @@ class Questions extends Component {
     const { category, question, timer } = this.state;
     return (
       <div>
-        <p>{ timer}</p>
+        <p>{ timer }</p>
         <h3 data-testid="question-category">{category}</h3>
         <h3 data-testid="question-text">{question}</h3>
         {this.renderAnswers()}
