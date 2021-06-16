@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import Question from '../components/Question';
