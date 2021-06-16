@@ -1,4 +1,4 @@
-import { SET_NAME, SET_ASSERTIONS, SET_SCORE, SET_EMAIL } from '../actions';
+import { ADD_PLAYER_INFO } from '../actions';
 
 const initialState = {
   name: '',
@@ -9,14 +9,10 @@ const initialState = {
 
 const loginReducer = (state = initialState, action) => {
   switch (action.type) {
-  case SET_NAME:
-    return { ...state, name: action.payload };
-  case SET_ASSERTIONS:
-    return { ...state, assertions: action.payload };
-  case SET_SCORE:
-    return { ...state, score: action.payload };
-  case SET_EMAIL:
-    return { ...state, gravatarEmail: action.payload };
+  case ADD_PLAYER_INFO:
+    return { ...state,
+      name: action.payload.name,
+      gravatarEmail: action.payload.email };
   default:
     return state;
   }
