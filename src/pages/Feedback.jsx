@@ -14,18 +14,16 @@ class Feedback extends React.Component {
 
   clearAllData() {
     const { addPlayerToRankingAction,
-      playerReducer, clearAllDataStoreAction } = this.props;
+      playerReducer, clearAllDataStoreAction, rankingReducer } = this.props;
 
     const playerRanking = {
       name: playerReducer.name,
       score: playerReducer.score,
       picture: playerReducer.gravatarEmail,
     };
-    addPlayerToRankingAction(playerRanking);
-    const { rankingReducer } = this.props;
-    const totalRanking = JSON.stringify([...rankingReducer, playerRanking]);
-
-    localStorage.setItem('ranking', totalRanking);
+    const totalRanking = [...rankingReducer, playerRanking];
+    addPlayerToRankingAction(totalRanking);
+    localStorage.setItem('ranking', JSON.stringify(totalRanking));
 
     clearAllDataStoreAction();
     const estadoInicial = {
