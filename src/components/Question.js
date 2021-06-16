@@ -6,6 +6,9 @@ import { receiveToken, requestQuestions } from '../actions';
 class Question extends Component {
   constructor() {
     super();
+    this.state = {
+      index: 0,
+    };
     this.generateRandomAnswers = this.generateRandomAnswers.bind(this);
   }
 
