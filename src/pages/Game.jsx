@@ -17,8 +17,8 @@ class Game extends React.Component {
   }
 
   requestTrivia() {
-    const token = localStorage.getItem('token');
-    return fetch(`https://opentdb.com/api.php?amount=5&token=${token}`)
+    const state = JSON.parse(localStorage.getItem('state'));
+    return fetch(`https://opentdb.com/api.php?amount=5&token=${state.token}`)
       .then((response) => response.json())
       .then((data) => this.setState({ results: data.results }));
   }
@@ -39,12 +39,9 @@ class Game extends React.Component {
               return  <Question result={result} key={result.category} />
             }}
         )} */}
-<<<<<<< HEAD
         <Link to="/feedback">
           Feedback
         </Link>
-=======
->>>>>>> 40908d1be453effaf205944580c3f9258a3b7ab5
       </>
     );
   }
