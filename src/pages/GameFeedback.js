@@ -7,7 +7,7 @@ class GameFeedback extends Component {
   render() {
     const { hits, score, history } = this.props;
     const MIN_HITS = 3;
-    console.log(hits);
+    console.log(hitss);
     return (
       <div>
         <GameHeader />
