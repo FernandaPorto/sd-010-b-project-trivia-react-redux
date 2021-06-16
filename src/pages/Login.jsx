@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
+import { func } from 'prop-types';
+import { setPlayerInfo } from '../actions';
 import { getToken } from '../services/triviaApi';
 import logo from '../trivia.png';
 import './CSS/login.css';
@@ -30,8 +33,14 @@ class Login extends Component {
   }
 
   async startGame() {
+    const { propSetPlayerInfo } = this.props;
+    const { name, email } = this.state;
+
     const tokenResult = await getToken();
+    const playerInfo = { name, email };
+
     localStorage.setItem('token', tokenResult.token);
+    propSetPlayerInfo(playerInfo);
     this.setState({ redirect: true });
   }
 
@@ -91,4 +100,12 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  propSetPlayerInfo: (payload) => dispatch(setPlayerInfo(payload)),
+});
+
+Login.propTypes = {
+  propSetPlayerInfo: func,
+}.isRequired;
+
+export default connect(null, mapDispatchToProps)(Login);
