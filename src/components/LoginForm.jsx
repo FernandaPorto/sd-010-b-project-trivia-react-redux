@@ -27,8 +27,6 @@ class LoginForm extends Component {
   }
 
   setLocalStorage() {
-    const { sendTokenToLocal } = this.props;
-    localStorage.setItem('token', JSON.stringify(sendTokenToLocal.token));
     const { name, email } = this.state;
     const testObject = { name, assertions: 0, score: 0, gravatarEmail: email };
     localStorage.setItem('player', JSON.stringify(testObject));
@@ -50,8 +48,7 @@ class LoginForm extends Component {
   handleClick() {
     const { addToken } = this.props;
     addToken();
-    localStorage.setItem('token', JSON.stringify(getTokenApi()));
-    // this.setLocalStorage();
+    this.setLocalStorage();
     this.setState({
       redirect: true,
     });

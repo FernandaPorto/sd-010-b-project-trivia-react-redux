@@ -10,5 +10,8 @@ export const getTokenApi = () => (dispatch) => {
   dispatch(isFetch());
   fetch('https://opentdb.com/api_token.php?command=request')
     .then((response) => response.json())
-    .then((token) => dispatch(getToken(token)));
+    .then((token) => {
+      dispatch(getToken(token));
+      localStorage.setItem('token', JSON.stringify(token.token));
+    });
 };
