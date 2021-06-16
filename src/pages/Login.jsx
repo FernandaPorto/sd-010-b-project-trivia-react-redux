@@ -27,7 +27,7 @@ class Login extends React.Component {
         gravatarEmail: '',
       },
       ranking: '',
-      token: '',
+      // token: '',
     }));
   }
 
@@ -55,10 +55,13 @@ class Login extends React.Component {
   }
 
   async requestToken() {
-    const state = JSON.parse(localStorage.getItem('state'));
+    // const state = JSON.parse(localStorage.getItem('state'));
     const result = await fetch('https://opentdb.com/api_token.php?command=request');
-    const data = await result.json(); state.token = data.token;
-    localStorage.setItem('state', JSON.stringify(state));
+    const data = await result.json(); localStorage.setItem(
+      'token', JSON.stringify(data.token),
+    );
+    // state.token = data.token;
+    // localStorage.setItem('state', JSON.stringify(state));
     if (data.token) { history.push('/game'); }
   }
 
