@@ -15,7 +15,7 @@ class Header extends Component {
     const { email, srcAvatar } = this.props;
     const userEmail = md5(email).toString();
     const srcImg = `https://www.gravatar.com/avatar/${userEmail}`;
-    srcAvatar({ type: 'RANKING', payload: { srcImg, srcImg } });
+    srcAvatar({ type: 'RANKING', payload: { avatar: srcImg, score: Math.floor(Math.random() * 100) } });
     return (
       <img
         alt="user"

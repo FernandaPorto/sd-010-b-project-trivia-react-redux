@@ -1,6 +1,6 @@
 const INITIAL_STATE = {
   avatar: '',
-  score: '',
+  score: 0,
 };
 
 const ranking = (state = INITIAL_STATE, { type, payload }) => {
