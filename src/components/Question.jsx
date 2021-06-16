@@ -1,4 +1,7 @@
+/* eslint-disable react/no-danger */
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class Question extends React.Component {
   constructor(props) {
@@ -16,10 +19,21 @@ class Question extends React.Component {
   }
 
   async getQuestions() {
-    const userToken = localStorage.getItem('token');
-    const apiQuestion = (`https://opentdb.com/api.php?amount=5&token=${userToken}`);
+    const { tok } = this.props;
+    const apiQuestion = (`https://opentdb.com/api.php?amount=5&token=${tok}`);
     const response = await fetch(apiQuestion);
     const data = await response.json();
+
+    /* const testeJ = [1, 2, 3, 4, 5, 6];
+    function testeAleatorio(arrayTeste) {
+      const arr = arrayTeste.slice();
+      for (let index = 0; index < data.results.length; index += 1) {
+        const index2 = Math.floor(Math.random() * (index + 1));
+        [arr[index], arr[index2]] = [arr[index2], arr[index]];
+      }
+      return arr;
+    } */
+
     this.setState({
       questions: data.results,
     });
@@ -30,45 +44,48 @@ class Question extends React.Component {
     return (
       questions.length > 0 ? (
         <div>
+          <p
+            data-testid="question-category"
+          >
+            { questions[0].category }
+          </p>
+          <h2
+            data-testid="question-text"
+            dangerouslySetInnerHTML={ { __html: questions[0].question } }
+          />
           <div>
-            <p data-testid="question-category">{ questions[0].category }</p>
-            <h2 data-testid="question-text">
-              {
-                questions[0].question
-              }
-            </h2>
             <div>
-              { questions[0].type === 'boolean' ? (
-                <div>
+              <button
+                type="button"
+                data-testid="correct-answer"
+              >
+                {questions[0].correct_answer}
+              </button>
+              {questions[0].incorrect_answers.map(
+                (elem, index) => (
                   <button
                     type="button"
-                    data-testid="correct-answer"
+                    data-testid={ `wrong-answer-${index}` }
+                    key={ index }
                   >
-                    {questions[0].correct_answer}
+                    { elem }
                   </button>
-                  <button type="button">{questions[0].incorrect_answers[0]}</button>
-                </div>
-              ) : (
-                <div>
-                  <button
-                    type="button"
-                    data-testid="correct-answer"
-                  >
-                    {questions[0].correct_answer}
-                  </button>
-                  <button type="button">{questions[0].incorrect_answers[0]}</button>
-                  <button type="button">{questions[0].incorrect_answers[1]}</button>
-                  <button type="button">{questions[0].incorrect_answers[2]}</button>
-                </div>
+                ),
               )}
             </div>
+
           </div>
-        </div>
-      ) : (
-        <h1>Loading...</h1>
-      )
+        </div>) : (<h2>Loading...</h2>)
     );
   }
 }
 
-export default Question;
+const mapStateToProps = (state) => ({
+  tok: state.api.token,
+});
+
+Question.propTypes = {
+  tok: PropTypes.string.isRequired,
+};
+
+export default connect(mapStateToProps, null)(Question);

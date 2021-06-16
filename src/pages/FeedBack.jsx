@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import Header from '../components/Header';
 
 class FeedBack extends Component {
@@ -14,13 +16,27 @@ class FeedBack extends Component {
         </h4>
         <h3>Resultado Final</h3>
         <p data-testid="feedback-total-score">
-          Pontuação Total:
           {totalScore}
         </p>
         <p data-testid="feedback-total-question">
-          Total de Acertos:
           {totalAssertions}
         </p>
+        <Link to="/quiz">
+          <button
+            type="button"
+            data-testid="btn-play-again"
+          >
+            Jogar Novamente
+          </button>
+        </Link>
+        <Link to="/ranking">
+          <button
+            type="button"
+            data-testid="btn-ranking"
+          >
+            Ver Ranking
+          </button>
+        </Link>
       </div>
     );
   }
@@ -29,4 +45,10 @@ const mapStateToProps = (state) => ({
   totalAssertions: state.player.assertions,
   totalScore: state.player.score,
 });
+
+FeedBack.propTypes = {
+  totalAssertions: PropTypes.number.isRequired,
+  totalScore: PropTypes.number.isRequired,
+};
+
 export default connect(mapStateToProps)(FeedBack);
