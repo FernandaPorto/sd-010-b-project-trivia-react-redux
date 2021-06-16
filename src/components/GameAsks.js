@@ -68,11 +68,12 @@ class GameAsks extends Component {
 
   disabledButton() {
     const THIRTY_SECONDS = 30000;
-    setTimeout(() => this.setState({disabledButton: true }), THIRTY_SECONDS);
+    setTimeout(() => this.setState({ disabledButton: true }), THIRTY_SECONDS);
   }
 
   render() {
-    const { indexQuestion, loading, asks, answer, disabled, countDown, disabledButton } = this.state;
+    const { indexQuestion,
+      loading, asks, answer, disabled, countDown, disabledButton } = this.state;
     if (loading) {
       return (
         <span>Carregando...</span>
