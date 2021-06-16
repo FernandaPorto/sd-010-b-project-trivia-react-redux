@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
-import { fetchQuestions, fetchToken } from '../redux/actions';
+import { fetchToken } from '../redux/actions';
 
 class Inputs extends Component {
   constructor() {
@@ -26,7 +26,7 @@ class Inputs extends Component {
 
   render() {
     const { handleOnChange,
-      name, email, fetchApiToken, score } = this.props;
+      name, email, score } = this.props;
     return (
       <div>
         <form action="">

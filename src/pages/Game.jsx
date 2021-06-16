@@ -118,5 +118,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 Game.propTypes = ({
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  fetchQuestions: PropTypes.func.isRequired,
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
