@@ -17,51 +17,51 @@ class Question extends React.Component {
 
   async getQuestions() {
     const userToken = localStorage.getItem('token');
-    const apiQuestion = `https://opentdb.com/api.php?amount=5&token=${userToken}`;
-    const response = await fetch(apiQuestion)
-    .then((result) => result.json())
-    .then((data) =>{
-      const questions = data.results.map((question) => question)
-    })
+    const apiQuestion = (`https://opentdb.com/api.php?amount=5&token=${userToken}`);
+    const response = await fetch(apiQuestion);
+    const data = await response.json();
     this.setState({
-      questions: response.results,
+      questions: data.results,
     });
-    console.log(this.state);
   }
 
   render() {
     const { questions } = this.state;
     return (
       questions.length > 0 ? (
-        <div className="container">
-          <div className="bg-white">
-            <h1
-              dangerouslySetInnerHTML={ { __html: questions.map((dt, idx) => dt.question) }
-            }/>
-          </
-          <div className="grid gridcols-2">
-          {/* <p>{dt.question}</p> */}
-            <button type="button" className="bg-white p-4">
-              {questions[0].correct_answer}
-            </button>
-            <button
-              type="button"
-              className="bg-white p-4"
-            >
-              {questions[0].incorrect_answers[0]}
-            </button>
-            <button
-              type="button"
-              className="bg-white p-4"
-            >
-              {questions[0].incorrect_answers[1]}
-            </button>
-            <button
-              type="button"
-              className="bg-white p-4"
-            >
-              {questions[0].incorrect_answers[2]}
-            </button>
+        <div>
+          <div>
+            <p data-testid="question-category">{ questions[0].category }</p>
+            <h2 data-testid="question-text">
+              {
+                questions[0].question
+              }
+            </h2>
+            <div>
+              { questions[0].type === 'boolean' ? (
+                <div>
+                  <button
+                    type="button"
+                    data-testid="correct-answer"
+                  >
+                    {questions[0].correct_answer}
+                  </button>
+                  <button type="button">{questions[0].incorrect_answers[0]}</button>
+                </div>
+              ) : (
+                <div>
+                  <button
+                    type="button"
+                    data-testid="correct-answer"
+                  >
+                    {questions[0].correct_answer}
+                  </button>
+                  <button type="button">{questions[0].incorrect_answers[0]}</button>
+                  <button type="button">{questions[0].incorrect_answers[1]}</button>
+                  <button type="button">{questions[0].incorrect_answers[2]}</button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       ) : (
