@@ -37,7 +37,7 @@ class Login extends React.Component {
     const gravatarURL = `https://www.gravatar.com/avatar/${hash}`;
     login({ name, email, gravatarURL });
 
-    const { token } = await fetchToken(URL);
+    const { token } = await fetchData(URL);
     localStorage.setItem('token', token);
 
     this.setState({ redirect: true });
