@@ -5,11 +5,10 @@ const receiveToken = (token) => ({ type: RECEIVE_TOKEN, token });
 
 const receiveQuestions = (questions) => ({ type: RECEIVE_QUESTIONS, questions });
 
-export const requestAPI = () => async (dispatch) => {
+export const requestAPI = () => async () => {
   const request = await fetch('https://opentdb.com/api_token.php?command=request');
   const { token } = await request.json();
   localStorage.setItem('token', token);
-  dispatch(receiveToken(token));
 };
 
 export const saveNamePlayer = (name) => ({
