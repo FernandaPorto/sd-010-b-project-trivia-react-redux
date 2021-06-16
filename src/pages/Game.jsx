@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
@@ -22,6 +23,7 @@ class Game extends Component {
       score: 0,
       assertions: 0,
       showNextButton: false,
+      redirectToFeedback: false,
     };
     this.saveQuestionsInState = this.saveQuestionsInState.bind(this);
     this.renderQuestion = this.renderQuestion.bind(this);
@@ -68,7 +70,7 @@ class Game extends Component {
     restartCount();
     const { indexQuestion, results } = this.state;
     if (indexQuestion === results.length - 1) {
-      return false;
+      this.setState({ redirectToFeedback: true });
     }
     this.setState((oldState) => ({ indexQuestion: oldState.indexQuestion + 1 }));
     this.setState({ showNextButton: false });
@@ -176,7 +178,7 @@ class Game extends Component {
 
   render() {
     const { nome, gravatar } = this.props;
-    const { results, score, assertions } = this.state;
+    const { results, score, assertions, redirectToFeedback } = this.state;
     return (
       <div>
         <header>
@@ -193,6 +195,7 @@ class Game extends Component {
           { results !== [] && this.renderQuestion() }
         </main>
         { this.renderNextButton() }
+        { redirectToFeedback && <Redirect to="/feedback" />}
       </div>
     );
   }
