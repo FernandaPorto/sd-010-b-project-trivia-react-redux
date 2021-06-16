@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
+import Header from '../components/Header';
+import Question from '../components/Question';
 
-export default class Quiz extends Component {
+class Quiz extends Component {
   render() {
     return (
       <div>
-        <h1>Game</h1>
+        <Header />
+        <Question />
+        {/* <h1>{questions[0].question}</h1> */}
       </div>
     );
   }
 }
+
+export default Quiz;

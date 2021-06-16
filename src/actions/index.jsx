@@ -25,7 +25,7 @@ export function receiveQuestions(questions) {
   };
 }
 
-export function loginPlayer(name, email) {
+export function loginPlayer({ name, email }) {
   return {
     type: LOGIN_PLAYER,
     name,
