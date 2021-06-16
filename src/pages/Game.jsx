@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import GameHeader from './GameHeader';
 import './style.css';
@@ -12,6 +13,7 @@ class Game extends React.Component {
       indexQuestion: 0,
       buttonDisabled: false,
       currentTime: 30,
+      redirect: false,
     });
 
     this.renderPage = this.renderPage.bind(this);
@@ -132,6 +134,9 @@ class Game extends React.Component {
     if (indexQuestion >= NUMERO_MAX_RESPOSTAS) {
       const buttonNext = document.querySelector('.next-button');
       buttonNext.style.display = 'none';
+      this.setState({
+        redirect: true,
+      });
     } else {
       this.setState({ indexQuestion: indexQuestion + 1 });
       const wrongAnswer = document.querySelectorAll('.answer-button-wrong');
@@ -190,7 +195,8 @@ class Game extends React.Component {
 
   render() {
     const { currentTime } = this.state;
-
+    const { redirect } = this.state;
+    if (redirect) { return <Redirect to="/feedback" />; }
     return (
       <section>
         <GameHeader />
