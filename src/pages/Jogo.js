@@ -8,7 +8,6 @@ class Jogo extends Component {
     super();
     this.state = {
       game: [],
-      index: 0,
       loading: true,
       value: 0,
     };
@@ -27,12 +26,12 @@ class Jogo extends Component {
   }
 
   render() {
-    const { game, index, loading, value } = this.state;
+    const { game, loading, value } = this.state;
     console.log(this.state);
     return (
       <div>
         <Header pontuacao={ value } />
-        {!loading && <Questions { ...game[index] } funcao={ this.change } />}
+        {!loading && <Questions { ...game } funcao={ this.change } />}
       </div>
     );
   }
