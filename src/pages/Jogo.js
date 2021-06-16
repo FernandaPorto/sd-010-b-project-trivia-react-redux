@@ -20,12 +20,12 @@ class Jogo extends Component {
   }
 
   change(val) {
-    console.log(val);
     this.setState({ value: val });
   }
 
   render() {
     const { game, index, loading, value } = this.state;
+    console.log(this.state);
     return (
       <div>
         <Header pontuacao={ value } />

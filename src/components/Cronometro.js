@@ -14,7 +14,6 @@ class Cronometro extends Component {
   componentDidMount() {
     const SECOND = 1000;
     this.interval = setInterval(() => {
-      // console.log('aqui')
       this.setState((state) => ({
         seconds: state.seconds - 1,
       }));
@@ -34,9 +33,6 @@ class Cronometro extends Component {
   }
 
   update() {
-    // this.setState({
-    //   seconds: 30,
-    // });
     clearInterval(this.interval);
   }
 
