@@ -96,3 +96,4 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(null, mapDispatchToProps)(Trivia);
+// errei o nome do commit
