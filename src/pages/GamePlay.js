@@ -12,6 +12,7 @@ class GamePlay extends React.Component {
     this.state = {
       questionIndex: 0,
       timer: 30,
+      isDisableAnswers: false,
     };
 
     this.runTimer = this.runTimer.bind(this);
@@ -21,11 +22,13 @@ class GamePlay extends React.Component {
     const { timer: timerS } = this.state;
     if (timerS > 0) {
       this.setState({ timer: timerS - 1 });
+    } else if (timerS === 0) {
+      this.setState({ isDisableAnswers: true });
     }
   }
 
   render() {
-    const { questionIndex, timer } = this.state;
+    const { questionIndex, timer, isDisableAnswers } = this.state;
     const { questions } = this.props;
 
     return (
@@ -47,6 +50,7 @@ class GamePlay extends React.Component {
           { questions && <Answers
             correct={ questions[questionIndex].correct_answer }
             incorrect={ questions[questionIndex].incorrect_answers }
+            isDisableAnswers={ isDisableAnswers }
           /> }
         </div>
         <div>

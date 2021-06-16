@@ -24,7 +24,10 @@ class Answers extends Component {
 
   render() {
     const { youreRight, youreWrong } = this.state;
-    const { correct, incorrect } = this.props;
+    const { correct, incorrect, isDisableAnswers } = this.props;
+    if (isDisableAnswers) {
+      this.showCorrectAnswers();
+    }
     const half = 0.5;
     // reference shuffle https://dev.to/codebubb/how-to-shuffle-an-array-in-javascript-2ikj
     const allAnswers = [{ id: 'c', answer: correct }, ...incorrect
@@ -38,6 +41,7 @@ class Answers extends Component {
             type="button"
             className={ id === 'c' ? youreRight : youreWrong }
             onClick={ this.showCorrectAnswers }
+            disabled={ isDisableAnswers }
           >
             { answer }
           </button>
@@ -50,6 +54,7 @@ class Answers extends Component {
 Answers.propTypes = {
   correct: PropTypes.string.isRequired,
   incorrect: PropTypes.arrayOf(PropTypes.string).isRequired,
+  isDisableAnswers: PropTypes.bool.isRequired,
 };
 
 export default Answers;
