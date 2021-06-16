@@ -9,6 +9,12 @@ class Question extends Component {
     this.generateRandomAnswers = this.generateRandomAnswers.bind(this);
   }
 
+  componentDidMount() {
+    const { getQuestions, getToken, token } = this.props;
+    getToken();
+    getQuestions(token);
+  }
+
   generateRandomAnswers(correctAnswer, incorrectAnswer) {
     const range = 20;
     const getRandom = () => Math.ceil(Math.random() * range);
