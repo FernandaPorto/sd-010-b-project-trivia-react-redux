@@ -7,6 +7,7 @@ import {
   changeStyles,
   resetStyles,
   startCounting,
+  getRigth,
 } from '../actions/index';
 import TrueButtonIsCorrect from '../components/TrueButtonIsCorrect';
 import FalseButtonIsCorrect from '../components/FalseButtonIsCorrect';
@@ -18,6 +19,9 @@ class Game extends Component {
     this.state = {
       results: [],
       indexQuestion: 0,
+      score: 0,
+      assertions: 0,
+      showNextButton: false,
     };
     this.saveQuestionsInState = this.saveQuestionsInState.bind(this);
     this.renderQuestion = this.renderQuestion.bind(this);
@@ -35,10 +39,27 @@ class Game extends Component {
       .then((questions) => this.saveQuestionsInState(questions));
   }
 
+  calculatePoints() {
+    const { results, indexQuestion } = this.state;
+    const { actualCount, clickedAnswer } = this.props;
+    const defaultPoint = 10;
+    const question = results[indexQuestion];
+    const dificuldadeAtual = question.difficulty;
+    const dificuldade = { easy: 1, medium: 2, hard: 3 };
+    const score = defaultPoint + (actualCount * dificuldade[dificuldadeAtual]);
+    clickedAnswer(score);
+    this.handleLocalStorage(score);
+  }
+
+  handleLocalStorage(score) {
+    const player = JSON.parse(localStorage.getItem('state'));
+    player.player.assertions += 1;
+    player.player.score += score;
+    localStorage.setItem('state', JSON.stringify(player));
+  }
+
   saveQuestionsInState({ results }) {
-    this.setState({
-      results,
-    });
+    this.setState({ results });
   }
 
   nextIndex() {
@@ -49,16 +70,28 @@ class Game extends Component {
     if (indexQuestion === results.length - 1) {
       return false;
     }
-    this.setState((oldState) => ({
-      indexQuestion: oldState.indexQuestion + 1,
-    }));
+    this.setState((oldState) => ({ indexQuestion: oldState.indexQuestion + 1 }));
+    this.setState({ showNextButton: false });
+  }
+
+  selectedAnswer() {
+    const { showColors } = this.props;
+    showColors();
+    this.calculatePoints();
+    this.setState({ showNextButton: true });
+  }
+
+  selectedWrongAnswer() {
+    const { showColors } = this.props;
+    showColors();
+    this.setState({ showNextButton: true });
   }
 
   multipleAnswers({
     correct_answer: correctAnswer,
     incorrect_answers: incorrectAnswers,
   }) {
-    const { wrong, rigth, showColors, disableButtons } = this.props;
+    const { wrong, rigth, disableButtons } = this.props;
     const rightAnswer = (
       <button
         type="button"
@@ -67,7 +100,7 @@ class Game extends Component {
         style={ {
           border: rigth,
         } }
-        onClick={ () => showColors() }
+        onClick={ () => this.selectedAnswer() }
         disabled={ disableButtons }
       >
         { correctAnswer }
@@ -82,7 +115,7 @@ class Game extends Component {
           style={ {
             border: wrong,
           } }
-          onClick={ () => showColors() }
+          onClick={ () => this.selectedWrongAnswer() }
           disabled={ disableButtons }
         >
           { answer }
@@ -124,9 +157,26 @@ class Game extends Component {
     }
   }
 
+  renderNextButton() {
+    const { actualCount } = this.props;
+    const { showNextButton } = this.state;
+    console.log(actualCount);
+    if (actualCount === 0 || showNextButton === true) {
+      return (
+        <button
+          type="button"
+          data-testid="btn-next"
+          onClick={ () => this.nextIndex() }
+        >
+          Próxima
+        </button>
+      );
+    }
+  }
+
   render() {
     const { nome, gravatar } = this.props;
-    const { results } = this.state;
+    const { results, score, assertions } = this.state;
     return (
       <div>
         <header>
@@ -136,12 +186,13 @@ class Game extends Component {
             alt={ nome }
           />
           <p data-testid="header-player-name">{nome}</p>
-          <p data-testid="header-score">0</p>
+          <p data-testid="header-score">{ score }</p>
+          <p>{ assertions }</p>
         </header>
         <main>
           { results !== [] && this.renderQuestion() }
         </main>
-        <button type="button" onClick={ () => this.nextIndex() }>Próxima pergunta</button>
+        { this.renderNextButton() }
       </div>
     );
   }
@@ -152,8 +203,8 @@ const mapDispatchToProps = (dispatch) => ({
   showColors: () => dispatch(changeStyles()),
   resetColors: () => dispatch(resetStyles()),
   restartCount: () => dispatch(startCounting()),
+  clickedAnswer: (points) => dispatch(getRigth(points)),
 });
-
 const mapStateToProps = (state) => ({
   email: state.playerReducer.email,
   nome: state.playerReducer.nome,
@@ -162,8 +213,10 @@ const mapStateToProps = (state) => ({
   rigth: state.gameReducer.styles.rigth,
   wrong: state.gameReducer.styles.wrong,
   disableButtons: state.gameReducer.disabledButtons,
+  actualCount: state.countdownReducer.count,
+  score: state.playerReducer.score,
+  assertions: state.playerReducer.assertions,
 });
-
 Game.propTypes = {
   saveGravatar: PropTypes.func.isRequired,
   email: PropTypes.string.isRequired,
@@ -176,6 +229,7 @@ Game.propTypes = {
   rigth: PropTypes.string.isRequired,
   restartCount: PropTypes.func.isRequired,
   disableButtons: PropTypes.bool.isRequired,
+  actualCount: PropTypes.number.isRequired,
+  clickedAnswer: PropTypes.func.isRequired,
 };
-
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

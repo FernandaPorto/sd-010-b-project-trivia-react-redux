@@ -1,9 +1,11 @@
-import { SEND_EMAIL, SEND_NOME, SEND_GRAVATAR } from '../actions/index';
+import { SEND_EMAIL, SEND_NOME, SEND_GRAVATAR, GOAL } from '../actions/index';
 
 const INITIAL_STATE = ({
   email: '',
   nome: '',
   gravatar: '',
+  score: 0,
+  assertions: 0,
 });
 
 const playerReducer = (state = INITIAL_STATE, action) => {
@@ -22,6 +24,12 @@ const playerReducer = (state = INITIAL_STATE, action) => {
     return ({
       ...state,
       gravatar: action.gravatar,
+    });
+  case GOAL:
+    return ({
+      ...state,
+      score: action.score + state.score,
+      assertions: state.assertions + 1,
     });
   default:
     return (state);
