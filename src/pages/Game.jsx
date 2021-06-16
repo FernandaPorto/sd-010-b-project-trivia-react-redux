@@ -8,6 +8,7 @@ class Game extends React.Component {
     super();
 
     this.getPerfilGravatar = this.getPerfilGravatar.bind(this);
+    this.renderAnswers = this.renderAnswers.bind(this);
   }
 
   getPerfilGravatar() {
@@ -29,48 +30,57 @@ class Game extends React.Component {
     );
   }
 
+  renderAnswers() {
+    const { questions } = this.props;
+    return (
+      <div>
+        <ul>
+          {
+            questions.map((question, index) => {
+              // Referência: https://flaviocopes.com/how-to-shuffle-array-javascript/
+              const magicNumber = 0.5;
+              const answers = (question.incorrect_answers
+                .concat(question.correct_answer))
+                .sort(() => Math.random() - magicNumber);
+              console.log(question);
+              const renderAnswers = answers.map((answer, index2) => {
+                if (answer === question.correct_answer) {
+                  return (
+                    <button key={ answer } type="button" data-testid="correct-answer">
+                      {answer}
+                    </button>
+                  );
+                }
+                return (
+                  <button
+                    key={ answer }
+                    type="button"
+                    data-testid={ `wrong-answer-${index2}` }
+                  >
+                    {answer}
+                  </button>
+                );
+              });
+              return (
+                <li key={ index }>
+                  <p data-testid="question-category">{question.category}</p>
+                  <p data-testid="question-text">{question.question}</p>
+                  {renderAnswers}
+                </li>
+              );
+            })
+          }
+        </ul>
+      </div>
+    );
+  }
+
   render() {
     const { questions } = this.props;
     return (
       <>
         {this.getPerfilGravatar()}
-        <div>
-          <ul>
-            {questions.length > 0
-              && questions.map((question, index) => {
-                // Referência da função de randomizar o array: https://flaviocopes.com/how-to-shuffle-array-javascript/
-                const magicNumber = 0.5;
-                const answers = (question.incorrect_answers
-                  .concat(question.correct_answer))
-                  .sort(() => Math.random() - magicNumber);
-                const renderAnswers = answers.map((answer, index2) => {
-                  if (answer === question.correct_answer) {
-                    return (
-                      <button key={ answer } type="button" data-testid="correct-answert">
-                        {answer}
-                      </button>
-                    );
-                  }
-                  return (
-                    <button
-                      key={ answer }
-                      type="button"
-                      data-testid={ `wrong-answer-${index2}` }
-                    >
-                      {answer}
-                    </button>
-                  );
-                });
-                return (
-                  <li key={ index }>
-                    <p data-testid="question-category">{question.category}</p>
-                    <p data-testid="question-text">{question.question}</p>
-                    {renderAnswers}
-                  </li>
-                );
-              })}
-          </ul>
-        </div>
+        {questions.length > 0 && this.renderAnswers()}
       </>
     );
   }
@@ -96,4 +106,7 @@ const mapStateToProps = (state) => ({
   questions: state.questions.results,
 });
 
+Game.propTypes = ({
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+});
 export default connect(mapStateToProps)(Game);

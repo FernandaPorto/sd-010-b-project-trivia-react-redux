@@ -11,8 +11,8 @@ class Inputs extends Component {
   }
 
   componentDidMount() {
-    const { fetchQuestions } = this.props;
-    fetchQuestions();
+    const { fetchQuestions: getQuestions } = this.props;
+    getQuestions();
   }
 
   verify() {
@@ -26,7 +26,7 @@ class Inputs extends Component {
 
   render() {
     const { handleOnChange,
-      name, email, fetchApiToken, score, fetchQuestions } = this.props;
+      name, email, fetchApiToken, score } = this.props;
     return (
       <div>
         <form action="">
@@ -85,6 +85,7 @@ Inputs.propTypes = {
   email: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
   fetchApiToken: PropTypes.func.isRequired,
+  fetchQuestions: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Inputs);
