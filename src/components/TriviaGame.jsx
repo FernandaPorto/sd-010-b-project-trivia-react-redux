@@ -41,15 +41,32 @@ class Trivia extends React.Component {
       ...questions[currentQuestion].incorrect_answers,
     ];
 
-    const randomAnswers = randomizer(answers).map((answer, index) => (
-      <p key={ index }>
-        { answer }
-      </p>
-    ));
+    const randomAnswers = randomizer(answers).map((answer, index) => {
+      const correctAnswerID = 'correct-answer';
+      const answerChecker = questions[currentQuestion].correct_answer;
+
+      if (answer === answerChecker) {
+        return (
+          <p key={ index } data-testid={ correctAnswerID }>
+            { answer }
+          </p>
+        );
+      }
+      return (
+        <p key={ index } data-testid={ `wrong-answer-${index}` }>
+          { answer }
+        </p>
+      );
+    });
 
     return (
       <div>
-        <h4>{ questions[currentQuestion].question }</h4>
+        <h2 data-testid="question-category">
+          { questions[currentQuestion].category }
+        </h2>
+        <h3 data-testid="question-text">
+          { questions[currentQuestion].question }
+        </h3>
         { randomAnswers }
       </div>
     );
