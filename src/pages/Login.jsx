@@ -6,7 +6,7 @@ import md5 from 'crypto-js/md5';
 
 import { loginActionCreator } from '../redux/actions';
 import SettingsButton from '../components/SettingsButton';
-import fetchToken from '../services/api';
+import fetchData from '../services/api';
 
 class Login extends React.Component {
   constructor(props) {
