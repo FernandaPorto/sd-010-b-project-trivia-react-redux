@@ -31,6 +31,19 @@ class Login extends Component {
     localStorage.token = token;
   }
 
+  localstorageSaveUserInfo() {
+    const { username, email, score, hits } = this.props;
+    const state = {
+      player: {
+        name: username,
+        gravatarEmail: email,
+        score,
+        assertions: hits,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(state));
+  }
+
   render() {
     const { start } = this.state;
     const { username, email, changeEmail, changeUsername } = this.props;
@@ -58,7 +71,10 @@ class Login extends Component {
           data-testid="btn-play"
           type="submit"
           disabled={ isValid }
-          onClick={ this.updateToken }
+          onClick={ () => {
+            this.updateToken();
+            this.localstorageSaveUserInfo();
+          } }
         >
           Jogar
         </button>
@@ -67,9 +83,11 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = ({ user: { username, email } }) => ({
+const mapStateToProps = ({ user: { username, email, triviaGame: { score, hits } } }) => ({
   username,
   email,
+  score,
+  hits,
 });
 
 const mapDispatchToProps = (dispatch) => ({
