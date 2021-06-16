@@ -86,7 +86,12 @@ class Questions extends Component {
     this.setState((prevState) => ({
       isToggleOn: !prevState.isToggleOn,
     }));
-    this.setState({ value: true, next: true, restart: false, difficulty, answer, isValid: true });
+    this.setState({ value: true,
+      next: true,
+      restart: false,
+      difficulty,
+      answer,
+      isValid: true });
   }
 
   render() {
