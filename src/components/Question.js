@@ -36,7 +36,8 @@ class Question extends Component {
   }
 
   render() {
-    const { questions, index } = this.props;
+    const { questions } = this.props;
+    const { index } = this.state;
 
     if (questions.length) {
       const {
