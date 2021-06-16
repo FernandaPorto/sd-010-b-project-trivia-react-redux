@@ -4,11 +4,15 @@ import { getStorage } from '../services/token';
 
 class Feedback extends Component {
   render() {
-    const { player: { score } } = getStorage();
+    const { player: { score, assertions } } = getStorage();
+    const assert = 3;
     return (
       <div>
-        <p data-testid="feedback-text">Feedback</p>
         <Header pontuacao={ score } />
+        <p data-testid="feedback-text">
+          { assertions >= assert
+            ? 'Mandou bem!' : 'Podia ser melhor...' }
+        </p>
       </div>
     );
   }
