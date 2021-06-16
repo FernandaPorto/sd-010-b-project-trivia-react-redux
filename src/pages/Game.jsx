@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import GameHeader from '../components/GameHeader';
 import './style.css';
 import { updatePlayerPoints } from '../actions/index';
-import player from '../reducers/player';
 
 class Game extends React.Component {
   constructor(props) {
@@ -59,13 +58,15 @@ class Game extends React.Component {
       const correctAnswer = 1;
       const answerPoints = this.calculatePoints();
       const estadoTemporario = {
-        name,
-        assertions: assertions + correctAnswer,
-        score: score + answerPoints,
-        gravatarEmail,
+        player: {
+          name,
+          assertions: assertions + correctAnswer,
+          score: score + answerPoints,
+          gravatarEmail,
+        },
       };
       updatePlayerPointsAction({ correctAnswer, answerPoints });
-      localStorage.setItem('state', JSON.stringify(estadoTemporario));
+      localStorage.setItem('state', JSON.stringify([estadoTemporario]));
     }
   }
 
