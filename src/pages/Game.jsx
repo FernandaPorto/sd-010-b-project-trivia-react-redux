@@ -17,7 +17,7 @@ class Game extends React.Component {
   }
 
   requestTrivia() {
-    const token = JSON.parse(localStorage.getItem('token'));
+    const token = (localStorage.getItem('token'));
     return fetch(`https://opentdb.com/api.php?amount=5&token=${token}`)
       .then((response) => response.json())
       .then((data) => this.setState({ results: data.results }));
