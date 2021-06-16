@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchAPI, saveName } from '../actions/index';
 
-import '../style/login.css';
-
 class Login extends React.Component {
   constructor() {
     super();
@@ -65,7 +63,6 @@ class Login extends React.Component {
             onClick={ this.handleClick }
           >
             Jogar
-            {/* <Link to="/gameplay" /> */}
           </button>
         </Link>
         <Link to="/settings">
