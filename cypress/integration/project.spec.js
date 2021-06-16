@@ -457,7 +457,7 @@ describe('14 - [TELA DE FEEDBACK] Exiba as informações relacionadas aos result
     expect(storage).to.be.lessThan(4);
   });
 
-  it.only('Não acertou nenhuma pergunta', () => {
+  it('Não acertou nenhuma pergunta', () => {
     cy.get(WRONG_ALTERNATIVES_SELECTOR).first().click();
     cy.get(BUTTON_NEXT_QUESTION_SELECTOR).click();
     cy.get(WRONG_ALTERNATIVES_SELECTOR).first().click();
