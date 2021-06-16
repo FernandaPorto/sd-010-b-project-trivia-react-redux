@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import { receiveToken, requestQuestions } from '../actions';
 import '../style/question.css';
+import Cronometer from './Cronometer';
 
 class Question extends Component {
   constructor() {
@@ -71,6 +72,7 @@ class Question extends Component {
               </button>
             ))}
           </div>
+          <Cronometer />
         </section>
       );
     }
