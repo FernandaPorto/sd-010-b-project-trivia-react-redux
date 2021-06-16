@@ -1,13 +1,21 @@
 import React from 'react';
 import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 class Game extends React.Component {
-  render() {
+  constructor() {
+    super();
+
+    this.getPerfilGravatar = this.getPerfilGravatar.bind(this);
+  }
+
+  getPerfilGravatar() {
     const { location: { aboutProps: { name: { name },
       email: { email }, score: { score } } } } = this.props;
     const convert = md5(email).toString();
     const endpoint = `https://www.gravatar.com/avatar/${convert}`;
+
     return (
       <div>
         <img src={ endpoint } alt={ `foto de ${name}` } />
@@ -18,6 +26,52 @@ class Game extends React.Component {
         <span data-testid="header-profile-picture">{` Email: ${email}`}</span>
         <span data-testid="header-score">{` Pontuação: ${score}`}</span>
       </div>
+    );
+  }
+
+  render() {
+    const { questions } = this.props;
+    return (
+      <>
+        {this.getPerfilGravatar()}
+        <div>
+          <ul>
+            {questions.length > 0
+              && questions.map((question, index) => {
+                // Referência da função de randomizar o array: https://flaviocopes.com/how-to-shuffle-array-javascript/
+                const magicNumber = 0.5;
+                const answers = (question.incorrect_answers
+                  .concat(question.correct_answer))
+                  .sort(() => Math.random() - magicNumber);
+                const renderAnswers = answers.map((answer, index2) => {
+                  if (answer === question.correct_answer) {
+                    return (
+                      <button key={ answer } type="button" data-testid="correct-answert">
+                        {answer}
+                      </button>
+                    );
+                  }
+                  return (
+                    <button
+                      key={ answer }
+                      type="button"
+                      data-testid={ `wrong-answer-${index2}` }
+                    >
+                      {answer}
+                    </button>
+                  );
+                });
+                return (
+                  <li key={ index }>
+                    <p data-testid="question-category">{question.category}</p>
+                    <p data-testid="question-text">{question.question}</p>
+                    {renderAnswers}
+                  </li>
+                );
+              })}
+          </ul>
+        </div>
+      </>
     );
   }
 }
@@ -38,4 +92,8 @@ Game.propTypes = {
   }).isRequired,
 };
 
-export default Game;
+const mapStateToProps = (state) => ({
+  questions: state.questions.results,
+});
+
+export default connect(mapStateToProps)(Game);

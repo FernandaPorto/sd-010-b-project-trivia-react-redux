@@ -1,4 +1,4 @@
-import { TOKEN_FAILURE, TOKEN_SUCCESS } from '../actions';
+import { TOKEN_FAILURE, TOKEN_SUCCESS, QUESTIONS_SUCCESS } from '../actions';
 import initialState from './initialState';
 
 const reducer = (state = initialState, action) => {
@@ -10,6 +10,11 @@ const reducer = (state = initialState, action) => {
   case TOKEN_FAILURE:
     return {
       ...state, error: action.payload,
+    };
+  case QUESTIONS_SUCCESS:
+    return {
+      ...state,
+      questions: action.payload,
     };
   default:
     return state;
