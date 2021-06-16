@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getScore } from '../actions';
 
 class Questions extends Component {
   constructor(props) {
+    console.log(props);
     super(props);
     this.state = {
       ...props,
-      next: false,
       answers: [],
       timer: 30,
     };
@@ -19,6 +18,8 @@ class Questions extends Component {
   // REFERÊNCIA https://github.com/tryber/sd-10b-live-lectures/blob/lecture/13.1/cronometer/src/components/Cronometer.jsx
 
   componentDidMount() {
+    const { nextAnswer } = this.state;
+    nextAnswer(false);
     const second = 1000;
     this.randAnswers();
     this.cronometerInterval = setInterval(() => {
@@ -28,10 +29,16 @@ class Questions extends Component {
 
   componentDidUpdate(_, prev) {
     const clear = () => {
-      this.setState({ timer: 0, next: true });
+      const { nextAnswer } = this.state;
+      nextAnswer(true);
+      this.setState({ timer: 0 });
       clearInterval(this.cronometerInterval);
     };
     if (prev.timer === 0) clear();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.cronometerInterval);
   }
 
   randAnswers() {
@@ -45,26 +52,9 @@ class Questions extends Component {
     this.setState({ answers: newArr });
   }
 
-  calcAnswerValue() {
-    const { difficulty, updateScore } = this.props;
-    const { timer } = this.state;
-    const CONSTANT = 10;
-    const difficultyValues = {
-      hard: 3,
-      medium: 2,
-      easy: 1,
-    };
-    const answerValue = CONSTANT + timer * difficultyValues[difficulty];
-
-    updateScore(answerValue);
-
-    const state = JSON.parse(localStorage.getItem('state'));
-    state.player.score += answerValue;
-    localStorage.setItem('state', JSON.stringify(state));
-  }
-
   renderAnswers() {
-    const { correct_answer: correct, next, answers, timer } = this.state;
+    const { correct_answer: correct, answers, timer, nextAnswer } = this.state;
+    const { next } = this.props;
     return answers.map((answer, idx) => {
       const checkColor = answer === correct
         ? '3px solid rgb(6, 240, 15)'
@@ -78,17 +68,9 @@ class Questions extends Component {
         <button
           style={ { border: `${next || !timer ? checkColor : ''}` } }
           key={ answer }
-          id={ checkIsCorrect }
           type="button"
           data-testid={ checkIsCorrect }
-          onClick={ () => {
-            if (!next) {
-              this.setState({ next: true });
-            }
-            if (answer === correct) {
-              this.calcAnswerValue();
-            }
-          } }
+          onClick={ () => !next && nextAnswer(true) }
           disabled={ !timer }
         >
           {answer}
@@ -101,7 +83,7 @@ class Questions extends Component {
     const { category, question, timer } = this.state;
     return (
       <div>
-        <p>{ timer}</p>
+        <p>{ timer }</p>
         <h3 data-testid="question-category">{category}</h3>
         <h3 data-testid="question-text">{question}</h3>
         {this.renderAnswers()}
@@ -110,17 +92,12 @@ class Questions extends Component {
   }
 }
 
-Questions.propTypes = {
-  difficulty: PropTypes.string.isRequired,
-  updateScore: PropTypes.func.isRequired,
-};
-
-// const mapStateToProps = ({ user: { triviaGame } }) => ({
-//   triviaGame,
-// });
-
-const mapDispatchToProps = (dispatch) => ({
-  updateScore: (token) => dispatch(getScore(token)),
+const mapStateToProps = ({ user: { triviaGame } }) => ({
+  triviaGame,
 });
 
-export default connect(null, mapDispatchToProps)(Questions);
+Questions.propTypes = {
+  next: PropTypes.bool,
+}.isRequired;
+
+export default connect(mapStateToProps)(Questions);
