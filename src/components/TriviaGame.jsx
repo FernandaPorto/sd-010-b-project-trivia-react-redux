@@ -22,7 +22,7 @@ class Trivia extends React.Component {
     const { token } = localStorage;
     const URL = `https://opentdb.com/api.php?amount=5&token=${token}`;
 
-    const requestQuestions = await fetchToken(URL);
+    const requestQuestions = await fetchData(URL);
     this.updateState(requestQuestions);
   }
 
