@@ -9,6 +9,8 @@ class Feedback extends Component {
     return (
       <div>
         <Header pontuacao={ score } />
+        <p data-testid="feedback-total-score">{ score }</p>
+        <p data-testid="feedback-total-question">{ assertions }</p>
         <p data-testid="feedback-text">
           { assertions >= assert
             ? 'Mandou bem!' : 'Podia ser melhor...' }
