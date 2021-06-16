@@ -47,15 +47,15 @@ class Trivia extends React.Component {
 
       if (answer === answerChecker) {
         return (
-          <p key={ index } data-testid={ correctAnswerID }>
+          <button type="button" key={ index } data-testid={ correctAnswerID }>
             { answer }
-          </p>
+          </button>
         );
       }
       return (
-        <p key={ index } data-testid={ `wrong-answer-${index}` }>
+        <button type="button" key={ index } data-testid={ `wrong-answer-${index}` }>
           { answer }
-        </p>
+        </button>
       );
     });
 
