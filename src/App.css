@@ -121,7 +121,7 @@
 /* PerguntaAtual component */
 .questions-section {
   align-items: center;
-  color: white;
+  color: black;
   display: flex;
   flex-direction: column;
   margin-top: 30px;

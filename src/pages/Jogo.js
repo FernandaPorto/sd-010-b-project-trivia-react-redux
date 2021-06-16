@@ -15,15 +15,20 @@ class Jogo extends React.Component {
     this.paintAll = this.paintAll.bind(this);
     this.changeTimerState = this.changeTimerState.bind(this);
     this.temporizador = this.temporizador.bind(this);
+    this.stopTimer = this.stopTimer.bind(this);
+    this.stopOnClick = this.stopOnClick.bind(this);
     this.state = {
       randomAnswer: {},
       perguntaNumber: 0,
       buttonDisable: true,
+      timer: 30,
+      myTimer: null,
     };
   }
 
   componentDidMount() {
-    return this.answers();
+    this.answers();
+    this.temporizador();
   }
 
   buttonAvaliable() {
@@ -45,8 +50,20 @@ class Jogo extends React.Component {
         question: results[perguntaNumber].question,
         correctAnswer: results[perguntaNumber].correct_answer,
       },
-      timer: 5,
     });
+  }
+
+  stopTimer() {
+    const { timer, myTimer } = this.state;
+    if (timer <= 0) {
+      this.buttonAvaliable();
+      return clearInterval(myTimer);
+    }
+  }
+
+  stopOnClick() {
+    const { myTimer } = this.state;
+    clearInterval(myTimer)
   }
 
   somaPergunta() {
@@ -56,6 +73,7 @@ class Jogo extends React.Component {
       timer: 30,
     }), () => this.answers());
     this.paintAll();
+    this.temporizador();
   }
 
   paintAnswerCorrect() {
@@ -95,30 +113,29 @@ class Jogo extends React.Component {
   }
 
   changeTimerState() {
-    const { timer } = this.state;
     this.setState((prev) => ({
       timer: prev.timer - 1,
-    }));
-    if (timer <= 0) {
-      console.log('aqui')
-      return clearInterval(this.temporizador());
-    }
+    }), () => this.stopTimer());
   }
 
   temporizador() {
-    setInterval(this.changeTimerState, 1000);
+    this.setState({
+      myTimer: setInterval(this.changeTimerState, 1000),
+    });
   }
 
   render() {
     const { randomAnswer, timer } = this.state;
     return (
       <section>
+        <button onClick={ () => this.stopTimer() } type="button">AQUI</button>
         <Header />
         <section className="game-section">
           <PerguntaAtual
             randomAnswer={ randomAnswer }
             buttonAvaliable={ () => this.buttonAvaliable() }
             timer={ timer }
+            stopOnClick={ () => this.stopOnClick() }
           />
         <div>
           { timer }
