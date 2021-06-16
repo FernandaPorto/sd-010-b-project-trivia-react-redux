@@ -3,16 +3,30 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import FeedbackHeader from './FeedbackHeader';
-import { clearAllDataStore } from '../actions/index';
+import { addPlayerToRanking, clearAllDataStore } from '../actions/index';
 
 class Feedback extends React.Component {
   constructor() {
     super();
+
     this.clearAllData = this.clearAllData.bind(this);
   }
 
   clearAllData() {
-    const { clearAllDataStoreAction } = this.props;
+    const { addPlayerToRankingAction,
+      playerReducer, clearAllDataStoreAction } = this.props;
+
+    const playerRanking = {
+      name: playerReducer.name,
+      score: playerReducer.score,
+      picture: playerReducer.gravatarEmail,
+    };
+    addPlayerToRankingAction(playerRanking);
+    const { rankingReducer } = this.props;
+    const totalRanking = JSON.stringify([...rankingReducer, playerRanking]);
+
+    localStorage.setItem('ranking', totalRanking);
+
     clearAllDataStoreAction();
     const estadoInicial = {
       player: {
@@ -53,6 +67,16 @@ class Feedback extends React.Component {
             Jogar novamente
           </button>
         </Link>
+
+        <Link to="/ranking">
+          <button
+            data-testid="btn-ranking"
+            type="button"
+            onClick={ this.clearAllData }
+          >
+            Ver Ranking
+          </button>
+        </Link>
       </main>
     );
   }
@@ -60,18 +84,24 @@ class Feedback extends React.Component {
 
 const mapStateToProps = (state) => ({
   playerReducer: state.player,
+  rankingReducer: state.ranking,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   clearAllDataStoreAction: () => dispatch(clearAllDataStore()),
+  addPlayerToRankingAction: (payload) => dispatch(addPlayerToRanking(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
 
 Feedback.propTypes = {
   clearAllDataStoreAction: PropTypes.func.isRequired,
+  addPlayerToRankingAction: PropTypes.func.isRequired,
+  rankingReducer: PropTypes.shape({}).isRequired,
   playerReducer: PropTypes.shape({
+    name: PropTypes.string.isRequired,
     assertions: PropTypes.number.isRequired,
     score: PropTypes.number.isRequired,
+    gravatarEmail: PropTypes.string.isRequired,
   }).isRequired,
 };

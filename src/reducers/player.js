@@ -4,7 +4,7 @@ import {
   CLEAR_ALL_DATA_STORE } from '../actions/index';
 
 const INITIAL_STATE = {
-  name: 'qualquernome',
+  name: '',
   assertions: 0,
   score: 0,
   gravatarEmail: '',
