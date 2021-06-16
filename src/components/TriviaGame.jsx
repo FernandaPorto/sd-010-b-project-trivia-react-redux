@@ -12,7 +12,16 @@ class Trivia extends React.Component {
       questions: [],
     };
   }
-  
+
+  async componentDidMount() {
+    const { token } = localStorage;
+
+    const requestQuestions = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
+    const dataToJSON = await requestQuestions.json();
+
+    this.updateState(dataToJSON);
+  }
+
   render () {
     return ();
   }
