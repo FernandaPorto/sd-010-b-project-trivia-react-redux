@@ -16,6 +16,7 @@ class Trivia extends React.Component {
       seconds: 30,
       disable: false,
       pontosState: 0,
+      next: true,
 
     };
 
@@ -103,7 +104,8 @@ class Trivia extends React.Component {
     this.setState((prevState) => ({ ...prevState,
       correct: 'correct_answer',
       reject: 'incorrect_answer',
-      pontosState: prevState.pontosState + pontosRender }));
+      pontosState: prevState.pontosState + pontosRender,
+      next: false }));
 
     localStorage.setItem('player', JSON.stringify(pontosState));
     // console.log(pontosState);
@@ -149,7 +151,7 @@ class Trivia extends React.Component {
   }
 
   render() {
-    const { seconds, pontosState } = this.state;
+    const { seconds, pontosState, next } = this.state;
     console.log(pontosState);
     // console.log(seconds);
     return (
@@ -161,6 +163,13 @@ class Trivia extends React.Component {
           {pontosState}
         </h3>
         {this.renderQuestion()}
+        <button
+          type="button"
+          data-testid="btn-next"
+          hidden={ next }
+        >
+          Próxima
+        </button>
       </div>
     );
   }
