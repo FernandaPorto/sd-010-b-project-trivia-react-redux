@@ -48,7 +48,8 @@ class Feedback extends React.Component {
           <button
             data-testid="btn-play-again"
             type="button"
-            onClick={ this.clearAllData }>
+            onClick={ this.clearAllData }
+          >
             Jogar novamente
           </button>
         </Link>
