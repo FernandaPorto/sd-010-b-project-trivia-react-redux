@@ -21,7 +21,6 @@ class PerguntaCard extends Component {
 
   componentWillUnmount() {
     clearInterval(this.timer);
-    localStorage.clear();
   }
 
   setTimer() {
