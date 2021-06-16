@@ -17,18 +17,19 @@ class Trivia extends React.Component {
       disable: false,
       pontosState: 0,
       next: true,
-
     };
 
     this.renderQuestion = this.renderQuestion.bind(this);
     this.colorAnswers = this.colorAnswers.bind(this);
     this.update = this.update.bind(this);
-    // this.saveStorage = this.saveStorage.bind(this);
+    this.scoreTrivia = this.scoreTrivia.bind(this);
+    this.storange = this.storange.bind(this);
+    this.teste = this.teste.bind(this);
   }
 
   componentDidMount() {
-    const { pontosState } = this.state;
-    localStorage.setItem('player', JSON.stringify(pontosState));
+    // const { pontosState } = this.state;
+    // localStorage.setItem('player', JSON.stringify(pontosState));
     this.getQuestions();
     const ONE_SECOND = 1000; // 1 second in miliseconds
     const { seconds } = this.state;
@@ -72,43 +73,56 @@ class Trivia extends React.Component {
     }
   }
 
-  // saveStorage() {
-  //   const { pontosState } = this.state;
-  //   localStorage.setItem('player', JSON.stringify(pontosState));
-  // }
+  storange() {
+    const { pontosState } = this.state;
+    const { name, email } = this.props;
 
-  colorAnswers() {
-    const { questions, seconds, pontosState } = this.state;
-    // const { difficultyQuestions } = this.props;
+    const player = {
+      name,
+      // assertions: '',
+      score: pontosState,
+      gravatarEmail: email,
+    };
+
+    localStorage.setItem('player', JSON.stringify(player));
+  }
+
+  scoreTrivia() {
+    const { questions, seconds } = this.state;
     const { difficulty } = questions[0];
     const levelQuestion = difficulty;
     const pointsHard = 3;
     const pointsMedium = 2;
     const pointsEasy = 1;
     const somaPontos = 10;
-    // const difficultyLevels = {
-    //   hard: 3,
-    //   medium: 2,
-    //   easy: 1,
-    // };
-    // const pointScore = somaPontos + seconds * difficultyLevels[difficultyQuestions];
-    // apiQuestions(pointScore);
-    let pontosRender;
+    let pontosRender = 0;
+    console.log(pontosRender);
     if (levelQuestion === 'hard') {
       pontosRender = somaPontos + (seconds * pointsHard);
     } else if (levelQuestion === 'medium') {
       pontosRender = somaPontos + (seconds * pointsMedium);
-    } else {
+    } else if (levelQuestion === 'easy') {
       pontosRender = somaPontos + (seconds * pointsEasy);
+    } else {
+      return pontosRender;
     }
+    this.setState((state) => ({ pontosState: state.pontosState + pontosRender }));
+  }
+
+  colorAnswers() {
     this.setState((prevState) => ({ ...prevState,
       correct: 'correct_answer',
       reject: 'incorrect_answer',
-      pontosState: prevState.pontosState + pontosRender,
       next: false }));
-
-    localStorage.setItem('player', JSON.stringify(pontosState));
+    // const { pontosState } = this.state;
+    // localStorage.setItem('player', JSON.stringify(pontosState));
     // console.log(pontosState);
+  }
+
+  async teste() {
+    await this.scoreTrivia();
+    this.colorAnswers();
+    this.storange();
   }
 
   renderQuestion() {
@@ -125,7 +139,11 @@ class Trivia extends React.Component {
               disabled={ disable }
               className={ correct }
               data-testid="correct-answer"
-              onClick={ this.colorAnswers }
+              onClick={ async () => {
+                await this.scoreTrivia();
+                this.colorAnswers();
+                this.storange();
+              } }
               type="button"
             >
               {question.correct_answer}
@@ -135,7 +153,7 @@ class Trivia extends React.Component {
               <button
                 disabled={ disable }
                 data-testid={ `wrong-answer-${index}` }
-                onClick={ this.colorAnswers }
+                onClick={ this.teste }
                 key={ incorrect }
                 type="button"
                 className={ reject }
@@ -178,14 +196,20 @@ class Trivia extends React.Component {
 Trivia.propTypes = {
   apiQuestions: PropTypes.func.isRequired,
   thunkToken: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  email: PropTypes.string.isRequired,
 };
+
+const mapStateToProps = (state) => ({
+  name: state.reducerName.name,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   apiQuestions: (token, perguntas) => dispatch(fetchApiQuestions(token, perguntas)),
   thunkToken: () => dispatch(fetchAPI()),
 });
 
-export default connect(null, mapDispatchToProps)(Trivia);
+export default connect(mapStateToProps, mapDispatchToProps)(Trivia);
 // errei o nome do commitS
 
 /* para criação do cronômetro, utilizamos como referência o exercício do bloco 13.1 feito pelo instrutor Ícaro <https://github1s.com/tryber/sd-10b-live-lectures/tree/lecture/13.1> */

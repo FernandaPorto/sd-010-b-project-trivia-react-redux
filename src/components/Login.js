@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchAPI, saveName } from '../actions/index';
+import { fetchAPI, saveName, saveEmail } from '../actions/index';
 
 class Login extends React.Component {
   constructor() {
@@ -25,9 +25,10 @@ class Login extends React.Component {
     const { requisitionLogin } = this.props;
     const token = await requisitionLogin();
     localStorage.setItem('token', token.result.token);
-    const { name } = this.state;
-    const { saveNameDispatch } = this.props;
+    const { name, email } = this.state;
+    const { saveNameDispatch, saveEmailDispatch } = this.props;
     saveNameDispatch(name);
+    saveEmailDispatch(email);
   }
 
   render() {
@@ -81,11 +82,13 @@ class Login extends React.Component {
 Login.propTypes = {
   requisitionLogin: PropTypes.func.isRequired,
   saveNameDispatch: PropTypes.func.isRequired,
+  saveEmailDispatch: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   requisitionLogin: () => dispatch(fetchAPI()),
   saveNameDispatch: (name) => dispatch(saveName(name)),
+  saveEmailDispatch: (email) => dispatch(saveEmail(email)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
