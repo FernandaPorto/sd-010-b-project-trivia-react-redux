@@ -17,7 +17,6 @@ class FeedbackHeader extends React.Component {
           {name}
         </p>
         <h2 data-testid="header-score">
-          Placar:
           {score}
         </h2>
       </header>
