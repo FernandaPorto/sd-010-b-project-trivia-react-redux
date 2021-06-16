@@ -7,6 +7,7 @@ export const RESET_COLORS = 'reset_colors';
 export const START_COUNT = 'start_count';
 export const DECREASE_COUNT = 'decrease_count';
 export const DISABLE_BUTTONS = 'disable_buttons';
+export const GOAL = 'make_a_score';
 
 export const sendTokenToRedux = (token) => ({
   type: SEND_TOKEN,
@@ -50,4 +51,9 @@ export const decreaseOneSecond = () => ({
 
 export const disableButtons = () => ({
   type: DISABLE_BUTTONS,
+});
+
+export const getRigth = (score) => ({
+  type: GOAL,
+  score,
 });

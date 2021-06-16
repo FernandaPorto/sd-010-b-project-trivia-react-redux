@@ -1,7 +1,7 @@
 import { DECREASE_COUNT, START_COUNT } from '../actions/index';
 
 const INITIAL_STATE = {
-  count: 10,
+  count: 30,
 };
 
 const countReducer = (state = INITIAL_STATE, action) => {

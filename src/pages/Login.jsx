@@ -42,6 +42,14 @@ class Login extends Component {
     const { email, nome } = this.state;
     saveEmail(email);
     saveNome(nome);
+    const player = {
+      name: nome,
+      assertions: 0,
+      score: 0,
+      gravatarEmail: email,
+    };
+    localStorage.removeItem('player');
+    localStorage.setItem('player', JSON.stringify(player));
   }
 
   handleClick() {

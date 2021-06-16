@@ -7,6 +7,7 @@ import {
   changeStyles,
   resetStyles,
   startCounting,
+  getRigth,
 } from '../actions/index';
 import TrueButtonIsCorrect from '../components/TrueButtonIsCorrect';
 import FalseButtonIsCorrect from '../components/FalseButtonIsCorrect';
@@ -18,6 +19,8 @@ class Game extends Component {
     this.state = {
       results: [],
       indexQuestion: 0,
+      score: 0,
+      assertions: 0,
     };
     this.saveQuestionsInState = this.saveQuestionsInState.bind(this);
     this.renderQuestion = this.renderQuestion.bind(this);
@@ -33,6 +36,29 @@ class Game extends Component {
     fetch(urlTrivia)
       .then((data) => data.json())
       .then((questions) => this.saveQuestionsInState(questions));
+  }
+
+  calculatePoints() {
+    const { results, indexQuestion } = this.state;
+    const { actualCount, clickedAnswer } = this.props;
+    const defaultPoint = 10;
+    const question = results[indexQuestion];
+    const dificuldadeAtual = question.difficulty;
+    const dificuldade = {
+      easy: 1,
+      medium: 2,
+      hard: 3,
+    };
+    const score = defaultPoint + (actualCount * dificuldade[dificuldadeAtual]);
+    clickedAnswer(score);
+    this.handleLocalStorage(score);
+  }
+
+  handleLocalStorage(score) {
+    const player = JSON.parse(localStorage.getItem('player'));
+    player.assertions += 1;
+    player.score += score;
+    localStorage.setItem('player', JSON.stringify(player));
   }
 
   saveQuestionsInState({ results }) {
@@ -54,11 +80,17 @@ class Game extends Component {
     }));
   }
 
+  selectedAnswer() {
+    const { showColors } = this.props;
+    showColors();
+    this.calculatePoints();
+  }
+
   multipleAnswers({
     correct_answer: correctAnswer,
     incorrect_answers: incorrectAnswers,
   }) {
-    const { wrong, rigth, showColors, disableButtons } = this.props;
+    const { wrong, rigth, disableButtons, showColors } = this.props;
     const rightAnswer = (
       <button
         type="button"
@@ -67,7 +99,7 @@ class Game extends Component {
         style={ {
           border: rigth,
         } }
-        onClick={ () => showColors() }
+        onClick={ () => this.selectedAnswer() }
         disabled={ disableButtons }
       >
         { correctAnswer }
@@ -152,6 +184,7 @@ const mapDispatchToProps = (dispatch) => ({
   showColors: () => dispatch(changeStyles()),
   resetColors: () => dispatch(resetStyles()),
   restartCount: () => dispatch(startCounting()),
+  clickedAnswer: (points) => dispatch(getRigth(points)),
 });
 
 const mapStateToProps = (state) => ({
@@ -162,6 +195,9 @@ const mapStateToProps = (state) => ({
   rigth: state.gameReducer.styles.rigth,
   wrong: state.gameReducer.styles.wrong,
   disableButtons: state.gameReducer.disabledButtons,
+  actualCount: state.countdownReducer.count,
+  score: state.playerReducer.score,
+  assertions: state.playerReducer.assertions,
 });
 
 Game.propTypes = {
