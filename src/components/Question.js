@@ -78,5 +78,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Question);
 
 Question.propTypes = {
   questions: propTypes.arrayOf(propTypes.object).isRequired,
-  index: propTypes.number.isRequired,
+  getQuestions: propTypes.func.isRequired,
+  getToken: propTypes.func.isRequired,
+  token: propTypes.string.isRequired,
 };
