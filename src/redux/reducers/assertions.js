@@ -1,7 +1,7 @@
 import { ASSERTIONS } from '../actions';
 
 const initialState = {
-  total: 0,
+  total: NaN,
 };
 
 export default (state = initialState, action) => {
