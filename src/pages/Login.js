@@ -48,12 +48,13 @@ class Login extends React.Component {
       .then((response) => response.json())
       .then((response) => {
         localStorage.setItem('token', JSON.stringify(response.token));
-        return fetch(`https://opentdb.com/api.php?amount=5&token=${response.token}`)})
+        return fetch(`https://opentdb.com/api.php?amount=5&token=${response.token}`);
+      })
       .then((response) => response.json())
       .then((response) => {
-        fetchQuestionsAction(response)
+        fetchQuestionsAction(response);
         login(this.state);
-        history.push("/jogo");
+        history.push('/jogo');
       });
   }
 
@@ -113,6 +114,10 @@ const mapDispatchToProps = (dispatch) => ({
 
 Login.propTypes = {
   login: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+  fetchQuestionsAction: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);

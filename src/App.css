@@ -34,8 +34,9 @@
   background-color: rgb(0, 255, 115);
   border-color: transparent;
   border-radius: 10px;
-  color: darkgreen;
+  color: rgb(0, 66, 0);
   font-size: 20px;
+  font-weight: 900;
 }
 
 .play-btn:disabled {
@@ -49,6 +50,7 @@
   border-radius: 10px;
   color: rgb(148, 96, 0);
   font-size: 20px;
+  font-weight: 900;
 }
 
 .play-btn:hover, .config-btn:hover {
@@ -69,13 +71,15 @@
 
 /* Header component */
 .header-component {
-  background-color: lightgray;
+  background-image: url('https://files.wallpaperpass.com/2019/10/low%20poly%20wallpaper%20052%20-%201920x1080.jpg');
   box-shadow: 10px 5px 5px black;
+  color: white;
   display: flex;
   font-size: 28px;
+  height: fit-content;
   justify-content: space-evenly;
-  margin-bottom: 30px;
-  padding: 20px 0;
+  padding: 10px 0;
+  position: relative;
 }
 
 .header-component img {
@@ -83,8 +87,65 @@
 }
 
 /* Jogo page */
-.questions-section {
+.game-section {
+  align-items: center;
+  /* background-image: url('https://files.wallpaperpass.com/2019/10/low%20poly%20wallpaper%20052%20-%201920x1080.jpg'); */
+  background-size: 100%;
+  display: flex;
+  flex-direction: column;
   font-size: 20px;
-  margin: auto;
-  width: fit-content;
+  height: 100vh;
+  width: 100%;
+}
+
+.next-btn {
+  align-self: center;
+  background-color: transparent;
+  background-image: url('https://files.wallpaperpass.com/2019/10/low%20poly%20wallpaper%20052%20-%201920x1080.jpg');
+  border-radius: 10px;
+  box-shadow: 0 0 7px white , 0 0 10px white , 0 0 102px #0fa , 0 0 151px #0fa;
+  font-size: 20px;
+  margin-top: 80px;
+  width: 400px;
+}
+
+.next-icon {
+  color: white;
+  font-size: 50px;
+}
+
+.next-btn:hover {
+  text-shadow: 0 0 7px white , 0 0 10px white , 0 0 102px #0fa , 0 0 151px #0fa;
+}
+
+/* PerguntaAtual component */
+.questions-section {
+  align-items: center;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+}
+
+.questions-section button {
+  background-image: url('https://files.wallpaperpass.com/2019/10/low%20poly%20wallpaper%20052%20-%201920x1080.jpg');
+  border: none;
+  border-radius: 10px;
+  box-shadow: 5px 2px 2px black;
+  box-sizing: border-box;
+  color: white;
+  font-size: 18px;
+  height: 40px;
+  margin-top: 10px;
+  outline: none;
+  width: 400px;
+}
+
+.questions-section button:hover {
+  background-color: transparent;
+  text-shadow: 0 0 7px white , 0 0 10px white , 0 0 102px #0fa , 0 0 151px #0fa;
+}
+
+.questions-section div {
+  margin-bottom: 20px;
 }
