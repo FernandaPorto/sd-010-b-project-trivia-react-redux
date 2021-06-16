@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import GameHeader from '../components/GameHeader';
 
 class GameFeedback extends Component {
@@ -49,6 +50,14 @@ class GameFeedback extends Component {
     );
   }
 }
+
+GameFeedback.propTypes = {
+  hits: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
 
 // state.user.triviaGame
 const mapStateToProps = ({ user: { triviaGame: { score, hits } } }) => ({
