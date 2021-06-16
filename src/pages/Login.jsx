@@ -1,90 +1,34 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { Redirect } from 'react-router';
-import { getTokenAPI } from '../action';
+import { Redirect } from 'react-router-dom';
+import LoginForms from '../components/LoginForms';
 
 class Login extends Component {
   constructor() {
     super();
     this.state = {
-      name: '',
-      email: '',
-      btnEnable: true,
-      login: false,
+      redirectSettings: false,
     };
-    this.verifyLogin = this.verifyLogin.bind(this);
-  }
-
-  verifyLogin() {
-    const { name, email } = this.state;
-    if (name.length > 0 && email.length > 0) {
-      this.setState({ btnEnable: false });
-    }
-  }
-
-  redirectToGame() {
-    this.setState({ login: true });
   }
 
   render() {
-    const { btnEnable, login } = this.state;
-    const { getTokenData } = this.props;
-    if (login) {
-      return <Redirect to="/trivia" />;
+    const { redirectSettings } = this.state;
+    if (redirectSettings) {
+      return <Redirect to="settings" />;
     }
     return (
       <section>
-        <form>
-          <label htmlFor="name">
-            Nome:
-            <input
-              type="text"
-              id="name"
-              name="name"
-              data-testid="input-player-name"
-              onChange={ ({ target }) => {
-                this.setState({ name: target.value }, this.verifyLogin);
-              } }
-            />
-          </label>
-          <label htmlFor="email">
-            Email:
-            <input
-              type="text"
-              id="email"
-              name="name"
-              data-testid="input-gravatar-email"
-              onChange={ ({ target }) => {
-                this.setState({ email: target.value }, this.verifyLogin);
-              } }
-            />
-          </label>
-
-          <button
-            type="button"
-            disabled={ btnEnable }
-            data-testid="btn-play"
-            onClick={ () => {
-              getTokenData();
-              this.redirectToGame();
-            } }
-          >
-            Jogar
-          </button>
-
-        </form>
+        <LoginForms />
+        <button
+          type="button"
+          data-testid="btn-settings"
+          onClick={ () => this.setState({ redirectSettings: true }) }
+        >
+          Configurações
+        </button>
       </section>
+
     );
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  getTokenData: () => dispatch(getTokenAPI()),
-});
-
-Login.propTypes = {
-  getTokenData: PropTypes.func,
-}.isRequired;
-
-export default connect(null, mapDispatchToProps)(Login);
+export default Login;
