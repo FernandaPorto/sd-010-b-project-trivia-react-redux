@@ -28,6 +28,16 @@ class Game extends React.Component {
     const ONE_SECOND = 1000;
     const intervalId = setInterval(this.timer, ONE_SECOND);
     this.settingState(intervalId);
+    const estadoInicial = {
+      player: {
+        name: '',
+        assertions: 0,
+        score: 0,
+        gravatarEmail: '',
+      },
+    };
+    const estadoInicialJson = JSON.stringify(estadoInicial);
+    localStorage.setItem('state', estadoInicialJson);
   }
 
   settingState(intervalId) {
@@ -66,7 +76,7 @@ class Game extends React.Component {
         },
       };
       updatePlayerPointsAction({ correctAnswer, answerPoints });
-      localStorage.setItem('state', JSON.stringify([estadoTemporario]));
+      localStorage.setItem('state', JSON.stringify(estadoTemporario));
     }
   }
 
