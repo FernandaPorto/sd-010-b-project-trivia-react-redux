@@ -16,6 +16,7 @@ class PerguntaCard extends Component {
     this.checkAnswer = this.checkAnswer.bind(this);
     this.handleNext = this.handleNext.bind(this);
     this.setTimer = this.setTimer.bind(this);
+    this.border = this.border.bind(this);
   }
 
   componentWillUnmount() {
@@ -56,17 +57,21 @@ class PerguntaCard extends Component {
     if (difficulty === 'easy') return onePoint;
   }
 
-  checkAnswer({ target }) {
-    clearInterval(this.timer);
-    const { setScore, setAssertions } = this.props;
-    const state = JSON.parse(localStorage.getItem('state'));
-    const { timer } = this.state;
+  border() {
     this.setState((oldState) => ({
       ...oldState,
       correctAnswer: { border: '3px solid rgb(6, 240, 15)' },
       wrongAnswer: { border: '3px solid rgb(255, 0, 0)' },
       nextStyle: 'visible',
     }));
+  }
+
+  checkAnswer({ target }) {
+    clearInterval(this.timer);
+    const { setScore, setAssertions } = this.props;
+    const state = JSON.parse(localStorage.getItem('state'));
+    const { timer } = this.state;
+    this.border()
     if (target.value === 'correct') {
       const tenPoints = 10;
       state.player.assertions += 1;
@@ -87,8 +92,9 @@ class PerguntaCard extends Component {
   }
 
   renderTimer() {
-    const { timer } = this.state;
-    if (timer === 0) {
+    const { timer, nextStyle } = this.state;
+    if (timer === 0 && nextStyle === 'hidden') {
+      this.border()
       clearInterval(this.timer);
     }
     return (<Timer
