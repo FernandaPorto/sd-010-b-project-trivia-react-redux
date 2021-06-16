@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { fetchQuestions, fetchToken } from '../redux/actions';
 
 class Inputs extends Component {
@@ -11,8 +11,8 @@ class Inputs extends Component {
   }
 
   componentDidMount() {
-    const { fetchApiToken } = this.props;
-    fetchApiToken();
+    const { fetchQuestions: getQuestions } = this.props;
+    getQuestions();
   }
 
   verify() {
@@ -64,7 +64,7 @@ class Inputs extends Component {
               data-testid="btn-play"
               type="button"
               disabled={ this.verify() }
-              onClick={ () => <Redirect to="game" /> }
+              onClick={ () => fetchApiToken() }
             >
               Jogar
             </button>
@@ -76,6 +76,7 @@ class Inputs extends Component {
 }
 const mapDispatchToProps = (dispatch) => ({
   fetchApiToken: () => dispatch(fetchToken()),
+  fetchQuestions: () => dispatch(fetchQuestions()),
 });
 
 Inputs.propTypes = {
@@ -84,6 +85,7 @@ Inputs.propTypes = {
   email: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
   fetchApiToken: PropTypes.func.isRequired,
+  fetchQuestions: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Inputs);
