@@ -8,19 +8,24 @@ import { addPlayerToRanking, clearAllDataStore } from '../actions/index';
 class Feedback extends React.Component {
   constructor() {
     super();
+
     this.clearAllData = this.clearAllData.bind(this);
   }
 
   clearAllData() {
-    const { addPlayerToRankingAction, playerReducer, clearAllDataStoreAction } = this.props;
+    const { addPlayerToRankingAction,
+      playerReducer, clearAllDataStoreAction } = this.props;
 
     const playerRanking = {
       name: playerReducer.name,
       score: playerReducer.score,
       picture: playerReducer.gravatarEmail,
     };
-    console.log(playerRanking);
     addPlayerToRankingAction(playerRanking);
+    const { rankingReducer } = this.props;
+    const totalRanking = JSON.stringify([...rankingReducer, playerRanking]);
+
+    localStorage.setItem('ranking', totalRanking);
 
     clearAllDataStoreAction();
     const estadoInicial = {
@@ -91,8 +96,12 @@ export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
 
 Feedback.propTypes = {
   clearAllDataStoreAction: PropTypes.func.isRequired,
+  addPlayerToRankingAction: PropTypes.func.isRequired,
+  rankingReducer: PropTypes.shape({}).isRequired,
   playerReducer: PropTypes.shape({
+    name: PropTypes.string.isRequired,
     assertions: PropTypes.number.isRequired,
     score: PropTypes.number.isRequired,
+    gravatarEmail: PropTypes.string.isRequired,
   }).isRequired,
 };
