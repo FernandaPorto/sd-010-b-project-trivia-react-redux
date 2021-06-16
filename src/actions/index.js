@@ -4,6 +4,7 @@ export const INPUT_EMAIL = 'INPUT_EMAIL';
 export const SUCCESS_TRIVIA = 'SUCCESS_TRIVIA';
 export const ERR_TRIVIA = 'ERR_TRIVIA';
 export const LOADING = 'LOADING';
+export const UPDATE_SCORE = 'UPDATE_SCORE';
 
 export const addToken = (token) => ({
   type: SET_TOKEN,
@@ -21,6 +22,13 @@ export const inputEmail = (email) => ({
   type: INPUT_EMAIL,
   payload: {
     email,
+  },
+});
+
+export const getScore = (score) => ({
+  type: UPDATE_SCORE,
+  payload: {
+    score,
   },
 });
 
