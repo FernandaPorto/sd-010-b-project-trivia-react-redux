@@ -1,7 +1,7 @@
 import { getQuestions } from '../services';
 import { ADD_PLAYER_NAME, RECEIVE_QUESTIONS, RECEIVE_TOKEN } from './actionsType';
 
-const receiveToken = (token) => ({ type: RECEIVE_TOKEN, token });
+const saveToken = (token) => ({ type: RECEIVE_TOKEN, token });
 
 const receiveQuestions = (questions) => ({ type: RECEIVE_QUESTIONS, questions });
 
