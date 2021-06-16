@@ -1,12 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import PerguntaAtual from '../components/PerguntaAtual';
-import { connect } from 'react-redux'
 
 class Jogo extends React.Component {
   constructor(props) {
     super(props);
-    // this.fetchQuestions = this.fetchQuestions.bind(this);
     this.answers = this.answers.bind(this);
     this.somaPergunta = this.somaPergunta.bind(this);
     this.buttonAvaliable = this.buttonAvaliable.bind(this);
@@ -14,8 +14,7 @@ class Jogo extends React.Component {
     this.paintAnswerIncorrect = this.paintAnswerIncorrect.bind(this);
     this.paintAll = this.paintAll.bind(this);
     this.state = {
-      perguntas: {},
-      randomAnswer: [],
+      randomAnswer: {},
       perguntaNumber: 0,
       buttonDisable: true,
     };
@@ -30,14 +29,6 @@ class Jogo extends React.Component {
       buttonDisable: false,
     });
   }
-  // fetchQuestions() {
-  //   const userToken = JSON.parse(localStorage.getItem('token'));
-  //   return fetch(`https://opentdb.com/api.php?amount=5&token=${userToken}`)
-  //     .then((response) => response.json())
-  //     .then((response) => {
-  //       this.setState({ perguntas: response }, () => this.answers());
-  //     });
-  // }
 
   answers() {
     const { perguntaNumber } = this.state;
@@ -66,12 +57,14 @@ class Jogo extends React.Component {
   paintAnswerCorrect() {
     const correct = document.getElementById('correct');
     correct.style.border = 'none';
+    correct.style.boxShadow = 'none';
   }
 
   paintAnswerIncorrect() {
     const branco = document.getElementsByClassName('incorrect');
     for (let key = 0; key < branco.length; key += 1) {
       branco[key].style.border = 'none';
+      branco[key].style.boxShadow = 'none';
     }
   }
 
@@ -80,32 +73,35 @@ class Jogo extends React.Component {
     this.paintAnswerCorrect();
   }
 
-  // answers() {
-  //   const { perguntas } = this.state;
-  //   const allAnswers = [...perguntas.results[0].incorrect_answers, perguntas.results[0].correct_answer];
-  //   this.shuffleArray(allAnswers);
-  // }
-
-  // shuffleArray(arr) {
-  //   // Loop em todos os elementos
-  //   for (let i = arr.length - 1; i > 0; i -= 1) {
-  //     // Escolhendo elemento aleatório
-  //     const j = Math.floor(Math.random() * (i + 1));
-  //     // Reposicionando elemento
-  //     [arr[i], arr[j]] = [arr[j], arr[i]];
-  //   }
-  //   // Retornando array com aleatoriedade
-  //   this.setState({ randomAnswer: arr });
-  // }
-  // // https://www.horadecodar.com.br/2021/05/10/como-embaralhar-um-array-em-javascript-shuffle/
+  renderNextButton() {
+    const { buttonDisable } = this.state;
+    if (buttonDisable) {
+      return null;
+    }
+    return (
+      <button
+        data-testid="btn-next"
+        type="button"
+        onClick={ () => this.somaPergunta() }
+        className="next-btn"
+      >
+        <span className="next-icon">&#10145;</span>
+      </button>
+    );
+  }
 
   render() {
-    const { randomAnswer, buttonDisable } = this.state;
+    const { randomAnswer } = this.state;
     return (
       <section>
         <Header />
-        <PerguntaAtual randomAnswer={ randomAnswer } buttonAvaliable={ () => this.buttonAvaliable() } />
-        {buttonDisable === true ? null : <button data-testid="btn-next" type="button" onClick={ () => this.somaPergunta() }>Próxima</button> }
+        <section className="game-section">
+          <PerguntaAtual
+            randomAnswer={ randomAnswer }
+            buttonAvaliable={ () => this.buttonAvaliable() }
+          />
+          { this.renderNextButton() }
+        </section>
       </section>
     );
   }
@@ -114,5 +110,16 @@ class Jogo extends React.Component {
 const mapStateToProps = (state) => ({
   questions: state.user.questions,
 });
+
+Jogo.propTypes = {
+  questions: PropTypes.shape({
+    results: PropTypes.arrayOf(PropTypes.shape({
+      incorrect_answers: PropTypes.arrayOf(PropTypes.string),
+      correct_answer: PropTypes.string,
+      category: PropTypes.string,
+      question: PropTypes.string,
+    }).isRequired).isRequired,
+  }).isRequired,
+};
 
 export default connect(mapStateToProps)(Jogo);
