@@ -1,0 +1,14 @@
+.card-container {
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  justify-content: center;
+  width: 40%;
+}
+
+.answer-options {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
