@@ -82,6 +82,21 @@ class Questions extends Component {
     }));
   }
 
+  saveRaking(score, name, gravatarEmail) {
+    // fonte da lógica : https://pt.stackoverflow.com/questions/329223/armazenar-um-array-de-objetos-em-um-local-storage-com-js
+    // Pega a lista já cadastrada, se não houver vira um array vazio
+    const ranking = JSON.parse(localStorage.getItem('ranking') || '[]');
+    // Adiciona pessoa ao cadastro
+    ranking.push({
+      name,
+      score,
+      picture: gravatarEmail,
+    });
+
+    // Salva a lista alterada
+    localStorage.setItem('ranking', JSON.stringify(ranking));
+  }
+
   somaPontuacao(answer, difficulty) {
     this.setState((prevState) => ({
       isToggleOn: !prevState.isToggleOn,
@@ -97,7 +112,11 @@ class Questions extends Component {
   render() {
     const { array, index, value, restart, isValid, next, isToggleOn } = this.state;
     const limit = 5;
-    if (index === limit) return <Redirect to="/feedback" />;
+    if (index === limit) {
+      const { player: { gravatarEmail, name, score } } = getStorage();
+      this.saveRaking(score, name, gravatarEmail);
+      return <Redirect to="/feedback" />;
+    }
     return (
       <div>
         <h3 data-testid="question-category">{array[index].category}</h3>

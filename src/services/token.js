@@ -12,3 +12,4 @@ export const getToken = () => fetch(URL)
   .then(({ results }) => results);
 
 export const getStorage = () => JSON.parse(localStorage.state);
+export const getRanking = () => JSON.parse(localStorage.ranking);
