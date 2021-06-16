@@ -30,6 +30,14 @@ class Login extends Component {
       });
     const email = document.getElementById('email-input').value;
     const user = document.getElementById('name-input').value;
+    localStorage.setItem('state', JSON.stringify({
+      player: {
+        name: user,
+        gravatarEmail: email,
+        score: 0,
+        assertions: 0,
+      },
+    }));
     login({ email, user });
   }
 

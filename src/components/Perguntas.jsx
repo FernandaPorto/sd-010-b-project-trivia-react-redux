@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { Redirect } from 'react-router';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import fetchPerguntas from '../redux/actions/perguntasThunk';
 import PerguntaCard from './PerguntaCard';
 
@@ -23,7 +23,7 @@ class Perguntas extends Component {
     this.setState((state) => ({ perguntaIndex: state.perguntaIndex + 1 }));
   }
 
-  render() {
+  renderPerguntaCard() {
     const { perguntas } = this.props;
     if (perguntas) {
       const { perguntaIndex } = this.state;
@@ -41,8 +41,20 @@ class Perguntas extends Component {
         </div>
       );
     }
-
     return <p>Loading...</p>;
+  }
+
+  render() {
+    const { perguntaIndex } = this.state;
+    const four = 4;
+    if (perguntaIndex > four) {
+      return <Redirect to="/feedback" />;
+    }
+    return (
+      <>
+        { this.renderPerguntaCard() }
+      </>
+    );
   }
 }
 

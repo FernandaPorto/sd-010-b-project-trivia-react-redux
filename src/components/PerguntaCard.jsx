@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Timer from './Timer';
+import { actionScore, actionAssertions } from '../redux/actions';
 
-export default class PerguntaCard extends Component {
+class PerguntaCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      nextStyle: 'hidden',
       correctAnswer: {},
       wrongAnswer: {},
       timer: 30,
@@ -13,6 +16,11 @@ export default class PerguntaCard extends Component {
     this.checkAnswer = this.checkAnswer.bind(this);
     this.handleNext = this.handleNext.bind(this);
     this.setTimer = this.setTimer.bind(this);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    localStorage.clear();
   }
 
   setTimer() {
@@ -32,20 +40,46 @@ export default class PerguntaCard extends Component {
       correctAnswer: {},
       wrongAnswer: {},
       timer: 30,
+      nextStyle: 'hidden',
     }));
     nextQuestion();
+    clearInterval(this.timer);
     this.setTimer();
   }
 
-  checkAnswer() {
+  convertDifficulty(difficulty) {
+    const threePoints = 3;
+    const twoPoints = 2;
+    const onePoint = 1;
+    if (difficulty === 'hard') return threePoints;
+    if (difficulty === 'medium') return twoPoints;
+    if (difficulty === 'easy') return onePoint;
+  }
+
+  checkAnswer({ target }) {
+    clearInterval(this.timer);
+    const { setScore, setAssertions } = this.props;
+    const state = JSON.parse(localStorage.getItem('state'));
+    const { timer } = this.state;
     this.setState((oldState) => ({
       ...oldState,
       correctAnswer: { border: '3px solid rgb(6, 240, 15)' },
       wrongAnswer: { border: '3px solid rgb(255, 0, 0)' },
+      nextStyle: 'visible',
     }));
-    clearInterval(this.timer);
+    if (target.value === 'correct') {
+      const tenPoints = 10;
+      state.player.assertions += 1;
+      state.player.score
+      += tenPoints
+      + (timer * this.convertDifficulty(target.getAttribute('level')));
+      localStorage.setItem('state', JSON.stringify(state));
+    }
+    setScore(state.player.score);
+    setAssertions(state.player.assertions);
   }
 
+  // https://stackoverflow.com/questions/7394748/whats-the-right-way-to-decode-a-string-that-has-special-html-entities-in-it
   decodeHtml(html) {
     const txt = document.createElement('textarea');
     txt.innerHTML = html;
@@ -65,7 +99,7 @@ export default class PerguntaCard extends Component {
 
   renderQuestion() {
     const { question, options } = this.props;
-    const { correctAnswer, wrongAnswer, timer } = this.state;
+    const { correctAnswer, wrongAnswer, timer, nextStyle } = this.state;
     const disab = timer === 0;
     return (
       <>
@@ -78,7 +112,9 @@ export default class PerguntaCard extends Component {
               <li key={ opt }>
                 <button
                   style={ opt === question.correct_answer ? correctAnswer : wrongAnswer }
+                  value={ opt === question.correct_answer ? 'correct' : 'wrong' }
                   type="button"
+                  level={ question.difficulty }
                   data-testid={
                     opt === question.correct_answer
                       ? 'correct-answer'
@@ -94,7 +130,15 @@ export default class PerguntaCard extends Component {
               </li>))
           }
         </ul>
-        <button type="button" onClick={ this.handleNext }>Proxima pergunta</button>
+        <button
+          type="button"
+          style={ { visibility: nextStyle } }
+          onClick={ this.handleNext }
+          data-testid="btn-next"
+        >
+          Proxima pergunta
+
+        </button>
       </>
     );
   }
@@ -114,4 +158,8 @@ PerguntaCard.propTypes = PropTypes.shape({
   nextQuestion: PropTypes.func,
 }).isRequired;
 
-// https://stackoverflow.com/questions/7394748/whats-the-right-way-to-decode-a-string-that-has-special-html-entities-in-it
+const mapDispatchToProps = (dispatch) => ({
+  setScore: (data) => dispatch(actionScore(data)),
+  setAssertions: (data) => dispatch(actionAssertions(data)),
+});
+export default connect(null, mapDispatchToProps)(PerguntaCard);

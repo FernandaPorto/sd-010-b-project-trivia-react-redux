@@ -5,7 +5,6 @@ class Timer extends Component {
   componentDidMount() {
     const { setTimer } = this.props;
     setTimer();
-    console.log('montou');
   }
 
   render() {
