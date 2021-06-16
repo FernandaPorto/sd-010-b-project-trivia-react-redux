@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { getTokenApi } from '../actions';
 
+
 class LoginForm extends Component {
   constructor(props) {
     super(props);
@@ -12,6 +13,7 @@ class LoginForm extends Component {
     this.onHandleChange = this.onHandleChange.bind(this);
     this.validateLogin = this.validateLogin.bind(this);
     this.handleClick = this.handleClick.bind(this);
+
     this.state = {
       name: '',
       email: '',
@@ -25,9 +27,13 @@ class LoginForm extends Component {
     });
   }
 
+
   setLocalStorage() {
     const { sendTokenToLocal } = this.props;
     localStorage.setItem('token', JSON.stringify(sendTokenToLocal.token));
+    const { name, email } = this.state;
+    const testObject = { name, assertions: 0, score: 0, gravatarEmail: email };
+    localStorage.setItem('player', JSON.stringify(testObject));
   }
 
   validateLogin() {

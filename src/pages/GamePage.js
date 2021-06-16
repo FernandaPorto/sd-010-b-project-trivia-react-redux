@@ -1,13 +1,12 @@
-import React from 'react';
+import React, { Component } from 'react';
+import GameHeader from '../components/GameHeader';
 
-class GamePage extends React.Component {
+export default class GamePage extends Component {
   render() {
     return (
-      <section>
-        <h1>Trivia</h1>
-      </section>
+      <main>
+        <GameHeader />
+      </main>
     );
   }
 }
-
-export default GamePage;
