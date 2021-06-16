@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import FeedbackHeader from './FeedbackHeader';
+import FeedbackHeader from './FeedbackHeader';
 
 class Feedback extends React.Component {
   render() {
@@ -11,6 +11,7 @@ class Feedback extends React.Component {
     const goodScore = 3;
     return (
       <main>
+        <FeedbackHeader />
         {assertions >= goodScore ? (
           <h1 data-testid="feedback-text">Mandou bem!</h1>
         ) : (
