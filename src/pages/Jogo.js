@@ -9,10 +9,15 @@ class Jogo extends React.Component {
     // this.fetchQuestions = this.fetchQuestions.bind(this);
     this.answers = this.answers.bind(this);
     this.somaPergunta = this.somaPergunta.bind(this);
+    this.buttonAvaliable = this.buttonAvaliable.bind(this);
+    this.paintAnswerCorrect = this.paintAnswerCorrect.bind(this);
+    this.paintAnswerIncorrect = this.paintAnswerIncorrect.bind(this);
+    this.paintAll = this.paintAll.bind(this);
     this.state = {
       perguntas: {},
       randomAnswer: [],
       perguntaNumber: 0,
+      buttonDisable: true,
     };
   }
 
@@ -20,6 +25,11 @@ class Jogo extends React.Component {
     return this.answers();
   }
 
+  buttonAvaliable() {
+    this.setState({
+      buttonDisable: false,
+    });
+  }
   // fetchQuestions() {
   //   const userToken = JSON.parse(localStorage.getItem('token'));
   //   return fetch(`https://opentdb.com/api.php?amount=5&token=${userToken}`)
@@ -48,7 +58,26 @@ class Jogo extends React.Component {
   somaPergunta() {
     this.setState((previ) => ({
       perguntaNumber: previ.perguntaNumber + 1,
+      buttonDisable: true,
     }), () => this.answers());
+    this.paintAll();
+  }
+
+  paintAnswerCorrect() {
+    const correct = document.getElementById('correct');
+    correct.style.border = 'none';
+  }
+
+  paintAnswerIncorrect() {
+    const branco = document.getElementsByClassName('incorrect');
+    for (let key = 0; key < branco.length; key += 1) {
+      branco[key].style.border = 'none';
+    }
+  }
+
+  paintAll() {
+    this.paintAnswerIncorrect();
+    this.paintAnswerCorrect();
   }
 
   // answers() {
@@ -71,12 +100,12 @@ class Jogo extends React.Component {
   // // https://www.horadecodar.com.br/2021/05/10/como-embaralhar-um-array-em-javascript-shuffle/
 
   render() {
-    const { randomAnswer } = this.state;
+    const { randomAnswer, buttonDisable } = this.state;
     return (
       <section>
         <Header />
-        <PerguntaAtual randomAnswer={ randomAnswer } />
-        <button type="button" onClick={ () => this.somaPergunta() }>random</button>
+        <PerguntaAtual randomAnswer={ randomAnswer } buttonAvaliable={ () => this.buttonAvaliable() } />
+        {buttonDisable === true ? null : <button data-testid="btn-next" type="button" onClick={ () => this.somaPergunta() }>Próxima</button> }
       </section>
     );
   }

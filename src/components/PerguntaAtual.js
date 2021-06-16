@@ -22,8 +22,10 @@ class PerguntaAtual extends React.Component {
   }
 
   paintAll() {
+    const { buttonAvaliable } = this.props;
     this.paintAnswerIncorrect();
     this.paintAnswerCorrect();
+    buttonAvaliable();
   }
 
   renderAnswers() {
