@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 class PerguntaAtual extends React.Component {
   constructor() {
@@ -7,6 +8,7 @@ class PerguntaAtual extends React.Component {
     this.renderAnswers = this.renderAnswers.bind(this);
     this.paintAnswerCorrect = this.paintAnswerCorrect.bind(this);
     this.paintAnswerIncorrect = this.paintAnswerIncorrect.bind(this);
+    this.onClickCorrectAnswer = this.onClickCorrectAnswer.bind(this);
     this.paintAll = this.paintAll.bind(this);
   }
 
@@ -25,13 +27,53 @@ class PerguntaAtual extends React.Component {
   }
 
   paintAll() {
-    const { buttonAvaliable } = this.props;
+    const { buttonAvaliable, stopOnClick } = this.props;
     this.paintAnswerIncorrect();
     this.paintAnswerCorrect();
     buttonAvaliable();
+    stopOnClick();
+    // const difficultyValue = {
+    //   easy: 1,
+    //   medium: 2,
+    //   hard: 3,
+    // }
+    // console.log(event.target.value)
+    // if (event.target.value === correctAnswer) {
+    //   const local = JSON.parse(localStorage.getItem('player'));
+    //   const player = {
+    //     player: {
+    //       name: local.name,
+    //       assertions: local.assertions + 1,
+    //       score: local.score + (10 + (timer * difficultyValue[dificuldade])),
+    //       gravatarEmail: local.email,
+    //     } };
+    //   localStorage.setItem('player', player);
+    // }
   }
 
+  onClickCorrectAnswer() {
+    const { buttonAvaliable, stopOnClick, randomAnswer: { dificuldade }, timer } = this.props;
+    this.paintAnswerIncorrect();
+    this.paintAnswerCorrect();
+    buttonAvaliable();
+    stopOnClick();
+    const difficultyValue = {
+      easy: 1,
+      medium: 2,
+      hard: 3,
+    }
+    const local = JSON.parse(localStorage.getItem('state')).player;
+    const player = {
+      player: {
+        ...local,
+        assertions: local.assertions + 1,
+        score: local.score + (10 + (timer * difficultyValue[dificuldade])),
+      } };
+    localStorage.setItem('state', JSON.stringify(player));
+    }
+
   renderAnswers() {
+    const { timer } = this.props;
     const { randomAnswer: { allAnswers, correctAnswer } } = this.props;
     let index = 0;
     return allAnswers.map((answer, i) => {
@@ -44,6 +86,7 @@ class PerguntaAtual extends React.Component {
             onClick={ () => this.paintAll() }
             data-testid={ `wrong-answer-${index - 1}` }
             key={ i }
+            disabled={ timer === 0 }
           >
             { answer }
           </button>
@@ -54,8 +97,9 @@ class PerguntaAtual extends React.Component {
           key={ i }
           type="button"
           id="correct"
-          onClick={ () => this.paintAll() }
+          onClick={ () => this.onClickCorrectAnswer() }
           data-testid="correct-answer"
+          disabled={ timer === 0 }
         >
           { answer }
         </button>
@@ -66,15 +110,21 @@ class PerguntaAtual extends React.Component {
   render() {
     const { randomAnswer: { allAnswers, category, question } } = this.props;
     return (
-      <div className="questions-section">
-        <h3 data-testid="question-category">{ category }</h3>
-        <br />
-        <div data-testid="question-text">{ question }</div>
-        { !allAnswers ? <div>Carregando...</div> : this.renderAnswers() }
-      </div>
+      <section>
+        <div className="questions-section">
+          <h3 data-testid="question-category">{ category }</h3>
+          <br />
+          <div data-testid="question-text">{ question }</div>
+          { !allAnswers ? <div>Carregando...</div> : this.renderAnswers() }
+        </div>
+      </section>
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  questions: state.user.questions,
+});
 
 PerguntaAtual.propTypes = {
   randomAnswer: PropTypes.shape({
@@ -86,4 +136,4 @@ PerguntaAtual.propTypes = {
   buttonAvaliable: PropTypes.func.isRequired,
 };
 
-export default PerguntaAtual;
+export default connect(mapStateToProps)(PerguntaAtual);

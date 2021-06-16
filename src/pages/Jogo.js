@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import PerguntaAtual from '../components/PerguntaAtual';
@@ -13,15 +14,22 @@ class Jogo extends React.Component {
     this.paintAnswerCorrect = this.paintAnswerCorrect.bind(this);
     this.paintAnswerIncorrect = this.paintAnswerIncorrect.bind(this);
     this.paintAll = this.paintAll.bind(this);
+    this.changeTimerState = this.changeTimerState.bind(this);
+    this.temporizador = this.temporizador.bind(this);
+    this.stopTimer = this.stopTimer.bind(this);
+    this.stopOnClick = this.stopOnClick.bind(this);
     this.state = {
       randomAnswer: {},
       perguntaNumber: 0,
       buttonDisable: true,
+      timer: 30,
+      myTimer: null,
     };
   }
 
   componentDidMount() {
-    return this.answers();
+    this.answers();
+    this.temporizador();
   }
 
   buttonAvaliable() {
@@ -42,16 +50,32 @@ class Jogo extends React.Component {
         category: results[perguntaNumber].category,
         question: results[perguntaNumber].question,
         correctAnswer: results[perguntaNumber].correct_answer,
+        dificuldade: results[perguntaNumber].difficulty,
       },
     });
+  }
+
+  stopTimer() {
+    const { timer, myTimer } = this.state;
+    if (timer <= 0) {
+      this.buttonAvaliable();
+      return clearInterval(myTimer);
+    }
+  }
+
+  stopOnClick() {
+    const { myTimer } = this.state;
+    clearInterval(myTimer);
   }
 
   somaPergunta() {
     this.setState((previ) => ({
       perguntaNumber: previ.perguntaNumber + 1,
       buttonDisable: true,
+      timer: 30,
     }), () => this.answers());
     this.paintAll();
+    this.temporizador();
   }
 
   paintAnswerCorrect() {
@@ -73,6 +97,18 @@ class Jogo extends React.Component {
     this.paintAnswerCorrect();
   }
 
+  temporizador() {
+    this.setState({
+      myTimer: setInterval(this.changeTimerState, 1000),
+    });
+  }
+
+  changeTimerState() {
+    this.setState((prev) => ({
+      timer: prev.timer - 1,
+    }), () => this.stopTimer());
+  }
+
   renderNextButton() {
     const { buttonDisable } = this.state;
     if (buttonDisable) {
@@ -91,16 +127,22 @@ class Jogo extends React.Component {
   }
 
   render() {
-    const { randomAnswer } = this.state;
+    const { randomAnswer, timer, perguntaNumber } = this.state;
     return (
       <section>
+        <button onClick={ () => this.stopTimer() } type="button">AQUI</button>
         <Header />
         <section className="game-section">
           <PerguntaAtual
             randomAnswer={ randomAnswer }
             buttonAvaliable={ () => this.buttonAvaliable() }
+            timer={ timer }
+            stopOnClick={ () => this.stopOnClick() }
           />
-          { this.renderNextButton() }
+          <div>
+            { timer }
+          </div>
+          { perguntaNumber < 4 ? this.renderNextButton() : <Link to="/feedback" ><button type="button" data-testid="btn-next" >Resultado</button></Link>}
         </section>
       </section>
     );
