@@ -1,10 +1,11 @@
-import { RESET_COLORS, SHOW_ANSWERS } from '../actions/index';
+import { RESET_COLORS, SHOW_ANSWERS, DISABLE_BUTTONS } from '../actions/index';
 
 const INITIAL_STATE = ({
   styles: {
     rigth: '',
     wrong: '',
   },
+  disabledButtons: false,
 });
 
 const gameStyles = (state = INITIAL_STATE, action) => {
@@ -20,6 +21,11 @@ const gameStyles = (state = INITIAL_STATE, action) => {
     });
   case RESET_COLORS:
     return (INITIAL_STATE);
+  case DISABLE_BUTTONS:
+    return ({
+      ...state,
+      disabledButtons: true,
+    });
   default:
     return state;
   }

@@ -5,7 +5,7 @@ import { changeStyles } from '../actions/index';
 
 class TrueButtonIsCorrect extends Component {
   render() {
-    const { rigth, wrong, showColors } = this.props;
+    const { rigth, wrong, showColors, disableButtons } = this.props;
     return (
       <div>
         <button
@@ -15,6 +15,7 @@ class TrueButtonIsCorrect extends Component {
             border: rigth,
           } }
           onClick={ () => showColors() }
+          disabled={ disableButtons }
         >
           True
         </button>
@@ -25,6 +26,7 @@ class TrueButtonIsCorrect extends Component {
             border: wrong,
           } }
           onClick={ () => showColors() }
+          disabled={ disableButtons }
         >
           False
         </button>
@@ -40,12 +42,14 @@ const mapDispatchToProps = (dispatch) => ({
 const mapStateToProps = (state) => ({
   rigth: state.gameReducer.styles.rigth,
   wrong: state.gameReducer.styles.wrong,
+  disableButtons: state.gameReducer.disabledButtons,
 });
 
 TrueButtonIsCorrect.propTypes = {
   rigth: PropTypes.string.isRequired,
   wrong: PropTypes.string.isRequired,
   showColors: PropTypes.func.isRequired,
+  disableButtons: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TrueButtonIsCorrect);

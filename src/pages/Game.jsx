@@ -2,9 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
-import { sendGravatarToRedux, changeStyles, resetStyles } from '../actions/index';
+import {
+  sendGravatarToRedux,
+  changeStyles,
+  resetStyles,
+  startCounting,
+} from '../actions/index';
 import TrueButtonIsCorrect from '../components/TrueButtonIsCorrect';
 import FalseButtonIsCorrect from '../components/FalseButtonIsCorrect';
+import Countdown from '../components/Countdown';
 
 class Game extends Component {
   constructor() {
@@ -36,8 +42,9 @@ class Game extends Component {
   }
 
   nextIndex() {
-    const { resetColors } = this.props;
+    const { resetColors, restartCount } = this.props;
     resetColors();
+    restartCount();
     const { indexQuestion, results } = this.state;
     if (indexQuestion === results.length - 1) {
       return false;
@@ -51,7 +58,7 @@ class Game extends Component {
     correct_answer: correctAnswer,
     incorrect_answers: incorrectAnswers,
   }) {
-    const { wrong, rigth, showColors } = this.props;
+    const { wrong, rigth, showColors, disableButtons } = this.props;
     const rightAnswer = (
       <button
         type="button"
@@ -61,6 +68,7 @@ class Game extends Component {
           border: rigth,
         } }
         onClick={ () => showColors() }
+        disabled={ disableButtons }
       >
         { correctAnswer }
       </button>
@@ -75,6 +83,7 @@ class Game extends Component {
             border: wrong,
           } }
           onClick={ () => showColors() }
+          disabled={ disableButtons }
         >
           { answer }
         </button>
@@ -105,6 +114,7 @@ class Game extends Component {
     if (question !== undefined) {
       return (
         <div>
+          <Countdown />
           <h3 data-testid="question-category">{ question.category }</h3>
           <h4 data-testid="question-text">{ question.question }</h4>
           { question.type === 'multiple'
@@ -141,6 +151,7 @@ const mapDispatchToProps = (dispatch) => ({
   saveGravatar: (gravatar) => dispatch(sendGravatarToRedux(gravatar)),
   showColors: () => dispatch(changeStyles()),
   resetColors: () => dispatch(resetStyles()),
+  restartCount: () => dispatch(startCounting()),
 });
 
 const mapStateToProps = (state) => ({
@@ -150,6 +161,7 @@ const mapStateToProps = (state) => ({
   token: state.tokenState.token,
   rigth: state.gameReducer.styles.rigth,
   wrong: state.gameReducer.styles.wrong,
+  disableButtons: state.gameReducer.disabledButtons,
 });
 
 Game.propTypes = {
@@ -162,6 +174,8 @@ Game.propTypes = {
   showColors: PropTypes.func.isRequired,
   wrong: PropTypes.string.isRequired,
   rigth: PropTypes.string.isRequired,
+  restartCount: PropTypes.func.isRequired,
+  disableButtons: PropTypes.bool.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
