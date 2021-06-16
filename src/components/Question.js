@@ -3,10 +3,6 @@ import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 
 class Question extends Component {
-  /* constructor(props) {
-    super(props);
-  } */
-
   render() {
     const { questions, index } = this.props;
     // const { category, question, correct_answer: correct } = questions[index];
