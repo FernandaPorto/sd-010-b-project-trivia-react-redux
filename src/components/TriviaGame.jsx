@@ -6,7 +6,6 @@ class Trivia extends React.Component {
     this.updateState = this.updateState.bind(this);
     this.renderQuestion = this.renderQuestion.bind(this);
 
-
     this.state = {
       loading: true,
       questions: [],
@@ -20,6 +19,38 @@ class Trivia extends React.Component {
     const dataToJSON = await requestQuestions.json();
 
     this.updateState(dataToJSON);
+  }
+
+  updateState({ results }) {
+    this.setState({
+      loading: false,
+      questions: results,
+      currentQuestion: 0,
+    });
+  }
+
+
+  renderQuestion() {
+    const { questions, currentQuestion } = this.state;
+    const POINT_FIVE = 0.5;
+    const randomizer = (array) => (
+      array.sort(() => Math.random() - POINT_FIVE)
+    );
+
+    const answers = [questions[currentQuestion].correct_answer, ...questions[currentQuestion].incorrect_answers];
+
+    const randomAnswers = randomizer(answers).map((answer, index) => (
+      <p key={ index }>
+        { answer }
+      </p>
+    ));
+
+    return (
+      <div>
+        <h4>{ questions[currentQuestion].question }</h4>
+        { randomAnswers }
+      </div>
+    );
   }
 
   render () {
