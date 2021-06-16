@@ -18,6 +18,7 @@ class Timer extends React.Component {
       clearInterval(this.timer);
     }
   }
+  // Teste
 
   refreshTimer() {
     const { seconds } = this.state;
