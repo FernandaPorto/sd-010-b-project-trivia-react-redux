@@ -2,26 +2,23 @@ import { getQuestions } from '../services';
 import { ADD_PLAYER_NAME, RECEIVE_QUESTIONS, RECEIVE_TOKEN } from './actionsType';
 
 const receiveToken = (token) => ({ type: RECEIVE_TOKEN, token });
+
 const receiveQuestions = (questions) => ({ type: RECEIVE_QUESTIONS, questions });
 
-export function requestAPI() {
-  return async (dispatch) => {
-    const request = await fetch('https://opentdb.com/api_token.php?command=request');
-    const { token } = await request.json();
-    localStorage.setItem('token', token);
-    dispatch(receiveToken(token));
-  };
-}
+export const requestAPI = () => async (dispatch) => {
+  const request = await fetch('https://opentdb.com/api_token.php?command=request');
+  const { token } = await request.json();
+  localStorage.setItem('token', token);
+  dispatch(receiveToken(token));
+};
 
 export const saveNamePlayer = (name) => ({
   type: ADD_PLAYER_NAME,
   payload: { name },
 });
 
-export function requestQuestions() {
-  return async (dispatch) => {
-    const token = localStorage.getItem('token');
-    const result = await getQuestions(token);
-    dispatch(receiveQuestions(result));
-  };
-}
+export const requestQuestions = () => async (dispatch) => {
+  const token = localStorage.getItem('token');
+  const result = await getQuestions(token);
+  dispatch(receiveQuestions(result));
+};
