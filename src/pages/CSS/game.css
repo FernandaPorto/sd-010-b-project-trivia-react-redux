@@ -1,8 +1,8 @@
 .card-container {
   border: 1px solid black;
   display: flex;
-  height: 300px;
   flex-direction: column;
+  height: 300px;
   justify-content: center;
   width: 40%;
 }
