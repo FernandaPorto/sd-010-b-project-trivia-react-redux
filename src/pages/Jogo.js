@@ -57,12 +57,14 @@ class Jogo extends React.Component {
   paintAnswerCorrect() {
     const correct = document.getElementById('correct');
     correct.style.border = 'none';
+    correct.style.boxShadow = 'none';
   }
 
   paintAnswerIncorrect() {
     const branco = document.getElementsByClassName('incorrect');
     for (let key = 0; key < branco.length; key += 1) {
       branco[key].style.border = 'none';
+      branco[key].style.boxShadow = 'none';
     }
   }
 
