@@ -4,20 +4,7 @@ import propTypes from 'prop-types';
 import Question from '../components/Question';
 
 class GamePage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      index: 0,
-    };
-  }
-
-  componentDidMount() {
-    const { getQuestions } = this.props;
-    getQuestions();
-  }
-
   render() {
-    const { index } = this.state;
     const { name } = this.props;
     return (
       <>
@@ -26,7 +13,7 @@ class GamePage extends React.Component {
           <p data-testid="header-player-name">{ name }</p>
           <p data-testid="header-score">0</p>
         </header>
-        <Question index={ index } />
+        <Question />
       </>
     );
   }
