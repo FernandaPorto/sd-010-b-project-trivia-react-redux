@@ -12,34 +12,14 @@ class TriviaGame extends Component {
     this.state = {
       index: 0,
       next: false,
-      childUnmount: false,
     };
     this.updateIndex = this.updateIndex.bind(this);
     this.nextAnswer = this.nextAnswer.bind(this);
-    this.childMount = this.childMount.bind(this);
-    this.handleNext = this.handleNext.bind(this);
   }
 
   componentDidMount() {
     const { token, updateTrivia } = this.props;
     updateTrivia(token);
-  }
-
-  componentWillUnmount() {
-    clearTimeout(this.cronometerInterval);
-  }
-
-  childMount(bool) {
-    this.setState({ childUnmount: bool });
-  }
-
-  handleNext() {
-    const seconds = 300;
-    this.updateIndex();
-    this.cronometerInterval = setTimeout(() => {
-      this.childMount(false);
-    }, seconds);
-    this.childMount(true);
   }
 
   nextAnswer(bool) {
@@ -63,12 +43,13 @@ class TriviaGame extends Component {
           { ...questions[index] }
           nextAnswer={ this.nextAnswer }
           next={ next }
+          key={ `answer - ${index}` }
         /> : null}
         {next && (
           <button
             data-testid="btn-next"
             type="button"
-            onClick={ this.handleNext }
+            onClick={ () => this.updateIndex() }
           >
             Próximo
           </button>

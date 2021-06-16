@@ -9,7 +9,6 @@ class Questions extends Component {
       ...props,
       answers: [],
       timer: 30,
-      feedback: false,
     };
     this.randAnswers = this.randAnswers.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
