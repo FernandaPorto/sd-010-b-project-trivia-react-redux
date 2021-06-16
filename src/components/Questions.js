@@ -81,11 +81,11 @@ class Questions extends Component {
           id={ checkIsCorrect }
           type="button"
           data-testid={ checkIsCorrect }
-          onClick={ (event) => {
+          onClick={ () => {
             if (!next) {
               this.setState({ next: true });
             }
-            if (event.target.id === 'correct-answer') {
+            if (answer === correct) {
               this.calcAnswerValue();
             }
           } }
