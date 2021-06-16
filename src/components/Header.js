@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
+import action from '../actions/index';
 
 class Header extends Component {
   constructor(props) {
@@ -11,13 +12,15 @@ class Header extends Component {
   }
 
   gravatar() {
-    const { email } = this.props;
+    const { email, srcAvatar } = this.props;
     const userEmail = md5(email).toString();
+    const srcImg = `https://www.gravatar.com/avatar/${userEmail}`;
+    srcAvatar({ type: 'RANKING', payload: { srcImg, srcImg } });
     return (
       <img
         alt="user"
         data-testid="header-profile-picture"
-        src={ `https://www.gravatar.com/avatar/${userEmail}` }
+        src={ srcImg }
       />);
   }
 
@@ -35,14 +38,19 @@ class Header extends Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  srcAvatar: (values) => dispatch(action(values)),
+});
+
 const MapStateToProps = (state) => ({
   email: state.login.email,
   username: state.login.name,
 });
 
-Header.propTypes = ({
-  email: PropTypes.string,
-  username: PropTypes.string,
-}).isRequired;
+Header.propTypes = {
+  email: PropTypes.string.isRequired,
+  srcAvatar: PropTypes.func.isRequired,
+  username: PropTypes.string.isRequired,
+};
 
-export default connect(MapStateToProps)(Header);
+export default connect(MapStateToProps, mapDispatchToProps)(Header);
