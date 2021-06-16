@@ -67,6 +67,7 @@ class Feedback extends React.Component {
           <button
             data-testid="btn-ranking"
             type="button"
+            onClick={ this.clearAllData }
           >
             Ver Ranking
           </button>
