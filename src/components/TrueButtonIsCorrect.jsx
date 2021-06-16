@@ -4,6 +4,12 @@ import PropTypes from 'prop-types';
 import { changeStyles } from '../actions/index';
 
 class TrueButtonIsCorrect extends Component {
+  handleClick() {
+    const { showColors, allowButton } = this.props;
+    showColors();
+    allowButton();
+  }
+
   render() {
     const { rigth, wrong, showColors, disableButtons } = this.props;
     return (
@@ -14,7 +20,7 @@ class TrueButtonIsCorrect extends Component {
           style={ {
             border: rigth,
           } }
-          onClick={ () => showColors() }
+          onClick={ () => this.handleClick() }
           disabled={ disableButtons }
         >
           True
@@ -25,7 +31,7 @@ class TrueButtonIsCorrect extends Component {
           style={ {
             border: wrong,
           } }
-          onClick={ () => showColors() }
+          onClick={ () => this.handleClick() }
           disabled={ disableButtons }
         >
           False
