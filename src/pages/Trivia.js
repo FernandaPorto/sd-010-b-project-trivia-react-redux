@@ -141,8 +141,8 @@ class Trivia extends React.Component {
               data-testid="correct-answer"
               onClick={ async () => {
                 await this.scoreTrivia();
-                this.colorAnswers();
                 this.storange();
+                this.colorAnswers();
               } }
               type="button"
             >
