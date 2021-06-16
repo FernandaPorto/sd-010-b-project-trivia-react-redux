@@ -31,7 +31,7 @@ class TriviaGame extends Component {
   }
 
   render() {
-    const { index, next, childUnmount } = this.state;
+    const { index, next } = this.state;
     const { isFetching, questions } = this.props;
     const quant = 5;
     if (isFetching) return 'Loading...';
@@ -39,12 +39,12 @@ class TriviaGame extends Component {
     return (
       <div>
         <GameHeader />
-        {!childUnmount ? <Questions
+        <Questions
           { ...questions[index] }
           nextAnswer={ this.nextAnswer }
           next={ next }
           key={ `answer - ${index}` }
-        /> : null}
+        />
         {next && (
           <button
             data-testid="btn-next"
