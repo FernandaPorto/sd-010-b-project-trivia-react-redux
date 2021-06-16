@@ -38,7 +38,7 @@ class PerguntaAtual extends React.Component {
   render() {
     const { randomAnswer: { allAnswers, category, question } } = this.props;
     return (
-      <div>
+      <div className="questions-section">
         <div data-testid="question-category">{ category }</div>
         <br />
         <div data-testid="question-text">{ question }</div>

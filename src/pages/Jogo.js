@@ -46,8 +46,16 @@ class Jogo extends React.Component {
     return (
       <section>
         <Header />
-        <PerguntaAtual randomAnswer={ randomAnswer } />
-        <button type="button" onClick={ () => this.somaPergunta() }>random</button>
+        <section className="game-section">
+          <PerguntaAtual randomAnswer={ randomAnswer } />
+          <button
+            type="button"
+            onClick={ () => this.somaPergunta() }
+            className="next-btn"
+          >
+            Próxima Pergunta
+          </button>
+        </section>
       </section>
     );
   }
