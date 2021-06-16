@@ -7,33 +7,39 @@ class Question extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      correctButton: false,
-      wrongButton: false,
+      // correctButton: false,
+      // wrongButton: false,
+      isClicked: false,
       arrRandom: [],
+      fullResults: {},
     };
-    this.handleButtonColor = this.handleButtonColor.bind(this);
+    // this.handleButtonColor = this.handleButtonColor.bind(this);
     this.handleResult = this.handleResult.bind(this);
     this.insertDataTestId = this.insertDataTestId.bind(this);
     this.insertClass = this.insertClass.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
     this.handleResult();
   }
 
-  handleButtonColor() {
-    this.setState({
-      correctButton: true,
-      wrongButton: true,
-    });
-  }
+  // handleButtonColor() {
+  //   this.setState({
+  //     correctButton: true,
+  //     wrongButton: true,
+  //   });
+  // }
 
   handleResult() {
     const { result } = this.props;
     const arrAnswers = [result.correct_answer, ...result.incorrect_answers];
     const half = 0.5;
     const shuffleArray = (array) => array.sort(() => Math.random() - half);
-    this.setState({ arrRandom: shuffleArray(arrAnswers) });
+    this.setState({
+      arrRandom: shuffleArray(arrAnswers),
+      fullResults: result,
+    });
   }
 
   insertDataTestId(answer, index) {
@@ -53,8 +59,12 @@ class Question extends React.Component {
     }
   }
 
+  handleChange() {
+    this.setState({ isClicked: true });
+  }
+
   render() {
-    const { props: { result }, state: { arrRandom } } = this;
+    const { props: { result }, state: { arrRandom, fullResults, isClicked } } = this;
     return (
       <>
         <span data-testid="question-category">
@@ -77,7 +87,9 @@ class Question extends React.Component {
             key={ answer }
             value={ answer }
             data-testid={ this.insertDataTestId(answer, index) }
-            onClick={ this.insertClass }
+            onClick={ this.handleChange }
+            // className={}
+            // className={ isClicked ? (answer === fullResults.correct_answer ? 'correctButton' : 'wrongButton') : null }
           >
             { answer }
           </button>
