@@ -39,9 +39,12 @@ class Game extends React.Component {
               return  <Question result={result} key={result.category} />
             }}
         )} */}
+<<<<<<< HEAD
         <Link to="/feedback">
           Feedback
         </Link>
+=======
+>>>>>>> 40908d1be453effaf205944580c3f9258a3b7ab5
       </>
     );
   }
