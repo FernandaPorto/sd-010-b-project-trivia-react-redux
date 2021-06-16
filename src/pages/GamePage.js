@@ -1,13 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 
 class GamePage extends React.Component {
-  // componentDidMount() {
-  //   const { sendTokenToLocal } = this.props;
-  //   console.log(sendTokenToLocal);
-  // }
-
   render() {
     return (
       <section>
@@ -17,12 +10,4 @@ class GamePage extends React.Component {
   }
 }
 
-GamePage.propTypes = {
-  sendTokenToLocal: PropTypes.objectOf(PropTypes.arrayOf).isRequired,
-};
-
-const mapStateToProps = (state) => ({
-  sendTokenToLocal: state.token,
-});
-
-export default connect(mapStateToProps)(GamePage);
+export default GamePage;
