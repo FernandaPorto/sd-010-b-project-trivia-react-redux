@@ -8,11 +8,16 @@ class Question extends React.Component {
     this.state = {
       correctButton: false,
       wrongButton: false,
+      arrRandom: [],
     };
     this.handleButtonColor = this.handleButtonColor.bind(this);
     this.handleResult = this.handleResult.bind(this);
     this.insertDataTestId = this.insertDataTestId.bind(this);
     this.insertClass = this.insertClass.bind(this);
+  }
+
+  componentDidMount() {
+    this.setState({ arrRandom: this.handleResult() });
   }
 
   handleButtonColor() {
@@ -48,7 +53,6 @@ class Question extends React.Component {
 
   render() {
     const { result } = this.props;
-    const arrRandom = this.handleResult();
     return (
       <>
         <span data-testid="question-category">
@@ -65,7 +69,7 @@ class Question extends React.Component {
 
         <br />
 
-        { arrRandom.map((answer, index) => (
+        { this.state.arrRandom.map((answer, index) => (
           <button
             type="button"
             key={ answer }
