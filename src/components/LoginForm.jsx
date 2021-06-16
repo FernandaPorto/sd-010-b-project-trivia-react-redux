@@ -1,15 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { getTokenApi } from '../actions';
 
 class LoginForm extends Component {
   constructor(props) {
     super(props);
 
+    this.setLocalStorage = this.setLocalStorage.bind(this);
     this.onHandleChange = this.onHandleChange.bind(this);
     this.validateLogin = this.validateLogin.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.state = {
       name: '',
       email: '',
+      redirect: false,
     };
   }
 
@@ -17,6 +23,11 @@ class LoginForm extends Component {
     this.setState({
       [target.id]: target.value,
     });
+  }
+
+  setLocalStorage() {
+    const { sendTokenToLocal } = this.props;
+    localStorage.setItem('token', JSON.stringify(sendTokenToLocal.token));
   }
 
   validateLogin() {
@@ -32,8 +43,19 @@ class LoginForm extends Component {
     return true;
   }
 
+  handleClick() {
+    const { addToken } = this.props;
+    addToken();
+    localStorage.setItem('token', JSON.stringify(getTokenApi()));
+    // this.setLocalStorage();
+    this.setState({
+      redirect: true,
+    });
+  }
+
   render() {
     const { config } = this.props;
+    const { redirect } = this.state;
     return (
       <main>
         <h1>Trivia</h1>
@@ -60,6 +82,7 @@ class LoginForm extends Component {
             type="button"
             data-testid="btn-play"
             disabled={ this.validateLogin() }
+            onClick={ this.handleClick }
           >
             Jogar
           </button>
@@ -71,6 +94,7 @@ class LoginForm extends Component {
             Configurar
           </button>
         </form>
+        { redirect && <Redirect to="/game" /> }
       </main>
     );
   }
@@ -78,6 +102,15 @@ class LoginForm extends Component {
 
 LoginForm.propTypes = {
   config: PropTypes.func,
+  sendTokenToLocal: PropTypes.objectOf(PropTypes.arrayOf),
 }.isRequired;
 
-export default LoginForm;
+const mapDispatchToProps = (dispatch) => ({
+  addToken: () => dispatch(getTokenApi()),
+});
+
+const mapStateToProps = (state) => ({
+  sendTokenToLocal: state.token.token,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
