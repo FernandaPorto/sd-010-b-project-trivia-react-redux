@@ -1,5 +1,5 @@
 import React from 'react';
-import fetchToken from '../services/api';
+import fetchData from '../services/api';
 
 class Trivia extends React.Component {
   constructor(props) {
