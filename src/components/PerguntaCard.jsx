@@ -70,7 +70,7 @@ class PerguntaCard extends Component {
     const { setScore, setAssertions } = this.props;
     const state = JSON.parse(localStorage.getItem('state'));
     const { timer } = this.state;
-    this.border()
+    this.border();
     if (target.value === 'correct') {
       const tenPoints = 10;
       state.player.assertions += 1;
@@ -93,7 +93,7 @@ class PerguntaCard extends Component {
   renderTimer() {
     const { timer, nextStyle } = this.state;
     if (timer === 0 && nextStyle === 'hidden') {
-      this.border()
+      this.border();
       clearInterval(this.timer);
     }
     return (<Timer
