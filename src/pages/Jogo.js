@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import PerguntaAtual from '../components/PerguntaAtual';
@@ -49,6 +50,7 @@ class Jogo extends React.Component {
         category: results[perguntaNumber].category,
         question: results[perguntaNumber].question,
         correctAnswer: results[perguntaNumber].correct_answer,
+        dificuldade: results[perguntaNumber].difficulty,
       },
     });
   }
@@ -63,7 +65,7 @@ class Jogo extends React.Component {
 
   stopOnClick() {
     const { myTimer } = this.state;
-    clearInterval(myTimer)
+    clearInterval(myTimer);
   }
 
   somaPergunta() {
@@ -95,16 +97,16 @@ class Jogo extends React.Component {
     this.paintAnswerCorrect();
   }
 
-  changeTimerState() {
-    this.setState((prev) => ({
-      timer: prev.timer - 1,
-    }), () => this.stopTimer());
-  }
-
   temporizador() {
     this.setState({
       myTimer: setInterval(this.changeTimerState, 1000),
     });
+  }
+
+  changeTimerState() {
+    this.setState((prev) => ({
+      timer: prev.timer - 1,
+    }), () => this.stopTimer());
   }
 
   renderNextButton() {
@@ -125,7 +127,7 @@ class Jogo extends React.Component {
   }
 
   render() {
-    const { randomAnswer, timer } = this.state;
+    const { randomAnswer, timer, perguntaNumber } = this.state;
     return (
       <section>
         <button onClick={ () => this.stopTimer() } type="button">AQUI</button>
@@ -140,7 +142,7 @@ class Jogo extends React.Component {
           <div>
             { timer }
           </div>
-          { this.renderNextButton() }
+          { perguntaNumber < 4 ? this.renderNextButton() : <Link to="/feedback" ><button type="button" data-testid="btn-next" >Resultado</button></Link>}
         </section>
       </section>
     );
