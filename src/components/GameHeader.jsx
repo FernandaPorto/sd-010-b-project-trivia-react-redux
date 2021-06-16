@@ -26,7 +26,7 @@ class GameHeader extends React.Component {
 GameHeader.propTypes = {
   name: PropTypes.string.isRequired,
   gravatarEmail: PropTypes.string.isRequired,
-  score: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 export default GameHeader;

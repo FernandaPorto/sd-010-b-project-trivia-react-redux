@@ -6,8 +6,10 @@ import PropTypes from 'prop-types';
 import Questions from '../components/Questions';
 import GameHeader from '../components/GameHeader';
 import Timer from '../components/Timer';
+import { sumScore, resetScore } from '../actions';
 
 const NUMBER_FIVE = 5;
+const NUMBER_TEN = 10;
 let timer;
 
 class Game extends React.Component {
@@ -25,6 +27,7 @@ class Game extends React.Component {
     this.decreaseTime = this.decreaseTime.bind(this);
     this.timerHasMounted = this.timerHasMounted.bind(this);
     this.stopTimer = this.stopTimer.bind(this);
+    this.doTheMath = this.doTheMath.bind(this);
   }
 
   componentDidMount() {
@@ -86,11 +89,23 @@ class Game extends React.Component {
     timer = setInterval(this.decreaseTime, ONE_SECOND);
   }
 
+  doTheMath(totalPoints) {
+    const { time, results, count } = this.state;
+    const level = results[count].difficulty;
+    const difficulty = {
+      hard: 3,
+      medium: 2,
+      easy: 1,
+    };
+    return totalPoints(NUMBER_TEN + (time * difficulty[level]));
+  }
+
   render() {
     const { results, count, time, disabled, nextButton } = this.state;
-    const { name, gravatarEmail, score } = this.props;
+    const { name, gravatarEmail, score, totalPoints, zeroScore } = this.props;
 
     if (count === NUMBER_FIVE) {
+      zeroScore();
       return (<Redirect to="/" />);
     }
 
@@ -105,11 +120,12 @@ class Game extends React.Component {
               result={ results[count] }
               disabled={ disabled }
               stopTimer={ this.stopTimer }
+              doTheMath={ () => this.doTheMath(totalPoints) }
             />
             { nextButton === true ? (
               <button
                 type="button"
-                onClick={ () => this.handleNext() }
+                onClick={ () => this.handleNext(totalPoints) }
                 data-testid="btn-next"
               >
                 Next
@@ -137,10 +153,16 @@ const mapStateToProps = (state) => {
   return { name, gravatarEmail, score };
 };
 
+const mapDispatchToProps = (dispatch) => ({
+  totalPoints: (score) => dispatch(sumScore(score)),
+  zeroScore: () => dispatch(resetScore()),
+});
+
 Game.propTypes = {
   name: PropTypes.string.isRequired,
   gravatarEmail: PropTypes.string.isRequired,
-  score: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+  totalPoints: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(Game);

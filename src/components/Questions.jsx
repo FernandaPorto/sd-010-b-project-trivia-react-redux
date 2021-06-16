@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 class Questions extends React.Component {
   constructor(props) {
     super(props);
-
     this.colorAnswer = this.colorAnswer.bind(this);
     this.createAnswers = this.createAnswers.bind(this);
     this.handleAnswerClick = this.handleAnswerClick.bind(this);
+    this.resolvingStorage = this.resolvingStorage.bind(this);
   }
 
   colorAnswer() {
@@ -20,18 +21,35 @@ class Questions extends React.Component {
     });
   }
 
-  handleAnswerClick(stopTimer) {
+  handleAnswerClick(stopTimer, doTheMath = null) {
     this.colorAnswer();
     stopTimer();
+    if (doTheMath) {
+      doTheMath();
+      // this.resolvingStorage();
+    }
+  }
+
+  resolvingStorage() {
+    const { name, score, assertions, gravatarEmail } = this.props;
+    const player = {
+      name,
+      score,
+      assertions,
+      gravatarEmail,
+    };
+    const state = { player };
+    localStorage.setItem('state', JSON.stringify(state));
   }
 
   createAnswers({ quest, index, correctAnswer, disabled, stopTimer }) {
+    const { doTheMath } = this.props;
     if (quest === correctAnswer) {
       return (
         <button
           key={ index }
           type="button"
-          onClick={ () => this.handleAnswerClick(stopTimer) }
+          onClick={ () => this.handleAnswerClick(stopTimer, doTheMath) }
           data-testid="correct-answer"
           className="correct"
           disabled={ disabled }
@@ -99,6 +117,11 @@ class Questions extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  const { player: { name, score, assertions, gravatarEmail } } = state;
+  return { name, score, assertions, gravatarEmail };
+};
+
 Questions.propTypes = {
   result: PropTypes.shape({
     category: PropTypes.string,
@@ -111,4 +134,4 @@ Questions.default = {
   result: undefined,
 };
 
-export default Questions;
+export default connect(mapStateToProps)(Questions);

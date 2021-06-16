@@ -12,3 +12,12 @@ export const addToken = (token) => ({
   type: 'ADD_TOKEN',
   payload: token,
 });
+
+export const sumScore = (score) => ({
+  type: 'SUM_SCORE',
+  payload: score,
+});
+
+export const resetScore = () => ({
+  type: 'RESET_SCORE',
+});
