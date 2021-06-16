@@ -1,17 +1,16 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import PerguntaAtual from '../components/PerguntaAtual';
-import { connect } from 'react-redux'
 
 class Jogo extends React.Component {
   constructor(props) {
     super(props);
-    // this.fetchQuestions = this.fetchQuestions.bind(this);
     this.answers = this.answers.bind(this);
     this.somaPergunta = this.somaPergunta.bind(this);
     this.state = {
-      perguntas: {},
-      randomAnswer: [],
+      randomAnswer: {},
       perguntaNumber: 0,
     };
   }
@@ -19,15 +18,6 @@ class Jogo extends React.Component {
   componentDidMount() {
     return this.answers();
   }
-
-  // fetchQuestions() {
-  //   const userToken = JSON.parse(localStorage.getItem('token'));
-  //   return fetch(`https://opentdb.com/api.php?amount=5&token=${userToken}`)
-  //     .then((response) => response.json())
-  //     .then((response) => {
-  //       this.setState({ perguntas: response }, () => this.answers());
-  //     });
-  // }
 
   answers() {
     const { perguntaNumber } = this.state;
@@ -51,25 +41,6 @@ class Jogo extends React.Component {
     }), () => this.answers());
   }
 
-  // answers() {
-  //   const { perguntas } = this.state;
-  //   const allAnswers = [...perguntas.results[0].incorrect_answers, perguntas.results[0].correct_answer];
-  //   this.shuffleArray(allAnswers);
-  // }
-
-  // shuffleArray(arr) {
-  //   // Loop em todos os elementos
-  //   for (let i = arr.length - 1; i > 0; i -= 1) {
-  //     // Escolhendo elemento aleatório
-  //     const j = Math.floor(Math.random() * (i + 1));
-  //     // Reposicionando elemento
-  //     [arr[i], arr[j]] = [arr[j], arr[i]];
-  //   }
-  //   // Retornando array com aleatoriedade
-  //   this.setState({ randomAnswer: arr });
-  // }
-  // // https://www.horadecodar.com.br/2021/05/10/como-embaralhar-um-array-em-javascript-shuffle/
-
   render() {
     const { randomAnswer } = this.state;
     return (
@@ -85,5 +56,16 @@ class Jogo extends React.Component {
 const mapStateToProps = (state) => ({
   questions: state.user.questions,
 });
+
+Jogo.propTypes = {
+  questions: PropTypes.shape({
+    results: PropTypes.arrayOf(PropTypes.shape({
+      incorrect_answers: PropTypes.arrayOf(PropTypes.string),
+      correct_answer: PropTypes.string,
+      category: PropTypes.string,
+      question: PropTypes.string,
+    }).isRequired).isRequired,
+  }).isRequired,
+};
 
 export default connect(mapStateToProps)(Jogo);
