@@ -72,3 +72,30 @@ export default devTools;
 //    "response_code":3,
 //    "results":[]
 // }
+
+/*  backup map do Joao */
+/* questions.map((question, index) => (
+  <ul key={ question.category }>
+  <p data-testid="question-category">{question.category}</p>
+  <li data-testid="question-text">
+  {question.question}
+  {' '}
+  <button type="button">
+  <p
+  data-testid="correct-answer"
+  >
+  {question.correct_answer}
+  </p>
+  </button>
+  {question.incorrect_answers.map((incorrect) => (
+    <button key={ incorrect } type="button">
+    <p
+    data-testid={ `wrong-answer-${index}` }
+    >
+    {incorrect}
+    </p>
+    </button>
+    ))}
+    </li>
+    </ul>
+    )) */

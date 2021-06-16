@@ -4,15 +4,20 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import { fetchApiQuestions, fetchAPI } from '../actions/index';
 
+import './trivia.css';
+
 class Trivia extends React.Component {
   constructor() {
     super();
     this.state = {
       questions: [],
-      answers: [],
-      nextQuestion: false,
+      correct: '',
+      reject: '',
     };
     this.renderQuestion = this.renderQuestion.bind(this);
+    // this.colorAnswers = this.colorAnswers.bind(this);
+    this.colorAnswersCorrect = this.colorAnswersCorrect.bind(this);
+    this.colorAnswersReject = this.colorAnswersReject.bind(this);
     // this.funcao = this.funcao.bind(this);
   }
 
@@ -34,31 +39,47 @@ class Trivia extends React.Component {
     console.log(questions);
   }
 
-  colorAnswers() {
-    const { correct_answer: correct, answers, nextQuestion } = this.state;
-    return answers.map((answer, index) => {
-      const testColor = answer === correct
-        ? '3px solid rgb(6, 240, 15)'
-        : '3px solid rgb(255, 0, 0)';
-
-      const verifyTestId = answer === correct
-        ? 'correct-answer' : `wrong-answer-${index}`;
-      return (
-        <button
-          type="button"
-          key={ answer }
-          data-testid={ verifyTestId }
-          style={ { border: `${nextQuestion && testColor}` } } // ???? ou ´´
-          onClick={ () => this.setState({ nextQuestion: true }) }
-        >
-          {answers}
-        </button>
-      );
-    });
+  colorAnswersCorrect() {
+    this.setState({ correct: 'correct_answer' });
   }
 
+  colorAnswersReject() {
+    this.setState({ reject: 'incorrect_answer' });
+  }
+
+  // renderCategory() {
+  //   const { questions } = this.state;
+  //   questions.map((question, index) => (
+  //     <p key={ index } data-testid="question-category">{question.category}</p>
+  //   ));
+  // }
+
+  // colorAnswers() {
+  //   const { correct_answer: correct, answers, nextQuestion } = this.state;
+  //   return answers.map((answer, index) => {
+  //     const testColor = answer === correct
+  //       ? '3px solid rgb(6, 240, 15)'
+  //       : '3px solid rgb(255, 0, 0)';
+
+  //     const verifyTestId = answer === correct
+  //       ? 'correct-answer' : `wrong-answer-${index}`;
+  //     return (
+  //       <button
+  //         type="button"
+  //         key={ answer }
+  //         data-testid={ verifyTestId }
+  //         style={ { border: `${nextQuestion && testColor}` } } // ???? ou ´´
+  //         onClick={ () => this.setState({ nextQuestion: true }) }
+  //       >
+  //         {answers}
+  //       </button>
+  //     );
+  //   });
+  // }
+
   renderQuestion() {
-    const { questions } = this.state;
+    const { questions, correct, reject } = this.state;
+    // console.log(activeClassName);
     return (
       questions.map((question, index) => (
         <ul key={ question.category }>
@@ -66,25 +87,21 @@ class Trivia extends React.Component {
           <li data-testid="question-text">
             {question.question}
             {' '}
-            <button type="button">
-              <p
-                data-testid="correct-answer"
-              >
-                {question.correct_answer}
-              </p>
+            <button className={ correct } data-testid="correct-answer" onClick={ this.colorAnswersCorrect } type="button">
+
+              {question.correct_answer}
+
             </button>
             {question.incorrect_answers.map((incorrect) => (
-              <button key={ incorrect } type="button">
-                <p
-                  data-testid={ `wrong-answer-${index}` }
-                >
-                  {incorrect}
-                </p>
+              <button data-testid={ `wrong-answer-${index}` } onClick={ this.colorAnswersReject } key={ incorrect } type="button" className={ reject }>
+
+                {incorrect}
               </button>
             ))}
           </li>
         </ul>
-      )));
+      ))
+    );
   }
 
   // funcao() {
