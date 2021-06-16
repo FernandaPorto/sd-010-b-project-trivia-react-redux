@@ -123,4 +123,4 @@ const mapDispatchToProps = (dispatch) => ({
   updateScore: (token) => dispatch(getScore(token)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Questions);
+export default connect(null, mapDispatchToProps)(Questions);
