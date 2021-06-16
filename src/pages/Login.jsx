@@ -31,12 +31,13 @@ class Login extends React.Component {
   async handleClick() {
     const { name, email } = this.state;
     const { login } = this.props;
+    const URL = 'https://opentdb.com/api_token.php?command=request';
 
     const hash = md5(email).toString();
     const gravatarURL = `https://www.gravatar.com/avatar/${hash}`;
     login({ name, email, gravatarURL });
 
-    const { token } = await fetchToken();
+    const { token } = await fetchToken(URL);
     localStorage.setItem('token', token);
 
     this.setState({ redirect: true });
