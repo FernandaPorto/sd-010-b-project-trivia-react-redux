@@ -27,5 +27,4 @@ export default connect(mapStateToProps)(GamePage);
 
 GamePage.propTypes = {
   name: propTypes.string.isRequired,
-  getQuestions: propTypes.func.isRequired,
 };
