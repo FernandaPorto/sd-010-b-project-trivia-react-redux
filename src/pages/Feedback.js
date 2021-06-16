@@ -22,6 +22,12 @@ class Feedback extends Component {
         >
           Jogar novamente
         </Link>
+        <Link
+          data-testid="btn-ranking"
+          to="/ranking"
+        >
+          Ver Ranking
+        </Link>
       </div>
     );
   }
