@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 import PropTypes from 'prop-types';
 import { getTrivia } from '../actions';
 import GameHeader from '../components/GameHeader';
@@ -10,7 +11,10 @@ class TriviaGame extends Component {
     super();
     this.state = {
       index: 0,
+      next: false,
     };
+    this.updateIndex = this.updateIndex.bind(this);
+    this.nextAnswer = this.nextAnswer.bind(this);
   }
 
   componentDidMount() {
@@ -18,14 +22,38 @@ class TriviaGame extends Component {
     updateTrivia(token);
   }
 
+  nextAnswer(bool) {
+    this.setState({ next: bool });
+  }
+
+  updateIndex() {
+    this.setState((prev) => ({ index: prev.index + 1 }));
+  }
+
   render() {
-    const { index } = this.state;
+    const { index, next } = this.state;
     const { isFetching, questions } = this.props;
+    const quant = 5;
     if (isFetching) return 'Loading...';
+    if (index >= quant) return <Redirect to="/feedback" />;
     return (
       <div>
         <GameHeader />
-        <Questions { ...questions[index] } />
+        <Questions
+          { ...questions[index] }
+          nextAnswer={ this.nextAnswer }
+          next={ next }
+          key={ `answer - ${index}` }
+        />
+        {next && (
+          <button
+            data-testid="btn-next"
+            type="button"
+            onClick={ () => this.updateIndex() }
+          >
+            Próximo
+          </button>
+        )}
       </div>
     );
   }
