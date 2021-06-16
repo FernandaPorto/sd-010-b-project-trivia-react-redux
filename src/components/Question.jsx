@@ -8,11 +8,14 @@ class Question extends React.Component {
     const half = 0.5;
     const shuffleArray = (array) => array.sort(() => Math.random() - half);
     const arrRandom = shuffleArray(arrAnswers);
+    // let count = null;
     const check = (answer, index) => {
       if (answer === result.correct_answer) {
+        // count = index;
         return 'correct-answer';
       }
       return `wrong-answer-${index}`;
+      // return `wrong-answer-${count === null ? index : (index < count ? index : index - 1)}`;
     };
     return (
       <>

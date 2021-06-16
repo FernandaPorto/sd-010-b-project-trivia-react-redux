@@ -24,6 +24,8 @@ class HeaderFeedback extends React.Component {
         </h3>
 
         <span data-testid="header-score">0</span>
+
+        <button type="button" data-testid="btn-next">Próxima</button>
       </header>
     );
   }

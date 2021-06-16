@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Question from '../components/Question';
 
@@ -38,6 +39,9 @@ class Game extends React.Component {
               return  <Question result={result} key={result.category} />
             }}
         )} */}
+        <Link to="/feedback">
+          Feedback
+        </Link>
       </>
     );
   }
