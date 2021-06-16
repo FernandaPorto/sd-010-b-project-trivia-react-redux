@@ -29,7 +29,12 @@ class Question extends Component {
     const { questions, index } = this.props;
 
     if (questions.length) {
-      const { category, question, correct_answer: correct } = questions[index];
+      const {
+        category,
+        question,
+        correct_answer: correct,
+        incorrect_answers: incorrects } = questions[index];
+      const randonAnswers = this.generateRandomAnswers(correct, incorrects);
       return (
         <section>
           <div data-testid="question-category">{ category }</div>
