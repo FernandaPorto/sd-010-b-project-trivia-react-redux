@@ -53,8 +53,23 @@ class Trivia extends React.Component {
     );
   }
 
-  render () {
-    return ();
+  render() {
+    const { loading } = this.state;
+
+    if (loading) {
+      return (
+        <div>
+          <h3>
+            LOADING...
+          </h3>
+        </div>
+      );
+    }
+    return (
+      <div>
+        { this.renderQuestion() }
+      </div>
+    );
   }
 }
 
