@@ -72,7 +72,6 @@ class Login extends React.Component {
 
     await this.requestToken(dispatchToken);
     const nameAndImgPath = this.requestGravatar(name, email);
-
     userLogin(nameAndImgPath);
     this.setState({
       redirect: true,

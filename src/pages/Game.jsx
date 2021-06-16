@@ -23,6 +23,7 @@ class Game extends React.Component {
     this.handleNext = this.handleNext.bind(this);
     this.decreaseTime = this.decreaseTime.bind(this);
     this.timerHasMounted = this.timerHasMounted.bind(this);
+    this.stopTimer = this.stopTimer.bind(this);
   }
 
   componentDidMount() {
@@ -38,16 +39,18 @@ class Game extends React.Component {
   }
 
   handleNext() {
-    const correct = document.querySelector('.correct');
-    const wrong = document.querySelectorAll('.wrong');
-
-    const { count } = this.state;
-    this.setState({
-      count: count + 1,
+    this.showAnswersByColor();
+    this.setState((prevState) => ({
+      count: prevState.count + 1,
       disabled: false,
       time: 30,
-    },
+    }),
     () => this.timerHasMounted());
+  }
+
+  showAnswersByColor() {
+    const correct = document.querySelector('.correct');
+    const wrong = document.querySelectorAll('.wrong');
 
     correct.style.border = null;
     wrong.forEach((answer) => {
@@ -62,11 +65,17 @@ class Game extends React.Component {
         time: prevState.time - 1,
       }));
     } else {
-      this.setState({
-        disabled: true,
-        time: 0,
-      }, () => clearInterval(timer));
+      this.setState((prevState) => ({
+        time: prevState.time - 1,
+      }),
+      () => this.stopTimer());
     }
+  }
+
+  stopTimer() {
+    this.setState({
+      disabled: true,
+    }, () => clearInterval(timer));
   }
 
   timerHasMounted() {
@@ -89,7 +98,11 @@ class Game extends React.Component {
             <GameHeader name={ name } gravatarEmail={ gravatarEmail } score={ score } />
           </header>
           <main>
-            <Questions result={ results[count] } disabled={ disabled } />
+            <Questions
+              result={ results[count] }
+              disabled={ disabled }
+              stopTimer={ this.stopTimer }
+            />
             <button
               type="button"
               onClick={ () => this.handleNext() }
