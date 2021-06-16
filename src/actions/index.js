@@ -16,8 +16,12 @@ export const saveNamePlayer = (name) => ({
   payload: { name },
 });
 
-export const requestQuestions = () => async (dispatch) => {
+export const receiveToken = () => async (dispatch) => {
   const token = localStorage.getItem('token');
+  dispatch(saveToken(token));
+};
+
+export const requestQuestions = (token) => async (dispatch) => {
   const result = await getQuestions(token);
   dispatch(receiveQuestions(result));
 };
