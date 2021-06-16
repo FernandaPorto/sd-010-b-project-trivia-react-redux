@@ -7,26 +7,31 @@ import { fetchApiQuestions, fetchAPI } from '../actions/index';
 import './trivia.css';
 
 class Trivia extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       questions: [],
       correct: '',
       reject: '',
       seconds: 30,
       disable: false,
+      pontosState: 0,
+
     };
+
     this.renderQuestion = this.renderQuestion.bind(this);
     this.colorAnswers = this.colorAnswers.bind(this);
     this.update = this.update.bind(this);
+    // this.saveStorage = this.saveStorage.bind(this);
   }
 
   componentDidMount() {
+    const { pontosState } = this.state;
+    localStorage.setItem('player', JSON.stringify(pontosState));
     this.getQuestions();
     const ONE_SECOND = 1000; // 1 second in miliseconds
     const { seconds } = this.state;
     this.cronometerInterval = setInterval(() => {
-      console.log('interval rodando');
       this.setState((state) => {
         if (seconds) {
           return { seconds: state.seconds - 1 };
@@ -35,7 +40,7 @@ class Trivia extends React.Component {
     }, ONE_SECOND);
   }
 
-  componentDidUpdate(_prevProps, prevState) {
+  componentDidUpdate(_props, prevState) {
     this.update(prevState);
   }
 
@@ -66,8 +71,42 @@ class Trivia extends React.Component {
     }
   }
 
+  // saveStorage() {
+  //   const { pontosState } = this.state;
+  //   localStorage.setItem('player', JSON.stringify(pontosState));
+  // }
+
   colorAnswers() {
-    this.setState({ correct: 'correct_answer', reject: 'incorrect_answer' });
+    const { questions, seconds, pontosState } = this.state;
+    // const { difficultyQuestions } = this.props;
+    const { difficulty } = questions[0];
+    const levelQuestion = difficulty;
+    const pointsHard = 3;
+    const pointsMedium = 2;
+    const pointsEasy = 1;
+    const somaPontos = 10;
+    // const difficultyLevels = {
+    //   hard: 3,
+    //   medium: 2,
+    //   easy: 1,
+    // };
+    // const pointScore = somaPontos + seconds * difficultyLevels[difficultyQuestions];
+    // apiQuestions(pointScore);
+    let pontosRender;
+    if (levelQuestion === 'hard') {
+      pontosRender = somaPontos + (seconds * pointsHard);
+    } else if (levelQuestion === 'medium') {
+      pontosRender = somaPontos + (seconds * pointsMedium);
+    } else {
+      pontosRender = somaPontos + (seconds * pointsEasy);
+    }
+    this.setState((prevState) => ({ ...prevState,
+      correct: 'correct_answer',
+      reject: 'incorrect_answer',
+      pontosState: prevState.pontosState + pontosRender }));
+
+    localStorage.setItem('player', JSON.stringify(pontosState));
+    // console.log(pontosState);
   }
 
   renderQuestion() {
@@ -87,7 +126,6 @@ class Trivia extends React.Component {
               onClick={ this.colorAnswers }
               type="button"
             >
-
               {question.correct_answer}
 
             </button>
@@ -111,12 +149,16 @@ class Trivia extends React.Component {
   }
 
   render() {
-    const { seconds } = this.state;
+    const { seconds, pontosState } = this.state;
+    console.log(pontosState);
+    // console.log(seconds);
     return (
       <div>
         <Header />
         <h3>
           {seconds}
+          {' '}
+          {pontosState}
         </h3>
         {this.renderQuestion()}
       </div>
