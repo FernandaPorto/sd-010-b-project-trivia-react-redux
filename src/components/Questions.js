@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { getScore } from '../actions';
 
 class Questions extends Component {
   constructor(props) {
@@ -43,6 +45,24 @@ class Questions extends Component {
     this.setState({ answers: newArr });
   }
 
+  calcAnswerValue() {
+    const { difficulty, updateScore } = this.props;
+    const { timer } = this.state;
+    const CONSTANT = 10;
+    const difficultyValues = {
+      hard: 3,
+      medium: 2,
+      easy: 1,
+    };
+    const answerValue = CONSTANT + timer * difficultyValues[difficulty];
+
+    updateScore(answerValue);
+
+    const state = JSON.parse(localStorage.getItem('state'));
+    state.player.score += answerValue;
+    localStorage.setItem('state', JSON.stringify(state));
+  }
+
   renderAnswers() {
     const { correct_answer: correct, next, answers, timer } = this.state;
     return answers.map((answer, idx) => {
@@ -58,9 +78,17 @@ class Questions extends Component {
         <button
           style={ { border: `${next || !timer ? checkColor : ''}` } }
           key={ answer }
+          id={ checkIsCorrect }
           type="button"
           data-testid={ checkIsCorrect }
-          onClick={ () => !next && this.setState({ next: true }) }
+          onClick={ () => {
+            if (!next) {
+              this.setState({ next: true });
+            }
+            if (answer === correct) {
+              this.calcAnswerValue();
+            }
+          } }
           disabled={ !timer }
         >
           {answer}
@@ -82,12 +110,17 @@ class Questions extends Component {
   }
 }
 
-const mapStateToProps = ({ user: { triviaGame } }) => ({
-  triviaGame,
-});
+Questions.propTypes = {
+  difficulty: PropTypes.string.isRequired,
+  updateScore: PropTypes.func.isRequired,
+};
 
-// const mapDispatchToProps = (dispatch) => ({
-
+// const mapStateToProps = ({ user: { triviaGame } }) => ({
+//   triviaGame,
 // });
 
-export default connect(mapStateToProps)(Questions);
+const mapDispatchToProps = (dispatch) => ({
+  updateScore: (token) => dispatch(getScore(token)),
+});
+
+export default connect(null, mapDispatchToProps)(Questions);
