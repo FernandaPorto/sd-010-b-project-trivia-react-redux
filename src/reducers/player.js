@@ -1,4 +1,4 @@
-import { ENVIA_DADOS_USUARIO, UPDATE_PLAYER_POINTS } from '../actions/index';
+import { ENVIA_DADOS_USUARIO, UPDATE_PLAYER_POINTS, CLEAR_ALL_DATA_STORE } from '../actions/index';
 
 const INITIAL_STATE = {
   name: 'qualquernome',
@@ -20,6 +20,8 @@ export default function player(state = INITIAL_STATE, action) {
       assertions: state.assertions + action.payload.correctAnswer,
       score: state.score + action.payload.answerPoints,
     };
+  case CLEAR_ALL_DATA_STORE:
+    return INITIAL_STATE;
   default:
     return state;
   }
