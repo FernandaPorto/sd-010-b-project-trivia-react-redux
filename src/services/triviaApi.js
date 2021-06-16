@@ -5,4 +5,9 @@ export const getToken = async () => {
   return result;
 };
 
-export default getToken;
+export const getAnswers = async (number, token) => {
+  const endPoint = `https://opentdb.com/api.php?amount=${number}&token=${token}`;
+  const response = await fetch(endPoint);
+  const result = await response.json();
+  return result;
+};

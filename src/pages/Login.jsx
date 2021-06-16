@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 import { func } from 'prop-types';
-import { setPlayerInfo } from '../actions';
+import { setPlayerInfo, fetchGameData } from '../actions';
 import { getToken } from '../services/triviaApi';
 import logo from '../trivia.png';
 import './CSS/login.css';
@@ -22,6 +22,15 @@ class Login extends Component {
     };
   }
 
+  componentWillUnmount() {
+    const { propfetchGameData } = this.props;
+    const payload = {
+      token: localStorage.getItem('token'),
+      numAnswer: 5, // buscar no redux, depois de setar as configurações
+    };
+    propfetchGameData(payload);
+  }
+
   handleChange({ target: { id, value } }) {
     this.setState({ [id]: value }, () => {
       const { name, email } = this.state;
@@ -35,12 +44,9 @@ class Login extends Component {
   async startGame() {
     const { propSetPlayerInfo } = this.props;
     const { name, email } = this.state;
-
-    const tokenResult = await getToken();
-    const playerInfo = { name, email };
-
-    localStorage.setItem('token', tokenResult.token);
-    propSetPlayerInfo(playerInfo);
+    const tokenObj = await getToken();
+    localStorage.setItem('token', tokenObj.token);
+    propSetPlayerInfo({ name, email });
     this.setState({ redirect: true });
   }
 
@@ -102,6 +108,7 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   propSetPlayerInfo: (payload) => dispatch(setPlayerInfo(payload)),
+  propfetchGameData: (payload) => dispatch(fetchGameData(payload)),
 });
 
 Login.propTypes = {
