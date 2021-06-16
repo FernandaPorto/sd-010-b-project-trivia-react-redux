@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import Question from '../components/Question';
-import { requestQuestions } from '../actions';
 
 class GamePage extends React.Component {
   constructor(props) {
