@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import GameHeader from '../components/GameHeader';
+import GameHeader from './GameHeader';
 import './style.css';
+import { updatePlayerPoints } from '../actions/index';
 
 class Game extends React.Component {
   constructor(props) {
@@ -10,52 +11,119 @@ class Game extends React.Component {
     this.state = ({
       indexQuestion: 0,
       buttonDisabled: false,
+      currentTime: 30,
     });
 
     this.renderPage = this.renderPage.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
-    this.startTimer = this.startTimer.bind(this);
+    this.timer = this.timer.bind(this);
+    this.settingState = this.settingState.bind(this);
+    this.calculatePoints = this.calculatePoints.bind(this);
+    this.verifyAnswers = this.verifyAnswers.bind(this);
+    this.setDifficulty = this.setDifficulty.bind(this);
   }
 
   componentDidMount() {
-    const tempo = 30;
-
-    this.startTimer(tempo);
+    const ONE_SECOND = 1000;
+    const intervalId = setInterval(this.timer, ONE_SECOND);
+    this.settingState(intervalId);
+    const estadoInicial = {
+      player: {
+        name: '',
+        assertions: 0,
+        score: 0,
+        gravatarEmail: '',
+      },
+    };
+    const estadoInicialJson = JSON.stringify(estadoInicial);
+    localStorage.setItem('state', estadoInicialJson);
   }
 
-  startTimer(duration) {
-    const ONE_SEC = 1000;
-    const MINUTO = 60;
-    const DIGITO_DECIMAL = 10;
-    let timer = duration;
-    const display = document.getElementById('timer');
-    let seconds;
-    setInterval(() => {
-      seconds = parseInt(timer % MINUTO, 10);
-
-      // a seguinte linha exibe, por exemplo, 03 ao invés de 3 no timer
-      seconds = seconds < DIGITO_DECIMAL ? `0${seconds}` : seconds;
-      display.textContent = `Tempo restante: ${seconds}`;
-      timer -= 1;
-      if (timer < 0) {
-        timer = 0;
-        this.setState({
-          buttonDisabled: true,
-        });
-      }
-    }, ONE_SEC);
+  settingState(intervalId) {
+    this.setState({
+      intervalId,
+    });
   }
 
-  handleClick() {
+  setDifficulty(difficulty) {
+    const HARD_NUMBER = 3;
+    let difficultyValue = 0;
+    if (difficulty === 'easy') {
+      difficultyValue = 1;
+    } else if (difficulty === 'medium') {
+      difficultyValue = 2;
+    } else {
+      difficultyValue = HARD_NUMBER;
+    }
+    return difficultyValue;
+  }
+
+  verifyAnswers(target) {
+    const { updatePlayerPointsAction,
+      player } = this.props;
+    const { name, assertions, score, gravatarEmail } = player;
+    const answer = target.getAttribute('data-testid');
+    if (answer === 'correct-answer') {
+      const correctAnswer = 1;
+      const answerPoints = this.calculatePoints();
+      const estadoTemporario = {
+        player: {
+          name,
+          assertions: assertions + correctAnswer,
+          score: score + answerPoints,
+          gravatarEmail,
+        },
+      };
+      updatePlayerPointsAction({ correctAnswer, answerPoints });
+      localStorage.setItem('state', JSON.stringify(estadoTemporario));
+    }
+  }
+
+  timer() {
+    const { currentTime, intervalId } = this.state;
+    if (currentTime > 0) {
+      this.setState({
+        currentTime: currentTime - 1,
+      });
+    } else {
+      this.setState({
+        buttonDisabled: true,
+      });
+      clearInterval(intervalId);
+    }
+  }
+
+  calculatePoints() {
+    const { indexQuestion } = this.state;
+    const { apiResult: { results } } = this.props;
+    const a = results[indexQuestion];
+    const BASE_VALUE = 10;
+    const difficultyValue = this.setDifficulty(a.difficulty);
+    const currentTimeTagP = document.querySelector('#timer').innerHTML;
+    const currentTime = currentTimeTagP.split(' ')[2];
+    if (currentTime.startsWith('0')) {
+      const result = BASE_VALUE + ((Number(currentTime[1]) * difficultyValue));
+      return result;
+    }
+    const result = BASE_VALUE + (Number(currentTime) * difficultyValue);
+    return result;
+  }
+
+  handleClick({ target }) {
     const wrongAnswer = document.querySelectorAll('.answer-button-wrong');
     const correctAnswer = document.querySelector('.answer-button-correct');
     const buttonNext = document.querySelector('.next-button');
+
     correctAnswer.classList.add('answer-correct');
     wrongAnswer.forEach((answer) => {
       answer.classList.add('answer-wrong');
     });
+
+    this.verifyAnswers(target);
     buttonNext.style.display = 'initial';
+    const { intervalId } = this.state;
+    clearInterval(intervalId);
   }
 
   nextQuestion() {
@@ -73,6 +141,12 @@ class Game extends React.Component {
         answer.classList.remove('answer-wrong');
       });
     }
+    this.setState({
+      currentTime: 30,
+    });
+    const ONE_SECOND = 1000;
+    const intervalId = setInterval(this.timer, ONE_SECOND);
+    this.settingState(intervalId);
   }
 
   renderPage() {
@@ -80,7 +154,7 @@ class Game extends React.Component {
     const { apiResult } = this.props;
 
     if (apiResult.response_code === 0) {
-      const NUMERO_PARA_SORTEAR_RESPOSTAS = 0.5;
+      const NUMERO_PARA_SORTEAR_RESPOSTAS = 5;
       const answersArray = apiResult.results[indexQuestion].incorrect_answers
         .concat(apiResult.results[indexQuestion].correct_answer);
       const newRandomArray = answersArray
@@ -103,7 +177,7 @@ class Game extends React.Component {
                 disabled={ buttonDisabled }
                 className={ answer === apiResult.results[indexQuestion].correct_answer
                   ? 'answer-button-correct' : 'answer-button-wrong' }
-                onClick={ this.handleClick }
+                onClick={ (evento) => this.handleClick(evento) }
               >
                 {answer}
               </button>))}
@@ -115,6 +189,8 @@ class Game extends React.Component {
   }
 
   render() {
+    const { currentTime } = this.state;
+
     return (
       <section>
         <GameHeader />
@@ -127,22 +203,35 @@ class Game extends React.Component {
         >
           Próxima
         </button>
-        <p id="timer">Tempo restante:</p>
+        <p id="timer">{`Tempo restante: ${currentTime}`}</p>
       </section>
 
     );
   }
 }
+const mapDispatchToProps = (dispatch) => ({
+  updatePlayerPointsAction: (points) => dispatch(updatePlayerPoints(points)),
+});
 
 const mapStateToProps = (state) => ({
   apiResult: state.game,
+  player: state.player,
 });
 
-export default connect(mapStateToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
 
 Game.propTypes = {
+  updatePlayerPointsAction: PropTypes.func.isRequired,
+  player: PropTypes.shape({
+    name: PropTypes.string,
+    assertions: PropTypes.number,
+    score: PropTypes.number,
+    gravatarEmail: PropTypes.string.isRequired,
+  }).isRequired,
   apiResult: PropTypes.shape({
     response_code: PropTypes.number.isRequired,
-    results: PropTypes.shape({}),
+    results: PropTypes.shape({
+      difficulty: PropTypes.number,
+    }),
   }).isRequired,
 };
