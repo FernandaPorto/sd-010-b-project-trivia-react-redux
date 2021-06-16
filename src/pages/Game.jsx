@@ -17,6 +17,7 @@ class Game extends React.Component {
       count: 0,
       time: 30,
       disabled: false,
+      nextButton: false,
     };
 
     this.getQuestions = this.getQuestions.bind(this);
@@ -44,6 +45,7 @@ class Game extends React.Component {
       count: prevState.count + 1,
       disabled: false,
       time: 30,
+      nextButton: false,
     }),
     () => this.timerHasMounted());
   }
@@ -75,6 +77,7 @@ class Game extends React.Component {
   stopTimer() {
     this.setState({
       disabled: true,
+      nextButton: true,
     }, () => clearInterval(timer));
   }
 
@@ -84,7 +87,7 @@ class Game extends React.Component {
   }
 
   render() {
-    const { results, count, time, disabled } = this.state;
+    const { results, count, time, disabled, nextButton } = this.state;
     const { name, gravatarEmail, score } = this.props;
 
     if (count === NUMBER_FIVE) {
@@ -103,12 +106,14 @@ class Game extends React.Component {
               disabled={ disabled }
               stopTimer={ this.stopTimer }
             />
-            <button
-              type="button"
-              onClick={ () => this.handleNext() }
-            >
-              Next
-            </button>
+            { nextButton === true ? (
+              <button
+                type="button"
+                onClick={ () => this.handleNext() }
+                data-testid="btn-next"
+              >
+                Next
+              </button>) : null }
             <Timer time={ time } hasMounted={ this.timerHasMounted } />
           </main>
         </section>
