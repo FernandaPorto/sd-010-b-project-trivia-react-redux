@@ -1,7 +1,7 @@
 import { SCORE } from '../actions';
 
 const initialState = {
-  total: 0,
+  total: 600000000,
 };
 
 export default (state = initialState, action) => {
