@@ -2,6 +2,7 @@ import React from 'react';
 import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { fetchQuestions } from '../redux/actions';
 
 class Game extends React.Component {
   constructor() {
@@ -9,6 +10,12 @@ class Game extends React.Component {
 
     this.getPerfilGravatar = this.getPerfilGravatar.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
+  }
+
+  componentDidMount() {
+    const { fetchQuestions: getQuestions } = this.props;
+    const token = localStorage.getItem('token');
+    getQuestions(token);
   }
 
   getPerfilGravatar() {
@@ -42,7 +49,6 @@ class Game extends React.Component {
               const answers = (question.incorrect_answers
                 .concat(question.correct_answer))
                 .sort(() => Math.random() - magicNumber);
-              console.log(question);
               const renderAnswers = answers.map((answer, index2) => {
                 if (answer === question.correct_answer) {
                   return (
@@ -80,7 +86,7 @@ class Game extends React.Component {
     return (
       <>
         {this.getPerfilGravatar()}
-        {questions.length > 0 && this.renderAnswers()}
+        {questions && this.renderAnswers()}
       </>
     );
   }
@@ -106,7 +112,11 @@ const mapStateToProps = (state) => ({
   questions: state.questions.results,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  fetchQuestions: (token) => dispatch(fetchQuestions(token)),
+});
+
 Game.propTypes = ({
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
 });
-export default connect(mapStateToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
