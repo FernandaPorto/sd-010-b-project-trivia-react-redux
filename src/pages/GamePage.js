@@ -23,11 +23,7 @@ const mapStateToProps = (state) => ({
   name: state.player.name,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  getQuestions: () => dispatch(requestQuestions()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(GamePage);
+export default connect(mapStateToProps)(GamePage);
 
 GamePage.propTypes = {
   name: propTypes.string.isRequired,
