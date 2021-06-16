@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { getTokenApi } from '../actions';
 
-
 class LoginForm extends Component {
   constructor(props) {
     super(props);
@@ -26,7 +25,6 @@ class LoginForm extends Component {
       [target.id]: target.value,
     });
   }
-
 
   setLocalStorage() {
     const { sendTokenToLocal } = this.props;
