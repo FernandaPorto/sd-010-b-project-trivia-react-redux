@@ -49,6 +49,7 @@ class Jogo extends React.Component {
         category: results[perguntaNumber].category,
         question: results[perguntaNumber].question,
         correctAnswer: results[perguntaNumber].correct_answer,
+        dificuldade: results[perguntaNumber].difficulty,
       },
     });
   }
@@ -63,7 +64,7 @@ class Jogo extends React.Component {
 
   stopOnClick() {
     const { myTimer } = this.state;
-    clearInterval(myTimer)
+    clearInterval(myTimer);
   }
 
   somaPergunta() {
@@ -95,6 +96,18 @@ class Jogo extends React.Component {
     this.paintAnswerCorrect();
   }
 
+  temporizador() {
+    this.setState({
+      myTimer: setInterval(this.changeTimerState, 1000),
+    });
+  }
+
+  changeTimerState() {
+    this.setState((prev) => ({
+      timer: prev.timer - 1,
+    }), () => this.stopTimer());
+  }
+
   renderNextButton() {
     const { buttonDisable } = this.state;
     if (buttonDisable) {
@@ -112,18 +125,6 @@ class Jogo extends React.Component {
     );
   }
 
-  changeTimerState() {
-    this.setState((prev) => ({
-      timer: prev.timer - 1,
-    }), () => this.stopTimer());
-  }
-
-  temporizador() {
-    this.setState({
-      myTimer: setInterval(this.changeTimerState, 1000),
-    });
-  }
-
   render() {
     const { randomAnswer, timer } = this.state;
     return (
@@ -137,9 +138,9 @@ class Jogo extends React.Component {
             timer={ timer }
             stopOnClick={ () => this.stopOnClick() }
           />
-        <div>
-          { timer }
-        </div>
+          <div>
+            { timer }
+          </div>
           { this.renderNextButton() }
         </section>
       </section>

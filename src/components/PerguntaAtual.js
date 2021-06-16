@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 class PerguntaAtual extends React.Component {
   constructor() {
@@ -24,12 +25,24 @@ class PerguntaAtual extends React.Component {
     }
   }
 
-  paintAll() {
-    const { buttonAvaliable, stopOnClick } = this.props;
+  paintAll(event) {
+    const { buttonAvaliable, stopOnClick, randomAnswer: { correctAnswer, dificuldade }, timer } = this.props;
     this.paintAnswerIncorrect();
     this.paintAnswerCorrect();
     buttonAvaliable();
     stopOnClick();
+
+    if (event.target.value === correctAnswer) {
+      const local = JSON.parse(localStorage.getItem('player'));
+      const player = {
+        player: {
+          name: local.name,
+          assertions: local.assertions + 1,
+          score: local.score + (10 + (timer * 2)),
+          gravatarEmail: local.email,
+        } };
+      localStorage.setItem('player', player);
+    }
   }
 
   renderAnswers() {
@@ -82,6 +95,10 @@ class PerguntaAtual extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  questions: state.user.questions,
+});
+
 PerguntaAtual.propTypes = {
   randomAnswer: PropTypes.shape({
     allAnswers: PropTypes.arrayOf(PropTypes.string),
@@ -92,4 +109,4 @@ PerguntaAtual.propTypes = {
   buttonAvaliable: PropTypes.func.isRequired,
 };
 
-export default PerguntaAtual;
+export default connect(mapStateToProps)(PerguntaAtual);

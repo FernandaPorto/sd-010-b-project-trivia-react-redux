@@ -44,10 +44,19 @@ class Login extends React.Component {
 
   fetchToken() {
     const { login, history, fetchQuestionsAction } = this.props;
+    const { email, name } = this.state;
+    const player = {
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: email,
+      } };
     fetch('https://opentdb.com/api_token.php?command=request')
       .then((response) => response.json())
       .then((response) => {
         localStorage.setItem('token', JSON.stringify(response.token));
+        localStorage.setItem('player', JSON.stringify(player));
         return fetch(`https://opentdb.com/api.php?amount=5&token=${response.token}`);
       })
       .then((response) => response.json())
