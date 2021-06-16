@@ -56,7 +56,7 @@ class Cronometro extends Component {
 Cronometro.propTypes = {
   funcao: PropTypes.func.isRequired,
   funcaoStop: PropTypes.func.isRequired,
-  restart: PropTypes.number.isRequired,
+  restart: PropTypes.bool.isRequired,
   stop: PropTypes.bool.isRequired,
 };
 

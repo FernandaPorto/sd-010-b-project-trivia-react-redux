@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import { getStorage } from '../services/token';
 
@@ -15,6 +16,12 @@ class Feedback extends Component {
           { assertions >= assert
             ? 'Mandou bem!' : 'Podia ser melhor...' }
         </p>
+        <Link
+          data-testid="btn-play-again"
+          to="/"
+        >
+          Jogar novamente
+        </Link>
       </div>
     );
   }
