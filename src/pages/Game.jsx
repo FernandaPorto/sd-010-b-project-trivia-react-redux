@@ -55,10 +55,10 @@ class Game extends Component {
   }
 
   handleLocalStorage(score) {
-    const player = JSON.parse(localStorage.getItem('player'));
+    const player = JSON.parse(localStorage.getItem('state'));
     player.assertions += 1;
     player.score += score;
-    localStorage.setItem('player', JSON.stringify(player));
+    localStorage.setItem('state', JSON.stringify(player));
   }
 
   saveQuestionsInState({ results }) {

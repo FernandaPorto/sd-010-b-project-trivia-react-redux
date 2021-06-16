@@ -48,8 +48,8 @@ class Login extends Component {
       score: 0,
       gravatarEmail: email,
     };
-    localStorage.removeItem('player');
-    localStorage.setItem('player', JSON.stringify(player));
+    localStorage.removeItem('state');
+    localStorage.setItem('state', JSON.stringify(player));
   }
 
   handleClick() {
