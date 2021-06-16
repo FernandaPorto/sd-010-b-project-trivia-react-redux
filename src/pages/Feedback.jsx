@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import FeedbackHeader from './FeedbackHeader';
-import { clearAllDataStore } from '../actions/index';
+import { addPlayerToRanking, clearAllDataStore } from '../actions/index';
 
 class Feedback extends React.Component {
   constructor() {
@@ -12,7 +12,16 @@ class Feedback extends React.Component {
   }
 
   clearAllData() {
-    const { clearAllDataStoreAction } = this.props;
+    const { addPlayerToRankingAction, playerReducer, clearAllDataStoreAction } = this.props;
+
+    const playerRanking = {
+      name: playerReducer.name,
+      score: playerReducer.score,
+      picture: playerReducer.gravatarEmail,
+    };
+    console.log(playerRanking);
+    addPlayerToRankingAction(playerRanking);
+
     clearAllDataStoreAction();
     const estadoInicial = {
       player: {
@@ -69,10 +78,12 @@ class Feedback extends React.Component {
 
 const mapStateToProps = (state) => ({
   playerReducer: state.player,
+  rankingReducer: state.ranking,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   clearAllDataStoreAction: () => dispatch(clearAllDataStore()),
+  addPlayerToRankingAction: (payload) => dispatch(addPlayerToRanking(payload)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
