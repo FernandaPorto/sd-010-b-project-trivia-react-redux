@@ -1,4 +1,5 @@
 import React from 'react';
+import fetchToken from '../services/api';
 
 class Trivia extends React.Component {
   constructor(props) {
@@ -14,11 +15,10 @@ class Trivia extends React.Component {
 
   async componentDidMount() {
     const { token } = localStorage;
+    const URL = `https://opentdb.com/api.php?amount=5&token=${token}`;
 
-    const requestQuestions = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
-    const dataToJSON = await requestQuestions.json();
-
-    this.updateState(dataToJSON);
+    const requestQuestions = await fetchToken(URL);
+    this.updateState(requestQuestions);
   }
 
   updateState({ results }) {
@@ -29,7 +29,6 @@ class Trivia extends React.Component {
     });
   }
 
-
   renderQuestion() {
     const { questions, currentQuestion } = this.state;
     const POINT_FIVE = 0.5;
@@ -37,7 +36,10 @@ class Trivia extends React.Component {
       array.sort(() => Math.random() - POINT_FIVE)
     );
 
-    const answers = [questions[currentQuestion].correct_answer, ...questions[currentQuestion].incorrect_answers];
+    const answers = [
+      questions[currentQuestion].correct_answer,
+      ...questions[currentQuestion].incorrect_answers,
+    ];
 
     const randomAnswers = randomizer(answers).map((answer, index) => (
       <p key={ index }>
