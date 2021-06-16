@@ -158,7 +158,7 @@ class Game extends Component {
 
   render() {
     const { nome, gravatar } = this.props;
-    const { results } = this.state;
+    const { results, score, assertions } = this.state;
     return (
       <div>
         <header>
@@ -168,12 +168,22 @@ class Game extends Component {
             alt={ nome }
           />
           <p data-testid="header-player-name">{nome}</p>
-          <p data-testid="header-score">0</p>
+          <p data-testid="header-score">{ score }</p>
+          <p>
+            Acertos:
+            { assertions }
+          </p>
         </header>
         <main>
           { results !== [] && this.renderQuestion() }
         </main>
-        <button type="button" onClick={ () => this.nextIndex() }>Próxima pergunta</button>
+        <button
+          type="button"
+          data-testid="btn-next"
+          onClick={ () => this.nextIndex() }
+        >
+          Próxima
+        </button>
       </div>
     );
   }
@@ -212,6 +222,8 @@ Game.propTypes = {
   rigth: PropTypes.string.isRequired,
   restartCount: PropTypes.func.isRequired,
   disableButtons: PropTypes.bool.isRequired,
+  actualCount: PropTypes.number.isRequired,
+  clickedAnswer: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
