@@ -16,7 +16,10 @@ class Jogo extends Component {
   }
 
   componentDidMount() {
-    getToken().then((game) => this.setState({ game, loading: false }));
+    getToken().then((game) => {
+      console.log(game);
+      this.setState({ game, loading: false });
+    });
   }
 
   change(val) {

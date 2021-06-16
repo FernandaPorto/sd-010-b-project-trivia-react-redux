@@ -6,6 +6,7 @@ import Cronometro from './Cronometro';
 class Questions extends Component {
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = { ...props,
       next: false,
       isValid: false,
