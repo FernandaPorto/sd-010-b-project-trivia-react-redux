@@ -9,14 +9,25 @@ class Jogo extends React.Component {
     super(props);
     this.answers = this.answers.bind(this);
     this.somaPergunta = this.somaPergunta.bind(this);
+    this.buttonAvaliable = this.buttonAvaliable.bind(this);
+    this.paintAnswerCorrect = this.paintAnswerCorrect.bind(this);
+    this.paintAnswerIncorrect = this.paintAnswerIncorrect.bind(this);
+    this.paintAll = this.paintAll.bind(this);
     this.state = {
       randomAnswer: {},
       perguntaNumber: 0,
+      buttonDisable: true,
     };
   }
 
   componentDidMount() {
     return this.answers();
+  }
+
+  buttonAvaliable() {
+    this.setState({
+      buttonDisable: false,
+    });
   }
 
   answers() {
@@ -38,7 +49,43 @@ class Jogo extends React.Component {
   somaPergunta() {
     this.setState((previ) => ({
       perguntaNumber: previ.perguntaNumber + 1,
+      buttonDisable: true,
     }), () => this.answers());
+    this.paintAll();
+  }
+
+  paintAnswerCorrect() {
+    const correct = document.getElementById('correct');
+    correct.style.border = 'none';
+  }
+
+  paintAnswerIncorrect() {
+    const branco = document.getElementsByClassName('incorrect');
+    for (let key = 0; key < branco.length; key += 1) {
+      branco[key].style.border = 'none';
+    }
+  }
+
+  paintAll() {
+    this.paintAnswerIncorrect();
+    this.paintAnswerCorrect();
+  }
+
+  renderNextButton() {
+    const { buttonDisable } = this.state;
+    if (buttonDisable) {
+      return null;
+    }
+    return (
+      <button
+        data-testid="btn-next"
+        type="button"
+        onClick={ () => this.somaPergunta() }
+        className="next-btn"
+      >
+        <span className="next-icon">&#10145;</span>
+      </button>
+    );
   }
 
   render() {
@@ -47,14 +94,11 @@ class Jogo extends React.Component {
       <section>
         <Header />
         <section className="game-section">
-          <PerguntaAtual randomAnswer={ randomAnswer } />
-          <button
-            type="button"
-            onClick={ () => this.somaPergunta() }
-            className="next-btn"
-          >
-            Próxima Pergunta
-          </button>
+          <PerguntaAtual
+            randomAnswer={ randomAnswer }
+            buttonAvaliable={ () => this.buttonAvaliable() }
+          />
+          { this.renderNextButton() }
         </section>
       </section>
     );

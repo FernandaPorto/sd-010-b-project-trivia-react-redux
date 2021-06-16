@@ -5,6 +5,28 @@ class PerguntaAtual extends React.Component {
   constructor() {
     super();
     this.renderAnswers = this.renderAnswers.bind(this);
+    this.paintAnswerCorrect = this.paintAnswerCorrect.bind(this);
+    this.paintAnswerIncorrect = this.paintAnswerIncorrect.bind(this);
+    this.paintAll = this.paintAll.bind(this);
+  }
+
+  paintAnswerCorrect() {
+    const correct = document.getElementById('correct');
+    correct.style.border = '3px solid rgb(6, 240, 15)';
+  }
+
+  paintAnswerIncorrect() {
+    const branco = document.getElementsByClassName('incorrect');
+    for (let key = 0; key < branco.length; key += 1) {
+      branco[key].style.border = '3px solid rgb(255, 0, 0)';
+    }
+  }
+
+  paintAll() {
+    const { buttonAvaliable } = this.props;
+    this.paintAnswerIncorrect();
+    this.paintAnswerCorrect();
+    buttonAvaliable();
   }
 
   renderAnswers() {
@@ -16,6 +38,8 @@ class PerguntaAtual extends React.Component {
         return (
           <button
             type="button"
+            className="incorrect"
+            onClick={ () => this.paintAll() }
             data-testid={ `wrong-answer-${index - 1}` }
             key={ i }
           >
@@ -27,6 +51,8 @@ class PerguntaAtual extends React.Component {
         <button
           key={ i }
           type="button"
+          id="correct"
+          onClick={ () => this.paintAll() }
           data-testid="correct-answer"
         >
           { answer }
@@ -39,7 +65,7 @@ class PerguntaAtual extends React.Component {
     const { randomAnswer: { allAnswers, category, question } } = this.props;
     return (
       <div className="questions-section">
-        <div data-testid="question-category">{ category }</div>
+        <h3 data-testid="question-category">{ category }</h3>
         <br />
         <div data-testid="question-text">{ question }</div>
         { !allAnswers ? <div>Carregando...</div> : this.renderAnswers() }
@@ -55,6 +81,7 @@ PerguntaAtual.propTypes = {
     category: PropTypes.string,
     question: PropTypes.string,
   }).isRequired,
+  buttonAvaliable: PropTypes.func.isRequired,
 };
 
 export default PerguntaAtual;
