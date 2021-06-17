@@ -153,10 +153,7 @@ class Game extends React.Component {
       return (
         <div>
           <Link to="/feedback">
-            <button
-              data-testid="btn-next"
-              type="button"
-            >
+            <button data-testid="btn-next" type="button">
               Próxima
             </button>
           </Link>
