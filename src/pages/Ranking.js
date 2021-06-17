@@ -28,11 +28,11 @@ export default class Ranking extends Component {
   render() {
     const { localStore, goHome } = this.state;
     // ordenar o ranking antes de renderizar fazer isso na gravação da store
-    const ranking = localStore ? localStore[0].ranking : [];
+    const ranking = localStore ? localStore.ranking : [];
     return (
       <div>
         { goHome && <Redirect to="/" /> }
-        <h1>Ranking</h1>
+        <h1 data-testid="ranking-title">Ranking</h1>
         <ol>
           { localStore && ranking
             .map(({ name, picture, score }, index) => (

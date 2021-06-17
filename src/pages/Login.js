@@ -49,7 +49,6 @@ class Login extends Component {
   render() {
     const { name, email, isDisable, settings, ranking } = this.state;
     const { fetchAPIToken, Gravatar, isRedirect } = this.props;
-    console.log(isRedirect);
     return (
       <div className="App-header">
         { settings && <Redirect to="/settings" /> }
