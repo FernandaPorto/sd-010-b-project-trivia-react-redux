@@ -1,16 +1,18 @@
-/* eslint-disable react/no-danger */
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Questionaire from './Questionaire';
 
 class Question extends React.Component {
   constructor(props) {
     super(props);
 
     this.getQuestions = this.getQuestions.bind(this);
+    this.handleAnswer = this.handleAnswer.bind(this);
 
     this.state = {
       questions: [],
+      currentIndex: 0,
     };
   }
 
@@ -29,12 +31,29 @@ class Question extends React.Component {
     });
   }
 
+  handleAnswer(answer) {
+    const { currentIndex } = this.state;
+    this.setState({
+      currentIndex: currentIndex + 1,
+    });
+    // conferir a resposta
+
+    // mostrar outra pergunta
+
+    // mudar placar se correto
+  }
+
   render() {
-    const { questions } = this.state;
+    const { questions, currentIndex } = this.state;
+    console.log(questions);
     return (
       questions.length > 0 ? (
-        <div>
-          <p
+        <div className="container">
+          <Questionaire
+            data={ questions[currentIndex] }
+            handleAnswer={ this.handleAnswer }
+          />
+          {/* <p
             data-testid="question-category"
           >
             { questions[0].category }
@@ -64,7 +83,7 @@ class Question extends React.Component {
               )}
             </div>
 
-          </div>
+          </div> */}
         </div>) : (<h2>Loading...</h2>)
     );
   }
