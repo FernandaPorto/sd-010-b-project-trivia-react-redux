@@ -33,16 +33,6 @@ class Questions extends React.Component {
       hard: 3,
     };
     this.colorAnswer();
-<<<<<<< HEAD
-    const { name, assertions, score, gravatarEmail } = this.props;
-    const player = {
-      name,
-      assertions,
-      score,
-      gravatarEmail,
-    };
-    localStorage.setItem('player', JSON.stringify(player));
-=======
     if (className === 'correct') {
       const point = NUMBER_TEEN + (time + level[difficulty]);
       const stats = {
@@ -52,13 +42,12 @@ class Questions extends React.Component {
         gravatarEmail,
       };
       const state = { player: stats };
-      console.log(state);
+      console.log(stats);
       localStorage.setItem('state', JSON.stringify(state));
       this.setState({ score: point + score, assertions: assertions + 1 });
       addScore(stats);
     }
 
->>>>>>> 8adfd51fe2e8b2ba6b99894443bd08aa0b518488
     stopTimer();
   }
 

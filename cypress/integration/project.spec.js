@@ -376,15 +376,15 @@ describe('12 - [TELA DE FEEDBACK] Desenvolva o header de _feedback_ que deve con
     expect(storage).to.be.lessThan(4);
   });
 
-  it.skip('A imagem do Gravatar está presente no header', () => {
+  it('A imagem do Gravatar está presente no header', () => {
     cy.get(HEADER_IMAGE_SELECTOR).should('exist');
   });
 
-  it.skip('O nome da pessoa está presente no header', () => {
+  it('O nome da pessoa está presente no header', () => {
     cy.get(HEADER_NAME_SELECTOR).contains(name);
   });
 
-  it.skip('O placar com o valor atual está presente no header', () => {
+  it('O placar com o valor atual está presente no header', () => {
     cy.get(HEADER_SCORE_SELECTOR).should(($el) => {
       const state = JSON.parse(localStorage.getItem(LOCAL_STORAGE_STATE_KEY));
       expect(parseInt($el.text())).to.be.eq(state.player.score);
@@ -401,7 +401,7 @@ describe('13 - [TELA DE FEEDBACK] Crie a mensagem de _feedback_ para ser exibida
     cy.get(BUTTON_PLAY_SELECTOR).click();
   });
 
-  it.skip('Acertou menos de 3 perguntas', () => {
+  it('Acertou menos de 3 perguntas', () => {
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).click();
     cy.get(BUTTON_NEXT_QUESTION_SELECTOR).click();
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).click();
@@ -415,7 +415,7 @@ describe('13 - [TELA DE FEEDBACK] Crie a mensagem de _feedback_ para ser exibida
     cy.get(FEEDBACK_TEXT_SELECTOR).contains('Podia ser melhor...');
   });
 
-  it.skip('Acertou 3 perguntas', () => {
+  it('Acertou 3 perguntas', () => {
     cy.get(WRONG_ALTERNATIVES_SELECTOR).first().click();
     cy.get(BUTTON_NEXT_QUESTION_SELECTOR).click();
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).click();
@@ -429,7 +429,7 @@ describe('13 - [TELA DE FEEDBACK] Crie a mensagem de _feedback_ para ser exibida
     cy.get(FEEDBACK_TEXT_SELECTOR).contains('Mandou bem!');
   });
 
-  it.skip('Acertou mais de 3 perguntas', () => {
+  it('Acertou mais de 3 perguntas', () => {
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).click();
     cy.get(BUTTON_NEXT_QUESTION_SELECTOR).click();
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).click();

@@ -16,11 +16,11 @@ export default function (state = initialState, action) {
     };
   }
   case ('PLAYER_SCORE'): {
-    const { name, assetions, score, gravatarEmail } = action.payload;
+    const { name, assertions, score, gravatarEmail } = action.payload;
     return {
       ...state,
       name,
-      assetions,
+      assertions,
       score,
       gravatarEmail,
     };

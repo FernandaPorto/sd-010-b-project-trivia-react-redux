@@ -9,13 +9,13 @@ class Feedback extends Component {
   }
 
   message(status) {
-    const badScore = 2;
-    if (status <= badScore) return 'Podia ser melhor...';
+    const badScore = 3;
+    if (status < badScore) return 'Podia ser melhor...';
     return 'Mandou bem!';
   }
 
   render() {
-    const { gravatarEmail, name, score } = this.props;
+    const { gravatarEmail, name, score, assertions } = this.props;
     return (
       <div data-testid="feedback-text">
         <header>
@@ -28,7 +28,7 @@ class Feedback extends Component {
           <h3 data-testid="header-score">{ score }</h3>
         </header>
         <section>
-          <h1 data-testid="feedback-text">{ this.message(score) }</h1>
+          <h1 data-testid="feedback-text">{ this.message(assertions) }</h1>
         </section>
       </div>
     );
@@ -36,14 +36,15 @@ class Feedback extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { player: { name, gravatarEmail, score } } = state;
-  return { name, gravatarEmail, score };
+  const { player: { name, gravatarEmail, score, assertions } } = state;
+  return { name, gravatarEmail, score, assertions };
 };
 
 Feedback.propTypes = {
   gravatarEmail: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  score: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(Feedback);

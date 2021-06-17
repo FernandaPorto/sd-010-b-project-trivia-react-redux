@@ -41,15 +41,6 @@ class Game extends React.Component {
 
   handleNext() {
     this.showAnswersByColor();
-    const { name, assertions, score, gravatarEmail } = this.props;
-    const player = {
-      name,
-      assertions: 4,
-      score,
-      gravatarEmail,
-    };
-    const state = { player };
-    localStorage.setItem('state', JSON.stringify(state));
     this.setState((prevState) => ({
       count: prevState.count + 1,
       disabled: false,
@@ -154,7 +145,6 @@ Game.propTypes = {
   name: PropTypes.string.isRequired,
   gravatarEmail: PropTypes.string.isRequired,
   score: PropTypes.string.isRequired,
-  assertions: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(Game);
