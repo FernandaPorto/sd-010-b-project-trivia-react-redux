@@ -44,14 +44,15 @@ class LoginPage extends Component {
 
   async setToken() {
     const token = await fetchURL();
-    console.log(token);
     localStorage.setItem('token', JSON.stringify(token));
+    // const tokenLocalStorage = JSON.parse(localStorage.getItem(token));
     try {
-      const FetchTrivia = fetch(`https://opentdb.com/api.php?amount=5&token=${token}`).then((response) => response.JSON());
-      console.log(FetchTrivia);
+      const fetchTrivia = fetch(`https://opentdb.com/api.php?amount=5&token=${token.token}`).then((response) => response.json());
+      console.log(fetchTrivia);
     } catch (error) {
       console.log(error);
     }
+    fetchTrivia.map(() => {})
   }
 
   settingsButton() {
@@ -90,8 +91,7 @@ class LoginPage extends Component {
             value={ name }
             onInput={ emailPlay }
             onChange={ ({ target: { value } }) => {
-              this.setState({ name: value });
-              this.validationFields();
+              this.setState({ name: value }, () => this.validationFields());
             } }
             required
           />
@@ -105,8 +105,7 @@ class LoginPage extends Component {
             placeholder="insert your email"
             value={ emailAdress }
             onChange={ ({ target: { value } }) => {
-              this.setState({ emailAdress: value });
-              this.validationFields();
+              this.setState({ emailAdress: value }, () => this.validationFields());
             } }
             required
           />
