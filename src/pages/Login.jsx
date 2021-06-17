@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { loginAction } from '../actions';
-import fetchURL from '../services/API';
+import ButtonSettings from '../components/ButtonSettings';
+import { setToken } from './GamePage';
 
 class LoginPage extends Component {
   constructor(props) {
@@ -18,9 +18,8 @@ class LoginPage extends Component {
 
     this.validationFields = this.validationFields.bind(this);
     this.onClick = this.onClick.bind(this);
-    this.setToken = this.setToken.bind(this);
-    this.settingsButton = this.settingsButton.bind(this);
-    this.setToken = this.setToken.bind(this);
+    // this.setToken = this.setToken.bind(this);
+    // this.settingsButton = this.settingsButton.bind(this);
   }
 
   // componentDidMount() {
@@ -30,38 +29,15 @@ class LoginPage extends Component {
   //   userPlay(name, emailAdress);
   // }
 
-  onClick() {
+  async onClick() {
     const { name, emailAdress } = this.state;
     const { userPlay } = this.props;
-    console.log(name, emailAdress);
     userPlay(name, emailAdress);
     // const { emailAdress, name } = this.state;
     // const { firstDispatch } = this.props;
     // firstDispatch(emailAdress, passwordData);
     this.setState({ shouldRedirect: true });
-    this.setToken();
-  }
-
-  async setToken() {
-    const token = await fetchURL();
-    console.log(token);
-    localStorage.setItem('token', JSON.stringify(token));
-    try {
-      const FetchTrivia = fetch(`https://opentdb.com/api.php?amount=5&token=${token}`).then((response) => response.JSON());
-      console.log(FetchTrivia);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  settingsButton() {
-    return (
-      <Link to="/settings">
-        <button type="button" data-testid="btn-settings">
-          Configurações
-        </button>
-      </Link>
-    );
+    await setToken();
   }
 
   validationFields() {
@@ -90,8 +66,7 @@ class LoginPage extends Component {
             value={ name }
             onInput={ emailPlay }
             onChange={ ({ target: { value } }) => {
-              this.setState({ name: value });
-              this.validationFields();
+              this.setState({ name: value }, () => this.validationFields());
             } }
             required
           />
@@ -105,8 +80,7 @@ class LoginPage extends Component {
             placeholder="insert your email"
             value={ emailAdress }
             onChange={ ({ target: { value } }) => {
-              this.setState({ emailAdress: value });
-              this.validationFields();
+              this.setState({ emailAdress: value }, () => this.validationFields());
             } }
             required
           />
@@ -119,7 +93,7 @@ class LoginPage extends Component {
         >
           Jogar
         </button>
-        { this.settingsButton() }
+        <ButtonSettings />
       </div>
     );
   }
