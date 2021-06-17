@@ -108,32 +108,33 @@ class PerguntaCard extends Component {
     const disab = timer === 0;
     return (
       <>
-        <blockquote data-testid="question-category">{question.category}</blockquote>
-        <h4 data-testid="question-text">{this.decodeHtml(question.question)}</h4>
+        <blockquote data-testid="question-category">
+          {question.category}
+        </blockquote>
+        <h4 className="question" data-testid="question-text">
+          {this.decodeHtml(question.question)}
+        </h4>
         <ul>
-          {
-            // https://flaviocopes.com/how-to-shuffle-array-javascript/
-            options.map((opt) => (
-              <li key={ opt }>
-                <button
-                  style={ opt === question.correct_answer ? correctAnswer : wrongAnswer }
-                  value={ opt === question.correct_answer ? 'correct' : 'wrong' }
-                  type="button"
-                  level={ question.difficulty }
-                  data-testid={
-                    opt === question.correct_answer
-                      ? 'correct-answer'
-                      : `wrong-answer-${options.indexOf(opt)}`
-                  }
-                  onClick={ this.checkAnswer }
-                  className="optionsButtons"
-                  disabled={ disab }
-                >
-                  {this.decodeHtml(opt)}
-
-                </button>
-              </li>))
-          }
+          {/* h/ttps://flaviocopes.com/how-to-shuffle-array-javascript/ */}
+          {options.map((opt) => (
+            <li key={ opt }>
+              <button
+                style={ opt === question.correct_answer ? correctAnswer : wrongAnswer }
+                value={ opt === question.correct_answer ? 'correct' : 'wrong' }
+                type="button"
+                level={ question.difficulty }
+                data-testid={
+                  opt === question.correct_answer
+                    ? 'correct-answer'
+                    : `wrong-answer-${options.indexOf(opt)}`
+                }
+                onClick={ this.checkAnswer }
+                className="optionsButtons"
+                disabled={ disab }
+              >
+                {this.decodeHtml(opt)}
+              </button>
+            </li>))}
         </ul>
         <button
           type="button"
@@ -142,7 +143,6 @@ class PerguntaCard extends Component {
           data-testid="btn-next"
         >
           Proxima pergunta
-
         </button>
       </>
     );

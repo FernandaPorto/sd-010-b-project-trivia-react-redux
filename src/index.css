@@ -6,10 +6,32 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: black;
-  color: white;
+  color: rgb(236, 231, 231);
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.question {
+  background-color: cornsilk;
+  border: 2px solid blue;
+  color: darkblue;
+  font-size: 20px;
+  padding: 2%; 
+}
+
+.optionsButtons{
+  background-color: cornsilk;
+  border: 8px blue;
+  border-style: none solid ;
+  color: darkblue;
+  font-size: 16px;
+  margin-top: 4px;
+  max-width: 500px;
+  min-width: 200px;
+  padding: 10px 15px;
+  text-align: center;
+  width: 40%;
 }
