@@ -109,6 +109,7 @@ class GameAsks extends Component {
         <br />
         <button
           type="button"
+          style={ { display: `${answer ? 'block' : 'none'}` } }
           data-testid="btn-next"
           disabled={ disabled }
           onClick={ this.nextQuestion }
