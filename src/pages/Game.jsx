@@ -137,8 +137,8 @@ class Game extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const { player: { name, gravatarEmail, score } } = state;
-  return { name, gravatarEmail, score };
+  const { player: { name, gravatarEmail, score, assertions } } = state;
+  return { name, gravatarEmail, score, assertions };
 };
 
 Game.propTypes = {

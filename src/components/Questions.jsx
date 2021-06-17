@@ -42,7 +42,7 @@ class Questions extends React.Component {
         gravatarEmail,
       };
       const state = { player: stats };
-      console.log(state);
+      console.log(stats);
       localStorage.setItem('state', JSON.stringify(state));
       this.setState({ score: point + score, assertions: assertions + 1 });
       addScore(stats);
