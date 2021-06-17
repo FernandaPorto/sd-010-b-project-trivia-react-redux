@@ -28,17 +28,35 @@ class Settings extends React.Component {
     console.log(this.state);
     if (categories.length === 0) { return <h2>Loading...</h2>; }
     return (
-      <>
+      <section>
         <h2 data-testid="settings-title"> Configurações</h2>
-        <p>{ categories[0].name }</p>
 
         <form>
-          <select>
-            {categories.map((category) => <option key={ category.id }>{category.name}</option>)}
+          <select id="select-category">
+            <option>Any Category</option>
+            {categories.map((category) => (
+              <option
+                key={ category.id }
+              >
+                {category.name}
+              </option>))}
+          </select>
+
+          <select id="select-difficulty">
+            <option>Any Difficulty</option>
+            <option>Easy</option>
+            <option>Medium</option>
+            <option>Hard</option>
+          </select>
+
+          <select id="select-type">
+            <option>Any Type</option>
+            <option>Multiple Choise</option>
+            <option>True / False</option>
           </select>
 
         </form>
-      </>
+      </section>
     );
   }
 }
