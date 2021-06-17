@@ -19,13 +19,13 @@ class Perguntas extends Component {
 
   renderPerguntaCard() {
     const { perguntas } = this.props;
+    
     if (perguntas) {
       const { perguntaIndex } = this.state;
       const dotFive = 0.5;
       const question = perguntas[perguntaIndex];
       const options = [...question.incorrect_answers, question.correct_answer]
         .sort(() => Math.random() - dotFive);
-        
       return (
         <div>
           <PerguntaCard
