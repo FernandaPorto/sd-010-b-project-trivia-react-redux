@@ -39,9 +39,10 @@ class Perguntas extends Component {
   }
 
   render() {
-    const { perguntaIndex } = this.state;
+    const { perguntaIndex, perguntas } = this.state;
     const four = 4;
     if (perguntaIndex > four) {
+      console.log(perguntas);
       return <Redirect to="/feedback" />;
     }
     return (

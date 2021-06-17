@@ -33,7 +33,7 @@ class Feedback extends Component {
           {score}
         </p>
         <button type="button">VER RANKING</button>
-        <Link to="/"><button type="button">JOGAR NOVAMENTE</button></Link>
+        <Link to="/"><button type="button" data-testid='btn-play-again'>JOGAR NOVAMENTE</button></Link>
 
       </section>
     );
