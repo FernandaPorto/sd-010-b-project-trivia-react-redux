@@ -54,7 +54,12 @@ class Feedback extends React.Component {
     return (
       <div className="feedback-div">
         <h1 className="feedback-title">Resultado</h1>
-        <p data-testid="header-score">{ score }</p>
+        <p
+          data-testid="header-score"
+          className="feedback-score"
+        >
+          { score }
+        </p>
         <div className="feedback-main">
           <img
             src={ `https://www.gravatar.com/avatar/${photo}` }
