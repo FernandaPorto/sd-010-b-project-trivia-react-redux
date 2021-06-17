@@ -45,7 +45,7 @@ class Answer extends React.Component {
 
   handleClick({ target }) {
     const {
-      dispatchRevealed, pointsCalculate, time, results, number, assertions,
+      dispatchRevealed, pointsCalculate, time, results, number,
     } = this.props;
     const DEZ = 10;
     dispatchRevealed(true);
@@ -53,9 +53,10 @@ class Answer extends React.Component {
       const difficulty = this.transformDifficulty(results[number]);
       const total = DEZ + (time * difficulty);
       pointsCalculate(total);
-      const player = JSON.parse(localStorage.getItem('state'));
-      player.score = total;
-      localStorage.setItem('state', JSON.stringify(player));
+      const { player } = JSON.parse(localStorage.getItem('state'));
+      player.score += total;
+      player.assertions += 1;
+      localStorage.setItem('state', JSON.stringify({ player }));
     }
   }
 

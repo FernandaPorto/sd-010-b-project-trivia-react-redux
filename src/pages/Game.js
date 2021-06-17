@@ -25,7 +25,7 @@ class Game extends React.Component {
       score: count,
       gravatarEmail: email,
     };
-    localStorage.setItem('state', JSON.stringify(player));
+    localStorage.setItem('state', JSON.stringify({ player }));
   }
 
   render() {
