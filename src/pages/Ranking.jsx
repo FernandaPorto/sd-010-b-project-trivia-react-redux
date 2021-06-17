@@ -16,7 +16,6 @@ class Ranking extends Component {
               src={ `https://www.gravatar.com/avatar/${item.emailGravatar}` }
               alt="Avatar"
             />
-            
             <h3
               data-testid={ `player-name-${i}` }
             >
