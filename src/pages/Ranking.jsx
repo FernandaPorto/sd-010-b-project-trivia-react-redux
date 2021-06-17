@@ -12,10 +12,20 @@ class Ranking extends Component {
     return (
       <section>
         <h1 data-testid="ranking-title">RANKING</h1>
+        <img
+          data-testid=""
+          height="20"
+          src={ `https://www.gravatar.com/avatar/${atual.player.emailGravatar}` }
+          alt="Avatar"
+        />
         <h3
           data-testid="player-name-0"
-        >{`Rodada atual - nome: ${atual.player.name}`} </h3>
-        <h3 data-testid={ `player-score-0` }>{`com ${atual.player.score} pontos`}</h3>
+        >
+          {`${atual.player.name}`}
+          {' '}
+
+        </h3>
+        <h3 data-testid="player-score-0">{`com ${atual.player.score} pontos`}</h3>
         {getRanking.map((item, i) => (
           <div key={ i }>
             <img
@@ -29,7 +39,7 @@ class Ranking extends Component {
             >
               {`${item.name} - `}
             </h3>
-            <h3 data-testid={ `player-score-${i +1}` }>
+            <h3 data-testid={ `player-score-${i + 1}` }>
               {`${item.score} pontos`}
             </h3>
           </div>
