@@ -32,13 +32,13 @@ class Login extends Component {
   }
 
   localstorageSaveUserInfo() {
-    const { username, email, score, hits } = this.props;
+    const { username, email } = this.props;
     const state = {
       player: {
         name: username,
         gravatarEmail: email,
-        score,
-        assertions: hits,
+        score: 0,
+        assertions: 0,
       },
     };
     localStorage.setItem('state', JSON.stringify(state));

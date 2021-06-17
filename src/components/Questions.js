@@ -68,6 +68,7 @@ class Questions extends Component {
 
     const state = JSON.parse(localStorage.getItem('state'));
     state.player.score += answerValue;
+    state.player.assertions += 1;
     localStorage.setItem('state', JSON.stringify(state));
   }
 
@@ -118,6 +119,7 @@ class Questions extends Component {
 
 const mapStateToProps = ({ user: { triviaGame } }) => ({
   triviaGame,
+  score: triviaGame.score,
 });
 
 const mapDispatchToProps = (dispatch) => ({

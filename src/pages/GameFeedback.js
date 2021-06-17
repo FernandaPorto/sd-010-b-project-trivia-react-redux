@@ -5,9 +5,9 @@ import GameHeader from '../components/GameHeader';
 
 class GameFeedback extends Component {
   render() {
-    const { hits, score, history } = this.props;
+    const { score, history } = this.props;
     const MIN_HITS = 3;
-
+    const { player: { assertions: hits } } = JSON.parse(localStorage.getItem('state'));
     return (
       <div>
         <GameHeader />
@@ -28,7 +28,7 @@ class GameFeedback extends Component {
           <section>
             <h1>Número de acertos</h1>
             <p data-testid="feedback-total-question">
-              { hits }
+              { +hits }
             </p>
           </section>
           <button
@@ -52,7 +52,6 @@ class GameFeedback extends Component {
 }
 
 GameFeedback.propTypes = {
-  hits: PropTypes.number.isRequired,
   score: PropTypes.number.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
@@ -61,8 +60,8 @@ GameFeedback.propTypes = {
 
 // state.user.triviaGame
 const mapStateToProps = ({ user: { triviaGame: { score, hits } } }) => ({
-  userScore: score,
-  userHits: hits,
+  score,
+  hits,
 });
 
 export default connect(mapStateToProps)(GameFeedback);
