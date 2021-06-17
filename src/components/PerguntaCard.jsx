@@ -107,14 +107,14 @@ class PerguntaCard extends Component {
     const { correctAnswer, wrongAnswer, timer, nextStyle } = this.state;
     const disab = timer === 0;
     return (
-      <>
+      <div className="question-card">
         <blockquote data-testid="question-category">
           {question.category}
         </blockquote>
         <h4 className="question" data-testid="question-text">
           {this.decodeHtml(question.question)}
         </h4>
-        <ul>
+        <ul className="respostas">
           {/* h/ttps://flaviocopes.com/how-to-shuffle-array-javascript/ */}
           {options.map((opt) => (
             <li key={ opt }>
@@ -144,7 +144,14 @@ class PerguntaCard extends Component {
         >
           Proxima pergunta
         </button>
-      </>
+        <div className="timer">
+          Timer :
+          {' '}
+          {this.renderTimer()}
+          {' '}
+          sec
+        </div>
+      </div>
     );
   }
 
@@ -152,7 +159,6 @@ class PerguntaCard extends Component {
     return (
       <>
         {this.renderQuestion()}
-        {this.renderTimer()}
       </>
     );
   }

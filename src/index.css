@@ -14,6 +14,14 @@ code {
     monospace;
 }
 
+.question-card {
+  align-items: center;
+  background-color: rgb(2, 3, 24);
+  border: 4px ridge rgba(128, 128, 177, 0.541);
+  margin: 10%;
+  padding: 5%;
+}
+
 .question {
   background-color: cornsilk;
   border: 2px solid blue;
@@ -34,4 +42,12 @@ code {
   padding: 10px 15px;
   text-align: center;
   width: 40%;
+}
+
+.respostas { 
+  margin: 20px;
+}
+
+.timer{
+  display: flex;
 }
