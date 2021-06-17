@@ -25,11 +25,14 @@ class Answers extends Component {
 
   storageInicial() {
     return {
-      name: '',
-      assertions: 0,
-      score: 0,
-      gravatarEmail: '',
+      player: {
+        name: '',
+        assertions: 0,
+        score: 0,
+        gravatarEmail: '',
+      },
       ranking: [],
+      token: '',
     };
   }
 
@@ -39,10 +42,10 @@ class Answers extends Component {
     const Storage = JSON.parse(localStorage.getItem('state'));
     const state = !Storage ? this.storageInicial() : Storage;
     const pointToAdd = DEZ + (difficultyObj[difficulty] * timer);
-    state.name = name;
-    state.gravatarEmail = email;
-    state.score += pointToAdd;
-    state.assertions += 1;
+    state.player.name = name;
+    state.player.gravatarEmail = email;
+    state.player.score += pointToAdd;
+    state.player.assertions += 1;
     localStorage.setItem('state', JSON.stringify(state));
     updateScore(pointToAdd);
   }
