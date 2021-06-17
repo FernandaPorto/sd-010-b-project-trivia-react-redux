@@ -57,30 +57,34 @@ class PerguntaCard extends Component {
   }
 
   border() {
-    this.setState((oldState) => ({
-      ...oldState,
-      correctAnswer: { border: '3px solid rgb(6, 240, 15)' },
-      wrongAnswer: { border: '3px solid rgb(255, 0, 0)' },
-      nextStyle: 'visible',
-    }));
+    return new Promise((res) => (
+      res(
+        this.setState((oldState) => ({
+          ...oldState,
+          nextStyle: 'visible',
+          correctAnswer: { border: '3px solid rgb(6, 240, 15)' },
+          wrongAnswer: { border: '3px solid rgb(255, 0, 0)' },
+        })),
+      )));
   }
 
   checkAnswer({ target }) {
-    clearInterval(this.timer);
-    const { setScore, setAssertions } = this.props;
-    const state = JSON.parse(localStorage.getItem('state'));
-    const { timer } = this.state;
-    this.border();
-    if (target.value === 'correct') {
-      const tenPoints = 10;
-      state.player.assertions += 1;
-      state.player.score
-      += tenPoints
-      + (timer * this.convertDifficulty(target.getAttribute('level')));
-      localStorage.setItem('state', JSON.stringify(state));
-    }
-    setScore(state.player.score);
-    setAssertions(state.player.assertions);
+    this.border().then(() => {
+      clearInterval(this.timer);
+      const { setScore, setAssertions } = this.props;
+      const state = JSON.parse(localStorage.getItem('state'));
+      const { timer } = this.state;
+      if (target.value === 'correct') {
+        const tenPoints = 10;
+        state.player.assertions += 1;
+        state.player.score
+        += tenPoints
+        + (timer * this.convertDifficulty(target.getAttribute('level')));
+        localStorage.setItem('state', JSON.stringify(state));
+      }
+      setScore(state.player.score);
+      setAssertions(state.player.assertions);
+    });
   }
 
   // https://stackoverflow.com/questions/7394748/whats-the-right-way-to-decode-a-string-that-has-special-html-entities-in-it
