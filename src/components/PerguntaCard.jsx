@@ -166,7 +166,7 @@ PerguntaCard.propTypes = PropTypes.shape({
   question: PropTypes.instanceOf(Object),
   nextQuestion: PropTypes.func,
 }).isRequired;
-
+//
 const mapDispatchToProps = (dispatch) => ({
   setScore: (data) => dispatch(actionScore(data)),
   setAssertions: (data) => dispatch(actionAssertions(data)),
