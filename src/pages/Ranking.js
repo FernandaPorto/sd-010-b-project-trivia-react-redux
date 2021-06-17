@@ -13,7 +13,7 @@ class Ranking extends Component {
     const { home } = this.state;
     if (home) return <Redirect to="/" />;
     const ranking = JSON.parse(localStorage.ranking);
-    const rankingSorted = ranking .sort((a, b) => b.score - a.score);
+    const rankingSorted = ranking.sort((a, b) => b.score - a.score);
     return (
       <div>
         <h1 data-testid="ranking-title">Ranking</h1>
