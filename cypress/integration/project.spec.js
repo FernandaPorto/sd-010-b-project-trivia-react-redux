@@ -457,7 +457,7 @@ describe('14 - [TELA DE FEEDBACK] Exiba as informações relacionadas aos result
     expect(storage).to.be.lessThan(4);
   });
 
-  it.only('Não acertou nenhuma pergunta', () => {
+  it('Não acertou nenhuma pergunta', () => {
     cy.get(WRONG_ALTERNATIVES_SELECTOR).first().click();
     cy.get(BUTTON_NEXT_QUESTION_SELECTOR).click();
     cy.get(WRONG_ALTERNATIVES_SELECTOR).first().click();
@@ -573,7 +573,7 @@ describe('16 - [TELA DE FEEDBACK] Crie a opção para a pessoa jogadora poder vi
 
 // ranking
 
-describe('17 - [TELA DE RANKING] Crie a tela de _ranking_', () => {
+describe.only('17 - [TELA DE RANKING] Crie a tela de _ranking_', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();

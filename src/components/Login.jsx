@@ -4,6 +4,7 @@ import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { actionLogin } from '../redux/actions/index';
+import fetchPerguntas from '../redux/actions/perguntasThunk';
 import * as fetToken from './Api';
 
 class Login extends Component {
@@ -18,11 +19,17 @@ class Login extends Component {
     this.btnPlay = this.btnPlay.bind(this);
   }
 
+  componentWillUnmount() {
+    const { pedePerguntas } = this.props;
+    pedePerguntas(localStorage.getItem('token'));
+  }
+
   btnPlay() {
     const { login } = this.props;
-    fetToken.getToken().then((response) => {
-      localStorage.setItem('token', `${response.token}`);
-    })
+    fetToken.getToken()
+      .then((response) => {
+        localStorage.setItem('token', `${response.token}`);
+      })
       .then(() => {
         this.setState({
           loginTrue: true,
@@ -32,9 +39,9 @@ class Login extends Component {
     const user = document.getElementById('name-input').value;
     localStorage.setItem('state', JSON.stringify({
       player: {
+        score: 0,
         name: user,
         gravatarEmail: email,
-        score: 0,
         assertions: 0,
       },
     }));
@@ -57,9 +64,6 @@ class Login extends Component {
   render() {
     const { loginTrue, isDisabled } = this.state;
     if (loginTrue) {
-      // const num = 0
-      // num += 1
-      // return <Redirect to={`/game/${num}`} />;
       return <Redirect to="/game" />;
     }
 
@@ -100,6 +104,7 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   login: (data) => dispatch(actionLogin(data)),
+  pedePerguntas: (token) => dispatch(fetchPerguntas(token)),
 });
 
 Login.propTypes = {

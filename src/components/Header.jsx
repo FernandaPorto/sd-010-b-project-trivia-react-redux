@@ -11,7 +11,6 @@ class Header extends Component {
     return (
       <header>
         <div style={ { display: 'flex', justifyContent: 'space-around' } }>
-
           <img
             data-testid="header-profile-picture"
             height="35"

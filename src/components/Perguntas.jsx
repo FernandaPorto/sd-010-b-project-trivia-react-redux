@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import fetchPerguntas from '../redux/actions/perguntasThunk';
 import PerguntaCard from './PerguntaCard';
 
 class Perguntas extends Component {
@@ -12,11 +11,6 @@ class Perguntas extends Component {
       perguntaIndex: 0,
     };
     this.nextQuestion = this.nextQuestion.bind(this);
-  }
-
-  componentDidMount() {
-    const { pedePerguntas } = this.props;
-    pedePerguntas(localStorage.getItem('token'));
   }
 
   nextQuestion() {
@@ -45,9 +39,10 @@ class Perguntas extends Component {
   }
 
   render() {
-    const { perguntaIndex } = this.state;
+    const { perguntaIndex, perguntas } = this.state;
     const four = 4;
     if (perguntaIndex > four) {
+      console.log(perguntas);
       return <Redirect to="/feedback" />;
     }
     return (
@@ -58,10 +53,6 @@ class Perguntas extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  pedePerguntas: (token) => dispatch(fetchPerguntas(token)),
-});
-
 const mapStateToProps = (state) => ({
   perguntas: state.perguntas.perguntas.results,
 });
@@ -69,4 +60,5 @@ Perguntas.propTypes = PropTypes.shape({
   perguntas: PropTypes.instanceOf(Array),
   pedePerguntas: PropTypes.func,
 }).isRequired;
-export default connect(mapStateToProps, mapDispatchToProps)(Perguntas);
+
+export default connect(mapStateToProps)(Perguntas);
