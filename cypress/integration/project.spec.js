@@ -41,47 +41,47 @@ const BUTTON_PLAY_AGAIN_SELECTOR = '[data-testid="btn-play-again"]';
 
 // login
 
- describe('1 - [TELA DE LOGIN] Crie a tela de login, onde a pessoa que joga deve preencher as informações para iniciar um jogo', () => {
+describe.skip('1 - [TELA DE LOGIN] Crie a tela de login, onde a pessoa que joga deve preencher as informações para iniciar um jogo', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
   });
 
-  it.skip('Escreve o nome da pessoa jogadora', () => {
+  it('Escreve o nome da pessoa jogadora', () => {
     cy.get(INPUT_PLAYER_NAME_SELECTOR).type('Nome da pessoa');
   });
 
-  it.skip('Escreve o email da pessoa jogadora', () => {
+  it('Escreve o email da pessoa jogadora', () => {
     cy.get(INPUT_PLAYER_EMAIL_SELECTOR).type('email@pessoa.com');
   });
 
-  it.skip('Botão Jogar desabilitado quando pessoa jogadora não preencher nenhum campo', () => {
+  it('Botão Jogar desabilitado quando pessoa jogadora não preencher nenhum campo', () => {
     cy.get(BUTTON_PLAY_SELECTOR).should('be.disabled');
   });
 
-  it.skip('Botão Jogar desabilitado quando pessoa jogadora escrever apenas o nome', () => {
+  it('Botão Jogar desabilitado quando pessoa jogadora escrever apenas o nome', () => {
     cy.get(INPUT_PLAYER_NAME_SELECTOR).type('Nome da pessoa');
     cy.get(BUTTON_PLAY_SELECTOR).should('be.disabled');
   });
 
-  it.skip('Botão Jogar desabilitado quando pessoa jogadora escrever apenas o email', () => {
+  it('Botão Jogar desabilitado quando pessoa jogadora escrever apenas o email', () => {
     cy.get(INPUT_PLAYER_EMAIL_SELECTOR).type('email@pessoa.com');
     cy.get(BUTTON_PLAY_SELECTOR).should('be.disabled');
   });
 
-  it.skip('Botão Jogar habilitado quando pessoa jogadora preencher os campos de nome e email', () => {
+  it('Botão Jogar habilitado quando pessoa jogadora preencher os campos de nome e email', () => {
     cy.get(INPUT_PLAYER_NAME_SELECTOR).type('Nome da pessoa');
     cy.get(INPUT_PLAYER_EMAIL_SELECTOR).type('email@pessoa.com');
     cy.get(BUTTON_PLAY_SELECTOR).should('not.be.disabled');
   });
 });
 
-describe('2 - [TELA DE LOGIN] Crie o botão de iniciar o jogo', () => {
+describe.skip('2 - [TELA DE LOGIN] Crie o botão de iniciar o jogo', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
   });
 
-  it.skip('Inicia jogo salvando um token de jogador', () => {
+  it('Inicia jogo salvando um token de jogador', () => {
     cy.get(INPUT_PLAYER_NAME_SELECTOR).type('Nome da pessoa');
     cy.get(INPUT_PLAYER_EMAIL_SELECTOR).type('email@pessoa.com');
     cy.get(BUTTON_PLAY_SELECTOR).click().should(() => {
@@ -90,16 +90,16 @@ describe('2 - [TELA DE LOGIN] Crie o botão de iniciar o jogo', () => {
   });
 });
 
-describe('3 - [TELA DE LOGIN] Crie um botão na tela inicial que leve para a tela de configurações', () => {
+describe.skip('3 - [TELA DE LOGIN] Crie um botão na tela inicial que leve para a tela de configurações', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
   });
 
-  it.skip('O botão deve existir na página', () => {
+  it('O botão deve existir na página', () => {
     cy.get(BUTTON_SETTINGS_SELECTOR).should('exist');
   });
 
-  it.skip('A tela de configurações deve possuir um título', () => {
+  it('A tela de configurações deve possuir um título', () => {
     cy.get(BUTTON_SETTINGS_SELECTOR).click();
     cy.get(SETTINGS_TITLE_SELECTOR).should('exist');
   });
@@ -107,7 +107,7 @@ describe('3 - [TELA DE LOGIN] Crie um botão na tela inicial que leve para a tel
 
 // game
 
-describe('4 - [TELA DE JOGO] Crie um _header_ que deve conter as informações da pessoa jogadora', () => {
+describe.skip('4 - [TELA DE JOGO] Crie um _header_ que deve conter as informações da pessoa jogadora', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
@@ -117,20 +117,20 @@ describe('4 - [TELA DE JOGO] Crie um _header_ que deve conter as informações d
     cy.get(HEADER_NAME_SELECTOR);
   });
 
-  it.skip('A imagem do Gravatar está presente no header', () => {
+  it('A imagem do Gravatar está presente no header', () => {
     cy.get(HEADER_IMAGE_SELECTOR).should('exist');
   });
 
-  it.skip('O nome da pessoa está presente no header', () => {
+  it('O nome da pessoa está presente no header', () => {
     cy.get(HEADER_NAME_SELECTOR).contains(name);
   });
 
-  it.skip('O placar zerado está presente no header', () => {
+  it('O placar zerado está presente no header', () => {
     cy.get(HEADER_SCORE_SELECTOR).contains('0');
   });
 });
 
-describe('5 - [TELA DE JOGO] Crie a página de jogo que deve conter as informações relacionadas à pergunta', () => {
+describe.skip('5 - [TELA DE JOGO] Crie a página de jogo que deve conter as informações relacionadas à pergunta', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
@@ -144,21 +144,21 @@ describe('5 - [TELA DE JOGO] Crie a página de jogo que deve conter as informaç
     expect(storage).to.be.lessThan(4);
   });
 
-  it.skip('A categoria da pergunta está presente', () => {
+  it('A categoria da pergunta está presente', () => {
     cy.get(QUESTION_CATEGORY_SELECTOR).should('exist');
   });
 
-  it.skip('O texto da pergunta está presente', () => {
+  it('O texto da pergunta está presente', () => {
     cy.get(QUESTION_TEXT_SELECTOR).should('exist');
   });
 
-  it.skip('As alternativas devem estar presentes', () => {
+  it('As alternativas devem estar presentes', () => {
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).should('exist');
     cy.get(WRONG_ALTERNATIVES_SELECTOR).should('exist');
   });
 });
 
-describe('6 - [TELA DE JOGO] Desenvolva o jogo onde só deve ser possível escolher uma resposta correta por pergunta', () => {
+describe.skip('6 - [TELA DE JOGO] Desenvolva o jogo onde só deve ser possível escolher uma resposta correta por pergunta', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
@@ -167,12 +167,12 @@ describe('6 - [TELA DE JOGO] Desenvolva o jogo onde só deve ser possível escol
     cy.get(BUTTON_PLAY_SELECTOR).click();
   });
 
-  it.skip('A quantidade de respostas corretas deve ser 1', () => {
+  it('A quantidade de respostas corretas deve ser 1', () => {
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).should('have.length', 1);
   });
 });
 
-describe('7 - [TELA DE JOGO] Desenvolva o estilo que, ao clicar em uma resposta, a correta deve ficar verde e as incorretas, vermelhas', () => {
+describe.skip('7 - [TELA DE JOGO] Desenvolva o estilo que, ao clicar em uma resposta, a correta deve ficar verde e as incorretas, vermelhas', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
@@ -181,28 +181,28 @@ describe('7 - [TELA DE JOGO] Desenvolva o estilo que, ao clicar em uma resposta,
     cy.get(BUTTON_PLAY_SELECTOR).click();
   });
 
-  it.skip('Verifica cor da alternativa correta quando acerta a questão', () => {
+  it('Verifica cor da alternativa correta quando acerta a questão', () => {
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).click();
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).should('have.css', 'border-color', 'rgb(6, 240, 15)');
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).should('have.css', 'border-style', 'solid');
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).should('have.css', 'border-width', '3px');
   });
 
-  it.skip('Verifica a cor das alternativas incorretas quando acerta a questão', () => {
+  it('Verifica a cor das alternativas incorretas quando acerta a questão', () => {
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).click();
     cy.get(WRONG_ALTERNATIVES_SELECTOR).should('have.css', 'border-color', 'rgb(255, 0, 0)');
     cy.get(WRONG_ALTERNATIVES_SELECTOR).should('have.css', 'border-style', 'solid');
     cy.get(WRONG_ALTERNATIVES_SELECTOR).should('have.css', 'border-width', '3px');
   });
 
-  it.skip('Verifica cor da alternativa correta quando erra a questão', () => {
+  it('Verifica cor da alternativa correta quando erra a questão', () => {
     cy.get(WRONG_ALTERNATIVES_SELECTOR).first().click();
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).should('have.css', 'border-color', 'rgb(6, 240, 15)');
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).should('have.css', 'border-style', 'solid');
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).should('have.css', 'border-width', '3px');
   });
 
-  it.skip('Verifica a cor das alternativas incorretas quando erra a questão', () => {
+  it('Verifica a cor das alternativas incorretas quando erra a questão', () => {
     cy.get(WRONG_ALTERNATIVES_SELECTOR).first().click();
     cy.get(WRONG_ALTERNATIVES_SELECTOR).should('have.css', 'border-color', 'rgb(255, 0, 0)');
     cy.get(WRONG_ALTERNATIVES_SELECTOR).should('have.css', 'border-style', 'solid');
@@ -210,7 +210,7 @@ describe('7 - [TELA DE JOGO] Desenvolva o estilo que, ao clicar em uma resposta,
   });
 });
 
-describe('8 - [TELA DE JOGO] Desenvolva um timer onde a pessoa que joga tem 30 segundos para responder', () => {
+describe.skip('8 - [TELA DE JOGO] Desenvolva um timer onde a pessoa que joga tem 30 segundos para responder', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
@@ -219,18 +219,18 @@ describe('8 - [TELA DE JOGO] Desenvolva um timer onde a pessoa que joga tem 30 s
     cy.get(BUTTON_PLAY_SELECTOR).click();
   });
 
-  it.skip('Aguarda 5 segundos e responde a alternativa correta', () => {
+  it('Aguarda 5 segundos e responde a alternativa correta', () => {
     cy.wait(5000);
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).should('not.be.disabled').click();
   });
 
-  it.skip('Aguarda mais de 30 segundos para responder', () => {
+  it('Aguarda mais de 30 segundos para responder', () => {
     cy.wait(32000);
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).should('be.disabled');
   });
 });
 
-describe('9 - [TELA DE JOGO] Crie o placar com as seguintes características:', () => {
+describe.skip('9 - [TELA DE JOGO] Crie o placar com as seguintes características:', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
@@ -245,7 +245,7 @@ describe('9 - [TELA DE JOGO] Crie o placar com as seguintes características:', 
     expect(storage).to.be.lessThan(4);
   });
 
-  it.skip('Soma pontos ao acertar uma questão', () => {
+  it('Soma pontos ao acertar uma questão', () => {
     const then = JSON.parse(localStorage.getItem(LOCAL_STORAGE_STATE_KEY));
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).click().then(() => {
       const now = JSON.parse(localStorage.getItem(LOCAL_STORAGE_STATE_KEY));
@@ -253,7 +253,7 @@ describe('9 - [TELA DE JOGO] Crie o placar com as seguintes características:', 
     });
   });
 
-  it.skip('Não soma pontos ao errar uma questão', () => {
+  it('Não soma pontos ao errar uma questão', () => {
     const then = JSON.parse(localStorage.getItem(LOCAL_STORAGE_STATE_KEY));
     cy.get(WRONG_ALTERNATIVES_SELECTOR).first().click().then(() => {
       const now = JSON.parse(localStorage.getItem(LOCAL_STORAGE_STATE_KEY));
@@ -262,7 +262,7 @@ describe('9 - [TELA DE JOGO] Crie o placar com as seguintes características:', 
   });
 });
 
-describe('10 - [TELA DE JOGO] Crie um botão de \"Próxima\" que apareça após a resposta ser dada', () => {
+describe.skip('10 - [TELA DE JOGO] Crie um botão de \"Próxima\" que apareça após a resposta ser dada', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
@@ -272,22 +272,22 @@ describe('10 - [TELA DE JOGO] Crie um botão de \"Próxima\" que apareça após 
     cy.get(QUESTION_TEXT_SELECTOR);
   });
 
-  it.skip('O botão de próxima pergunta não deve ser visível o início do jogo', () => {
+  it('O botão de próxima pergunta não deve ser visível o início do jogo', () => {
     cy.get(BUTTON_NEXT_QUESTION_SELECTOR).should('not.be.visible');
   });
 
-  it.skip('Botão de próxima pergunta é visível quando a pergunta é respondida corretamente', () => {
+  it('Botão de próxima pergunta é visível quando a pergunta é respondida corretamente', () => {
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).click();
     cy.get(BUTTON_NEXT_QUESTION_SELECTOR).should('be.visible');
   });
 
-  it.skip('Botão de próxima pergunta é visível quando a pergunta é respondida incorretamente', () => {
+  it('Botão de próxima pergunta é visível quando a pergunta é respondida incorretamente', () => {
     cy.get(WRONG_ALTERNATIVES_SELECTOR).first().click();
     cy.get(BUTTON_NEXT_QUESTION_SELECTOR).should('be.visible');
   });
 });
 
-describe('11 - [TELA DE JOGO] Desenvolva o jogo de forma que a pessoa que joga deve responder 5 perguntas no total', () => {
+describe.skip('11 - [TELA DE JOGO] Desenvolva o jogo de forma que a pessoa que joga deve responder 5 perguntas no total', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
@@ -314,7 +314,6 @@ describe('11 - [TELA DE JOGO] Desenvolva o jogo de forma que a pessoa que joga d
     cy.get(BUTTON_NEXT_QUESTION_SELECTOR).click();
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).click().then(() => {
       const after = JSON.parse(localStorage.getItem(LOCAL_STORAGE_STATE_KEY));
-      console.log(after)
       expect(before.player.score).to.be.lt(after.player.score);
     });
   });
@@ -352,7 +351,7 @@ describe('11 - [TELA DE JOGO] Desenvolva o jogo de forma que a pessoa que joga d
 
 // feedback
 
-describe('12 - [TELA DE FEEDBACK] Desenvolva o header de _feedback_ que deve conter as informações da pessoa jogadora', () => {
+describe.skip('12 - [TELA DE FEEDBACK] Desenvolva o header de _feedback_ que deve conter as informações da pessoa jogadora', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
@@ -392,7 +391,7 @@ describe('12 - [TELA DE FEEDBACK] Desenvolva o header de _feedback_ que deve con
   });
 });
 
-describe('13 - [TELA DE FEEDBACK] Crie a mensagem de _feedback_ para ser exibida a pessoa usuária', () => {
+describe.skip('13 - [TELA DE FEEDBACK] Crie a mensagem de _feedback_ para ser exibida a pessoa usuária', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
@@ -458,7 +457,7 @@ describe('14 - [TELA DE FEEDBACK] Exiba as informações relacionadas aos result
     expect(storage).to.be.lessThan(4);
   });
 
-  it.skip('Não acertou nenhuma pergunta', () => {
+  it('Não acertou nenhuma pergunta', () => {
     cy.get(WRONG_ALTERNATIVES_SELECTOR).first().click();
     cy.get(BUTTON_NEXT_QUESTION_SELECTOR).click();
     cy.get(WRONG_ALTERNATIVES_SELECTOR).first().click();
@@ -479,7 +478,7 @@ describe('14 - [TELA DE FEEDBACK] Exiba as informações relacionadas aos result
     });
   });
 
-  it.skip('Acertou 2 perguntas', () => {
+  it('Acertou 2 perguntas', () => {
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).click();
     cy.get(BUTTON_NEXT_QUESTION_SELECTOR).click();
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).click();
@@ -500,7 +499,7 @@ describe('14 - [TELA DE FEEDBACK] Exiba as informações relacionadas aos result
     });
   });
 
-  it.skip('Acertou 4 perguntas', () => {
+  it('Acertou 4 perguntas', () => {
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).click();
     cy.get(BUTTON_NEXT_QUESTION_SELECTOR).click();
     cy.get(CORRECT_ALTERNATIVE_SELECTOR).click();
@@ -574,7 +573,7 @@ describe('16 - [TELA DE FEEDBACK] Crie a opção para a pessoa jogadora poder vi
 
 // ranking
 
-describe('17 - [TELA DE RANKING] Crie a tela de _ranking_', () => {
+describe.skip('17 - [TELA DE RANKING] Crie a tela de _ranking_', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
@@ -599,13 +598,13 @@ describe('17 - [TELA DE RANKING] Crie a tela de _ranking_', () => {
     expect(storage).to.be.lessThan(4);
   });
 
-  it.skip('Deve existir uma pessoa no _ranking_', () => {
+  it('Deve existir uma pessoa no _ranking_', () => {
     cy.get(RANKING_PLAYERS_NAME_SELECTOR).should(($el) => {
       expect($el).to.have.lengthOf(1);
     });
   });
 
-  it.skip('Devem existir duas pessoas no _ranking_', () => {
+  it('Devem existir duas pessoas no _ranking_', () => {
     cy.get(BUTTON_GO_HOME_SELECTOR).click();
     cy.get(INPUT_PLAYER_NAME_SELECTOR).clear();
     cy.get(INPUT_PLAYER_EMAIL_SELECTOR).clear();
@@ -629,7 +628,7 @@ describe('17 - [TELA DE RANKING] Crie a tela de _ranking_', () => {
     });
   });
 
-  it.skip('O _ranking_ deve ser ordenado pela pontuação', () => {
+  it('O _ranking_ deve ser ordenado pela pontuação', () => {
     cy.get(BUTTON_GO_HOME_SELECTOR).click();
     cy.get(INPUT_PLAYER_NAME_SELECTOR).clear();
     cy.get(INPUT_PLAYER_EMAIL_SELECTOR).clear();
@@ -678,8 +677,8 @@ describe('17 - [TELA DE RANKING] Crie a tela de _ranking_', () => {
   });
 });
 
-describe('18 - [TELA DE RANKING] Crie um botão para ir ao início', () => {
-  it.skip('Volta para a tela inicial', () => {
+describe.skip('18 - [TELA DE RANKING] Crie um botão para ir ao início', () => {
+  it('Volta para a tela inicial', () => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
     cy.get(INPUT_PLAYER_NAME_SELECTOR).type(name1);

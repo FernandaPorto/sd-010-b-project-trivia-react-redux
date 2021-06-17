@@ -27,7 +27,7 @@ class Feedback extends Component {
   render() {
     const { gravatarEmail, name, score, assertions } = this.props;
     return (
-      <div data-testid="feedback-text">
+      <div>
         <header>
           <img
             data-testid="header-profile-picture"
@@ -37,25 +37,29 @@ class Feedback extends Component {
           <h2 data-testid="header-player-name">{ name }</h2>
           <h3 data-testid="header-score">{ score }</h3>
         </header>
-        <section>
-          <h1 data-testid="feedback-text">{ this.message(assertions) }</h1>
-        </section>
-        <button
-          data-testid="btn-play-again"
-          type="button"
-          className="btn-play-again"
-          onClick={ (event) => { this.handleBtn(event); } }
-        >
-          Jogar Novamente
-        </button>
-        <button
-          type="button"
-          data-testid="btn-ranking"
-          className="btn-ranking"
-          onClick={ (event) => { this.handleBtn(event); } }
-        >
-          Ver Ranking
-        </button>
+        <main>
+          <p data-testid="feedback-text">{ this.message(assertions) }</p>
+          <p data-testid="feedback-total-question">{ assertions }</p>
+          <p data-testid="feedback-total-score">{ null || score}</p>
+        </main>
+        <div>
+          <button
+            data-testid="btn-play-again"
+            type="button"
+            className="btn-play-again"
+            onClick={ (event) => { this.handleBtn(event); } }
+          >
+            Jogar Novamente
+          </button>
+          <button
+            type="button"
+            data-testid="btn-ranking"
+            className="btn-ranking"
+            onClick={ (event) => { this.handleBtn(event); } }
+          >
+            Ver Ranking
+          </button>
+        </div>
       </div>
     );
   }
