@@ -3,12 +3,14 @@ import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchQuestions } from '../redux/actions';
+import './GameStyle.css';
 
 class Game extends React.Component {
   constructor() {
     super();
     this.state = {
       numberQuestion: 0,
+      clicked: false,
     };
     this.getPerfilGravatar = this.getPerfilGravatar.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
@@ -47,13 +49,35 @@ class Game extends React.Component {
     if (name === questions[numberQuestion].correct_answer) {
       console.log('Acertou miseravel');
     }
+    this.setState({
+      clicked: true,
+    });
   }
 
   nextQuestion() {
     const { numberQuestion } = this.state;
     this.setState({
       numberQuestion: numberQuestion + 1,
+      clicked: false,
     });
+  }
+
+  changeClassNameCorrect() {
+    const { clicked } = this.state;
+    if (clicked) {
+      return 'correct_answer';
+    }
+
+    return '';
+  }
+
+  changeClassNameInCorrect() {
+    const { clicked } = this.state;
+    if (clicked) {
+      return 'incorrect_answer';
+    }
+
+    return '';
   }
 
   renderAnswers() {
@@ -70,35 +94,34 @@ class Game extends React.Component {
           {questions[numberQuestion].question }
           {' '}
         </p>
-        {
-          answers.map((answer, index) => {
-            if (answer === questions[numberQuestion].correct_answer) {
-              return (
-                <button
-                  name={ `${answer}` }
-                  className={ `${numberQuestion}-button-correct` }
-                  key={ answer }
-                  type="button"
-                  data-testid="correct-answer"
-                  onClick={ this.handleOnClick }
-                >
-                  {answer}
-                </button>
-              );
-            }
+        {answers.map((answer, index) => {
+          if (answer === questions[numberQuestion].correct_answer) {
             return (
               <button
                 name={ `${answer}` }
+                className={ this.changeClassNameCorrect() }
                 key={ answer }
                 type="button"
-                data-testid={ `wrong-answer-${index}` }
+                data-testid="correct-answer"
                 onClick={ this.handleOnClick }
               >
                 {answer}
               </button>
             );
-          })
-        }
+          }
+          return (
+            <button
+              name={ `${answer}` }
+              className={ this.changeClassNameInCorrect() }
+              key={ answer }
+              type="button"
+              data-testid={ `wrong-answer-${index}` }
+              onClick={ this.handleOnClick }
+            >
+              {answer}
+            </button>
+          );
+        })}
         <div>
 
           <button onClick={ this.nextQuestion } type="button">Proxima</button>
