@@ -51,7 +51,6 @@ class Game extends Component {
     const localStorageState = JSON.parse(localStorage.getItem('state'));
     const { player } = localStorageState;
     player.score = 0;
-    player.assertions = 0;
     localStorage.setItem('state', JSON.stringify({ player }));
   }
 
@@ -66,7 +65,9 @@ class Game extends Component {
     const localStorageState = JSON.parse(localStorage.getItem('state'));
     const { player } = localStorageState;
     player.assertions += 1;
+    console.log(player);
     localStorage.setItem('state', JSON.stringify({ player }));
+    console.log('teste');
   }
 
   async saveTriviaOnGlobalState() {
@@ -90,9 +91,7 @@ class Game extends Component {
       <button
         type="button"
         data-testid="btn-next"
-        onClick={ () => {
-          this.nextQuestion();
-        } }
+        onClick={ this.nextQuestion }
       >
         Próxima
       </button>

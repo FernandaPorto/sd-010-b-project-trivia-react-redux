@@ -5,12 +5,12 @@ export default class Header extends Component {
   render() {
     const state = JSON.parse(localStorage.getItem('state'));
     const { player } = state;
-    const { name, score, gravatarEmail } = player;
+    const { name, score } = player;
     return (
       <div>
         <header>
           <img
-            src={ fetchGravatarImage(gravatarEmail) }
+            src={ fetchGravatarImage() }
             alt="your avatar"
             data-testid="header-profile-picture"
           />
