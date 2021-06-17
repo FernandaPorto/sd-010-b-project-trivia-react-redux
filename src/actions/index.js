@@ -45,6 +45,7 @@ const saveLocalState = (token) => {
 export function fetchToken() {
   return (dispatch) => {
     dispatch(actionRedirect());
+    localStorage.setItem('state', JSON.stringify(storageInicial));
     fetch('https://opentdb.com/api_token.php?command=request')
       .then((response) => response.json())
       .then((response) => {
