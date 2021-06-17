@@ -8,6 +8,7 @@ class Ranking extends React.Component {
     return (
       <div>
         { name + gravatarEmail + score }
+        <h1 data-testid="ranking-title">Ranking</h1>
       </div>
     );
   }
