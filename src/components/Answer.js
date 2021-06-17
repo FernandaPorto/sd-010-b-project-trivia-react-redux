@@ -106,35 +106,12 @@ class Answer extends React.Component {
 
   render() {
     const { number, results, isRevealed } = this.props;
-    // const incorrectAnswerStyles = { border: '3px solid rgb(255, 0, 0)' };
-    // const correctAnswerStyles = { border: '3px solid rgb(6, 240, 15)' };
     if (!results[number]) {
       return <div>Carregando...</div>;
     }
     return (
       <div>
         { this.renderAnswer(results[0], isRevealed) }
-        {/* { results[number].incorrect_answers.map((answer, idx) => (
-          <button
-            onClick={ this.handleClick }
-            data-testid={ `wrong-answer-${idx}` }
-            type="button"
-            key={ idx }
-            disabled={ isRevealed }
-            style={ isRevealed ? incorrectAnswerStyles : null }
-          >
-            {answer}
-          </button>
-        )) }
-        <button
-          onClick={ this.handleClick }
-          type="button"
-          data-testid="correct-answer"
-          disabled={ isRevealed }
-          style={ isRevealed ? correctAnswerStyles : null }
-        >
-          {results[number].correct_answer}
-        </button> */}
       </div>
     );
   }
@@ -142,7 +119,6 @@ class Answer extends React.Component {
 
 Answer.propTypes = {
   number: PropTypes.number.isRequired,
-  assertions: PropTypes.number.isRequired,
   results: PropTypes.arrayOf(PropTypes.object).isRequired,
   dispatchRevealed: PropTypes.func.isRequired,
   isRevealed: PropTypes.bool.isRequired,
@@ -153,7 +129,6 @@ Answer.propTypes = {
 const mapStateToProps = (state) => ({
   isRevealed: state.game.isRevealed,
   time: state.game.time,
-  assertions: state.player.assertions,
 });
 
 const mapDispatchToProps = (dispatch) => ({
