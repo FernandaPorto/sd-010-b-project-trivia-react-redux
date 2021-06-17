@@ -2,26 +2,23 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { toggleTimerActionCreator } from '../redux/actions';
+import { updateSecondsActionCreator } from '../redux/actions';
 
 class Timer extends React.Component {
   constructor() {
     super();
-    this.startGameTimer = this.startGameTimer.bind(this);
-    this.refreshTimer = this.refreshTimer.bind(this);
-    this.stopTimer = this.stopTimer.bind(this);
 
-    this.state = {
-      seconds: 30,
-    };
+    this.refreshTimer = this.refreshTimer.bind(this);
+    this.startTimer = this.startTimer.bind(this);
+    this.stopTimer = this.stopTimer.bind(this);
   }
 
   componentDidMount() {
-    this.startGameTimer();
+    this.startTimer();
   }
 
-  componentDidUpdate(_prevProps, prevState) {
-    if (prevState.seconds === 1) {
+  componentDidUpdate(prevProps) {
+    if (prevProps.secondsLeft === 1) {
       this.stopTimer();
     }
   }
@@ -31,39 +28,41 @@ class Timer extends React.Component {
   }
 
   refreshTimer() {
-    const { seconds } = this.state;
-    console.log(seconds);
-    this.setState({
-      seconds: seconds - 1,
-    });
+    const { secondsLeft, updateSeconds } = this.props;
+    // console.log(secondsLeft);
+    updateSeconds({ secondsLeft: secondsLeft - 1 });
   }
 
-  stopTimer() {
-    const { toggleTimer } = this.props;
-
-    clearInterval(this.timer);
-    toggleTimer();
-  }
-
-  startGameTimer() {
+  startTimer() {
     const ONE_SECOND = 1000;
     this.timer = setInterval(() => this.refreshTimer(), ONE_SECOND);
   }
 
+  stopTimer() {
+    const { updateSeconds } = this.props;
+    updateSeconds({ secondsLeft: 30 });
+    clearInterval(this.timer);
+  }
+
   render() {
-    const { seconds } = this.state;
+    const { secondsLeft } = this.props;
     return (
-      <h3>{ seconds }</h3>
+      <span>{ secondsLeft }</span>
     );
   }
 }
 
+const mapStateToProps = (state) => ({
+  secondsLeft: state.game.secondsLeft,
+});
+
 const mapDispatchToProps = (dispatch) => ({
-  toggleTimer: () => dispatch(toggleTimerActionCreator()),
+  updateSeconds: (payload) => dispatch(updateSecondsActionCreator(payload)),
 });
 
 Timer.propTypes = {
-  toggleTimer: PropTypes.func,
+  secondsLeft: PropTypes.number,
+  updateSeconds: PropTypes.func,
 }.isRequired;
 
-export default connect(null, mapDispatchToProps)(Timer);
+export default connect(mapStateToProps, mapDispatchToProps)(Timer);

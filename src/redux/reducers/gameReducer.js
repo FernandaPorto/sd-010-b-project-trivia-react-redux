@@ -1,19 +1,16 @@
-import { TIME_LEFT, TOGGLE_TIMER } from '../actions';
+import { UPDATE_SECONDS } from '../actions';
 
 const INITIAL_STATE = {
-  timerIsOn: true,
-  timeLeft: undefined,
+  secondsLeft: 30,
 };
 
-function gameReducer(state = INITIAL_STATE, action) {
-  switch (action.type) {
-  case TOGGLE_TIMER:
+function gameReducer(state = INITIAL_STATE, { type, payload }) {
+  switch (type) {
+  case UPDATE_SECONDS:
     return {
       ...state,
-      timerIsOn: !state.timerIsOn,
+      secondsLeft: payload.secondsLeft,
     };
-  case TIME_LEFT:
-    return state;
   default:
     return state;
   }
