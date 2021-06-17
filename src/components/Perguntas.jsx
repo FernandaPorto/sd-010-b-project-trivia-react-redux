@@ -19,7 +19,6 @@ class Perguntas extends Component {
 
   renderPerguntaCard() {
     const { perguntas } = this.props;
-    
     if (perguntas) {
       const { perguntaIndex } = this.state;
       const dotFive = 0.5;
