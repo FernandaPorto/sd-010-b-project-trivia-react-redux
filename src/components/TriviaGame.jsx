@@ -16,10 +16,7 @@ class TriviaGame extends React.Component {
     super(props);
 
     this.renderQuestion = this.renderQuestion.bind(this);
-
-    this.state = {
-      probabilityBase: 0.5,
-    };
+    this.renderNextButton = this.renderNextButton.bind(this);
   }
 
   componentDidMount() {
@@ -27,22 +24,26 @@ class TriviaGame extends React.Component {
     getQuestions();
   }
 
+  renderNextButton() {
+    const { nextQuestion } = this.props;
+    return (
+      <button type="button" onClick={ nextQuestion } data-testid="btn-next">
+        Próxima pergunta
+      </button>
+    );
+  }
+
   renderQuestion(questionIndex) {
     const { questions, isResolved, answerQuestion } = this.props;
-    const { probabilityBase } = this.state;
 
     const {
       category,
       question,
-      correct_answer: correctAnswer,
-      incorrect_answers: incorrectAnswers,
+      answerOptions,
+      correctAnswer,
     } = questions[questionIndex];
 
-    const randomizer = (array) => array.sort(() => Math.random() - probabilityBase);
-
-    const answers = randomizer([correctAnswer, ...incorrectAnswers]);
-
-    const randomAnswers = answers.map((answer, index) => {
+    const renderAnswers = answerOptions.map((answer, index) => {
       const isCorrect = answer === correctAnswer;
       const coloredStyle = isCorrect ? 'green-border' : 'red-border';
       const testId = isCorrect ? 'correct-answer' : `wrong-answer-${index}`;
@@ -65,26 +66,19 @@ class TriviaGame extends React.Component {
       <div>
         <h2 data-testid="question-category">{category}</h2>
         <h3 data-testid="question-text">{question}</h3>
-        {randomAnswers}
+        {renderAnswers}
+        <div>
+          {isResolved ? this.renderNextButton() : <Timer />}
+        </div>
       </div>
     );
   }
 
-  renderNextButton() {
-    const { nextQuestion } = this.props;
-    return (
-      <button type="button" onClick={ nextQuestion } data-testid="btn-next">
-        Próxima pergunta
-      </button>
-    );
-  }
-
   render() {
-    const { isLoading, questionIndex, isResolved } = this.props;
+    const { isLoading, questionIndex } = this.props;
     return (
       <section>
         {isLoading ? <h3>LOADING...</h3> : this.renderQuestion(questionIndex)}
-        {isResolved ? this.renderNextButton() : <Timer />}
       </section>
     );
   }
