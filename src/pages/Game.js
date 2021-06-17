@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 
 import Question from '../components/Question';
 import Answer from '../components/Answer';
 import Timer from '../components/Timer';
 import { revealedAction } from '../actions/gameAction';
+import Header from '../components/Header';
 
 class Game extends React.Component {
   constructor(props) {
@@ -32,36 +32,24 @@ class Game extends React.Component {
   }
 
   nextQuestion() {
-    const { dispatchRevealed } = this.props;
+    const { dispatchRevealed, history } = this.props;
+    const { number, results } = this.state;
     dispatchRevealed(false);
-    this.setState((prevState) => ({
-      number: prevState.number + 1,
-    }));
+    if (number > (results.length - 2)) {
+      return history.push('/feedback');
+    }
+    if (number < (results.length - 1)) {
+      this.setState((prevState) => ({
+        number: prevState.number + 1,
+      }));
+    }
   }
 
   render() {
-    const { count, name, email } = this.props;
     const { number, results } = this.state;
-    const hashEmail = md5(email).toString();
     return (
       <div>
-        <header>
-          <img
-            src={ `https://www.gravatar.com/avatar/${hashEmail}` }
-            alt="foto"
-            data-testid="header-profile-picture"
-          />
-          <span
-            data-testid="header-player-name"
-          >
-            { name }
-          </span>
-          <span
-            data-testid="header-score"
-          >
-            { count }
-          </span>
-        </header>
+        <Header />
         { results && (
           <div>
             <Question number={ number } results={ results } />
@@ -98,5 +86,6 @@ Game.propTypes = {
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   request: PropTypes.arrayOf(PropTypes.any).isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
   dispatchRevealed: PropTypes.func.isRequired,
 };
