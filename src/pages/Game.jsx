@@ -13,7 +13,6 @@ class Game extends React.Component {
       numberOfAssertions: 0,
       score: 0,
     };
-
     this.getPerfilGravatar = this.getPerfilGravatar.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
     this.handleOnClick = this.handleOnClick.bind(this);
@@ -36,7 +35,6 @@ class Game extends React.Component {
     const { score } = this.state;
     const convert = md5(email).toString();
     const endpoint = `https://www.gravatar.com/avatar/${convert}`;
-
     return (
       <div>
         <img src={ endpoint } alt={ `foto de ${name}` } />
@@ -53,12 +51,11 @@ class Game extends React.Component {
   getScore() {
     const { numberOfAssertions, numberQuestion, score } = this.state;
     const { questions } = this.props;
-    let { difficulty } = questions[numberQuestion];
     const defaultNumber = 10;
     const hardQuestion = 3;
     const mediumQuestion = 2;
     const easyQuestion = 1;
-
+    let { difficulty } = questions[numberQuestion];
     if (difficulty === 'hard') {
       difficulty = hardQuestion;
     } if (difficulty === 'medium') {
@@ -66,8 +63,7 @@ class Game extends React.Component {
     } else {
       difficulty = easyQuestion;
     }
-    const timer = 2;
-
+    const timer = 2; // colocar o valor do timer que o Fioravante está fazendo
     this.setState({
       numberOfAssertions: numberOfAssertions + 1,
       score: score + (defaultNumber + (timer * difficulty)),
@@ -78,16 +74,15 @@ class Game extends React.Component {
     const { location: { aboutProps: { name: { name },
       email: { email } } } } = this.props;
     const { numberOfAssertions, score } = this.state;
-    const objLocalStorage = ({
+    const objLocalStorage = {
       player: {
         name,
         assertions: numberOfAssertions,
         score,
         gravatarEmail: email,
       },
-    });
-
-    localStorage.setItem('state', JSON.stringify(objLocalStorage));
+    };
+    localStorage.setItem('state', JSON.stringify(objLocalStorage)); // Referência https://www.horadecodar.com.br/2020/07/21/como-salvar-um-objeto-na-localstorage/
   }
 
   handleOnClick({ target: { name } }) {
@@ -114,7 +109,6 @@ class Game extends React.Component {
     if (clicked) {
       return 'correct_answer';
     }
-
     return '';
   }
 
@@ -123,7 +117,6 @@ class Game extends React.Component {
     if (clicked) {
       return 'incorrect_answer';
     }
-
     return '';
   }
 
@@ -133,7 +126,7 @@ class Game extends React.Component {
     const array = [questions[numberQuestion].correct_answer,
       ...questions[numberQuestion].incorrect_answers];
     const magicNumber = 0.5;
-    const answers = array.sort(() => Math.random() - magicNumber);
+    const answers = array.sort(() => Math.random() - magicNumber); // Referência https://flaviocopes.com/how-to-shuffle-array-javascript/
     return answers;
   }
 
@@ -218,16 +211,15 @@ Game.propTypes = {
   location: PropTypes.shape({
     aboutProps: PropTypes.shape({
       name: PropTypes.shape({
-        name: PropTypes.string,
-      }),
+        name: PropTypes.string }),
       email: PropTypes.shape({
-        email: PropTypes.string,
-      }),
+        email: PropTypes.string }),
       score: PropTypes.shape({
-        score: PropTypes.number,
-      }),
+        score: PropTypes.number }),
     }),
   }).isRequired,
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  fetchQuestions: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -238,8 +230,4 @@ const mapDispatchToProps = (dispatch) => ({
   fetchQuestions: (token) => dispatch(fetchQuestions(token)),
 });
 
-Game.propTypes = ({
-  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
-  fetchQuestions: PropTypes.func.isRequired,
-});
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
