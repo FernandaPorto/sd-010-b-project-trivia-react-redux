@@ -72,24 +72,26 @@
 /* Header component */
 .header-component {
   background-image: url('https://files.wallpaperpass.com/2019/10/low%20poly%20wallpaper%20052%20-%201920x1080.jpg');
-  box-shadow: 10px 5px 5px black;
   color: white;
   display: flex;
   font-size: 28px;
   height: fit-content;
-  justify-content: space-evenly;
-  padding: 10px 0;
-  position: relative;
+  justify-content: space-between;
+  padding: 10px 90px;
 }
 
 .header-component img {
   border-radius: 10px;
 }
 
+.header-name {
+  margin-left: 140px;
+}
+
 /* Jogo page */
 .game-section {
   align-items: center;
-  /* background-image: url('https://files.wallpaperpass.com/2019/10/low%20poly%20wallpaper%20052%20-%201920x1080.jpg'); */
+  background-image: url('https://files.wallpaperpass.com/2019/10/low%20poly%20wallpaper%20052%20-%201920x1080.jpg');
   background-size: 100%;
   display: flex;
   flex-direction: column;
@@ -103,9 +105,11 @@
   background-color: transparent;
   background-image: url('https://files.wallpaperpass.com/2019/10/low%20poly%20wallpaper%20052%20-%201920x1080.jpg');
   border-radius: 10px;
-  box-shadow: 0 0 7px white , 0 0 10px white , 0 0 102px #0fa , 0 0 151px #0fa;
-  font-size: 20px;
-  margin-top: 80px;
+  box-shadow: 0 0 7px white , 0 0 10px white , 0 0 80px #0fa , 0 0 90px #0fa;
+  color: white;
+  font-size: 30px;
+  height: 64px;
+  margin-top: 40px;
   width: 400px;
 }
 
@@ -118,13 +122,25 @@
   text-shadow: 0 0 7px white , 0 0 10px white , 0 0 102px #0fa , 0 0 151px #0fa;
 }
 
+.timer {
+  align-self: start;
+  color: white;
+  font-size: 50px;
+  margin: 30px 100px 0;
+  position: absolute;
+  text-shadow: 0 0 7px white , 0 0 10px white , 0 0 102px #0fa , 0 0 151px #0fa;
+}
+
 /* PerguntaAtual component */
 .questions-section {
   align-items: center;
-  color: black;
+  color: white;
   display: flex;
   flex-direction: column;
-  margin-top: 30px;
+  margin: auto;
+  margin-bottom: 30px;
+  text-align: center;
+  width: 80%;
 }
 
 .questions-section button {
@@ -148,4 +164,66 @@
 
 .questions-section div {
   margin-bottom: 20px;
+}
+
+/* Feedback page */
+.feedback-div {
+  align-items: center;
+  background-color: black;
+  background-size: cover;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  font-size: 36px;
+  height: 100vh;
+  justify-content: center;
+}
+
+.feedback-score {
+  font-size: 50px;
+  text-shadow: 0 0 7px white , 0 0 10px white , 0 0 102px #0fa , 0 0 151px #0fa;
+}
+
+.feedback-main {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.feedback-data {
+  margin-left: 50px;
+  text-align: center;
+}
+
+.feedback-main img {
+  border-radius: 10px;
+  width: 150px;
+}
+
+.feedback-title {
+  animation: flicker 1.5s infinite alternate;
+  font-size: 70px;
+  text-shadow: 0 0 7px white , 0 0 10px white , 0 0 102px #0fa , 0 0 151px #0fa;
+}
+
+.low-score {
+  color: blueviolet;
+}
+
+.high-score {
+  color: #0fa;
+}
+
+/* fonte do efeito flicker e do efeito neon:
+https://css-tricks.com/how-to-create-neon-text-with-css/ */
+
+@keyframes flicker {
+
+  0%, 18%, 22%, 25%, 53%, 57%, 100% {
+    text-shadow: 0 0 7px white , 0 0 10px white , 0 0 102px #0fa , 0 0 151px #0fa;
+  }
+
+  20%, 24%, 55% {
+    text-shadow: none;
+  }
 }
