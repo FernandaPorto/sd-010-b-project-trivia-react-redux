@@ -10,8 +10,8 @@ class Login extends Component {
       name: '',
       email: '',
       redirect: false,
-      score: 0,
     };
+
     this.handleOnChange = this.handleOnChange.bind(this);
     this.redirectSettings = this.redirectSettings.bind(this);
   }
@@ -29,7 +29,7 @@ class Login extends Component {
   }
 
   render() {
-    const { name, email, score, redirect } = this.state;
+    const { name, email, redirect } = this.state;
     if (redirect) {
       return <Redirect to="/settings" />;
     }
@@ -41,7 +41,6 @@ class Login extends Component {
             handleOnChange={ this.handleOnChange }
             name={ name }
             email={ email }
-            score={ score }
           />
           <button
             type="button"

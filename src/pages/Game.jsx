@@ -13,12 +13,16 @@ class Game extends React.Component {
       numberQuestion: 0,
       clicked: false,
       answer: '',
+      numberOfAssertions: 0,
+      score: 0,
     };
     this.getPerfilGravatar = this.getPerfilGravatar.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
     this.handleOnClick = this.handleOnClick.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.nextButton = this.nextButton.bind(this);
+    this.addInfoToLocalStorage = this.addInfoToLocalStorage.bind(this);
+    this.getScore = this.getScore.bind(this);
   }
 
   componentDidMount() {
@@ -29,10 +33,10 @@ class Game extends React.Component {
 
   getPerfilGravatar() {
     const { location: { aboutProps: { name: { name },
-      email: { email }, score: { score } } } } = this.props;
+      email: { email } } } } = this.props;
+    const { score } = this.state;
     const convert = md5(email).toString();
     const endpoint = `https://www.gravatar.com/avatar/${convert}`;
-
     return (
       <div>
         <img src={ endpoint } alt={ `foto de ${name}` } />
@@ -46,11 +50,48 @@ class Game extends React.Component {
     );
   }
 
+  getScore() {
+    const { numberOfAssertions, numberQuestion, score } = this.state;
+    const { questions } = this.props;
+    const defaultNumber = 10;
+    const hardQuestion = 3;
+    const mediumQuestion = 2;
+    const easyQuestion = 1;
+    let { difficulty } = questions[numberQuestion];
+    if (difficulty === 'hard') {
+      difficulty = hardQuestion;
+    } if (difficulty === 'medium') {
+      difficulty = mediumQuestion;
+    } else {
+      difficulty = easyQuestion;
+    }
+    const timer = 2; // colocar o valor do timer que o Fioravante está fazendo
+    this.setState({
+      numberOfAssertions: numberOfAssertions + 1,
+      score: score + (defaultNumber + (timer * difficulty)),
+    });
+  }
+
+  addInfoToLocalStorage() {
+    const { location: { aboutProps: { name: { name },
+      email: { email } } } } = this.props;
+    const { numberOfAssertions, score } = this.state;
+    const objLocalStorage = {
+      player: {
+        name,
+        assertions: numberOfAssertions,
+        score,
+        gravatarEmail: email,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(objLocalStorage)); // Referência https://www.horadecodar.com.br/2020/07/21/como-salvar-um-objeto-na-localstorage/
+  }
+
   handleOnClick({ target: { name } }) {
     const { numberQuestion } = this.state;
     const { questions } = this.props;
     if (name === questions[numberQuestion].correct_answer) {
-
+      this.getScore();
     }
     this.setState({
       clicked: true,
@@ -70,7 +111,6 @@ class Game extends React.Component {
     if (clicked) {
       return 'correct_answer';
     }
-
     return '';
   }
 
@@ -79,8 +119,17 @@ class Game extends React.Component {
     if (clicked) {
       return 'incorrect_answer';
     }
-
     return '';
+  }
+
+  combineArray() {
+    const { questions } = this.props;
+    const { numberQuestion } = this.state;
+    const array = [questions[numberQuestion].correct_answer,
+      ...questions[numberQuestion].incorrect_answers];
+    const magicNumber = 0.5;
+    const answers = array.sort(() => Math.random() - magicNumber); // Referência https://flaviocopes.com/how-to-shuffle-array-javascript/
+    return answers;
   }
 
   nextButton() {
@@ -104,10 +153,7 @@ class Game extends React.Component {
       return (
         <div>
           <Link to="/feedback">
-            <button
-              data-testid="btn-next"
-              type="button"
-            >
+            <button data-testid="btn-next" type="button">
               Próxima
             </button>
           </Link>
@@ -165,6 +211,7 @@ class Game extends React.Component {
   }
 
   render() {
+    this.addInfoToLocalStorage();
     const { questions } = this.props;
     return (
       <>
@@ -179,16 +226,15 @@ Game.propTypes = {
   location: PropTypes.shape({
     aboutProps: PropTypes.shape({
       name: PropTypes.shape({
-        name: PropTypes.string,
-      }),
+        name: PropTypes.string }),
       email: PropTypes.shape({
-        email: PropTypes.string,
-      }),
+        email: PropTypes.string }),
       score: PropTypes.shape({
-        score: PropTypes.number,
-      }),
+        score: PropTypes.number }),
     }),
   }).isRequired,
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  fetchQuestions: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -199,8 +245,4 @@ const mapDispatchToProps = (dispatch) => ({
   fetchQuestions: (token) => dispatch(fetchQuestions(token)),
 });
 
-Game.propTypes = ({
-  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
-  fetchQuestions: PropTypes.func.isRequired,
-});
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
