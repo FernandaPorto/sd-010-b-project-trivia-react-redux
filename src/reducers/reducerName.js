@@ -1,9 +1,10 @@
-import { SAVE_NAME, SAVE_EMAIL, SAVE_SCORE } from '../actions';
+import { SAVE_NAME, SAVE_EMAIL, SAVE_SCORE, SAVE_GRAVATAR } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
   email: '',
   score: 0,
+  gravatar: '',
 };
 
 const reducerName = (state = INITIAL_STATE, action) => {
@@ -14,6 +15,8 @@ const reducerName = (state = INITIAL_STATE, action) => {
     return { ...state, email: action.email };
   case SAVE_SCORE:
     return { ...state, score: action.score };
+  case SAVE_GRAVATAR:
+    return { ...state, gravatar: action.gravatar };
   default:
     return state;
   }
