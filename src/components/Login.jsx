@@ -26,9 +26,10 @@ class Login extends Component {
 
   btnPlay() {
     const { login } = this.props;
-    fetToken.getToken().then((response) => {
-      localStorage.setItem('token', `${response.token}`);
-    })
+    fetToken.getToken()
+      .then((response) => {
+        localStorage.setItem('token', `${response.token}`);
+      })
       .then(() => {
         this.setState({
           loginTrue: true,
