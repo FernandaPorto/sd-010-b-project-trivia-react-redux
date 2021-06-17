@@ -5,14 +5,28 @@ import GameHeader from '../components/GameHeader';
 import QuestionCard from '../components/QuestionCard';
 
 class Game extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      index: 0,
+    };
+  }
+
   render() {
     const { questions } = this.props;
+    const { index } = this.state;
     if (questions) {
       return (
         <>
           <GameHeader />
-          <div>Corpo da tela de jogo</div>
-          {questions.map((item, i) => <QuestionCard key={ i } question={ item } />)}
+          <QuestionCard question={ questions[index] } />
+          <button
+            type="button"
+            onClick={ () => this.setState((prev) => ({ x: prev.x + 1 })) }
+          >
+            Próxima
+          </button>
         </>
       );
     }
