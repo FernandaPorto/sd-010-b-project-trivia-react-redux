@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchQuestions } from '../redux/actions';
+import combinar from '../functions/combineArray';
 
 class Game extends React.Component {
   constructor() {
@@ -11,12 +12,12 @@ class Game extends React.Component {
     this.state = {
       numberQuestion: 0,
       clicked: false,
+      answer: '',
     };
     this.getPerfilGravatar = this.getPerfilGravatar.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
     this.handleOnClick = this.handleOnClick.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
-    this.combineArray = this.combineArray.bind(this);
     this.nextButton = this.nextButton.bind(this);
   }
 
@@ -49,7 +50,7 @@ class Game extends React.Component {
     const { numberQuestion } = this.state;
     const { questions } = this.props;
     if (name === questions[numberQuestion].correct_answer) {
-      console.log('Acertou miseravel');
+
     }
     this.setState({
       clicked: true,
@@ -82,21 +83,10 @@ class Game extends React.Component {
     return '';
   }
 
-  combineArray() {
-    const { questions } = this.props;
-    const { numberQuestion } = this.state;
-    const array = [questions[numberQuestion].correct_answer,
-      ...questions[numberQuestion].incorrect_answers];
-    const magicNumber = 0.5;
-    const answers = array.sort(() => Math.random() - magicNumber);
-    return answers;
-  }
-
   nextButton() {
+    console.log(this.state.answer);
     const { clicked, numberQuestion } = this.state;
     const { questions } = this.props;
-    console.log(numberQuestion);
-    console.log(questions.length);
     if (numberQuestion < questions.length - 1 && clicked) {
       return (
         <div>
@@ -136,7 +126,7 @@ class Game extends React.Component {
           <p data-testid="question-text">
             {questions[numberQuestion].question }
           </p>
-          {this.combineArray().map((answer, index) => {
+          {combinar(questions, numberQuestion).map((answer, index) => {
             if (answer === questions[numberQuestion].correct_answer) {
               return (
                 <button
