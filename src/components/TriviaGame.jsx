@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -25,11 +26,10 @@ class TriviaGame extends React.Component {
     getQuestions();
   }
 
-  /* CÓDIGO DO OUTRO FICHEIRO */
   handleScore() {
     const { questions, questionIndex, secondsLeft } = this.props;
 
-    const TEN = 10;
+    const correctAnswerPoints = 10;
     const difficultyPoints = {
       easy: 1,
       medium: 2,
@@ -40,19 +40,27 @@ class TriviaGame extends React.Component {
     const { difficulty } = questions[questionIndex];
     const level = difficultyPoints[difficulty];
 
-    const calculator = () => state.player.score + TEN + (secondsLeft * level);
+    const calculator = () => (
+      state.player.score
+      + correctAnswerPoints
+      + (secondsLeft * level));
 
     state.player.assertions += 1;
     state.player.score = calculator();
 
     localStorage.setItem('state', JSON.stringify(state));
   }
-  /* CÓDIGO DO OUTRO FICHEIRO */
 
   renderNextButton() {
-    const { nextQuestion } = this.props;
+    const { history, questions, questionIndex, nextQuestion } = this.props;
+    const isLast = questionIndex === questions.length - 1;
+    const teste = () => history.push('/feedback');
     return (
-      <button type="button" onClick={ nextQuestion } data-testid="btn-next">
+      <button
+        type="button"
+        onClick={ () => { nextQuestion(); if (isLast) teste(); } }
+        data-testid="btn-next"
+      >
         Próxima pergunta
       </button>
     );
