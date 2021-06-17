@@ -10,6 +10,7 @@ class Questions extends React.Component {
     };
 
     this.changeBorder = this.changeBorder.bind(this);
+    this.handleAnswerClick = this.handleAnswerClick.bind(this);
     this.createAnswers = this.createAnswers.bind(this);
     this.handleNextButton = this.handleNextButton.bind(this);
   }
@@ -20,17 +21,26 @@ class Questions extends React.Component {
     }));
   }
 
+  handleAnswerClick() {
+    const { stopTimer } = this.props;
+
+    this.changeBorder();
+    stopTimer();
+  }
+
   createAnswers(quest, index) {
     const { isAnswered } = this.state;
-    const { result: { correct_answer: correctAnswer } } = this.props;
+    const { result: { correct_answer: correctAnswer }, answerDisabled } = this.props;
     if (quest === correctAnswer) {
       return (
         <button
           key={ index }
           type="button"
-          onClick={ this.changeBorder }
+          onClick={ this.handleAnswerClick }
           data-testid="correct-answer"
-          style={ isAnswered ? { border: '3px solid rgb(6, 240, 15)' } : null }
+          style={ isAnswered || answerDisabled
+            ? { border: '3px solid rgb(6, 240, 15)' } : null }
+          disabled={ answerDisabled }
         >
           { quest }
         </button>
@@ -40,9 +50,11 @@ class Questions extends React.Component {
       <button
         key={ index }
         type="button"
-        onClick={ this.changeBorder }
+        onClick={ this.handleAnswerClick }
         data-testid={ `wrong-answer-${index}` }
-        style={ isAnswered ? { border: '3px solid rgb(255, 0, 0)' } : null }
+        style={ isAnswered || answerDisabled
+          ? { border: '3px solid rgb(255, 0, 0)' } : null }
+        disabled={ answerDisabled }
       >
         { quest }
       </button>
@@ -51,8 +63,9 @@ class Questions extends React.Component {
 
   handleNextButton() {
     const { handleNext } = this.props;
-
-    this.changeBorder();
+    this.setState({
+      isAnswered: false,
+    });
     handleNext();
   }
 
