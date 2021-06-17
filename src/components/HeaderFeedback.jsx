@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 class HeaderFeedback extends Component {
   render() {
-    const localState = JSON.parse(localStorage.getItem(state));
+    const localState = JSON.parse(localStorage.getItem('state'));
     const { gravatarURL } = this.props;
     const { name, score } = localState.player;
     return (
@@ -13,7 +13,7 @@ class HeaderFeedback extends Component {
           <img src={ gravatarURL } alt="player" data-testid="header-profile-picture" />
         </div>
         <div>
-          <h1 data-testid="header-player-name">{name}</h1>
+          <h4 data-testid="header-player-name">{name}</h4>
         </div>
         <div data-testid="header-score">{score}</div>
       </header>
