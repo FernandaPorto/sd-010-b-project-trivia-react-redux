@@ -62,13 +62,10 @@ class Trivia extends React.Component {
     const token = await thunkToken();
     const tokenRequisition = token.result.token;
     const { apiQuestions } = this.props;
-    const { index } = this.state;
     const response = await apiQuestions(tokenRequisition, quantityQuestions);
     this.setState({
       questions: response.questions.results[0],
     });
-    const { questions } = this.state;
-    // console.log(questions);
   }
 
   update(state) {
@@ -146,7 +143,10 @@ class Trivia extends React.Component {
   }
 
   renderQuestion() {
-    const { questions: { category, correct_answer: CERTA, incorrect_answers, question }, correct, reject, disable, assertions } = this.state;
+    const { questions: {
+      category,
+      correct_answer: CERTA, incorrect_answers: ERRADO,
+      question }, correct, reject, disable } = this.state;
 
     return (
       <div>
@@ -169,8 +169,8 @@ class Trivia extends React.Component {
               {CERTA}
             </button>)
         }
-        {incorrect_answers
-        && incorrect_answers.map((erradas, index) => (
+        {ERRADO
+        && ERRADO.map((erradas, index) => (
           <button
             className={ reject }
             disabled={ disable }
@@ -216,7 +216,7 @@ Trivia.propTypes = {
   thunkToken: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
-  assertion: PropTypes.func.isRequired,
+  // assertion: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
