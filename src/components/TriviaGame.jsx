@@ -33,8 +33,8 @@ class TriviaGame extends React.Component {
     );
   }
 
-  renderQuestion(questionIndex) {
-    const { questions, isResolved, answerQuestion } = this.props;
+  renderQuestion() {
+    const { questions, questionIndex, isResolved, answerQuestion } = this.props;
 
     const {
       category,
@@ -75,10 +75,10 @@ class TriviaGame extends React.Component {
   }
 
   render() {
-    const { isLoading, questionIndex } = this.props;
+    const { isLoading } = this.props;
     return (
       <section>
-        {isLoading ? <h3>LOADING...</h3> : this.renderQuestion(questionIndex)}
+        {isLoading ? <h3>LOADING...</h3> : this.renderQuestion()}
       </section>
     );
   }
