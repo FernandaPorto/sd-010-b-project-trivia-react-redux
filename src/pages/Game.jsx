@@ -4,15 +4,15 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchQuestions } from '../redux/actions';
-import combinar from '../functions/combineArray';
+import combineArray from '../functions/combineArray';
 
 class Game extends React.Component {
   constructor() {
     super();
     this.state = {
       numberQuestion: 0,
+      correct: 0,
       clicked: false,
-      answer: '',
       numberOfAssertions: 0,
       score: 0,
     };
@@ -22,6 +22,7 @@ class Game extends React.Component {
     this.nextQuestion = this.nextQuestion.bind(this);
     this.nextButton = this.nextButton.bind(this);
     this.addInfoToLocalStorage = this.addInfoToLocalStorage.bind(this);
+    this.getGravatar = this.getGravatar.bind(this);
     this.getScore = this.getScore.bind(this);
   }
 
@@ -31,12 +32,14 @@ class Game extends React.Component {
     getQuestions(token);
   }
 
-  getPerfilGravatar() {
-    const { location: { aboutProps: { name: { name },
-      email: { email } } } } = this.props;
-    const { score } = this.state;
+  getGravatar(email) {
     const convert = md5(email).toString();
     const endpoint = `https://www.gravatar.com/avatar/${convert}`;
+    return endpoint;
+  }
+
+  getPerfilGravatar(email, name, score) {
+    const endpoint = this.getGravatar(email);
     return (
       <div>
         <img src={ endpoint } alt={ `foto de ${name}` } />
@@ -88,10 +91,13 @@ class Game extends React.Component {
   }
 
   handleOnClick({ target: { name } }) {
-    const { numberQuestion } = this.state;
+    const { numberQuestion, correct } = this.state;
     const { questions } = this.props;
     if (name === questions[numberQuestion].correct_answer) {
       this.getScore();
+      this.setState({
+        correct: correct + 1,
+      });
     }
     this.setState({
       clicked: true,
@@ -122,18 +128,7 @@ class Game extends React.Component {
     return '';
   }
 
-  combineArray() {
-    const { questions } = this.props;
-    const { numberQuestion } = this.state;
-    const array = [questions[numberQuestion].correct_answer,
-      ...questions[numberQuestion].incorrect_answers];
-    const magicNumber = 0.5;
-    const answers = array.sort(() => Math.random() - magicNumber); // Referência https://flaviocopes.com/how-to-shuffle-array-javascript/
-    return answers;
-  }
-
   nextButton() {
-    console.log(this.state.answer);
     const { clicked, numberQuestion } = this.state;
     const { questions } = this.props;
     if (numberQuestion < questions.length - 1 && clicked) {
@@ -150,9 +145,23 @@ class Game extends React.Component {
       );
     }
     if (numberQuestion === questions.length - 1 && clicked) {
+      const { score, correct } = this.state;
+      const { location: { aboutProps: { name: { name },
+        email: { email } } } } = this.props;
       return (
         <div>
-          <Link to="/feedback">
+          <Link
+            to={ {
+              pathname: '/feedback',
+              aboutProps: {
+                email,
+                name,
+                getGravatar: this.getGravatar,
+                score,
+                correct,
+              },
+            } }
+          >
             <button data-testid="btn-next" type="button">
               Próxima
             </button>
@@ -172,7 +181,7 @@ class Game extends React.Component {
           <p data-testid="question-text">
             {questions[numberQuestion].question }
           </p>
-          {combinar(questions, numberQuestion).map((answer, index) => {
+          {combineArray(questions, numberQuestion).map((answer, index) => {
             if (answer === questions[numberQuestion].correct_answer) {
               return (
                 <button
@@ -212,10 +221,13 @@ class Game extends React.Component {
 
   render() {
     this.addInfoToLocalStorage();
+    const { score } = this.state;
     const { questions } = this.props;
+    const { location: { aboutProps: { name: { name },
+      email: { email } } } } = this.props;
     return (
       <>
-        {this.getPerfilGravatar()}
+        {this.getPerfilGravatar(email, name, score)}
         {questions && this.renderAnswers()}
       </>
     );
