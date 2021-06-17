@@ -28,7 +28,6 @@ const user = (state = INITIAL_STATE, action) => {
       token: action.token,
     };
   case UPDATE_SCORE:
-    console.log(state.triviaGame.hits);
     return {
       ...state,
       triviaGame: {
