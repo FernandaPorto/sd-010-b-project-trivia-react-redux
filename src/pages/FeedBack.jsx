@@ -13,14 +13,16 @@ class Feedback extends React.Component {
   }
 
   componentDidMount() {
-    const { score, getNome, getMd5, email } = this.props;
-    const url = `https://www.gravatar.com/avatar/${getMd5}`;
-    const player = localStorage.getItem('state');
-    if (localStorage.getItem('ranking')) {
-      localStorage.setItem('ranking', [...player]);
-    } else {
-      localStorage.setItem('ranking', player);
+    const { nome, score, md5 } = this.props;
+
+    const gravatarEmail = `https://www.gravatar.com/avatar/${md5}`;
+    if (localStorage.ranking) {
+      const filteredRanking = JSON.parse(localStorage.ranking);
+      const aux = [...filteredRanking, { gravatarEmail, nome, score }];
+      localStorage.ranking = JSON.stringify(aux);
+      return aux;
     }
+    localStorage.ranking = JSON.stringify([{ gravatarEmail, nome, score }]);
   }
 
   handleClick() {
@@ -35,8 +37,8 @@ class Feedback extends React.Component {
     return (
       <main>
         <FeedBackHeader />
-        <span data-testid="feedback-total-question">{ assertions }</span>
-        <span data-testid="feedback-total-score">{ score }</span>
+        <p data-testid="feedback-total-question">{ assertions }</p>
+        <p data-testid="feedback-total-score">{ score }</p>
         <p data-testid="feedback-text">
           { assertions >= assert
             ? 'Mandou bem!' : 'Podia ser melhor...' }
@@ -62,14 +64,15 @@ class Feedback extends React.Component {
 const mapStateToProps = (state) => ({
   assertions: state.loginReducer.assertions,
   score: state.loginReducer.score,
-  getNome: state.loginReducer.nome,
-  getMd5: state.loginReducer.md5,
-  email: state.loginReducer.email,
+  md5: state.loginReducer.md5,
+  nome: state.loginReducer.nome,
 });
 
 Feedback.propTypes = {
   assertions: PropTypes.number.isRequired,
   score: PropTypes.number.isRequired,
+  md5: PropTypes.string.isRequired,
+  nome: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps)(Feedback);
