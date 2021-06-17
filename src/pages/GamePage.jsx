@@ -28,10 +28,11 @@ class GamePage extends Component {
 
   async getToken() {
     const resultFetchTrivia = await setToken();
+    console.log(resultFetchTrivia);
     const map = resultFetchTrivia.results
       .map((result) => result);
     this.setState({
-      categories: map.categories.category,
+      categories: map,
     });
   }
 
@@ -42,7 +43,36 @@ class GamePage extends Component {
       <div>
         <Header />
         <select>
-          {categories.map((item, index) => <option key={ index }>{item.category}</option>)}
+          {categories.map((item, index) => (
+            <option
+              data-testid="question-category"
+              key={ index }
+            >
+              {item.category}
+            </option>))}
+          {categories.map((item, index) => (
+            <option
+              data-testid="question-text"
+              key={ index }
+            >
+              {item.question}
+            </option>))}
+          {categories.map((item, index) => (
+            <option
+              data-testid="correct-answer"
+              key={ index }
+            >
+              {item.correct_answer}
+            </option>
+          ))}
+          {categories.map((item, index) => (
+            <option
+              data-testid={ `wrong-answer-${index}` }
+              key={ index }
+            >
+              {item.correct_answer}
+            </option>
+          ))}
         </select>
       </div>
     );
