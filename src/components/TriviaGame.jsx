@@ -2,62 +2,34 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { fetchQuestions } from '../services/api';
+import {
+  getQuestionsThunk,
+  answerQuestionActionCreator,
+  nextQuestionActionCreator,
+  updateSecondsActionCreator,
+} from '../redux/actions';
+
 import Timer from './Timer';
 
 class TriviaGame extends React.Component {
   constructor(props) {
     super(props);
 
-    this.getQuestions = this.getQuestions.bind(this);
-    this.answerQuestion = this.answerQuestion.bind(this);
-    this.nextQuestion = this.nextQuestion.bind(this);
     this.renderQuestion = this.renderQuestion.bind(this);
 
     this.state = {
-      loading: true,
-      isResolved: false,
       probabilityBase: 0.5,
-      questionIndex: 0,
-      questions: [],
     };
   }
 
   componentDidMount() {
-    this.getQuestions();
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.secondsLeft === 1) {
-      this.answerQuestion();
-    }
-  }
-
-  async getQuestions() {
-    const { token } = localStorage;
-    const { results: questions } = await fetchQuestions(token);
-    this.setState({
-      loading: false,
-      questions,
-    });
-  }
-
-  answerQuestion() {
-    this.setState({ isResolved: true });
-  }
-
-  nextQuestion() {
-    let { questionIndex } = this.state;
-    const { questions } = this.state;
-
-    if (questionIndex < questions.length - 1) {
-      questionIndex += 1;
-      this.setState({ isResolved: false, questionIndex });
-    }
+    const { getQuestions } = this.props;
+    getQuestions();
   }
 
   renderQuestion(questionIndex) {
-    const { questions, probabilityBase, isResolved } = this.state;
+    const { questions, isResolved, answerQuestion } = this.props;
+    const { probabilityBase } = this.state;
 
     const {
       category,
@@ -80,7 +52,7 @@ class TriviaGame extends React.Component {
           type="button"
           key={ index }
           data-testid={ testId }
-          onClick={ this.answerQuestion }
+          onClick={ answerQuestion }
           className={ isResolved ? coloredStyle : 'default-button' }
           disabled={ isResolved }
         >
@@ -99,35 +71,42 @@ class TriviaGame extends React.Component {
   }
 
   renderNextButton() {
+    const { nextQuestion } = this.props;
     return (
-      <button
-        type="button"
-        onClick={ this.nextQuestion }
-        data-testid="btn-next"
-      >
+      <button type="button" onClick={ nextQuestion } data-testid="btn-next">
         Próxima pergunta
       </button>
     );
   }
 
   render() {
-    const { loading, isResolved, questionIndex } = this.state;
+    const { isLoading, questionIndex, isResolved } = this.props;
     return (
       <section>
-        {loading ? <h3>LOADING...</h3> : this.renderQuestion(questionIndex)}
-        { isResolved ? this.renderNextButton() : <Timer /> }
-
+        {isLoading ? <h3>LOADING...</h3> : this.renderQuestion(questionIndex)}
+        {isResolved ? this.renderNextButton() : <Timer />}
       </section>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
+  isLoading: state.game.isLoading,
+  questions: state.game.questions,
+  questionIndex: state.game.questionIndex,
+  isResolved: state.game.isResolved,
   secondsLeft: state.game.secondsLeft,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getQuestions: () => dispatch(getQuestionsThunk()),
+  answerQuestion: () => dispatch(answerQuestionActionCreator()),
+  nextQuestion: () => dispatch(nextQuestionActionCreator()),
+  updateSeconds: (payload) => dispatch(updateSecondsActionCreator(payload)),
 });
 
 TriviaGame.propTypes = {
   secondsLeft: PropTypes.number,
 }.isRequired;
 
-export default connect(mapStateToProps)(TriviaGame);
+export default connect(mapStateToProps, mapDispatchToProps)(TriviaGame);
