@@ -14,7 +14,6 @@ class Game extends React.Component {
       clicked: false,
       numberOfAssertions: 0,
       score: 0,
-      redirectToHome: false,
     };
     this.getPerfilGravatar = this.getPerfilGravatar.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
@@ -45,7 +44,6 @@ class Game extends React.Component {
         <img src={ endpoint } alt={ `foto de ${name}` } />
         <span data-testid="header-player-name">
           {`Bem-vindo ${name}`}
-          !
         </span>
         <span data-testid="header-profile-picture">{` Email: ${email}`}</span>
         <span data-testid="header-score">{` Pontuação: ${score}`}</span>
@@ -80,12 +78,7 @@ class Game extends React.Component {
       email: { email } } } } = this.props;
     const { numberOfAssertions, score } = this.state;
     const objLocalStorage = {
-      player: {
-        name,
-        assertions: numberOfAssertions,
-        score,
-        gravatarEmail: email,
-      },
+      player: { name, assertions: numberOfAssertions, score, gravatarEmail: email },
     };
     localStorage.setItem('state', JSON.stringify(objLocalStorage)); // Referência https://www.horadecodar.com.br/2020/07/21/como-salvar-um-objeto-na-localstorage/
   }
