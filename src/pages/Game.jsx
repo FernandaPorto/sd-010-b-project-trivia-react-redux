@@ -15,6 +15,8 @@ class Game extends React.Component {
     this.renderAnswers = this.renderAnswers.bind(this);
     this.handleOnClick = this.handleOnClick.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.combineArray = this.combineArray.bind(this);
+    this.nextButton = this.nextButton.bind(this);
   }
 
   componentDidMount() {
@@ -79,52 +81,77 @@ class Game extends React.Component {
     return '';
   }
 
-  renderAnswers() {
-    const { numberQuestion } = this.state;
+  combineArray() {
     const { questions } = this.props;
+    const { numberQuestion } = this.state;
     const array = [questions[numberQuestion].correct_answer,
       ...questions[numberQuestion].incorrect_answers];
     const magicNumber = 0.5;
     const answers = array.sort(() => Math.random() - magicNumber);
-    return (
-      <div>
-        <p data-testid="question-category">{questions[numberQuestion].category}</p>
-        <p data-testid="question-text">
-          {questions[numberQuestion].question }
-          {' '}
-        </p>
-        {answers.map((answer, index) => {
-          if (answer === questions[numberQuestion].correct_answer) {
+    return answers;
+  }
+
+  nextButton() {
+    const { clicked } = this.state;
+    if (clicked) {
+      return (
+        <div>
+          <button
+            data-testid="btn-next"
+            onClick={ this.nextQuestion }
+            type="button"
+          >
+            Próxima
+          </button>
+        </div>
+      );
+    }
+  }
+
+  renderAnswers() {
+    const { numberQuestion } = this.state;
+    const { questions } = this.props;
+    if (numberQuestion < questions.length) {
+      return (
+        <div>
+          <p data-testid="question-category">{questions[numberQuestion].category}</p>
+          <p data-testid="question-text">
+            {questions[numberQuestion].question }
+          </p>
+          {this.combineArray().map((answer, index) => {
+            if (answer === questions[numberQuestion].correct_answer) {
+              return (
+                <button
+                  name={ `${answer}` }
+                  className={ this.changeClassNameCorrect() }
+                  key={ answer }
+                  type="button"
+                  data-testid="correct-answer"
+                  onClick={ this.handleOnClick }
+                >
+                  {answer}
+                </button>
+              );
+            }
             return (
               <button
                 name={ `${answer}` }
-                className={ this.changeClassNameCorrect() }
+                className={ this.changeClassNameInCorrect() }
                 key={ answer }
                 type="button"
-                data-testid="correct-answer"
+                data-testid={ `wrong-answer-${index}` }
                 onClick={ this.handleOnClick }
               >
                 {answer}
               </button>
             );
-          }
-          return (
-            <button
-              name={ `${answer}` }
-              className={ this.changeClassNameInCorrect() }
-              key={ answer }
-              type="button"
-              data-testid={ `wrong-answer-${index}` }
-              onClick={ this.handleOnClick }
-            >
-              {answer}
-            </button>
-          );
-        })}
-        <div>
-
-          <button onClick={ this.nextQuestion } type="button">Proxima</button>
+          })}
+          {this.nextButton()}
         </div>
+      );
+    } return (
+      <div>
+        <h1>Fim!</h1>
       </div>
     );
   }
