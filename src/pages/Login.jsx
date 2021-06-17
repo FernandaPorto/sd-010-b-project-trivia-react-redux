@@ -86,7 +86,7 @@ class Login extends React.Component {
     const stats = {
       name,
       assertions: 0,
-      score: '',
+      score: 0,
       gravatarEmail: nameAndImgPath,
     };
     const state = { player: stats };
