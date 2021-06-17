@@ -56,7 +56,7 @@ class Feedback extends Component {
         <h3 data-testid="feedback-total-question">{ playerAssertions }</h3>
         <Link to="/" data-testid="btn-play-again">Jogar novamente</Link>
         <Link
-        to="/ranking"
+          to="/ranking"
           data-testid="btn-ranking"
           onClick={ this.addToRanking() }
         >
