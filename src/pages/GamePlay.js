@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import HeaderGame from '../components/HeaderGame';
 import Answers from '../components/Answers';
+import Stopwatch from '../components/Stopwatch';
 
 class GamePlay extends React.Component {
   constructor() {
@@ -10,11 +11,32 @@ class GamePlay extends React.Component {
 
     this.state = {
       questionIndex: 0,
+      timer: 30,
+      isDisableAnswers: false,
     };
+
+    this.runTimer = this.runTimer.bind(this);
+    this.itsZero = this.itsZero.bind(this);
+    this.isDisableAnswers = this.isDisableAnswers.bind(this);
+  }
+
+  isDisableAnswers() {
+    this.setState({ isDisableAnswers: true, timer: 0 });
+  }
+
+  itsZero(timer) {
+    if (timer === 0) this.isDisableAnswers();
+  }
+
+  runTimer() {
+    const { timer: timerS } = this.state;
+    if (timerS > 0) {
+      this.setState({ timer: timerS - 1 }, this.itsZero(timerS - 1));
+    }
   }
 
   render() {
-    const { questionIndex } = this.state;
+    const { questionIndex, timer, isDisableAnswers } = this.state;
     const { questions } = this.props;
 
     return (
@@ -36,7 +58,12 @@ class GamePlay extends React.Component {
           { questions && <Answers
             correct={ questions[questionIndex].correct_answer }
             incorrect={ questions[questionIndex].incorrect_answers }
+            isDisableAnswers={ isDisableAnswers }
+            funcDisable={ this.isDisableAnswers }
           /> }
+        </div>
+        <div>
+          <Stopwatch runTimer={ this.runTimer } timer={ timer } />
         </div>
       </div>
     );
