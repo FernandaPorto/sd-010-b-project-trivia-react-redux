@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 
 export default class Feedback extends React.Component {
@@ -28,6 +29,9 @@ export default class Feedback extends React.Component {
       <div data-testid="feedback-text">
         <Header />
         { this.verifyAssertions() }
+        <Link to="/" data-testid="btn-play-again">
+          <button type="button">Jogar Novamente</button>
+        </Link>
       </div>
     );
   }
