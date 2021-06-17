@@ -5,29 +5,32 @@ class Questions extends React.Component {
   constructor(props) {
     super(props);
 
-    this.colorAnswer = this.colorAnswer.bind(this);
+    this.state = {
+      isAnswered: false,
+    };
+
+    this.changeBorder = this.changeBorder.bind(this);
     this.createAnswers = this.createAnswers.bind(this);
+    this.handleNextButton = this.handleNextButton.bind(this);
   }
 
-  colorAnswer() {
-    const correct = document.querySelector('.correct');
-    const wrong = document.querySelectorAll('.wrong');
-
-    correct.style.border = '3px solid rgb(6, 240, 15)';
-    wrong.forEach((answer) => {
-      answer.style.border = '3px solid rgb(255, 0, 0)';
-    });
+  changeBorder() {
+    this.setState((prevState) => ({
+      isAnswered: !prevState.isAnswered,
+    }));
   }
 
-  createAnswers(quest, index, correctAnswer) {
+  createAnswers(quest, index) {
+    const { isAnswered } = this.state;
+    const { result: { correct_answer: correctAnswer } } = this.props;
     if (quest === correctAnswer) {
       return (
         <button
           key={ index }
           type="button"
-          onClick={ this.colorAnswer }
+          onClick={ this.changeBorder }
           data-testid="correct-answer"
-          className="correct"
+          style={ isAnswered ? { border: '3px solid rgb(6, 240, 15)' } : null }
         >
           { quest }
         </button>
@@ -37,42 +40,55 @@ class Questions extends React.Component {
       <button
         key={ index }
         type="button"
-        onClick={ this.colorAnswer }
+        onClick={ this.changeBorder }
         data-testid={ `wrong-answer-${index}` }
-        className="wrong"
+        style={ isAnswered ? { border: '3px solid rgb(255, 0, 0)' } : null }
       >
         { quest }
       </button>
     );
   }
 
+  handleNextButton() {
+    const { handleNext } = this.props;
+
+    this.changeBorder();
+    handleNext();
+  }
+
   render() {
-    const { result:
-       { category,
-         question,
-         correct_answer: correctAnswer,
-         incorrect_answers: incorrectAnswers,
-       },
+    const { result: {
+      category,
+      question,
+      correct_answer: correctAnswer,
+      incorrect_answers: incorrectAnswers,
+    },
     } = this.props;
 
     if (correctAnswer) {
-      const allQuestions = [correctAnswer, ...incorrectAnswers];
+      const allAnswers = [correctAnswer, ...incorrectAnswers];
       return (
-        <>
+        <section>
           <h2 data-testid="question-category">
             {category}
           </h2>
           <div data-testid="question-text">
             {question}
           </div>
-          <section
-            role="link"
+          <div
+            role="button"
             className="answers"
           >
-            {allQuestions.map((quest,
-              index) => (this.createAnswers(quest, index, correctAnswer))) }
-          </section>
-        </>
+            {allAnswers.map((quest,
+              index) => (this.createAnswers(quest, index))) }
+          </div>
+          <button
+            type="button"
+            onClick={ this.handleNextButton }
+          >
+            Next
+          </button>
+        </section>
       );
     }
   }
@@ -82,6 +98,7 @@ Questions.propTypes = {
   result: PropTypes.shape({
     category: PropTypes.string,
   }),
+  handleNextQuestion: PropTypes.func,
 }.isRequired;
 
 Questions.default = {

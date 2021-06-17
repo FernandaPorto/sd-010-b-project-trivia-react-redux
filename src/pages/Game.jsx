@@ -33,17 +33,9 @@ class Game extends React.Component {
   }
 
   handleNextQuestion() {
-    const correct = document.querySelector('.correct');
-    const wrong = document.querySelectorAll('.wrong');
-
     this.setState((prevState) => ({
       questionIndex: prevState.questionIndex + 1,
     }));
-
-    correct.style.border = '3px solid black';
-    wrong.forEach((answer) => {
-      answer.style.border = '3px solid black';
-    });
   }
 
   render() {
@@ -59,13 +51,10 @@ class Game extends React.Component {
         <main>
           { questions ? (
             <main>
-              <Question result={ questions[questionIndex] } />
-              <button
-                type="button"
-                onClick={ () => this.handleNextQuestion() }
-              >
-                Next
-              </button>
+              <Question
+                result={ questions[questionIndex] }
+                handleNext={ this.handleNextQuestion }
+              />
             </main>
           ) : <p>Loading...</p> }
         </main>

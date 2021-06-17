@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 class GameHeader extends React.Component {
@@ -23,10 +24,15 @@ class GameHeader extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  const { player: { name, gravatarEmail, score } } = state;
+  return { name, gravatarEmail, score };
+};
+
 GameHeader.propTypes = {
   name: PropTypes.string.isRequired,
   gravatarEmail: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
 };
 
-export default GameHeader;
+export default connect(mapStateToProps)(GameHeader);

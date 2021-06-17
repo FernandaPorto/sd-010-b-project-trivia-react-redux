@@ -4,4 +4,4 @@ export const requestTokenAPI = async () => {
   return token;
 };
 
-export const dez = 10;
+export const teste = 10;
