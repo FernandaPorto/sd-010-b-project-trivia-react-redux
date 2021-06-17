@@ -10,7 +10,10 @@ class Feedback extends Component {
     if (playerAssertions < minimumAssert) {
       return ('Podia ser melhor...');
     }
-    return ('Mandou bem!');
+
+    if (playerAssertions >= minimumAssert) {
+      return ('Mandou bem!');
+    }
   }
 
   addToRanking() {
