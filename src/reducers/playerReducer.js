@@ -1,8 +1,9 @@
+import { CORRECT } from '../actions/correctAnswer';
 import { LOGIN } from '../actions/gameAction';
 
 export const INITIAL_STATE = {
   name: '',
-  assertions: '',
+  assertions: 0,
   score: 0,
   gravatarEmail: '',
 };
@@ -14,6 +15,11 @@ export const INITIAL_STATE = {
 
 const player = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+  case CORRECT:
+    return {
+      ...state,
+      assertions: state.assertions + 1,
+      ...action.points };
   case LOGIN:
     return {
       ...state,
