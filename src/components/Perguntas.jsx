@@ -15,6 +15,7 @@ class Perguntas extends Component {
 
   nextQuestion() {
     this.setState((state) => ({ perguntaIndex: state.perguntaIndex + 1 }));
+    
   }
 
   renderPerguntaCard() {
