@@ -21,13 +21,12 @@ class GamePlay extends React.Component {
   }
 
   isDisableAnswers() {
-    this.setState({ isDisableAnswers: true, timer: 0 })
+    this.setState({ isDisableAnswers: true, timer: 0 });
   }
 
   itsZero(timer) {
-    if(timer === 0) this.isDisableAnswers();
+    if (timer === 0) this.isDisableAnswers();
   }
-
 
   runTimer() {
     const { timer: timerS } = this.state;
