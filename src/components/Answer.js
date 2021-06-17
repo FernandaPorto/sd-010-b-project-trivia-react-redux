@@ -105,13 +105,21 @@ class Answer extends React.Component {
   }
 
   render() {
-    const { number, results, isRevealed } = this.props;
+    const { number, results, isRevealed, nextQuestion } = this.props;
     if (!results[number]) {
       return <div>Carregando...</div>;
     }
     return (
       <div>
-        { this.renderAnswer(results[0], isRevealed) }
+        { this.renderAnswer(results[number], isRevealed) }
+        { isRevealed && (
+          <button
+            type="button"
+            data-testid="btn-next"
+            onClick={ nextQuestion }
+          >
+            Próxima
+          </button>)}
       </div>
     );
   }
@@ -121,6 +129,7 @@ Answer.propTypes = {
   number: PropTypes.number.isRequired,
   results: PropTypes.arrayOf(PropTypes.object).isRequired,
   dispatchRevealed: PropTypes.func.isRequired,
+  nextQuestion: PropTypes.func.isRequired,
   isRevealed: PropTypes.bool.isRequired,
   pointsCalculate: PropTypes.func.isRequired,
   time: PropTypes.number.isRequired,

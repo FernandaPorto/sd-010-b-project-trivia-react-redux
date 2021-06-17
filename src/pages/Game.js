@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import Question from '../components/Question';
 import Answer from '../components/Answer';
 import Timer from '../components/Timer';
+import { revealedAction } from '../actions/gameAction';
 
 class Game extends React.Component {
   constructor(props) {
@@ -15,6 +16,8 @@ class Game extends React.Component {
       number: 0,
       results: props.request,
     };
+
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -26,6 +29,14 @@ class Game extends React.Component {
       gravatarEmail: email,
     };
     localStorage.setItem('state', JSON.stringify({ player }));
+  }
+
+  nextQuestion() {
+    const { dispatchRevealed } = this.props;
+    dispatchRevealed(false);
+    this.setState((prevState) => ({
+      number: prevState.number + 1,
+    }));
   }
 
   render() {
@@ -54,7 +65,11 @@ class Game extends React.Component {
         { results && (
           <div>
             <Question number={ number } results={ results } />
-            <Answer number={ number } results={ results } />
+            <Answer
+              number={ number }
+              results={ results }
+              nextQuestion={ this.nextQuestion }
+            />
             <Timer results={ results } />
           </div>
         )}
@@ -71,7 +86,11 @@ const mapStateToProps = (state) => ({
   request: state.apiReducer.request,
 });
 
-export default connect(mapStateToProps)(Game);
+const mapDispatchToProps = (dispatch) => ({
+  dispatchRevealed: (payload) => dispatch(revealedAction(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
 
 Game.propTypes = {
   count: PropTypes.number.isRequired,
@@ -79,4 +98,5 @@ Game.propTypes = {
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   request: PropTypes.arrayOf(PropTypes.any).isRequired,
+  dispatchRevealed: PropTypes.func.isRequired,
 };
