@@ -40,8 +40,10 @@ class Answer extends React.Component {
     // }
   }
 
-  renderAnswer({ correct_answer: correctAnswer,
-    incorrect_answers: incorrectAnswer }, isRevealed) {
+  renderAnswer(
+    { correct_answer: correctAnswer, incorrect_answers: incorrectAnswer },
+    isRevealed,
+  ) {
     const incorrectAnswerStyles = { border: '3px solid rgb(255, 0, 0)' };
     const correctAnswerStyles = { border: '3px solid rgb(6, 240, 15)' };
     const btnsWrong = (
