@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
-import { fetchApiQuestions, fetchAPI, saveScore } from '../actions/index';
+import { fetchApiQuestions, fetchAPI, saveAssertions } from '../actions/index';
 
 import './trivia.css';
 
@@ -10,7 +10,7 @@ class Trivia extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      questions: [],
+      questions: {},
       correct: '',
       reject: '',
       seconds: 30,
@@ -18,6 +18,8 @@ class Trivia extends React.Component {
       pontosState: 0,
       next: true,
       OK: true,
+      index: 0,
+      assertions: 0,
     };
 
     this.renderQuestion = this.renderQuestion.bind(this);
@@ -26,11 +28,14 @@ class Trivia extends React.Component {
     this.acertou = this.acertou.bind(this);
     this.storange = this.storange.bind(this);
     this.errou = this.errou.bind(this);
+    this.getQuestions = this.getQuestions.bind(this);
+    this.countAssertions = this.countAssertions.bind(this);
   }
 
-  componentDidMount() {
-    this.getQuestions();
+  async componentDidMount() {
     this.storange();
+    await this.getQuestions();
+    await this.renderQuestion();
     const ONE_SECOND = 1000; // 1 second in miliseconds
     const { seconds } = this.state;
     this.cronometerInterval = setInterval(() => {
@@ -51,17 +56,19 @@ class Trivia extends React.Component {
   }
 
   async getQuestions() {
+    this.setState((state) => ({ ...state, index: state.index + 1 }));
     const { thunkToken } = this.props;
-    const quantityQuestions = 1;
+    const quantityQuestions = 5;
     const token = await thunkToken();
     const tokenRequisition = token.result.token;
     const { apiQuestions } = this.props;
+    const { index } = this.state;
     const response = await apiQuestions(tokenRequisition, quantityQuestions);
     this.setState({
-      questions: response.questions.results,
+      questions: response.questions.results[0],
     });
     const { questions } = this.state;
-    console.log(questions);
+    // console.log(questions);
   }
 
   update(state) {
@@ -99,21 +106,29 @@ class Trivia extends React.Component {
 
   acertou() {
     const { questions, seconds } = this.state;
-    const { difficulty } = questions[0];
-    const levelQuestion = difficulty;
-    const pointsHard = 3;
-    const pointsMedium = 2;
-    const pointsEasy = 1;
-    const somaPontos = 10;
-    let pontosRender = 0;
-    if (levelQuestion === 'hard') {
-      pontosRender = somaPontos + (seconds * pointsHard);
-    } else if (levelQuestion === 'medium') {
-      pontosRender = somaPontos + (seconds * pointsMedium);
-    } else if (levelQuestion === 'easy') {
-      pontosRender = somaPontos + (seconds * pointsEasy);
+    console.log(questions);
+    if (questions) {
+      const { difficulty } = questions;
+      const levelQuestion = difficulty;
+      const pointsHard = 3;
+      const pointsMedium = 2;
+      const pointsEasy = 1;
+      const somaPontos = 10;
+      let pontosRender = 0;
+      if (levelQuestion === 'hard') {
+        pontosRender = somaPontos + (seconds * pointsHard);
+      } else if (levelQuestion === 'medium') {
+        pontosRender = somaPontos + (seconds * pointsMedium);
+      } else if (levelQuestion === 'easy') {
+        pontosRender = somaPontos + (seconds * pointsEasy);
+      }
+
+      this.setState((state) => ({ pontosState: state.pontosState + pontosRender }));
     }
-    this.setState((state) => ({ pontosState: state.pontosState + pontosRender }));
+  }
+
+  countAssertions() {
+    this.setState((state) => ({ ...state, assertions: state.assertions + 1 }));
   }
 
   colorAnswers() {
@@ -131,45 +146,42 @@ class Trivia extends React.Component {
   }
 
   renderQuestion() {
-    const { questions, correct, reject, disable } = this.state;
-    return (
-      questions.map((question, index) => (
+    const { questions: { category, correct_answer: CERTA, incorrect_answers, question }, correct, reject, disable, assertions } = this.state;
 
-        <ul key={ question.category }>
-          <p data-testid="question-category">{question.category}</p>
-          <li data-testid="question-text">
-            {question.question}
-            {' '}
+    return (
+      <div>
+        <p data-testid="question-category">{category}</p>
+        <p data-testid="question-text">{question}</p>
+        {
+          CERTA && (
             <button
               disabled={ disable }
               className={ correct }
               data-testid="correct-answer"
+              type="button"
               onClick={ async () => {
                 await this.acertou();
                 this.storange();
                 this.colorAnswers();
+                await this.countAssertions();
               } }
-              type="button"
             >
-              {question.correct_answer}
-
-            </button>
-            {question.incorrect_answers.map((incorrect) => (
-              <button
-                disabled={ disable }
-                data-testid={ `wrong-answer-${index}` }
-                onClick={ this.errou }
-                key={ incorrect }
-                type="button"
-                className={ reject }
-              >
-
-                {incorrect}
-              </button>
-            ))}
-          </li>
-        </ul>
-      ))
+              {CERTA}
+            </button>)
+        }
+        {incorrect_answers
+        && incorrect_answers.map((erradas, index) => (
+          <button
+            className={ reject }
+            disabled={ disable }
+            data-testid={ `wrong-answer-${index}` }
+            type="button"
+            key={ index }
+            onClick={ this.errou }
+          >
+            {erradas}
+          </button>))}
+      </div>
     );
   }
 
@@ -190,6 +202,7 @@ class Trivia extends React.Component {
           type="button"
           data-testid="btn-next"
           hidden={ next }
+          onClick={ this.getQuestions }
         >
           Próxima
         </button>
@@ -203,6 +216,7 @@ Trivia.propTypes = {
   thunkToken: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
+  assertion: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -213,7 +227,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   apiQuestions: (token, perguntas) => dispatch(fetchApiQuestions(token, perguntas)),
   thunkToken: () => dispatch(fetchAPI()),
-  getScore: (score) => dispatch(saveScore(score)),
+  assertion: (acertos) => dispatch(saveAssertions(acertos)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Trivia);
