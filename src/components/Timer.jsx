@@ -2,7 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { updateSecondsActionCreator } from '../redux/actions';
+import {
+  answerQuestionActionCreator,
+  updateSecondsActionCreator,
+} from '../redux/actions';
 
 class Timer extends React.Component {
   constructor() {
@@ -10,7 +13,6 @@ class Timer extends React.Component {
 
     this.refreshTimer = this.refreshTimer.bind(this);
     this.startTimer = this.startTimer.bind(this);
-    this.stopTimer = this.stopTimer.bind(this);
   }
 
   componentDidMount() {
@@ -19,12 +21,12 @@ class Timer extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.secondsLeft === 1) {
-      this.stopTimer();
+      prevProps.answerQuestion();
     }
   }
 
   componentWillUnmount() {
-    this.stopTimer();
+    clearInterval(this.timer);
   }
 
   refreshTimer() {
@@ -36,12 +38,6 @@ class Timer extends React.Component {
   startTimer() {
     const ONE_SECOND = 1000;
     this.timer = setInterval(() => this.refreshTimer(), ONE_SECOND);
-  }
-
-  stopTimer() {
-    const { updateSeconds } = this.props;
-    updateSeconds({ secondsLeft: 30 });
-    clearInterval(this.timer);
   }
 
   render() {
@@ -57,6 +53,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  answerQuestion: () => dispatch(answerQuestionActionCreator()),
   updateSeconds: (payload) => dispatch(updateSecondsActionCreator(payload)),
 });
 
