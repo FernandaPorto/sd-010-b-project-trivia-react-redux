@@ -69,7 +69,7 @@ class Login extends Component {
 
     return (
       <form>
-        <fieldset>
+        <fieldset className="login-card">
           <input
             id="name-input"
             type="text"
@@ -84,18 +84,29 @@ class Login extends Component {
             onChange={ this.validateLogin }
             placeholder="Email"
           />
-          <button
-            type="button"
-            onClick={ this.btnPlay }
-            data-testid="btn-play"
-            disabled={ isDisabled }
-          >
-            Jogar
-
-          </button>
-          <Link to="/config">
-            <button type="button" data-testid="btn-settings">Config</button>
-          </Link>
+          <div className="buttons">
+            <button
+              type="button"
+              onClick={ this.btnPlay }
+              data-testid="btn-play"
+              disabled={ isDisabled }
+              className="login-button"
+            >
+              Jogar
+            </button>
+            <Link to="/config">
+              <button
+                type="button"
+                data-testid="btn-settings"
+                className="login-button"
+              >
+                Config
+              </button>
+            </Link>
+          </div>
+          <a href="https://br.gravatar.com/">
+            Cadastre-se aqui para ter um avatar
+          </a>
         </fieldset>
       </form>
     );
