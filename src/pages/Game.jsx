@@ -7,9 +7,13 @@ import { fetchQuestions } from '../redux/actions';
 class Game extends React.Component {
   constructor() {
     super();
-
+    this.state = {
+      numberQuestion: 0,
+    };
     this.getPerfilGravatar = this.getPerfilGravatar.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
+    this.handleOnClick = this.handleOnClick.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -37,46 +41,68 @@ class Game extends React.Component {
     );
   }
 
-  renderAnswers() {
+  handleOnClick({ target: { name } }) {
+    const { numberQuestion } = this.state;
     const { questions } = this.props;
+    if (name === questions[numberQuestion].correct_answer) {
+      console.log('Acertou miseravel');
+    }
+  }
+
+  nextQuestion() {
+    const { numberQuestion } = this.state;
+    this.setState({
+      numberQuestion: numberQuestion + 1,
+    });
+  }
+
+  renderAnswers() {
+    const { numberQuestion } = this.state;
+    const { questions } = this.props;
+    const array = [questions[numberQuestion].correct_answer,
+      ...questions[numberQuestion].incorrect_answers];
+    const magicNumber = 0.5;
+    const answers = array.sort(() => Math.random() - magicNumber);
     return (
       <div>
-        <ul>
-          {
-            questions.map((question, index) => {
-              // Referência: https://flaviocopes.com/how-to-shuffle-array-javascript/
-              const magicNumber = 0.5;
-              const answers = (question.incorrect_answers
-                .concat(question.correct_answer))
-                .sort(() => Math.random() - magicNumber);
-              const renderAnswers = answers.map((answer, index2) => {
-                if (answer === question.correct_answer) {
-                  return (
-                    <button key={ answer } type="button" data-testid="correct-answer">
-                      {answer}
-                    </button>
-                  );
-                }
-                return (
-                  <button
-                    key={ answer }
-                    type="button"
-                    data-testid={ `wrong-answer-${index2}` }
-                  >
-                    {answer}
-                  </button>
-                );
-              });
+        <p data-testid="question-category">{questions[numberQuestion].category}</p>
+        <p data-testid="question-text">
+          {questions[numberQuestion].question }
+          {' '}
+        </p>
+        {
+          answers.map((answer, index) => {
+            if (answer === questions[numberQuestion].correct_answer) {
               return (
-                <li key={ index }>
-                  <p data-testid="question-category">{question.category}</p>
-                  <p data-testid="question-text">{question.question}</p>
-                  {renderAnswers}
-                </li>
+                <button
+                  name={ `${answer}` }
+                  className={ `${numberQuestion}-button-correct` }
+                  key={ answer }
+                  type="button"
+                  data-testid="correct-answer"
+                  onClick={ this.handleOnClick }
+                >
+                  {answer}
+                </button>
               );
-            })
-          }
-        </ul>
+            }
+            return (
+              <button
+                name={ `${answer}` }
+                key={ answer }
+                type="button"
+                data-testid={ `wrong-answer-${index}` }
+                onClick={ this.handleOnClick }
+              >
+                {answer}
+              </button>
+            );
+          })
+        }
+        <div>
+
+          <button onClick={ this.nextQuestion } type="button">Proxima</button>
+        </div>
       </div>
     );
   }
