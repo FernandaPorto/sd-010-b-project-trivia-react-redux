@@ -30,7 +30,7 @@ class Ranking extends Component {
             </h3>
           </div>
         ))}
-                <img
+        <img
           data-testid=""
           height="20"
           src={ `https://www.gravatar.com/avatar/${atual.player.emailGravatar}` }
