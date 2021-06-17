@@ -25,6 +25,7 @@ class Perguntas extends Component {
       const question = perguntas[perguntaIndex];
       const options = [...question.incorrect_answers, question.correct_answer]
         .sort(() => Math.random() - dotFive);
+        
       return (
         <div>
           <PerguntaCard
