@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import fetchURL from '../services/API';
-import '../GamePageCss.css';
+import '../App.css';
 
 export const setToken = async () => {
   const token = await fetchURL();
@@ -18,9 +18,13 @@ class GamePage extends Component {
     super(props);
     this.state = {
       categories: [{}],
+      indexState: 0,
+      loading: false,
     };
 
     this.getToken = this.getToken.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.isLoading = this.isLoading.bind(this);
   }
 
   componentDidMount() {
@@ -29,7 +33,6 @@ class GamePage extends Component {
 
   async getToken() {
     const resultFetchTrivia = await setToken();
-    console.log(resultFetchTrivia);
     const map = resultFetchTrivia.results
       .map((result) => result);
     this.setState({
@@ -37,45 +40,55 @@ class GamePage extends Component {
     });
   }
 
+  handleChange() {
+    this.setState((previousState) => ({ indexState: previousState.indexState + 1 }));
+  }
+
+  isLoading() {
+    this.setState({ loading: true });
+  }
+
   render() {
-    const { categories } = this.state;
-    console.log(categories);
+    const { categories, indexState, loading } = this.state;
     return (
       <div>
         <Header />
         <select>
-          {categories.map((item, index) => (
+          {categories.map((item, indexMap) => (
             <option
               data-testid="question-category"
-              key={ index }
+              key={ indexMap }
             >
               {item.category}
             </option>))}
         </select>
-        {/* {categories[0]
-          <option
+        <section>
+          <h1
+            type="button"
             data-testid="question-text"
-            key={ index }
+            key={ indexState }
+            // onClick={ this.handleClick }
           >
-            {item.question}
-          </option>))}
-        {categories.map((item, index) => ( */}
-        {/* <option
-            className="correct-answer"
-            data-testid="correct-answer"
-            key={ index }
-          >
-            {item.correct_answer}
-          </option>
-        )) */}
-        {categories.map((item, index) => (
-          <option
-            className="incorrect-answer"
+            {categories[indexState].question}
+          </h1>
+        </section>
+        <input
+          type='button'
+          className={ loading ? 'correct-answer' : '' }
+          onClick={ this.isLoading }
+          data-testid="correct-answer"
+        >
+          {categories[indexState].correct_answer}
+        </input>
+        {categories[indexState].incorrect_answers
+        && categories[indexState].incorrect_answers.map((item, index) => (
+          <li
+            className="incorrect-answers"
             data-testid={ `wrong-answer-${index}` }
             key={ index }
           >
-            {item.correct_answer}
-          </option>
+            {item}
+          </li>
         ))}
       </div>
     );
