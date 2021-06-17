@@ -55,6 +55,7 @@ class Perguntas extends Component {
 const mapStateToProps = (state) => ({
   perguntas: state.perguntas.perguntas.results,
 });
+
 Perguntas.propTypes = PropTypes.shape({
   perguntas: PropTypes.instanceOf(Array),
   pedePerguntas: PropTypes.func,
