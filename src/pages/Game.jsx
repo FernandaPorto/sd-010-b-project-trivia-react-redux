@@ -5,28 +5,13 @@ import GameHeader from '../components/GameHeader';
 import QuestionCard from '../components/QuestionCard';
 
 class Game extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      index: 0,
-    };
-  }
-
   render() {
-    const { questions } = this.props;
-    const { index } = this.state;
+    const { questions, current } = this.props;
     if (questions) {
       return (
         <>
           <GameHeader />
-          <QuestionCard question={ questions[index] } />
-          <button
-            type="button"
-            onClick={ () => this.setState((prev) => ({ index: prev.index + 1 })) }
-          >
-            Próxima
-          </button>
+          <QuestionCard question={ questions[current] } />
         </>
       );
     }
@@ -38,6 +23,7 @@ class Game extends Component {
 
 const mapStateToProps = (state) => ({
   questions: state.gameReducer.data.results,
+  current: state.gameReducer.current,
 });
 
 Game.propTypes = {
