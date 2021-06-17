@@ -1,7 +1,7 @@
-import { ACTION_SCORE } from './index';
+import { ACTION_SCORE, ACTION_SCORE_ZERO } from './index';
 
-const updateScore = (score) => ({
+export const updateScoreAction = (score) => ({
   type: ACTION_SCORE, score,
 });
 
-export default updateScore;
+export const resetScoreAction = () => ({ type: ACTION_SCORE_ZERO });

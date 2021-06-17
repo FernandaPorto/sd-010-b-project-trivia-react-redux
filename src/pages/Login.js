@@ -17,13 +17,11 @@ class Login extends Component {
       email: '',
       isDisable: false,
       settings: false,
-      ranking: false,
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
     this.validateEmail = this.validateEmail.bind(this);
     this.goToSettings = this.goToSettings.bind(this);
-    this.ranking = this.ranking.bind(this);
   }
 
   validateEmail() {
@@ -42,18 +40,13 @@ class Login extends Component {
     this.setState({ settings: true });
   }
 
-  ranking() {
-    this.setState({ ranking: true });
-  }
-
   render() {
-    const { name, email, isDisable, settings, ranking } = this.state;
+    const { name, email, isDisable, settings } = this.state;
     const { fetchAPIToken, Gravatar, isRedirect } = this.props;
     return (
       <div className="App-header">
         { settings && <Redirect to="/settings" /> }
         { isRedirect && <Redirect to="/game" /> }
-        { ranking && <Redirect to="/ranking" /> }
         <img src={ logo } className="App-logo" alt="logo" />
         <form>
           <input
@@ -76,7 +69,6 @@ class Login extends Component {
           <br />
           <button
             type="button"
-            // onClick={}
             disabled={ !isDisable }
             data-testid="btn-play"
             onClick={ () => { fetchAPIToken(); Gravatar(name, email); } }
@@ -90,7 +82,6 @@ class Login extends Component {
           >
             Configurações
           </button>
-          <button type="button" onClick={ this.ranking }>ranking</button>
         </form>
       </div>
     );
