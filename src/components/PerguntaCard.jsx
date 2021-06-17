@@ -94,10 +94,10 @@ class PerguntaCard extends Component {
   }
 
   renderTimer() {
-    const { timer, nextStyle } = this.state;
-    if (timer === 0 && nextStyle === 'hidden') {
-      this.border();
-      clearInterval(this.timer);
+    const { timer } = this.state;
+    if (timer === 0) {
+      this.setBorder()
+        .then(() => clearInterval(this.timer));
     }
     return (<Timer
       timer={ timer }
