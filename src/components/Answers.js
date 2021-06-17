@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 import scoreAction from '../actions/scoreAction';
 
 import './answersColors.css';
@@ -19,6 +20,7 @@ class Answers extends Component {
       youreWrong: '',
       isNext: false,
       shuffleAnswers: [],
+      goFeedback: false,
     };
 
     this.showCorrectAnswers = this.showCorrectAnswers.bind(this);
@@ -79,7 +81,9 @@ class Answers extends Component {
   }
 
   render() {
-    const { youreRight, youreWrong, shuffleAnswers, difficulty, isNext } = this.state;
+    const { youreRight, youreWrong,
+      shuffleAnswers, difficulty, isNext, goFeedback } = this.state;
+
     const { correct, incorrect, isDisableAnswers, timer, nextQuestion } = this.props;
     if (isDisableAnswers
       && (youreRight !== 'right-answer' && youreWrong !== 'wrong-answer')) {
@@ -92,8 +96,10 @@ class Answers extends Component {
         .map((i, id) => ({ id, answer: i }))].sort(() => Math.random() - half);
       this.setState({ shuffleAnswers: allAnswers });
     }
+
     return (
       <div>
+        { goFeedback && <Redirect to="/feedback" /> }
         { shuffleAnswers.map(({ id, answer }) => (
           <button
             key={ id }

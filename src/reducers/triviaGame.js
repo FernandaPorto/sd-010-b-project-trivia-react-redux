@@ -43,6 +43,7 @@ function triviaGame(state = INITIALSTATE, action) {
   case ACTION_SCORE:
     return {
       ...state,
+      isRedirect: false,
       score: state.score + action.score,
     };
   default:
