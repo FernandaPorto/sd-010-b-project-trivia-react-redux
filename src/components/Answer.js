@@ -34,9 +34,11 @@ class Answer extends React.Component {
   transformDifficulty({ difficulty }) {
     const TRES = 3;
     if (difficulty === 'easy') {
+      console.log('easy');
       return 1;
     }
     if (difficulty === 'medium') {
+      console.log('medium');
       return 2;
     }
 
@@ -51,7 +53,9 @@ class Answer extends React.Component {
     dispatchRevealed(true);
     if (target.className === 'correct-answer') {
       const difficulty = this.transformDifficulty(results[number]);
+      console.log(difficulty);
       const total = DEZ + (time * difficulty);
+      console.log(total);
       pointsCalculate(total);
       const { player } = JSON.parse(localStorage.getItem('state'));
       player.score += total;

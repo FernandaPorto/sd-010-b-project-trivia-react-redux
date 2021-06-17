@@ -1,50 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 
-import { revealedAction } from '../actions/gameAction';
-import { timerActions } from '../actions/correctAnswer';
+// import { revealedAction } from '../actions/gameAction';
+// import { timerActions } from '../actions/correctAnswer';
 
-class Timer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      time: 30,
-    };
-    this.timer = this.timer.bind(this);
-    this.stopTimer = this.stopTimer.bind(this);
-  }
-
-  componentDidMount() {
-    const ONE_SECOND = 1000;
-    const interval = setInterval(this.timer, ONE_SECOND);
-    this.stateInterval(interval);
-  }
-
-  stateInterval(interval) {
-    this.setState({ interval });
-  }
-
-  timer() {
-    const { dispatchRevealed, updateTimer, isRevealed } = this.props;
-    const { time } = this.state;
-    if (time > 0 && !isRevealed) {
-      this.setState((prevState) => ({
-        time: prevState.time - 1,
-      }), () => updateTimer(time));
-    } else {
-      dispatchRevealed(true);
-      this.stopTimer();
-    }
-  }
-
-  stopTimer() {
-    const { interval } = this.state;
-    clearInterval(interval);
-  }
-
+export default class Timer extends Component {
   render() {
-    const { time } = this.state;
+    const { time } = this.props;
     return (
       <div>
         { time }
@@ -54,18 +17,16 @@ class Timer extends Component {
 }
 
 Timer.propTypes = {
-  dispatchRevealed: PropTypes.func.isRequired,
-  updateTimer: PropTypes.number.isRequired,
-  isRevealed: PropTypes.bool.isRequired,
+  time: PropTypes.number.isRequired,
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  dispatchRevealed: (payload) => dispatch(revealedAction(payload)),
-  updateTimer: (time) => dispatch(timerActions(time)),
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   dispatchRevealed: (payload) => dispatch(revealedAction(payload)),
+//   updateTimer: (time) => dispatch(timerActions(time)),
+// });
 
-const mapStateToProps = (state) => ({
-  isRevealed: state.game.isRevealed,
-});
+// const mapStateToProps = (state) => ({
+//   isRevealed: state.game.isRevealed,
+// });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Timer);
+// export default connect(mapStateToProps, mapDispatchToProps)(Timer);
