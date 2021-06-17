@@ -16,14 +16,23 @@ class GamePlay extends React.Component {
     };
 
     this.runTimer = this.runTimer.bind(this);
+    this.itsZero = this.itsZero.bind(this);
+    this.isDisableAnswers = this.isDisableAnswers.bind(this);
   }
+
+  isDisableAnswers() {
+    this.setState({ isDisableAnswers: true, timer: 0 })
+  }
+
+  itsZero(timer) {
+    if(timer === 0) this.isDisableAnswers();
+  }
+
 
   runTimer() {
     const { timer: timerS } = this.state;
     if (timerS > 0) {
-      this.setState({ timer: timerS - 1 });
-    } else if (timerS === 0) {
-      this.setState({ isDisableAnswers: true });
+      this.setState({ timer: timerS - 1 }, this.itsZero(timerS - 1));
     }
   }
 
@@ -51,6 +60,7 @@ class GamePlay extends React.Component {
             correct={ questions[questionIndex].correct_answer }
             incorrect={ questions[questionIndex].incorrect_answers }
             isDisableAnswers={ isDisableAnswers }
+            funcDisable={ this.isDisableAnswers }
           /> }
         </div>
         <div>
