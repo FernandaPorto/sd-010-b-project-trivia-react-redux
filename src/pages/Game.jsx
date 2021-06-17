@@ -111,8 +111,12 @@ class Game extends React.Component {
           </header>
           <main>
             <Questions
+              name={ name }
+              gravatarEmail={ gravatarEmail }
+              score={ score }
               result={ results[count] }
               disabled={ disabled }
+              time={ time }
               stopTimer={ this.stopTimer }
             />
             { nextButton === true ? (

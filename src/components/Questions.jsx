@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { playerScore } from '../actions';
 
 class Questions extends React.Component {
   constructor(props) {
@@ -8,6 +10,7 @@ class Questions extends React.Component {
     this.colorAnswer = this.colorAnswer.bind(this);
     this.createAnswers = this.createAnswers.bind(this);
     this.handleAnswerClick = this.handleAnswerClick.bind(this);
+    this.state = { assertions: 0, score: 0 };
   }
 
   colorAnswer() {
@@ -20,8 +23,17 @@ class Questions extends React.Component {
     });
   }
 
-  handleAnswerClick(stopTimer) {
+  handleAnswerClick({ target: { className } }, stopTimer) {
+    const { name, gravatarEmail, time, result: { difficulty }, addScore } = this.props;
+    const { assertions, score } = this.state;
+    const NUMBER_TEEN = 10;
+    const level = {
+      easy: 1,
+      medium: 2,
+      hard: 3,
+    };
     this.colorAnswer();
+<<<<<<< HEAD
     const { name, assertions, score, gravatarEmail } = this.props;
     const player = {
       name,
@@ -30,6 +42,23 @@ class Questions extends React.Component {
       gravatarEmail,
     };
     localStorage.setItem('player', JSON.stringify(player));
+=======
+    if (className === 'correct') {
+      const point = NUMBER_TEEN + (time + level[difficulty]);
+      const stats = {
+        name,
+        assertions: assertions + 1,
+        score: point + score,
+        gravatarEmail,
+      };
+      const state = { player: stats };
+      console.log(state);
+      localStorage.setItem('state', JSON.stringify(state));
+      this.setState({ score: point + score, assertions: assertions + 1 });
+      addScore(stats);
+    }
+
+>>>>>>> 8adfd51fe2e8b2ba6b99894443bd08aa0b518488
     stopTimer();
   }
 
@@ -39,7 +68,7 @@ class Questions extends React.Component {
         <button
           key={ index }
           type="button"
-          onClick={ () => this.handleAnswerClick(stopTimer) }
+          onClick={ (props) => this.handleAnswerClick(props, stopTimer) }
           data-testid="correct-answer"
           className="correct"
           disabled={ disabled }
@@ -55,7 +84,7 @@ class Questions extends React.Component {
       <button
         key={ index }
         type="button"
-        onClick={ () => this.handleAnswerClick(stopTimer) }
+        onClick={ (props) => this.handleAnswerClick(props, stopTimer) }
         data-testid={ `wrong-answer-${index}` }
         className="wrong"
         disabled={ disabled }
@@ -107,6 +136,10 @@ class Questions extends React.Component {
   }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+  addScore: (stats) => dispatch(playerScore(stats)),
+});
+
 Questions.propTypes = {
   result: PropTypes.shape({
     category: PropTypes.string,
@@ -119,4 +152,4 @@ Questions.default = {
   result: undefined,
 };
 
-export default Questions;
+export default connect(null, mapDispatchToProps)(Questions);
