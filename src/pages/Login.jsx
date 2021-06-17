@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import logo from '../trivia.png';
 import '../Login.css';
+import { loginPlayer } from '../actions/index';
 import { fetchToken } from '../services';
 
 class Login extends Component {
@@ -26,7 +27,7 @@ class Login extends Component {
 
   render() {
     const { name, email } = this.state;
-    const { Token } = this.props;
+    const { Token, Player } = this.props;
     const nameLength = 0;
     return (
       <div className="Login">
@@ -54,7 +55,7 @@ class Login extends Component {
                   !(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(email)
                   || name.length <= nameLength
                 }
-                onClick={ () => Token() }
+                onClick={ () => { Token(); Player({ name, email }); } }
               >
                 Jogar
               </button>
@@ -78,10 +79,12 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   Token: () => dispatch(fetchToken()),
+  Player: (name, email) => dispatch(loginPlayer(name, email)),
 });
 
 Login.propTypes = {
   Token: PropTypes.func.isRequired,
+  Player: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
