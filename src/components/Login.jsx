@@ -4,6 +4,7 @@ import { Redirect } from 'react-router';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { actionLogin } from '../redux/actions/index';
+import fetchPerguntas from '../redux/actions/perguntasThunk';
 import * as fetToken from './Api';
 
 class Login extends Component {
@@ -16,6 +17,11 @@ class Login extends Component {
     };
     this.validateLogin = this.validateLogin.bind(this);
     this.btnPlay = this.btnPlay.bind(this);
+  }
+
+  componentWillUnmount() {
+    const { pedePerguntas } = this.props;
+    pedePerguntas(localStorage.getItem('token'));
   }
 
   btnPlay() {
@@ -100,6 +106,7 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   login: (data) => dispatch(actionLogin(data)),
+  pedePerguntas: (token) => dispatch(fetchPerguntas(token)),
 });
 
 Login.propTypes = {

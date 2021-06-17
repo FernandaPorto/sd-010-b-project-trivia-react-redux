@@ -15,8 +15,8 @@ class Perguntas extends Component {
   }
 
   componentDidMount() {
-    const { pedePerguntas } = this.props;
-    pedePerguntas(localStorage.getItem('token'));
+    // const { pedePerguntas } = this.props;
+    // pedePerguntas(localStorage.getItem('token'));
   }
 
   nextQuestion() {
@@ -69,4 +69,5 @@ Perguntas.propTypes = PropTypes.shape({
   perguntas: PropTypes.instanceOf(Array),
   pedePerguntas: PropTypes.func,
 }).isRequired;
+
 export default connect(mapStateToProps, mapDispatchToProps)(Perguntas);
