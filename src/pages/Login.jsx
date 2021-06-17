@@ -34,17 +34,31 @@ class Login extends React.Component {
 
     const hash = md5(email).toString();
     const gravatarURL = `https://www.gravatar.com/avatar/${hash}`;
+
     login({ name, email, gravatarURL });
 
     const { token } = await fetchToken();
+
+    const state = {
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: email,
+      },
+    };
+
     localStorage.setItem('token', token);
+    localStorage.setItem('state', JSON.stringify(state));
 
     this.setState({ redirect: true });
   }
 
   render() {
     const { name, email, redirect } = this.state;
+
     if (redirect) return <Redirect to="/Game" />;
+
     return (
       <section>
         <div>

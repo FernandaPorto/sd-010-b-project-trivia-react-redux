@@ -15,6 +15,7 @@ class TriviaGame extends React.Component {
   constructor(props) {
     super(props);
 
+    this.handleScore = this.handleScore.bind(this);
     this.renderQuestion = this.renderQuestion.bind(this);
     this.renderNextButton = this.renderNextButton.bind(this);
   }
@@ -23,6 +24,30 @@ class TriviaGame extends React.Component {
     const { getQuestions } = this.props;
     getQuestions();
   }
+
+  /* CÓDIGO DO OUTRO FICHEIRO */
+  handleScore() {
+    const { questions, questionIndex, secondsLeft } = this.props;
+
+    const TEN = 10;
+    const difficultyPoints = {
+      easy: 1,
+      medium: 2,
+      hard: 3,
+    };
+
+    const state = JSON.parse(localStorage.getItem('state'));
+    const { difficulty } = questions[questionIndex];
+    const level = difficultyPoints[difficulty];
+
+    const calculator = () => state.player.score + TEN + (secondsLeft * level);
+
+    state.player.assertions += 1;
+    state.player.score = calculator();
+
+    localStorage.setItem('state', JSON.stringify(state));
+  }
+  /* CÓDIGO DO OUTRO FICHEIRO */
 
   renderNextButton() {
     const { nextQuestion } = this.props;
@@ -53,7 +78,7 @@ class TriviaGame extends React.Component {
           type="button"
           key={ index }
           data-testid={ testId }
-          onClick={ answerQuestion }
+          onClick={ () => { answerQuestion(); if (isCorrect) this.handleScore(); } }
           className={ isResolved ? coloredStyle : 'default-button' }
           disabled={ isResolved }
         >
