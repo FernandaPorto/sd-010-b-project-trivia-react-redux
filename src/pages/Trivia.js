@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -74,7 +75,7 @@ class Trivia extends React.Component {
       this.setState({
         seconds: 30,
         correct: 'correct_answer',
-        reject: 'incorrect_answer',
+        reject: 'incorrect_Answer',
         disable: true });
     }
   }
@@ -131,7 +132,7 @@ class Trivia extends React.Component {
   colorAnswers() {
     this.setState((prevState) => ({ ...prevState,
       correct: 'correct_answer',
-      reject: 'incorrect_answer',
+      reject: 'incorrect_Answer',
       next: false }));
   }
 
@@ -145,8 +146,12 @@ class Trivia extends React.Component {
   renderQuestion() {
     const { questions: {
       category,
-      correct_answer: CERTA, incorrect_answers: ERRADO,
-      question }, correct, reject, disable } = this.state;
+      correct_answer: CERTA,
+      incorrect_answers,
+      question },
+    correct,
+    reject,
+    disable } = this.state;
 
     return (
       <div>
@@ -169,8 +174,8 @@ class Trivia extends React.Component {
               {CERTA}
             </button>)
         }
-        {ERRADO
-        && ERRADO.map((erradas, index) => (
+        {incorrect_answers
+        && incorrect_answers.map((erradas, index) => (
           <button
             className={ reject }
             disabled={ disable }
