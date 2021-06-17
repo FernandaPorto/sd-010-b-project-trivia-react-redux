@@ -32,6 +32,9 @@ export default class Feedback extends React.Component {
         <Link to="/" data-testid="btn-play-again">
           <button type="button">Jogar Novamente</button>
         </Link>
+        <Link to="/ranking" data-testid="btn-ranking">
+          <button type="button">Ver Ranking</button>
+        </Link>
       </div>
     );
   }
