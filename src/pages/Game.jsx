@@ -9,12 +9,12 @@ import combineArray from '../functions/combineArray';
 class Game extends React.Component {
   constructor() {
     super();
-    this.state = {
-      numberQuestion: 0,
+    this.state = { numberQuestion: 0,
       correct: 0,
       clicked: false,
       numberOfAssertions: 0,
       score: 0,
+      redirectToHome: false,
     };
     this.getPerfilGravatar = this.getPerfilGravatar.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
@@ -145,7 +145,7 @@ class Game extends React.Component {
       );
     }
     if (numberQuestion === questions.length - 1 && clicked) {
-      const { score, correct } = this.state;
+      const { score, correct, numberOfAssertions } = this.state;
       const { location: { aboutProps: { name: { name },
         email: { email } } } } = this.props;
       return (
@@ -153,12 +153,12 @@ class Game extends React.Component {
           <Link
             to={ {
               pathname: '/feedback',
-              aboutProps: {
-                email,
+              aboutProps: { email,
                 name,
                 getGravatar: this.getGravatar,
                 score,
                 correct,
+                numberOfAssertions,
               },
             } }
           >
@@ -212,11 +212,7 @@ class Game extends React.Component {
           {this.nextButton()}
         </div>
       );
-    } return (
-      <div>
-        <h1>Fim!</h1>
-      </div>
-    );
+    }
   }
 
   render() {
