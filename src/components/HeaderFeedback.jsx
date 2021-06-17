@@ -4,17 +4,17 @@ import PropTypes from 'prop-types';
 
 class HeaderFeedback extends Component {
   render() {
-    const { playerName, gravatarURL, score } = this.props;
+    const localState = JSON.parse(localStorage.getItem(state));
+    const { gravatarURL } = this.props;
+    const { name, score } = localState.player;
     return (
       <header>
         <div>
           <img src={ gravatarURL } alt="player" data-testid="header-profile-picture" />
         </div>
         <div>
-          <h1 data-testid="header-player-name">{playerName}</h1>
+          <h1 data-testid="header-player-name">{name}</h1>
         </div>
-        {/* store será obtido da store ou do localStorage ?? */}
-        {/* aqui tera que ser atualizado com o escore do jogo após as 5 perguntas */}
         <div data-testid="header-score">{score}</div>
       </header>
     );
@@ -22,15 +22,11 @@ class HeaderFeedback extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  playerName: state.player.name,
   gravatarURL: state.player.gravatarURL,
-  score: state.player.score,
 });
 
-Header.propTypes = {
-  playerName: PropTypes.string.isRequired,
+HeaderFeedback.propTypes = {
   gravatarURL: PropTypes.string.isRequired,
-  score: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, null)(HeaderFeedback);
