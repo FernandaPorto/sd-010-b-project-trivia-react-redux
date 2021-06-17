@@ -3,6 +3,7 @@ import {
   ACTION_REDIRECT,
   ACTION_QUESTIONS,
   ACTION_URL,
+  ACTION_SCORE,
 } from '../actions/index';
 
 const INITIALSTATE = {
@@ -12,6 +13,7 @@ const INITIALSTATE = {
   url: '',
   name: '',
   score: 0,
+  email: '',
 };
 
 function triviaGame(state = INITIALSTATE, action) {
@@ -36,6 +38,12 @@ function triviaGame(state = INITIALSTATE, action) {
       ...state,
       url: action.payload.url,
       name: action.payload.name,
+      email: action.payload.email,
+    };
+  case ACTION_SCORE:
+    return {
+      ...state,
+      score: state.score + action.score,
     };
   default:
     return state;
