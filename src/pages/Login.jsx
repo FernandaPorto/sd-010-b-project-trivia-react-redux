@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 
-import { playerLogin, addToken } from '../actions/index';
+import { playerLogin } from '../actions/index';
 
 class Login extends React.Component {
   constructor(props) {
@@ -13,14 +13,14 @@ class Login extends React.Component {
     this.state = {
       name: '',
       email: '',
-      disabled: true,
-      redirect: false,
-      settings: false,
+      loginBtnDisabled: true,
+      redirectToGame: false,
+      redirectToSettings: false,
     };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSettings = this.handleSettings.bind(this);
-    this.handlePlay = this.handleStart.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.redirectToSettings = this.redirectToSettings.bind(this);
+    this.handleStart = this.handleStart.bind(this);
   }
 
   verifyEmail(email) {
@@ -37,12 +37,12 @@ class Login extends React.Component {
 
     if (name !== '' && emailIsValid) {
       this.setState({
-        disabled: false,
+        loginBtnDisabled: false,
       });
     }
   }
 
-  handleChange(event) {
+  handleInputChange(event) {
     const { target: { id, value } } = event;
     this.setState({
       [id]: value,
@@ -52,13 +52,14 @@ class Login extends React.Component {
     });
   }
 
-  async requestToken(dispatchToken) {
+  async requestToken() {
     const { token } = await (await fetch('https://opentdb.com/api_token.php?command=request')).json();
     localStorage.setItem('token', token);
-    dispatchToken(token);
   }
 
-  requestGravatar(name, email) {
+  requestGravatar() {
+    const { name, email } = this.state;
+
     const emailHash = md5(email).toString();
     const gravatarEmail = `https://www.gravatar.com/avatar/${emailHash}`;
     return {
@@ -67,34 +68,33 @@ class Login extends React.Component {
     };
   }
 
-  async handleStart(userLogin, dispatchToken) {
-    const { name, email } = this.state;
+  async handleStart() {
+    const { userLoggedIn } = this.props;
 
-    await this.requestToken(dispatchToken);
-    const nameAndImgPath = this.requestGravatar(name, email);
+    await this.requestToken();
+    const nameAndImgPath = this.requestGravatar();
 
-    userLogin(nameAndImgPath);
+    userLoggedIn(nameAndImgPath);
     this.setState({
-      redirect: true,
+      redirectToGame: true,
     });
   }
 
-  handleSettings() {
+  redirectToSettings() {
     this.setState({
-      settings: true,
+      redirectToSettings: true,
     });
   }
 
   render() {
-    const { userLogin, dispatchToken } = this.props;
-    const { disabled, redirect, settings } = this.state;
-    if (redirect) {
+    const { loginBtnDisabled, redirectToGame, redirectToSettings } = this.state;
+    if (redirectToGame) {
       return (
         <Redirect to="/start" />
       );
     }
 
-    if (settings) {
+    if (redirectToSettings) {
       return (
         <Redirect to="/settings" />
       );
@@ -107,27 +107,27 @@ class Login extends React.Component {
           placeholder="Nome"
           id="name"
           data-testid="input-player-name"
-          onChange={ this.handleChange }
+          onChange={ this.handleInputChange }
         />
         <input
           type="email"
           placeholder="Email"
           id="email"
           data-testid="input-gravatar-email"
-          onChange={ this.handleChange }
+          onChange={ this.handleInputChange }
         />
         <button
           type="button"
           data-testid="btn-play"
-          disabled={ disabled }
-          onClick={ () => this.handleStart(userLogin, dispatchToken) }
+          disabled={ loginBtnDisabled }
+          onClick={ this.handleStart }
         >
           Jogar
         </button>
         <button
           type="button"
           data-testid="btn-settings"
-          onClick={ this.handleSettings }
+          onClick={ this.redirectToSettings }
         >
           Configurações
         </button>
@@ -137,13 +137,11 @@ class Login extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  userLogin: (userInfo) => dispatch(playerLogin(userInfo)),
-  dispatchToken: (token) => dispatch(addToken(token)),
+  userLoggedIn: (userInfo) => dispatch(playerLogin(userInfo)),
 });
 
 Login.propTypes = {
-  userLogin: PropTypes.func.isRequired,
-  dispatchToken: PropTypes.func.isRequired,
+  userLoggedIn: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);

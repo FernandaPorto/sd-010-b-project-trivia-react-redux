@@ -7,8 +7,3 @@ export const addToRanking = (userInfo) => ({
   type: 'ADD_TO_RANKING',
   payload: userInfo,
 });
-
-export const addToken = (token) => ({
-  type: 'ADD_TOKEN',
-  payload: token,
-});
