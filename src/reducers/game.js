@@ -1,6 +1,12 @@
-import { GET_API_RESULT } from '../actions/index';
+import { GET_API_RESULT, SET_SETTINGS } from '../actions/index';
 
-const INITIAL_STATE = {};
+const INITIAL_STATE = {
+  settings: {
+    category: '',
+    difficulty: '',
+    type: '',
+  },
+};
 
 export default function getApi(state = INITIAL_STATE, action) {
   switch (action.type) {

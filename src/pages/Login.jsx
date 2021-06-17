@@ -17,8 +17,9 @@ class Login extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.verifyEmailAndName = this.verifyEmailAndName.bind(this);
-    this.requisitarAPI = this.requisitarAPI.bind(this);
+    this.requisitarToken = this.requisitarToken.bind(this);
     this.getGravatar = this.getGravatar.bind(this);
+    this.requisitarAPI = this.requisitarAPI.bind(this);
   }
 
   async getGravatar() {
@@ -28,14 +29,30 @@ class Login extends React.Component {
     return gravatar;
   }
 
-  async requisitarAPI() {
-    const { name } = this.state;
-    const { actionEnviaDadosUsuario, requestApi } = this.props;
-    const { token } = await fetch('https://opentdb.com/api_token.php?command=request').then((resp) => resp.json());
-    localStorage.setItem('token', token);
-    const apiResults = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`)
+  async requisitarAPI(token) {
+    const { requestApi, settings } = this.props;
+    let { category, difficulty, type } = settings;
+    console.log(token);
+    if (category !== '') {
+      category = `&category=${category}`;
+    }
+    if (difficulty !== '') {
+      difficulty = `&difficulty=${difficulty}`;
+    }
+    if (type !== '') {
+      type = `&type=${type}`;
+    }
+    const apiResults = await fetch(`https://opentdb.com/api.php?amount=5${category}${difficulty}${type}&token=${token}`)
       .then((resp) => resp.json());
     requestApi(apiResults);
+  }
+
+  async requisitarToken() {
+    const { name } = this.state;
+    const { actionEnviaDadosUsuario } = this.props;
+    const { token } = await fetch('https://opentdb.com/api_token.php?command=request').then((resp) => resp.json());
+    localStorage.setItem('token', token);
+    this.requisitarAPI(token);
     const gravatar = await this.getGravatar();
     actionEnviaDadosUsuario({
       name,
@@ -86,7 +103,7 @@ class Login extends React.Component {
               data-testid="btn-play"
               type="button"
               id="button"
-              onClick={ () => this.requisitarAPI() }
+              onClick={ () => this.requisitarToken() }
               disabled={ disabled }
             >
               Jogar
@@ -108,9 +125,18 @@ const mapDispatchToProps = (dispatch) => ({
   requestApi: (resultApi) => dispatch(getApiResultAction(resultApi)),
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+const mapStateToProps = (state) => ({
+  settings: state.game.settings,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 Login.propTypes = {
   actionEnviaDadosUsuario: PropTypes.func.isRequired,
   requestApi: PropTypes.func.isRequired,
+  settings: PropTypes.shape(
+    { category: PropTypes.string,
+      difficulty: PropTypes.string,
+      type: PropTypes.string },
+  ).isRequired,
 };
