@@ -25,14 +25,31 @@ function fetchQuestionsAndAnswers(token) {
     .then((questions) => dispatch(actionQuestions(questions.results))); // results is the key of the object response received from API with the questions and answers
 }
 
+const storageInicial = {
+  player: {
+    name: '',
+    assertions: 0,
+    score: 0,
+    gravatarEmail: '',
+  },
+  ranking: [],
+  token: '',
+};
+
+const saveLocalState = (token) => {
+  storageInicial.token = token;
+  localStorage.setItem('state', JSON.stringify(storageInicial));
+};
+
 export function fetchToken() {
   return (dispatch) => {
     dispatch(actionRedirect());
-    return fetch(`https://opentdb.com/api_token.php?command=request
-  `)
+    fetch('https://opentdb.com/api_token.php?command=request')
       .then((response) => response.json())
-      .then((response) => dispatch(actionToken(response.token))
-        && dispatch(fetchQuestionsAndAnswers(response.token)))
-      .then((token) => localStorage.setItem('token', JSON.stringify(token)));
+      .then((response) => {
+        dispatch(actionToken(response.token));
+        dispatch(fetchQuestionsAndAnswers(response.token));
+        saveLocalState(response.token);
+      });
   };
 }
