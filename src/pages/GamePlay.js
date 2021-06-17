@@ -38,7 +38,6 @@ class GamePlay extends React.Component {
   render() {
     const { questionIndex, timer, isDisableAnswers } = this.state;
     const { questions } = this.props;
-
     return (
       <div>
         <HeaderGame />
@@ -58,8 +57,10 @@ class GamePlay extends React.Component {
           { questions && <Answers
             correct={ questions[questionIndex].correct_answer }
             incorrect={ questions[questionIndex].incorrect_answers }
+            difficulty={ questions[questionIndex].difficulty }
             isDisableAnswers={ isDisableAnswers }
             funcDisable={ this.isDisableAnswers }
+            timer={ timer }
           /> }
         </div>
         <div>
