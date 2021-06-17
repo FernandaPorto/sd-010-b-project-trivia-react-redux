@@ -9,6 +9,8 @@ class Questions extends React.Component {
 
     this.state = {
       perguntas: [],
+      allAnswers: [],
+      rightAnswer: [],
       assertions: 0,
       indice: 0,
       disable: false,
@@ -28,6 +30,7 @@ class Questions extends React.Component {
     this.freezedByTimer = this.freezedByTimer.bind(this);
     this.calcDificult = this.calcDificult.bind(this);
     this.updateLocalStorage = this.updateLocalStorage.bind(this);
+    this.booleanQuestions = this.booleanQuestions.bind(this);
   }
 
   componentDidMount() {
@@ -36,7 +39,7 @@ class Questions extends React.Component {
   }
 
   nextQuestion() {
-    const { indice } = this.state;
+    const { indice, perguntas, rightAnswer } = this.state;
     const FIVE = 5;
     if (indice + 1 === FIVE) return this.setState({ isRedirect: true });
     this.setState((prev) => ({ indice: prev.indice + 1 }));
@@ -44,6 +47,18 @@ class Questions extends React.Component {
     this.setState({ disable: false });
     this.setState({ nextDisable: true });
     this.clearStyles();
+    console.log(indice);
+
+    // const { incorrect_answers } = perguntas.results[indice];
+    // // console.log(help);
+    const incorrect = perguntas[indice + 1].incorrect_answers;
+    const correct = perguntas[indice + 1].correct_answer;
+
+    console.log(correct);
+    const allAnswers = incorrect.concat(correct);
+    console.log(allAnswers);
+    // this.setState({ allAnswers: [] });
+    this.setState({ allAnswers });
   }
 
   clearStyles() {
@@ -56,7 +71,15 @@ class Questions extends React.Component {
 
   updtadeQuestions(perguntas) {
     const dados = JSON.parse(localStorage.getItem('state'));
-    this.setState({ perguntas: perguntas.results, score: dados.player.score });
+    // console.log(perguntas.results);
+    const { indice } = this.state;
+    const { incorrect_answers } = perguntas.results[indice];
+    // console.log(help);
+    const { correct_answer } = perguntas.results[indice];
+    console.log(correct_answer);
+    const allAnswers = incorrect_answers.concat(correct_answer);
+    console.log(allAnswers);
+    this.setState({ perguntas: perguntas.results, rightAnswer: correct_answer, allAnswers, score: dados.player.score });
   }
 
   calcDificult(dificculty) {
@@ -89,7 +112,7 @@ class Questions extends React.Component {
   }
 
   checkAnswer(props) {
-    const { timer, indice, perguntas } = this.state;
+    const { timer, indice, perguntas, rightAnswer } = this.state;
     const dificculty = perguntas[indice].difficulty;
     const dificuldade = this.calcDificult(dificculty);
     const MNumber = 10;
@@ -101,13 +124,14 @@ class Questions extends React.Component {
     });
 
     buttons.forEach((button) => {
+      // console.log(button.name);
       if (button.name === 'correct-answer') {
         return button.classList.add('green-border');
       }
       return button.classList.add('red-border');
     });
 
-    if (props.target.name === 'correct-answer') {
+    if (props.value === rightAnswer) {
       const calculo = MNumber + (timer * dificuldade);
       this.setState((prev) => ({
         score: prev.score + calculo,
@@ -130,9 +154,9 @@ class Questions extends React.Component {
     return this.setState({ disable: true });
   }
 
-  identifyQuestionsType() {
-    const { perguntas, indice, disable } = this.state;
-    if (perguntas[indice].type === 'multiple') { return this.renderQuestions(); }
+  booleanQuestions() {
+    const { rightAnswer, disable, indice, perguntas } = this.state;
+
     return (
       <div>
         <p data-testid="question-category">{`Categoria ${perguntas[indice].category}`}</p>
@@ -161,53 +185,58 @@ class Questions extends React.Component {
       </div>);
   }
 
-  renderQuestions() {
-    const { perguntas, indice, disable, timer } = this.state;
+  identifyQuestionsType(perguntas) {
+    const { indice } = this.state;
+    if (perguntas[indice].type === 'multiple') { return this.renderQuestions(perguntas); }
+    return this.booleanQuestions();
+  }
+
+  verifyAnswer(param) {
+    const { rightAnswer, disable, indice } = this.state;
+    console.log(param);
+    if (param === rightAnswer) {
+      return (
+        <div>
+
+          <button
+            type="button"
+            data-testid="correct-answer"
+            name="correct-answer"
+            disabled={ disable }
+            className="default"
+            onClick={ this.checkAnswer }
+          >
+            {`Resposta${indice + 1}: ${param}`}
+          </button>
+        </div>
+      );
+    }
+    return (
+      <button
+        type="button"
+        data-testid={ `wrong-answer-${indice}` }
+        name="wrong-answer"
+        disabled={ disable }
+        className="default"
+        onClick={ this.checkAnswer }
+      >
+        {`Resposta${indice + 1}: ${param}`}
+
+      </button>
+    );
+  }
+
+  renderQuestions(perguntas) {
+    const { indice, allAnswers } = this.state;
+
     return (
       <div>
         <p data-testid="question-category">{`Categoria ${perguntas[indice].category}`}</p>
         <p data-testid="question-text">{`Pergunta: ${perguntas[indice].question}`}</p>
-        <button
-          type="button"
-          data-testid="correct-answer"
-          name="correct-answer"
-          disabled={ disable }
-          className="default"
-          onClick={ this.checkAnswer }
-        >
-          {`Resposta1: ${perguntas[indice].correct_answer}`}
-        </button>
-        <button
-          type="button"
-          data-testid={ `wrong-answer-${0}` }
-          name="wrong-answer"
-          disabled={ disable }
-          className="default"
-          onClick={ this.checkAnswer }
-        >
-          {`Resposta2: ${perguntas[indice].incorrect_answers[0]}`}
-        </button>
-        <button
-          type="button"
-          data-testid={ `wrong-answer-${1}` }
-          name="wrong-answer"
-          disabled={ disable }
-          className="default"
-          onClick={ this.checkAnswer }
-        >
-          {`Resposta3: ${perguntas[indice].incorrect_answers[1]}`}
-        </button>
-        <button
-          type="button"
-          data-testid={ `wrong-answer-${2}` }
-          name="wrong-answer"
-          disabled={ disable }
-          className="default"
-          onClick={ this.checkAnswer }
-        >
-          {`Resposta4: ${perguntas[indice].incorrect_answers[2]}`}
-        </button>
-        <p>{ timer }</p>
+        {/* {allAnswers.map(((answer, index) => (
+          <section key={ index }> */}
+        {/* {this.verifyAnswer(allAnswers)} */}
+        {/* </section> */}
       </div>
     );
   }
@@ -226,7 +255,6 @@ class Questions extends React.Component {
         </button>
       );
     }
-    return console.log('Aqui está o return, Sr. Lint!');
   }
 
   render() {
@@ -235,8 +263,9 @@ class Questions extends React.Component {
     return (
       <div>
         { isRedirect && <Redirect to="/feedback" />}
-        {this.identifyQuestionsType()}
+        {this.identifyQuestionsType(perguntas)}
         { this.renderNextQuestionButton() }
+        {/* {console.log(Math.floor(Math.random() * 5))} */}
       </div>
     );
   }

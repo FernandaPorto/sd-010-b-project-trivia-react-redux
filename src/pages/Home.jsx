@@ -38,6 +38,7 @@ class Home extends Component {
 
   emailVerify() {
     const { name, email } = this.state;
+    // console.log(email, name);
 
     if (name.length > 0 && email.length > 0) {
       return this.setState({ buttonReady: true });
@@ -79,7 +80,7 @@ class Home extends Component {
         </label>
         <button
           type="button"
-          disabled={ !buttonReady }
+          disabled={ buttonReady !== true }
           data-testid="btn-play"
           onClick={ this.onClick }
         >
