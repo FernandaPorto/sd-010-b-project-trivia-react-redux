@@ -41,6 +41,15 @@ class Game extends React.Component {
 
   handleNext() {
     this.showAnswersByColor();
+    const { name, assertions, score, gravatarEmail } = this.props;
+    const player = {
+      name,
+      assertions: 4,
+      score,
+      gravatarEmail,
+    };
+    const state = { player };
+    localStorage.setItem('state', JSON.stringify(state));
     this.setState((prevState) => ({
       count: prevState.count + 1,
       disabled: false,
@@ -91,7 +100,7 @@ class Game extends React.Component {
     const { name, gravatarEmail, score } = this.props;
 
     if (count === NUMBER_FIVE) {
-      return (<Redirect to="/" />);
+      return (<Redirect to="/feedback" />);
     }
 
     if (results) {
@@ -133,14 +142,15 @@ class Game extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const { player: { name, gravatarEmail, score } } = state;
-  return { name, gravatarEmail, score };
+  const { player: { name, gravatarEmail, score, assertions } } = state;
+  return { name, gravatarEmail, score, assertions };
 };
 
 Game.propTypes = {
   name: PropTypes.string.isRequired,
   gravatarEmail: PropTypes.string.isRequired,
   score: PropTypes.string.isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(Game);

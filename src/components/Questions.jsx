@@ -22,6 +22,14 @@ class Questions extends React.Component {
 
   handleAnswerClick(stopTimer) {
     this.colorAnswer();
+    const { name, assertions, score, gravatarEmail } = this.props;
+    const player = {
+      name,
+      assertions,
+      score,
+      gravatarEmail,
+    };
+    localStorage.setItem('player', JSON.stringify(player));
     stopTimer();
   }
 

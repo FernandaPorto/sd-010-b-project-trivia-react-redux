@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 
-export class Feedback extends Component {
+class Feedback extends Component {
   constructor() {
     super();
     this.message = this.message.bind(this);
@@ -14,12 +15,16 @@ export class Feedback extends Component {
   }
 
   render() {
-    const { gravatar, playerName, score } = this.props;
+    const { gravatarEmail, name, score } = this.props;
     return (
-      <div>
+      <div data-testid="feedback-text">
         <header>
-          <img data-testid="header-profile-picture" src={ gravatar } alt="Gravatar" />
-          <h2 data-testid="header-player-name">{ playerName }</h2>
+          <img
+            data-testid="header-profile-picture"
+            src={ gravatarEmail }
+            alt="Gravatar"
+          />
+          <h2 data-testid="header-player-name">{ name }</h2>
           <h3 data-testid="header-score">{ score }</h3>
         </header>
         <section>
@@ -30,10 +35,15 @@ export class Feedback extends Component {
   }
 }
 
-Feedback.propTypes = {
-  gravatar: PropTypes.string.isRequired,
-  playerName: PropTypes.string.isRequired,
-  score: PropTypes.number.isRequired,
+const mapStateToProps = (state) => {
+  const { player: { name, gravatarEmail, score } } = state;
+  return { name, gravatarEmail, score };
 };
 
-export default Feedback;
+Feedback.propTypes = {
+  gravatarEmail: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  score: PropTypes.string.isRequired,
+};
+
+export default connect(mapStateToProps)(Feedback);
