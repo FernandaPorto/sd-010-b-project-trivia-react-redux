@@ -63,38 +63,49 @@ class Question extends React.Component {
     this.setState({ isClicked: true });
   }
 
+  clicked(answer) {
+    // isClicked ? (answer === fullResults.correct_answer ? 'correctButton' : 'wrongButton') : null
+    const { fullResults, isClicked } = this.state;
+    if (isClicked && answer === fullResults.correct_answer) {
+      return 'correctButton';
+    }
+    if (isClicked && fullResults.incorrect_answers.includes(answer)) {
+      return 'wrongButton';
+    }
+    return null;
+  }
+
   render() {
-    const { props: { result }, state: { arrRandom, fullResults, isClicked } } = this;
+    const { props: { result }, state: { arrRandom } } = this;
     return (
       <>
         <span data-testid="question-category">
-          { `Category: 
+          {`Category: 
           ${result.category}`}
         </span>
 
         <br />
 
         <span data-testid="question-text">
-          { `Question:  
+          {`Question:  
           ${result.question}`}
         </span>
 
         <br />
 
-        { arrRandom.map((answer, index) => (
+        {arrRandom.map((answer, index) => (
           <button
             type="button"
             key={ answer }
             value={ answer }
             data-testid={ this.insertDataTestId(answer, index) }
             onClick={ this.handleChange }
-            // className={}
-            // className={ isClicked ? (answer === fullResults.correct_answer ? 'correctButton' : 'wrongButton') : null }
+            className={ this.clicked(answer) }
+            // className={isClicked ? (answer === fullResults.correct_answer ? 'correctButton' : 'wrongButton') : null}
           >
             { answer }
           </button>
         ))}
-
       </>
     );
   }
