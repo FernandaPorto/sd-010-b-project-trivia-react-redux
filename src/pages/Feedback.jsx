@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
+import { playAgain } from '../actions';
 
 class Feedback extends Component {
   constructor() {
@@ -16,8 +17,9 @@ class Feedback extends Component {
   }
 
   handleBtn({ target: { className } }) {
-    const { history: { push } } = this.props;
+    const { history: { push }, resetScore } = this.props;
     if (className === 'btn-play-again') {
+      resetScore();
       push('/');
     } else {
       push('/ranking');
@@ -40,7 +42,7 @@ class Feedback extends Component {
         <main>
           <p data-testid="feedback-text">{ this.message(assertions) }</p>
           <p data-testid="feedback-total-question">{ assertions }</p>
-          <p data-testid="feedback-total-score">{ null || score}</p>
+          <p data-testid="feedback-total-score">{score}</p>
         </main>
         <div>
           <button
@@ -70,6 +72,10 @@ const mapStateToProps = (state) => {
   return { name, gravatarEmail, score, assertions };
 };
 
+const mapDispatchToProps = (dispatch) => ({
+  resetScore: () => dispatch(playAgain()),
+});
+
 Feedback.propTypes = {
   gravatarEmail: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
@@ -78,6 +84,7 @@ Feedback.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  resetScore: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(Feedback);
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);

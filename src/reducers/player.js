@@ -25,6 +25,13 @@ export default function (state = initialState, action) {
       gravatarEmail,
     };
   }
+  case ('PLAY_RESET'): {
+    return {
+      ...state,
+      score: 0,
+      assertions: 0,
+    };
+  }
   default:
     return state;
   }
