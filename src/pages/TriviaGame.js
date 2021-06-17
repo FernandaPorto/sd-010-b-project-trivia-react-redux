@@ -20,6 +20,7 @@ class TriviaGame extends Component {
   componentDidMount() {
     const { token, updateTrivia } = this.props;
     updateTrivia(token);
+    if (!localStorage.ranking) localStorage.ranking = JSON.stringify([]);
   }
 
   nextAnswer(bool) {
