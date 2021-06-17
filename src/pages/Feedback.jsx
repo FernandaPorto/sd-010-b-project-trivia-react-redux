@@ -6,12 +6,22 @@ class Feedback extends Component {
   constructor() {
     super();
     this.message = this.message.bind(this);
+    this.handleBtn = this.handleBtn.bind(this);
   }
 
   message(status) {
     const badScore = 3;
     if (status < badScore) return 'Podia ser melhor...';
     return 'Mandou bem!';
+  }
+
+  handleBtn({ target: { className } }) {
+    const { history: { push } } = this.props;
+    if (className === 'btn-play-again') {
+      push('/');
+    } else {
+      push('/ranking');
+    }
   }
 
   render() {
@@ -30,6 +40,22 @@ class Feedback extends Component {
         <section>
           <h1 data-testid="feedback-text">{ this.message(assertions) }</h1>
         </section>
+        <button
+          data-testid="btn-play-again"
+          type="button"
+          className="btn-play-again"
+          onClick={ (event) => { this.handleBtn(event); } }
+        >
+          Jogar Novamente
+        </button>
+        <button
+          type="button"
+          data-testid="btn-ranking"
+          className="btn-ranking"
+          onClick={ (event) => { this.handleBtn(event); } }
+        >
+          Ver Ranking
+        </button>
       </div>
     );
   }
@@ -45,6 +71,9 @@ Feedback.propTypes = {
   name: PropTypes.string.isRequired,
   score: PropTypes.number.isRequired,
   assertions: PropTypes.number.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
 };
 
 export default connect(mapStateToProps)(Feedback);

@@ -541,7 +541,7 @@ describe('15 - [TELA DE FEEDBACK] Crie a opção para a pessoa jogadora poder jo
     cy.get(BUTTON_NEXT_QUESTION_SELECTOR).click();
   });
 
-  it.skip('A pessoa deve ser redirecionada para tela inicial', () => {
+  it('A pessoa deve ser redirecionada para tela inicial', () => {
     cy.get(BUTTON_PLAY_AGAIN_SELECTOR).click();
     cy.get(INPUT_PLAYER_EMAIL_SELECTOR).should('exist');
   });
@@ -566,7 +566,7 @@ describe('16 - [TELA DE FEEDBACK] Crie a opção para a pessoa jogadora poder vi
     cy.get(BUTTON_NEXT_QUESTION_SELECTOR).click();
   });
 
-  it.skip('A pessoa deve ser redirecionada para tela de ranking', () => {
+  it('A pessoa deve ser redirecionada para tela de ranking', () => {
     cy.get(BUTTON_RANKING_SELECTOR).click();
     cy.get(RANKING_TITLE_SELECTOR).should('exist');
   });
