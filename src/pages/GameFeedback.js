@@ -61,7 +61,6 @@ class GameFeedback extends Component {
 }
 
 GameFeedback.propTypes = {
-  hits: PropTypes.number.isRequired,
   score: PropTypes.number.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
