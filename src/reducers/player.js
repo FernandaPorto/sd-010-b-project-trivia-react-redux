@@ -1,7 +1,8 @@
-import { ADD_PLAYER_NAME } from '../actions/actionsType';
+import { ADD_PLAYER_NAME, ADD_SCORE } from '../actions/actionsType';
 
 const INITIAL_STATE = {
   name: '',
+  score: 0,
 };
 
 function player(state = INITIAL_STATE, action) {
@@ -10,6 +11,11 @@ function player(state = INITIAL_STATE, action) {
     return {
       ...state,
       name: action.payload.name,
+    };
+  case ADD_SCORE:
+    return {
+      ...state,
+      score: state.score + action.score,
     };
   default:
     return state;
