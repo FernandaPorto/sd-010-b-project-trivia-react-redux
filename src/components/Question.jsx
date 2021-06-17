@@ -24,16 +24,6 @@ class Question extends React.Component {
     const response = await fetch(apiQuestion);
     const data = await response.json();
 
-    /* const testeJ = [1, 2, 3, 4, 5, 6];
-    function testeAleatorio(arrayTeste) {
-      const arr = arrayTeste.slice();
-      for (let index = 0; index < data.results.length; index += 1) {
-        const index2 = Math.floor(Math.random() * (index + 1));
-        [arr[index], arr[index2]] = [arr[index2], arr[index]];
-      }
-      return arr;
-    } */
-
     this.setState({
       questions: data.results,
     });
