@@ -1,4 +1,3 @@
-/* eslint-disable react/no-danger */
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -43,39 +42,6 @@ class Question extends React.Component {
     const { questions } = this.state;
     return (
       questions.length > 0 ? (
-<<<<<<< HEAD
-        <div className="container">
-          <div data-testid="question-category">
-            {questions[0].category}
-          </div>
-          <div data-testid="question-text">
-            {questions[0].question.replaceAll('&quot;', '"').replaceAll('&#039;', '\'')}
-          </div>
-          <div>
-            <button type="button" data-testid="correct-answer">
-              {questions[0].correct_answer}
-            </button>
-            <button type="button" data-testid={ `wrong-answer-${0}` }>
-              {questions[0].incorrect_answers[0]}
-            </button>
-            <button type="button" data-testid={ `wrong-answer-${1}` }>
-              {questions[0].incorrect_answers[1]}
-            </button>
-            <button type="button" data-testid={ `wrong-answer-${2}` }>
-              {questions[0].incorrect_answers[2]}
-            </button>
-
-          </div>
-
-        </div>
-      ) : (
-        <h1>Loading...</h1>
-      )
-    );
-  }
-}
-export default Question;
-=======
         <div>
           <p
             data-testid="question-category"
@@ -122,4 +88,3 @@ Question.propTypes = {
 };
 
 export default connect(mapStateToProps, null)(Question);
->>>>>>> bac4ae076cddf675b2c2b101a0b67e754c74b018
