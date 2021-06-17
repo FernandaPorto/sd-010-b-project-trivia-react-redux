@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 class FeedbackMessages extends Component {
   constructor(props) {
@@ -12,32 +11,36 @@ class FeedbackMessages extends Component {
     this.messages();
   }
 
-  messages(score) {
+  messages(assertion) {
+    const localStorageInfos = JSON.parse(localStorage.getItem('state'));
+    const { player: { assertions } } = localStorageInfos;
     const minScore = 3;
     const fail = 'Podia ser melhor...';
     const success = 'Mandou bem!';
-    if (score < minScore) {
+    if (assertion < minScore) {
       return `${fail}
-      Você acertou ${score} de 5.`;
+      Você acertou ${assertions} de 5.`;
     }
-    if (score >= minScore) {
+    if (assertion >= minScore) {
       return `${success}
-      Você acertou ${score} de 5.`;
+      Você acertou ${assertion} de 5.`;
     }
   }
 
   render() {
-    const { score } = this.props;
+    const localStorageInfos = JSON.parse(localStorage.getItem('state'));
+    const { player: { assertions, score } } = localStorageInfos;
     return (
-      <div>
-        <span data-testid="feedback-text">{this.messages(score)}</span>
-      </div>
+      <>
+        <div>
+          <span data-testid="feedback-text">{this.messages(assertions)}</span>
+        </div>
+        <p data-testid="feedback-total-score">{ score }</p>
+        <p data-testid="feedback-total-question">{ assertions }</p>
+        <button type="button" data-testid="btn-ranking">Jogar novamente</button>
+      </>
     );
   }
 }
-
-FeedbackMessages.propTypes = {
-  score: PropTypes.number.isRequired,
-};
 
 export default FeedbackMessages;
