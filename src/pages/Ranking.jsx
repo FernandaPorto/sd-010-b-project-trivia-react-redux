@@ -12,7 +12,6 @@ class Ranking extends Component {
 
     return (
       <section>
-        <Header />
         <h1 data-testid="ranking-title">RANKING</h1>
         <h3
           data-testid="player-name-0"
