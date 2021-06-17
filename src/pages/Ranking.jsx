@@ -12,20 +12,6 @@ class Ranking extends Component {
     return (
       <section>
         <h1 data-testid="ranking-title">RANKING</h1>
-        <img
-          data-testid=""
-          height="20"
-          src={ `https://www.gravatar.com/avatar/${atual.player.emailGravatar}` }
-          alt="Avatar"
-        />
-        <h3
-          data-testid="player-name-0"
-        >
-          {`${atual.player.name}`}
-          {' '}
-
-        </h3>
-        <h3 data-testid="player-score-0">{`com ${atual.player.score} pontos`}</h3>
         {getRanking.map((item, i) => (
           <div key={ i }>
             <img
@@ -37,13 +23,27 @@ class Ranking extends Component {
             <h3
               data-testid={ `player-name-${i + 1}` }
             >
-              {`${item.name} - `}
+              {item.name}
             </h3>
             <h3 data-testid={ `player-score-${i + 1}` }>
-              {`${item.score} pontos`}
+              {item.score}
             </h3>
           </div>
         ))}
+                <img
+          data-testid=""
+          height="20"
+          src={ `https://www.gravatar.com/avatar/${atual.player.emailGravatar}` }
+          alt="Avatar"
+        />
+        <h3
+          data-testid="player-name-1"
+        >
+          {`${atual.player.name}`}
+          {' '}
+
+        </h3>
+        <h3 data-testid="player-score-1">{`com ${atual.player.score} pontos`}</h3>
 
         <Link to="/">
           <button data-testid="btn-go-home" type="button">Voltar</button>
