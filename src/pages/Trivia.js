@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
-import { fetchApiQuestions, fetchAPI } from '../actions/index';
+import { fetchApiQuestions, fetchAPI, saveScore } from '../actions/index';
 
 import './trivia.css';
 
@@ -17,20 +17,20 @@ class Trivia extends React.Component {
       disable: false,
       pontosState: 0,
       next: true,
+      OK: true,
     };
 
     this.renderQuestion = this.renderQuestion.bind(this);
     this.colorAnswers = this.colorAnswers.bind(this);
     this.update = this.update.bind(this);
-    this.scoreTrivia = this.scoreTrivia.bind(this);
+    this.acertou = this.acertou.bind(this);
     this.storange = this.storange.bind(this);
-    this.teste = this.teste.bind(this);
+    this.errou = this.errou.bind(this);
   }
 
   componentDidMount() {
-    // const { pontosState } = this.state;
-    // localStorage.setItem('player', JSON.stringify(pontosState));
     this.getQuestions();
+    this.storange();
     const ONE_SECOND = 1000; // 1 second in miliseconds
     const { seconds } = this.state;
     this.cronometerInterval = setInterval(() => {
@@ -60,6 +60,8 @@ class Trivia extends React.Component {
     this.setState({
       questions: response.questions.results,
     });
+    const { questions } = this.state;
+    console.log(questions);
   }
 
   update(state) {
@@ -74,20 +76,28 @@ class Trivia extends React.Component {
   }
 
   storange() {
-    const { pontosState } = this.state;
+    const { pontosState, questions } = this.state;
     const { name, email } = this.props;
 
-    const player = {
-      name,
-      // assertions: '',
-      score: pontosState,
-      gravatarEmail: email,
+    const play = {
+      player: {
+        name,
+        assertions: 0,
+        score: pontosState,
+        gravatarEmail: email,
+      },
     };
 
-    localStorage.setItem('player', JSON.stringify(player));
+    const ranking = [
+      { name, score: pontosState, picture: email },
+    ];
+
+    localStorage.setItem('state', JSON.stringify(play));
+    localStorage.setItem('ranking', JSON.stringify(ranking));
+    localStorage.setItem('token', JSON.stringify(questions));
   }
 
-  scoreTrivia() {
+  acertou() {
     const { questions, seconds } = this.state;
     const { difficulty } = questions[0];
     const levelQuestion = difficulty;
@@ -96,15 +106,12 @@ class Trivia extends React.Component {
     const pointsEasy = 1;
     const somaPontos = 10;
     let pontosRender = 0;
-    console.log(pontosRender);
     if (levelQuestion === 'hard') {
       pontosRender = somaPontos + (seconds * pointsHard);
     } else if (levelQuestion === 'medium') {
       pontosRender = somaPontos + (seconds * pointsMedium);
     } else if (levelQuestion === 'easy') {
       pontosRender = somaPontos + (seconds * pointsEasy);
-    } else {
-      return pontosRender;
     }
     this.setState((state) => ({ pontosState: state.pontosState + pontosRender }));
   }
@@ -114,15 +121,13 @@ class Trivia extends React.Component {
       correct: 'correct_answer',
       reject: 'incorrect_answer',
       next: false }));
-    // const { pontosState } = this.state;
-    // localStorage.setItem('player', JSON.stringify(pontosState));
-    // console.log(pontosState);
   }
 
-  async teste() {
-    await this.scoreTrivia();
+  async errou() {
     this.colorAnswers();
     this.storange();
+
+    this.setState((state) => ({ pontosState: state.pontosState }));
   }
 
   renderQuestion() {
@@ -140,7 +145,7 @@ class Trivia extends React.Component {
               className={ correct }
               data-testid="correct-answer"
               onClick={ async () => {
-                await this.scoreTrivia();
+                await this.acertou();
                 this.storange();
                 this.colorAnswers();
               } }
@@ -153,7 +158,7 @@ class Trivia extends React.Component {
               <button
                 disabled={ disable }
                 data-testid={ `wrong-answer-${index}` }
-                onClick={ this.teste }
+                onClick={ this.errou }
                 key={ incorrect }
                 type="button"
                 className={ reject }
@@ -170,14 +175,14 @@ class Trivia extends React.Component {
 
   render() {
     const { seconds, pontosState, next } = this.state;
-    console.log(pontosState);
-    // console.log(seconds);
     return (
       <div>
         <Header />
         <h3>
+          Contador:
           {seconds}
           {' '}
+          Ranking:
           {pontosState}
         </h3>
         {this.renderQuestion()}
@@ -202,11 +207,13 @@ Trivia.propTypes = {
 
 const mapStateToProps = (state) => ({
   name: state.reducerName.name,
+  email: state.reducerName.email,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   apiQuestions: (token, perguntas) => dispatch(fetchApiQuestions(token, perguntas)),
   thunkToken: () => dispatch(fetchAPI()),
+  getScore: (score) => dispatch(saveScore(score)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Trivia);

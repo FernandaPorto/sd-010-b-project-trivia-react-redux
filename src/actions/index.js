@@ -1,11 +1,13 @@
 export const REQUEST_API = 'REQUEST_API';
 export const SAVE_NAME = 'SAVE_NAME';
 export const SAVE_EMAIL = 'SAVE_EMAIL';
+export const SAVE_SCORE = 'SAVE_SCORE';
 export const REQUEST_QUESTIONS = 'REQUEST_API_QUESTIONS';
 
 export const requestAPI = (result) => ({ type: REQUEST_API, result });
 export const saveName = (name) => ({ type: SAVE_NAME, name });
 export const saveEmail = (email) => ({ type: SAVE_EMAIL, email });
+export const saveScore = (score) => ({ type: SAVE_SCORE, score });
 export const requestQuestions = (questions) => ({ type: REQUEST_QUESTIONS, questions });
 
 export function fetchAPI() {
