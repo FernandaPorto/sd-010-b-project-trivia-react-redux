@@ -58,6 +58,7 @@ class PerguntaCard extends Component {
     const { nextQuestion } = this.props;
     this.setState((oldState) => ({
       ...oldState,
+      nextStyle: 'hidden',
       correctAnswer: {},
       wrongAnswer: {},
       timer: 30,
@@ -94,10 +95,10 @@ class PerguntaCard extends Component {
   }
 
   renderTimer() {
-    const { timer } = this.state;
-    if (timer === 0) {
+    const { timer, nextStyle } = this.state;
+    if (timer === 0 && nextStyle === 'hidden') {
       this.setBorder()
-        .then(() => clearInterval(this.timer));
+        .then(() => { clearInterval(this.timer); });
     }
     return (<Timer
       timer={ timer }
