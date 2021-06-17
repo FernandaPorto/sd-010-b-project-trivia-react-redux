@@ -23,6 +23,17 @@ class Login extends React.Component {
     this.handlePlay = this.handleStart.bind(this);
   }
 
+  componentDidMount() {
+    const stats = {
+      name: '',
+      assertions: 0,
+      score: '',
+      gravatarEmail: '',
+    };
+    const state = { player: stats };
+    localStorage.setItem('state', JSON.stringify(state));
+  }
+
   verifyEmail(email) {
     const format = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     if (email.match(format)) {
@@ -69,10 +80,17 @@ class Login extends React.Component {
 
   async handleStart(userLogin, dispatchToken) {
     const { name, email } = this.state;
-
     await this.requestToken(dispatchToken);
     const nameAndImgPath = this.requestGravatar(name, email);
     userLogin(nameAndImgPath);
+    const stats = {
+      name,
+      assertions: 0,
+      score: '',
+      gravatarEmail: nameAndImgPath,
+    };
+    const state = { player: stats };
+    localStorage.setItem('state', JSON.stringify(state));
     this.setState({
       redirect: true,
     });

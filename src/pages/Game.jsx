@@ -91,7 +91,7 @@ class Game extends React.Component {
     const { name, gravatarEmail, score } = this.props;
 
     if (count === NUMBER_FIVE) {
-      return (<Redirect to="/" />);
+      return (<Redirect to="/feedback" />);
     }
 
     if (results) {
@@ -102,8 +102,12 @@ class Game extends React.Component {
           </header>
           <main>
             <Questions
+              name={ name }
+              gravatarEmail={ gravatarEmail }
+              score={ score }
               result={ results[count] }
               disabled={ disabled }
+              time={ time }
               stopTimer={ this.stopTimer }
             />
             { nextButton === true ? (
