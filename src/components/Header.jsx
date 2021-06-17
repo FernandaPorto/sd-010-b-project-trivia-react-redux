@@ -11,7 +11,7 @@ class Header extends Component {
           <img src={ gravatarURL } alt="player" data-testid="header-profile-picture" />
         </div>
         <div>
-          <h1 data-testid="header-player-name">{playerName}</h1>
+          <h4 data-testid="header-player-name">{playerName}</h4>
         </div>
         {/* store será obtido da store ou do localStorage */}
         <div data-testid="header-score">{score}</div>

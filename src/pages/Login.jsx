@@ -1,12 +1,12 @@
 import React from 'react';
+import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router';
 import md5 from 'crypto-js/md5';
 
+import { fetchToken } from '../services/api';
 import { loginActionCreator } from '../redux/actions';
 import SettingsButton from '../components/SettingsButton';
-import fetchToken from '../services/api';
 
 class Login extends React.Component {
   constructor(props) {
@@ -34,17 +34,31 @@ class Login extends React.Component {
 
     const hash = md5(email).toString();
     const gravatarURL = `https://www.gravatar.com/avatar/${hash}`;
+
     login({ name, email, gravatarURL });
 
     const { token } = await fetchToken();
+
+    const state = {
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: email,
+      },
+    };
+
     localStorage.setItem('token', token);
+    localStorage.setItem('state', JSON.stringify(state));
 
     this.setState({ redirect: true });
   }
 
   render() {
     const { name, email, redirect } = this.state;
+
     if (redirect) return <Redirect to="/Game" />;
+
     return (
       <section>
         <div>

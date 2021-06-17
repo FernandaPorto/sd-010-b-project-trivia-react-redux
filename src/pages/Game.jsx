@@ -1,9 +1,14 @@
 import React from 'react';
+import TriviaGame from '../components/TriviaGame';
+import Header from '../components/Header';
 
 class Game extends React.Component {
   render() {
     return (
-      <h1>Game</h1>
+      <main>
+        <Header />
+        <TriviaGame />
+      </main>
     );
   }
 }
