@@ -8,6 +8,7 @@ class Feedback extends React.Component {
     return (
       <section>
         <h1>Feedback</h1>
+        <p data-testid="feedback-text">oi</p>
         <div>
           <span>Número de acertos: </span>
           <span data-testid="feedback-total-question">{assertions}</span>

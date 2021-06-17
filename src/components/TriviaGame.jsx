@@ -19,6 +19,10 @@ class TriviaGame extends React.Component {
     this.handleScore = this.handleScore.bind(this);
     this.renderQuestion = this.renderQuestion.bind(this);
     this.renderNextButton = this.renderNextButton.bind(this);
+
+    this.state = {
+      redirect: false,
+    };
   }
 
   componentDidMount() {
@@ -29,7 +33,7 @@ class TriviaGame extends React.Component {
   handleScore() {
     const { questions, questionIndex, secondsLeft } = this.props;
 
-    const correctAnswerPoints = 10;
+    const TEN = 10;
     const difficultyPoints = {
       easy: 1,
       medium: 2,
@@ -40,10 +44,7 @@ class TriviaGame extends React.Component {
     const { difficulty } = questions[questionIndex];
     const level = difficultyPoints[difficulty];
 
-    const calculator = () => (
-      state.player.score
-      + correctAnswerPoints
-      + (secondsLeft * level));
+    const calculator = () => state.player.score + TEN + secondsLeft * level;
 
     state.player.assertions += 1;
     state.player.score = calculator();
@@ -52,13 +53,15 @@ class TriviaGame extends React.Component {
   }
 
   renderNextButton() {
-    const { history, questions, questionIndex, nextQuestion } = this.props;
+    const { questions, questionIndex, nextQuestion } = this.props;
     const isLast = questionIndex === questions.length - 1;
-    const teste = () => history.push('/feedback');
     return (
       <button
         type="button"
-        onClick={ () => { nextQuestion(); if (isLast) teste(); } }
+        onClick={ () => {
+          nextQuestion();
+          if (isLast) this.setState({ redirect: true });
+        } }
         data-testid="btn-next"
       >
         Próxima pergunta
@@ -69,12 +72,7 @@ class TriviaGame extends React.Component {
   renderQuestion() {
     const { questions, questionIndex, isResolved, answerQuestion } = this.props;
 
-    const {
-      category,
-      question,
-      answerOptions,
-      correctAnswer,
-    } = questions[questionIndex];
+    const { category, question, answerOptions, correctAnswer } = questions[questionIndex];
 
     const renderAnswers = answerOptions.map((answer, index) => {
       const isCorrect = answer === correctAnswer;
@@ -86,7 +84,10 @@ class TriviaGame extends React.Component {
           type="button"
           key={ index }
           data-testid={ testId }
-          onClick={ () => { answerQuestion(); if (isCorrect) this.handleScore(); } }
+          onClick={ () => {
+            answerQuestion();
+            if (isCorrect) this.handleScore();
+          } }
           className={ isResolved ? coloredStyle : 'default-button' }
           disabled={ isResolved }
         >
@@ -100,15 +101,17 @@ class TriviaGame extends React.Component {
         <h2 data-testid="question-category">{category}</h2>
         <h3 data-testid="question-text">{question}</h3>
         {renderAnswers}
-        <div>
-          {isResolved ? this.renderNextButton() : <Timer />}
-        </div>
+        <div>{isResolved ? this.renderNextButton() : <Timer />}</div>
       </div>
     );
   }
 
   render() {
+    const { redirect } = this.state;
     const { isLoading } = this.props;
+
+    if (redirect) return <Redirect to="/feedback" />;
+
     return (
       <section>
         {isLoading ? <h3>LOADING...</h3> : this.renderQuestion()}
