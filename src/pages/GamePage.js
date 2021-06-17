@@ -4,7 +4,9 @@ import HeaderComponent from '../components/HeaderComponent';
 
 class GamePage extends Component {
   // constructor(props) {
-  //   super(props)
+  //   super(props);
+  //   this.state = {
+  //   };
   // }
 
   render() {
