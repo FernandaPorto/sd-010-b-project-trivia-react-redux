@@ -87,7 +87,6 @@ class Answers extends Component {
             type="button"
             className={ id === 'c' ? youreRight : youreWrong }
             onClick={ () => this.selectAnswer(timer, difficulty, id) }
-
             disabled={ isDisableAnswers }
           >
             { answer }
@@ -108,8 +107,6 @@ Answers.propTypes = {
   isDisableAnswers: PropTypes.bool.isRequired,
   timer: PropTypes.number.isRequired,
   incorrect: PropTypes.arrayOf(PropTypes.string).isRequired,
-  isDisableAnswers: PropTypes.bool.isRequired,
-  funcDisable: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
