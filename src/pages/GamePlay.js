@@ -45,16 +45,16 @@ class GamePlay extends React.Component {
           <h3
             data-testid="question-category"
           >
-            { questions && questions[questionIndex].category }
+            { questions.length !== 0 && questions[questionIndex].category }
           </h3>
           <p
             data-testid="question-text"
           >
-            { questions && questions[questionIndex].question }
+            { questions.length !== 0 && questions[questionIndex].question }
           </p>
         </div>
         <div>
-          { questions && <Answers
+          { questions.length !== 0 && <Answers
             correct={ questions[questionIndex].correct_answer }
             incorrect={ questions[questionIndex].incorrect_answers }
             difficulty={ questions[questionIndex].difficulty }
