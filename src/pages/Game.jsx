@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchQuestions } from '../redux/actions';
 import combineArray from '../functions/combineArray';
+import addInfoToLocalStorage from '../functions/addInfoToStorage';
 
 class Game extends React.Component {
   constructor() {
@@ -21,7 +22,6 @@ class Game extends React.Component {
     this.handleOnClick = this.handleOnClick.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.nextButton = this.nextButton.bind(this);
-    this.addInfoToLocalStorage = this.addInfoToLocalStorage.bind(this);
     this.getGravatar = this.getGravatar.bind(this);
     this.getScore = this.getScore.bind(this);
   }
@@ -73,21 +73,6 @@ class Game extends React.Component {
       numberOfAssertions: numberOfAssertions + 1,
       score: score + (defaultNumber + (timer * difficulty)),
     });
-  }
-
-  addInfoToLocalStorage() {
-    const { location: { aboutProps: { name: { name },
-      email: { email } } } } = this.props;
-    const { numberOfAssertions, score } = this.state;
-    const objLocalStorage = {
-      player: {
-        name,
-        assertions: numberOfAssertions,
-        score,
-        gravatarEmail: email,
-      },
-    };
-    localStorage.setItem('state', JSON.stringify(objLocalStorage)); // Referência https://www.horadecodar.com.br/2020/07/21/como-salvar-um-objeto-na-localstorage/
   }
 
   handleOnClick({ target: { name } }) {
@@ -220,11 +205,11 @@ class Game extends React.Component {
   }
 
   render() {
-    this.addInfoToLocalStorage();
-    const { score } = this.state;
+    const { score, numberOfAssertions } = this.state;
     const { questions } = this.props;
     const { location: { aboutProps: { name: { name },
       email: { email } } } } = this.props;
+    addInfoToLocalStorage(name, email, score, numberOfAssertions);
     return (
       <>
         {this.getPerfilGravatar(email, name, score)}
