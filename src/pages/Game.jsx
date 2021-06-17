@@ -23,7 +23,7 @@ class Game extends Component {
           <QuestionCard question={ questions[index] } />
           <button
             type="button"
-            onClick={ () => this.setState((prev) => ({ x: prev.x + 1 })) }
+            onClick={ () => this.setState((prev) => ({ index: prev.index + 1 })) }
           >
             Próxima
           </button>
