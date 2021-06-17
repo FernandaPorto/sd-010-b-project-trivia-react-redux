@@ -44,7 +44,7 @@ class Game extends React.Component {
           <div>
             <Question number={ number } results={ results } />
             <Answer number={ number } results={ results } />
-            <Timer />
+            <Timer results={ results } />
           </div>
         )}
       </div>
