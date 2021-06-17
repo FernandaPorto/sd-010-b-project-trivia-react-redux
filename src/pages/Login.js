@@ -50,33 +50,29 @@ class Login extends React.Component {
     }
 
     return (
-      <form>
+      <form className="form">
         <label htmlFor="name">
           NAME
           <input
+            className="input"
             type="text"
             data-testid="input-player-name"
             id="name"
           />
         </label>
-        <label htmlFor="email">
+        <label htmlFor="email" className="label-text">
           EMAIL
           <input
+            className="input"
             type="text"
             data-testid="input-gravatar-email"
             id="email"
             onChange={ ({ target: { value } }) => this.validateEmail(value) }
           />
         </label>
-        <button
-          type="button"
-          data-testid="btn-settings"
-          onClick={ () => this.redirect() }
-        >
-          Configurações
-        </button>
         <Link to="/jogar">
           <button
+            className="button"
             type="submit"
             data-testid="btn-play"
             disabled={ validForm }
@@ -85,6 +81,14 @@ class Login extends React.Component {
             Jogar
           </button>
         </Link>
+        <button
+          className="button"
+          type="button"
+          data-testid="btn-settings"
+          onClick={ () => this.redirect() }
+        >
+          Configurações
+        </button>
       </form>
     );
   }
