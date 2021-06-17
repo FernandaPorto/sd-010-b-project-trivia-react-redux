@@ -10,7 +10,6 @@ class Header extends Component {
     const hashEmail = md5(email).toString();
     const url = `https://www.gravatar.com/avatar/${hashEmail}`;
     fetch(url).then(({ url: URL }) => getGravatar(URL));
-    console.log(getGravatar(url));
   }
 
   render() {
@@ -18,8 +17,8 @@ class Header extends Component {
     return (
       <header>
         <img src={ gravatar } alt="imege" data-testid="header-profile-picture" />
-        <p data-testid="header-player-name">{nome}</p>
-        <p data-testid="header-score">{0}</p>
+        <span data-testid="header-player-name">{nome}</span>
+        <span data-testid="header-score">{0}</span>
       </header>
     );
   }

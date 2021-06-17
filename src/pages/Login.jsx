@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { loginAction } from '../actions';
-import fetchURL from '../services/API';
+import ButtonSettings from '../components/ButtonSettings';
+import { setToken } from './GamePage';
 
 class LoginPage extends Component {
   constructor(props) {
@@ -18,9 +18,8 @@ class LoginPage extends Component {
 
     this.validationFields = this.validationFields.bind(this);
     this.onClick = this.onClick.bind(this);
-    this.setToken = this.setToken.bind(this);
-    this.settingsButton = this.settingsButton.bind(this);
-    this.setToken = this.setToken.bind(this);
+    // this.setToken = this.setToken.bind(this);
+    // this.settingsButton = this.settingsButton.bind(this);
   }
 
   // componentDidMount() {
@@ -30,39 +29,15 @@ class LoginPage extends Component {
   //   userPlay(name, emailAdress);
   // }
 
-  onClick() {
+  async onClick() {
     const { name, emailAdress } = this.state;
     const { userPlay } = this.props;
-    console.log(name, emailAdress);
     userPlay(name, emailAdress);
     // const { emailAdress, name } = this.state;
     // const { firstDispatch } = this.props;
     // firstDispatch(emailAdress, passwordData);
     this.setState({ shouldRedirect: true });
-    this.setToken();
-  }
-
-  async setToken() {
-    const token = await fetchURL();
-    localStorage.setItem('token', JSON.stringify(token));
-    // const tokenLocalStorage = JSON.parse(localStorage.getItem(token));
-    try {
-      const fetchTrivia = fetch(`https://opentdb.com/api.php?amount=5&token=${token.token}`).then((response) => response.json());
-      console.log(fetchTrivia);
-    } catch (error) {
-      console.log(error);
-    }
-    fetchTrivia.map(() => {})
-  }
-
-  settingsButton() {
-    return (
-      <Link to="/settings">
-        <button type="button" data-testid="btn-settings">
-          Configurações
-        </button>
-      </Link>
-    );
+    await setToken();
   }
 
   validationFields() {
@@ -118,7 +93,7 @@ class LoginPage extends Component {
         >
           Jogar
         </button>
-        { this.settingsButton() }
+        <ButtonSettings />
       </div>
     );
   }
