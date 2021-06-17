@@ -15,6 +15,7 @@ class Answers extends Component {
       difficulty,
       youreRight: '',
       youreWrong: '',
+      isNext: false,
       shuffleAnswers: [],
     };
     this.showCorrectAnswers = this.showCorrectAnswers.bind(this);
@@ -53,6 +54,7 @@ class Answers extends Component {
   selectAnswer(timer, difficulty, id) {
     if (id === 'c') this.addScore(timer, difficulty);
     this.showCorrectAnswers();
+    this.handleClick = this.handleClick.bind(this);
   }
 
   showCorrectAnswers() {
@@ -60,13 +62,13 @@ class Answers extends Component {
     this.setState({
       youreRight: 'right-answer',
       youreWrong: 'wrong-answer',
+      isNext: true,
     }, funcDisable());
   }
 
   render() {
-    const { youreRight, youreWrong, shuffleAnswers, difficulty } = this.state;
+    const { youreRight, youreWrong, shuffleAnswers, difficulty, isNext } = this.state;
     const { correct, incorrect, isDisableAnswers, timer } = this.props;
-
     if (isDisableAnswers
       && (youreRight !== 'right-answer' && youreWrong !== 'wrong-answer')) {
       this.showCorrectAnswers();
@@ -92,6 +94,7 @@ class Answers extends Component {
             { answer }
           </button>
         )) }
+        { isNext && <button type="button" data-testid="btn-next">Próxima</button> }
       </div>
     );
   }
