@@ -39,6 +39,7 @@ const storageInicial = {
 const saveLocalState = (token) => {
   storageInicial.token = token;
   localStorage.setItem('state', JSON.stringify(storageInicial));
+  localStorage.setItem('token', JSON.stringify(token));
 };
 
 export function fetchToken() {
