@@ -32,7 +32,12 @@ class Feedback extends Component {
         picture: playerImage,
       };
       const rankingList = JSON.parse(localStorage.getItem('ranking'));
-      const newRankingList = [...rankingList, player];
+      const newRankingList = [...rankingList, player].sort((a, b) => {
+        if (b.score === a.score) {
+          return a.name.localeCompare(b.name);
+        }
+        return b.score - a.score;
+      });
       localStorage.setItem('ranking', JSON.stringify(newRankingList));
     }
   }
