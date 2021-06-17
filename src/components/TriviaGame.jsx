@@ -1,7 +1,11 @@
 import React from 'react';
-import { fetchQuestions } from '../services/api';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-class Trivia extends React.Component {
+import { fetchQuestions } from '../services/api';
+import Timer from './Timer';
+
+class TriviaGame extends React.Component {
   constructor(props) {
     super(props);
 
@@ -21,6 +25,12 @@ class Trivia extends React.Component {
 
   componentDidMount() {
     this.getQuestions();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.secondsLeft === 1) {
+      this.answerQuestion();
+    }
   }
 
   async getQuestions() {
@@ -105,10 +115,19 @@ class Trivia extends React.Component {
     return (
       <section>
         {loading ? <h3>LOADING...</h3> : this.renderQuestion(questionIndex)}
-        { isResolved && this.renderNextButton() }
+        { isResolved ? this.renderNextButton() : <Timer /> }
+
       </section>
     );
   }
 }
 
-export default Trivia;
+const mapStateToProps = (state) => ({
+  secondsLeft: state.game.secondsLeft,
+});
+
+TriviaGame.propTypes = {
+  secondsLeft: PropTypes.number,
+}.isRequired;
+
+export default connect(mapStateToProps)(TriviaGame);

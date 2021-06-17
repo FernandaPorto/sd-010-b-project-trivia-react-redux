@@ -1,5 +1,5 @@
 import React from 'react';
-import Trivia from '../components/TriviaGame';
+import TriviaGame from '../components/TriviaGame';
 import Header from '../components/Header';
 
 class Game extends React.Component {
@@ -7,7 +7,7 @@ class Game extends React.Component {
     return (
       <main>
         <Header />
-        <Trivia />
+        <TriviaGame />
       </main>
     );
   }
