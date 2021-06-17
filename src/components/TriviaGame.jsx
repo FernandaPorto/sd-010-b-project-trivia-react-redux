@@ -1,5 +1,6 @@
 import React from 'react';
 import { fetchQuestions } from '../services/api';
+import Timer from './Timer';
 
 class Trivia extends React.Component {
   constructor(props) {
@@ -105,7 +106,8 @@ class Trivia extends React.Component {
     return (
       <section>
         {loading ? <h3>LOADING...</h3> : this.renderQuestion(questionIndex)}
-        { isResolved && this.renderNextButton() }
+        { isResolved ? this.renderNextButton() : <Timer /> }
+
       </section>
     );
   }

@@ -1,9 +1,16 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
+import { toggleTimerActionCreator } from '../redux/actions';
 
 class Timer extends React.Component {
   constructor() {
     super();
     this.startGameTimer = this.startGameTimer.bind(this);
+    this.refreshTimer = this.refreshTimer.bind(this);
+    this.stopTimer = this.stopTimer.bind(this);
+
     this.state = {
       seconds: 30,
     };
@@ -15,10 +22,13 @@ class Timer extends React.Component {
 
   componentDidUpdate(_prevProps, prevState) {
     if (prevState.seconds === 1) {
-      clearInterval(this.timer);
+      this.stopTimer();
     }
   }
-  // Teste
+
+  componentWillUnmount() {
+    this.stopTimer();
+  }
 
   refreshTimer() {
     const { seconds } = this.state;
@@ -26,6 +36,13 @@ class Timer extends React.Component {
     this.setState({
       seconds: seconds - 1,
     });
+  }
+
+  stopTimer() {
+    const { toggleTimer } = this.props;
+
+    clearInterval(this.timer);
+    toggleTimer();
   }
 
   startGameTimer() {
@@ -41,4 +58,12 @@ class Timer extends React.Component {
   }
 }
 
-export default Timer;
+const mapDispatchToProps = (dispatch) => ({
+  toggleTimer: () => dispatch(toggleTimerActionCreator()),
+});
+
+Timer.propTypes = {
+  toggleTimer: PropTypes.func,
+}.isRequired;
+
+export default connect(null, mapDispatchToProps)(Timer);
