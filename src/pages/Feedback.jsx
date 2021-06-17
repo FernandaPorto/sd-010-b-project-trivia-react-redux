@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import GameHeader from '../components/GameHeader';
 
 class Feedback extends Component {
@@ -24,6 +25,16 @@ class Feedback extends Component {
             Score
             <h1 id="score" data-testid="feedback-total-score">{score}</h1>
           </label>
+          <Link to="/">
+            <button type="button" data-testid="btn-play-again">
+              Jogar novamente
+            </button>
+          </Link>
+          <Link to="ranking">
+            <button type="button" data-testid="btn-ranking">
+              Ver Ranking
+            </button>
+          </Link>
         </main>
       </>
     );
