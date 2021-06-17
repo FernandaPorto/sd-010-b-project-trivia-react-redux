@@ -3,7 +3,6 @@ import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchQuestions } from '../redux/actions';
-import './GameStyle.css';
 
 class Game extends React.Component {
   constructor() {
