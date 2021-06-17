@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Header from '../components/Header';
@@ -11,22 +12,20 @@ class Feedbacks extends React.Component {
     return (
       <section>
         <Header />
+        <span data-testid="feedback-total-question">{assertions}</span>
+        {' '}
+        <span data-testid="feedback-total-score">{score}</span>
         <h1 data-testid="feedback-text">
           {assertions >= THREE ? 'Mandou bem!' : 'Podia ser melhor...'}
         </h1>
-        <p data-testid="feedback-total-score">
-          {score}
-        </p>
-        <p data-testid="feedback-total-question">
-          {assertions}
-        </p>
+        <Link to="/" data-testid="btn-play-again">Jogar novamente</Link>
       </section>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  assertions: Number(state.player.assertions),
+  assertions: state.player.assertions,
   score: state.player.score,
 });
 
