@@ -54,7 +54,6 @@ class Answers extends Component {
   selectAnswer(timer, difficulty, id) {
     if (id === 'c') this.addScore(timer, difficulty);
     this.showCorrectAnswers();
-    this.handleClick = this.handleClick.bind(this);
   }
 
   showCorrectAnswers() {
