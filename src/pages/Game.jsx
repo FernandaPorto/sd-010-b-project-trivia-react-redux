@@ -1,6 +1,7 @@
 import React from 'react';
 import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchQuestions } from '../redux/actions';
 
@@ -92,8 +93,11 @@ class Game extends React.Component {
   }
 
   nextButton() {
-    const { clicked } = this.state;
-    if (clicked) {
+    const { clicked, numberQuestion } = this.state;
+    const { questions } = this.props;
+    console.log(numberQuestion);
+    console.log(questions.length);
+    if (numberQuestion < questions.length - 1 && clicked) {
       return (
         <div>
           <button
@@ -103,6 +107,20 @@ class Game extends React.Component {
           >
             Próxima
           </button>
+        </div>
+      );
+    }
+    if (numberQuestion === questions.length - 1 && clicked) {
+      return (
+        <div>
+          <Link to="/feedback">
+            <button
+              data-testid="btn-next"
+              type="button"
+            >
+              Próxima
+            </button>
+          </Link>
         </div>
       );
     }
