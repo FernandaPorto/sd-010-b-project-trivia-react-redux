@@ -53,8 +53,9 @@ class Feedback extends React.Component {
           onClick={ this.redirectToHome }
         >
           Jogar novamente
-
         </button>
+        <p data-testid="feedback-total-score">{score}</p>
+        <p data-testid="feedback-total-question">{numberOfAssertions}</p>
       </div>
     );
   }

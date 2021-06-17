@@ -443,7 +443,7 @@ describe('13 - [TELA DE FEEDBACK] Crie a mensagem de _feedback_ para ser exibida
   });
 });
 
-describe('14 - [TELA DE FEEDBACK] Exiba as informações relacionadas aos resultados obtidos para a pessoa usuária', () => {
+describe.only('14 - [TELA DE FEEDBACK] Exiba as informações relacionadas aos resultados obtidos para a pessoa usuária', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
@@ -521,7 +521,7 @@ describe('14 - [TELA DE FEEDBACK] Exiba as informações relacionadas aos result
   });
 });
 
-describe.only('15 - [TELA DE FEEDBACK] Crie a opção para a pessoa jogadora poder jogar novamente', () => {
+describe('15 - [TELA DE FEEDBACK] Crie a opção para a pessoa jogadora poder jogar novamente', () => {
   beforeEach(() => {
     cy.visit('http://localhost:3000/');
     cy.clearLocalStorage();
