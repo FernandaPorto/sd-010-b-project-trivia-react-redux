@@ -72,23 +72,27 @@ class GamePage extends Component {
             {categories[indexState].question}
           </h1>
         </section>
-        <input
-          type='button'
+        <div
+          role="button"
+          tabIndex={ 0 }
           className={ loading ? 'correct-answer' : '' }
           onClick={ this.isLoading }
           data-testid="correct-answer"
+          onKeyDown={ this.handleClick }
         >
           {categories[indexState].correct_answer}
-        </input>
+        </div>
         {categories[indexState].incorrect_answers
         && categories[indexState].incorrect_answers.map((item, index) => (
-          <li
-            className="incorrect-answers"
+          <div
+            role="button"
+            tabIndex={ 0 }
+            className={ loading ? 'incorrect-answers' : '' }
             data-testid={ `wrong-answer-${index}` }
             key={ index }
           >
             {item}
-          </li>
+          </div>
         ))}
       </div>
     );
