@@ -1,44 +1,56 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import fetchURL from '../services/API';
 
 export const setToken = async () => {
-  try {
-    const token = await fetchURL();
-    localStorage.setItem('token', JSON.stringify(token));
-    const fetchTrivia = await fetch(`https://opentdb.com/api.php?amount=5&token=${token.token}`);
-    const resposta = await fetchTrivia.json();
-    const result = await resposta;
-    return result;
-  } catch (error) {
-    console.error(error);
-  }
+  const token = await fetchURL();
+  localStorage.setItem('token', JSON.stringify(token));
+  const fetchTrivia = await fetch(`https://opentdb.com/api.php?amount=5&token=${token.token}`);
+  const resposta = await fetchTrivia.json();
+  const result = await resposta;
+  return result;
 };
 
 class GamePage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      categories: [{}],
+    };
+
+    this.getToken = this.getToken.bind(this);
+  }
+
   componentDidMount() {
     this.getToken();
   }
 
   async getToken() {
     const resultFetchTrivia = await setToken();
-    console.log(resultFetchTrivia);
+    const map = resultFetchTrivia.results
+      .map((result) => result);
+    this.setState({
+      categories: map.categories.category,
+    });
   }
 
   render() {
-    const { results } = this.props;
+    const { categories } = this.state;
+    console.log(categories);
     return (
       <div>
         <Header />
-        {results.map((result) => <div key={ result.type }>{result.category}</div>)}
+        <select>
+          {categories.map((item, index) => <option key={ index }>{item.category}</option>)}
+        </select>
       </div>
     );
   }
 }
 
-GamePage.propTypes = {
-  results: PropTypes.arrayOf(Object).isRequired,
-};
+// GamePage.propTypes = {
+//   resultFetchTrivia: PropTypes.arrayOf(Object).isRequired,
+// };
 
 export default GamePage;
