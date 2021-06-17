@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 
 class Feedback extends Component {
-  componentWillUnmount() {
+  componentDidMount() {
     this.saveScore();
   }
 
@@ -39,7 +39,6 @@ class Feedback extends Component {
     const reverse = ordena.reverse();
     const max = 5;
     localStorage.setItem('ranking', JSON.stringify(reverse.slice(0, max)));
-    console.log(getRanking);
   }
 
   render() {
@@ -57,11 +56,9 @@ class Feedback extends Component {
         <p data-testid="feedback-total-score">
           {score}
         </p>
-
         <Link to="/ranking" data-testid="btn-ranking">
           <button
             type="button"
-            // data-testid="btn-ranking"
           >
             VER RANKING
           </button>
