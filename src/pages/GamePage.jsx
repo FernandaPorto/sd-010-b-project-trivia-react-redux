@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import fetchURL from '../services/API';
+import '../GamePageCss.css';
 
 export const setToken = async () => {
   const token = await fetchURL();
@@ -59,6 +60,7 @@ class GamePage extends Component {
             </option>))}
           {categories.map((item, index) => (
             <option
+              className="correct-answer"
               data-testid="correct-answer"
               key={ index }
             >
@@ -67,6 +69,7 @@ class GamePage extends Component {
           ))}
           {categories.map((item, index) => (
             <option
+              className="incorrect-answer"
               data-testid={ `wrong-answer-${index}` }
               key={ index }
             >
