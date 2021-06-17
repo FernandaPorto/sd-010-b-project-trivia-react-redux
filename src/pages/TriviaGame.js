@@ -15,12 +15,12 @@ class TriviaGame extends Component {
     };
     this.updateIndex = this.updateIndex.bind(this);
     this.nextAnswer = this.nextAnswer.bind(this);
+    this.goToFeedback = this.goToFeedback.bind(this);
   }
 
   componentDidMount() {
     const { token, updateTrivia } = this.props;
     updateTrivia(token);
-    if (!localStorage.ranking) localStorage.ranking = JSON.stringify([]);
   }
 
   nextAnswer(bool) {
@@ -31,12 +31,23 @@ class TriviaGame extends Component {
     this.setState((prev) => ({ index: prev.index + 1 }));
   }
 
+  goToFeedback() {
+    const state = JSON.parse(localStorage.state);
+    const { name, score, gravatarEmail } = state.player;
+    const picture = `https://www.gravatar.com/avatar/${gravatarEmail}`;
+    const user = { name, score, picture };
+    const ranking = localStorage.ranking ? JSON.parse(localStorage.ranking) : [];
+    ranking.push(user);
+    localStorage.ranking = JSON.stringify(ranking);
+    return <Redirect to="/feedback" />;
+  }
+
   render() {
     const { index, next } = this.state;
     const { isFetching, questions } = this.props;
     const quant = 5;
     if (isFetching) return 'Loading...';
-    if (index >= quant) return <Redirect to="/feedback" />;
+    if (index >= quant) return this.goToFeedback();
     return (
       <div>
         <GameHeader />

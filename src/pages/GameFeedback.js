@@ -4,15 +4,6 @@ import PropTypes from 'prop-types';
 import GameHeader from '../components/GameHeader';
 
 class GameFeedback extends Component {
-  componentDidMount() {
-    const state = JSON.parse(localStorage.state);
-    const { name, score, gravatarEmail } = state.player;
-    const picture = `https://www.gravatar.com/avatar/${gravatarEmail}`;
-    const user = { name, score, picture };
-    const ranking = JSON.parse(localStorage.ranking);
-    localStorage.ranking = JSON.stringify([...ranking, user]);
-  }
-
   render() {
     const { score, history } = this.props;
     const MIN_HITS = 3;
