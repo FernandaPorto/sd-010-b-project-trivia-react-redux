@@ -3,6 +3,11 @@ export const playerLogin = (nameAndImgPath) => ({
   payload: nameAndImgPath,
 });
 
+export const playerScore = (stats) => ({
+  type: 'PLAYER_SCORE',
+  payload: stats,
+});
+
 export const addToRanking = (userInfo) => ({
   type: 'ADD_TO_RANKING',
   payload: userInfo,
