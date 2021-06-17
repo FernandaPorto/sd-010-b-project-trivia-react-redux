@@ -12,6 +12,17 @@ class Feedback extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
+  componentDidMount() {
+    const { score, getNome, getMd5, email } = this.props;
+    const url = `https://www.gravatar.com/avatar/${getMd5}`;
+    const player = localStorage.getItem('state');
+    if (localStorage.getItem('ranking')) {
+      localStorage.setItem('ranking', [...player]);
+    } else {
+      localStorage.setItem('ranking', player);
+    }
+  }
+
   handleClick() {
     this.setState({ rankingOn: true });
   }
@@ -51,6 +62,9 @@ class Feedback extends React.Component {
 const mapStateToProps = (state) => ({
   assertions: state.loginReducer.assertions,
   score: state.loginReducer.score,
+  getNome: state.loginReducer.nome,
+  getMd5: state.loginReducer.md5,
+  email: state.loginReducer.email,
 });
 
 Feedback.propTypes = {
