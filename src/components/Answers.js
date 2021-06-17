@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 import scoreAction from '../actions/scoreAction';
 
 import './answersColors.css';
@@ -17,11 +18,13 @@ class Answers extends Component {
       youreWrong: '',
       isNext: false,
       shuffleAnswers: [],
+      goFeedback: false,
     };
     this.showCorrectAnswers = this.showCorrectAnswers.bind(this);
     this.selectAnswer = this.selectAnswer.bind(this);
     this.addScore = this.addScore.bind(this);
     this.storageInicial = this.storageInicial.bind(this);
+    this.handleRedirect = this.handleRedirect.bind(this);
   }
 
   storageInicial() {
@@ -65,8 +68,15 @@ class Answers extends Component {
     }, funcDisable());
   }
 
+  handleRedirect() {
+    this.setState({ goFeedback: true });
+  }
+
   render() {
-    const { youreRight, youreWrong, shuffleAnswers, difficulty, isNext } = this.state;
+    const {
+      youreRight,
+      youreWrong,
+      shuffleAnswers, difficulty, isNext, goFeedback } = this.state;
     const { correct, incorrect, isDisableAnswers, timer } = this.props;
     if (isDisableAnswers
       && (youreRight !== 'right-answer' && youreWrong !== 'wrong-answer')) {
@@ -79,8 +89,10 @@ class Answers extends Component {
         .map((i, id) => ({ id, answer: i }))].sort(() => Math.random() - half);
       this.setState({ shuffleAnswers: allAnswers });
     }
+
     return (
       <div>
+        { goFeedback && <Redirect to="/feedback" /> }
         { shuffleAnswers.map(({ id, answer }) => (
           <button
             key={ id }
@@ -93,7 +105,15 @@ class Answers extends Component {
             { answer }
           </button>
         )) }
-        { isNext && <button type="button" data-testid="btn-next">Próxima</button> }
+        { isNext
+          && (
+            <button
+              type="button"
+              data-testid="btn-next"
+              onClick={ this.handleRedirect }
+            >
+              Próxima
+            </button>)}
       </div>
     );
   }
