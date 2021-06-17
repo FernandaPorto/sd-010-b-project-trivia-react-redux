@@ -25,6 +25,7 @@ class Jogo extends React.Component {
       buttonDisable: true,
       timer: 30,
       myTimer: null,
+      score: 0,
     };
   }
 

@@ -27,9 +27,23 @@ class Feedback extends React.Component {
     const { player: { assertions } } = getAssertions;
     const lowScore = 3;
     if (assertions < lowScore) {
-      return <div data-testid="feedback-text">Podia ser melhor...</div>;
+      return (
+        <div
+          data-testid="feedback-text"
+          className="low-score"
+        >
+          Podia ser melhor...
+        </div>
+      );
     }
-    return <div data-testid="feedback-text">Mandou bem!</div>;
+    return (
+      <div
+        data-testid="feedback-text"
+        className="high-score"
+      >
+        Mandou bem!
+      </div>
+    );
   }
 
   render() {
@@ -38,16 +52,20 @@ class Feedback extends React.Component {
     const getScore = JSON.parse(localStorage.getItem('state'));
     const { player: { score } } = getScore;
     return (
-      <div>
-        <h1>Resultado</h1>
-        { this.renderMessage() }
-        <img
-          src={ `https://www.gravatar.com/avatar/${photo}` }
-          data-testid="header-profile-picture"
-          alt="my profile"
-        />
-        <p data-testid="header-player-name">{ name }</p>
-        <div data-testid="header-score">{ score }</div>
+      <div className="feedback-div">
+        <h1 className="feedback-title">Resultado</h1>
+        <p data-testid="header-score">{ score }</p>
+        <div className="feedback-main">
+          <img
+            src={ `https://www.gravatar.com/avatar/${photo}` }
+            data-testid="header-profile-picture"
+            alt="my profile"
+          />
+          <section className="feedback-data">
+            <p data-testid="header-player-name">{ name }</p>
+            { this.renderMessage() }
+          </section>
+        </div>
       </div>
     );
   }
