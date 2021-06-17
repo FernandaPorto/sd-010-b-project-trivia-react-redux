@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 // import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import fetchURL from '../services/API';
+import '../GamePageCss.css';
 
 export const setToken = async () => {
   const token = await fetchURL();
@@ -50,30 +51,32 @@ class GamePage extends Component {
             >
               {item.category}
             </option>))}
-          {categories.map((item, index) => (
-            <option
-              data-testid="question-text"
-              key={ index }
-            >
-              {item.question}
-            </option>))}
-          {categories.map((item, index) => (
-            <option
-              data-testid="correct-answer"
-              key={ index }
-            >
-              {item.correct_answer}
-            </option>
-          ))}
-          {categories.map((item, index) => (
-            <option
-              data-testid={ `wrong-answer-${index}` }
-              key={ index }
-            >
-              {item.correct_answer}
-            </option>
-          ))}
         </select>
+        {/* {categories[0]
+          <option
+            data-testid="question-text"
+            key={ index }
+          >
+            {item.question}
+          </option>))}
+        {categories.map((item, index) => ( */}
+        {/* <option
+            className="correct-answer"
+            data-testid="correct-answer"
+            key={ index }
+          >
+            {item.correct_answer}
+          </option>
+        )) */}
+        {categories.map((item, index) => (
+          <option
+            className="incorrect-answer"
+            data-testid={ `wrong-answer-${index}` }
+            key={ index }
+          >
+            {item.correct_answer}
+          </option>
+        ))}
       </div>
     );
   }
