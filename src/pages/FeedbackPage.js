@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import HeaderComponent from '../components/HeaderComponent';
 
-export class Feedback extends Component {
+class FeedbackPage extends Component {
   render() {
     return (
       <div>
@@ -12,4 +12,4 @@ export class Feedback extends Component {
   }
 }
 
-export default Feedback;
+export default FeedbackPage;
