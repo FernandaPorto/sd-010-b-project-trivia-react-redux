@@ -17,3 +17,7 @@ export const addToken = (token) => ({
   type: 'ADD_TOKEN',
   payload: token,
 });
+
+export const playAgain = () => ({
+  type: 'PLAY_RESET',
+});

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
+import { playAgain } from '../actions';
 
 class Feedback extends Component {
   constructor() {
@@ -16,8 +17,9 @@ class Feedback extends Component {
   }
 
   handleBtn({ target: { className } }) {
-    const { history: { push } } = this.props;
+    const { history: { push }, resetScore } = this.props;
     if (className === 'btn-play-again') {
+      resetScore();
       push('/');
     } else {
       push('/ranking');
@@ -27,7 +29,7 @@ class Feedback extends Component {
   render() {
     const { gravatarEmail, name, score, assertions } = this.props;
     return (
-      <div data-testid="feedback-text">
+      <div>
         <header>
           <img
             data-testid="header-profile-picture"
@@ -37,25 +39,29 @@ class Feedback extends Component {
           <h2 data-testid="header-player-name">{ name }</h2>
           <h3 data-testid="header-score">{ score }</h3>
         </header>
-        <section>
-          <h1 data-testid="feedback-text">{ this.message(assertions) }</h1>
-        </section>
-        <button
-          data-testid="btn-play-again"
-          type="button"
-          className="btn-play-again"
-          onClick={ (event) => { this.handleBtn(event); } }
-        >
-          Jogar Novamente
-        </button>
-        <button
-          type="button"
-          data-testid="btn-ranking"
-          className="btn-ranking"
-          onClick={ (event) => { this.handleBtn(event); } }
-        >
-          Ver Ranking
-        </button>
+        <main>
+          <p data-testid="feedback-text">{ this.message(assertions) }</p>
+          <p data-testid="feedback-total-question">{ assertions }</p>
+          <p data-testid="feedback-total-score">{score}</p>
+        </main>
+        <div>
+          <button
+            data-testid="btn-play-again"
+            type="button"
+            className="btn-play-again"
+            onClick={ (event) => { this.handleBtn(event); } }
+          >
+            Jogar Novamente
+          </button>
+          <button
+            type="button"
+            data-testid="btn-ranking"
+            className="btn-ranking"
+            onClick={ (event) => { this.handleBtn(event); } }
+          >
+            Ver Ranking
+          </button>
+        </div>
       </div>
     );
   }
@@ -66,6 +72,10 @@ const mapStateToProps = (state) => {
   return { name, gravatarEmail, score, assertions };
 };
 
+const mapDispatchToProps = (dispatch) => ({
+  resetScore: () => dispatch(playAgain()),
+});
+
 Feedback.propTypes = {
   gravatarEmail: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
@@ -74,6 +84,7 @@ Feedback.propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
+  resetScore: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(Feedback);
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
