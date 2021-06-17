@@ -146,9 +146,7 @@ class PerguntaCard extends Component {
         </button>
         <div className="timer">
           Timer :
-          {' '}
           {this.renderTimer()}
-          {' '}
           sec
         </div>
       </div>
