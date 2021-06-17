@@ -53,8 +53,9 @@ class Login extends React.Component {
   }
 
   async requestToken() {
-    const { token } = await (await fetch('https://opentdb.com/api_token.php?command=request')).json();
-    localStorage.setItem('token', token);
+    const request = await fetch('https://opentdb.com/api_token.php?command=request');
+    const response = await request.json();
+    localStorage.setItem('token', response.token);
   }
 
   requestGravatar() {
