@@ -10,13 +10,18 @@ class Game extends React.Component {
     this.state = {
       numberQuestion: 0,
       clicked: false,
+      numberOfAssertions: 0,
+      score: 0,
     };
+
     this.getPerfilGravatar = this.getPerfilGravatar.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
     this.handleOnClick = this.handleOnClick.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.combineArray = this.combineArray.bind(this);
     this.nextButton = this.nextButton.bind(this);
+    this.addInfoToLocalStorage = this.addInfoToLocalStorage.bind(this);
+    this.getScore = this.getScore.bind(this);
   }
 
   componentDidMount() {
@@ -44,11 +49,51 @@ class Game extends React.Component {
     );
   }
 
+  getScore() {
+    const { numberOfAssertions, numberQuestion } = this.state;
+    const { questions } = this.props;
+    let { difficulty } = questions[numberQuestion];
+    const defaultNumber = 10;
+    const hardQuestion = 3;
+    const mediumQuestion = 2;
+    const easyQuestion = 1;
+
+    if (difficulty === 'hard') {
+      difficulty = hardQuestion;
+    } if (difficulty === 'medium') {
+      difficulty = mediumQuestion;
+    } else {
+      difficulty = easyQuestion;
+    }
+    const timer = 2;
+
+    this.setState({
+      numberOfAssertions: numberOfAssertions + 1,
+      score: defaultNumber + (timer * difficulty),
+    });
+  }
+
+  addInfoToLocalStorage() {
+    const { location: { aboutProps: { name: { name },
+      email: { email } } } } = this.props;
+    const { numberOfAssertions, score } = this.state;
+    const objLocalStorage = ({
+      player: {
+        name,
+        assertions: numberOfAssertions,
+        score,
+        gravatarEmail: email,
+      },
+    });
+
+    localStorage.setItem('state', JSON.stringify(objLocalStorage));
+  }
+
   handleOnClick({ target: { name } }) {
     const { numberQuestion } = this.state;
     const { questions } = this.props;
     if (name === questions[numberQuestion].correct_answer) {
-      console.log('Acertou miseravel');
+      this.getScore();
     }
     this.setState({
       clicked: true,
@@ -157,6 +202,7 @@ class Game extends React.Component {
   }
 
   render() {
+    this.addInfoToLocalStorage();
     const { questions } = this.props;
     return (
       <>
