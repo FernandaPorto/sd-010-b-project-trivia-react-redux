@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import action from '../actions';
 import Timer from './Timer';
@@ -69,6 +70,16 @@ class Quiz extends Component {
     return array;
   }
 
+  questionStructure() {
+    const { questions, id } = this.state;
+    return (
+      <>
+        <h6 data-testid="question-category">{questions[id].category}</h6>
+        <div data-testid="question-text">{questions[id].question}</div>
+      </>
+    );
+  }
+
   nextQuestion() {
     const { id } = this.state;
     const { time } = this.props;
@@ -101,6 +112,13 @@ class Quiz extends Component {
     );
   }
 
+  redirector(identifier) {
+    const { questions } = this.state;
+    if (identifier > (questions.length) - 1) {
+      return <Redirect to="/" />;
+    }
+  }
+
   render() {
     const { questions, id, answered } = this.state;
     const { timeout } = this.props;
@@ -109,13 +127,13 @@ class Quiz extends Component {
       this.rodaroda();
       return <h1>Loading...</h1>;
     }
+    if (id > (questions.length) - 1) { return <Redirect to="/feedback" />; }
     const answers = [questions[id].correct_answer, ...questions[id].incorrect_answers];
     const shuffleAnswers = this.shuffle(answers);
     let index = null;
     return (
       <div>
-        <h6 data-testid="question-category">{questions[id].category}</h6>
-        <div data-testid="question-text">{questions[id].question}</div>
+        {this.questionStructure()}
         {shuffleAnswers.map((item, i) => {
           if (item !== questions[id].correct_answer) {
             index += 1;
