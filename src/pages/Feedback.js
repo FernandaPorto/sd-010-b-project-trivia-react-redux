@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 class Feedback extends React.Component {
   constructor(props) {
@@ -51,12 +52,26 @@ class Feedback extends React.Component {
     const { photo } = this.state;
     const getScore = JSON.parse(localStorage.getItem('state'));
     const { player: { score } } = getScore;
+    const getAssertions = JSON.parse(localStorage.getItem('state'));
+    const { player: { assertions } } = getAssertions;
     return (
       <div className="feedback-div">
         <h1 className="feedback-title">Resultado</h1>
         <p
-          data-testid="header-score"
+          data-testid="feedback-total-question"
           className="feedback-score"
+        >
+          { assertions }
+        </p>
+        <p
+          data-testid="feedback-total-score"
+          className="feedback-score"
+        >
+          { score }
+        </p>
+        <p
+          data-testid="header-score"
+          className="feedback-score-2"
         >
           { score }
         </p>
@@ -70,6 +85,14 @@ class Feedback extends React.Component {
             <p data-testid="header-player-name">{ name }</p>
             { this.renderMessage() }
           </section>
+          <Link to="/">
+            <button
+              data-testid="btn-play-again"
+              type="button"
+            >
+              Jogar novamente
+            </button>
+          </Link>
         </div>
       </div>
     );
