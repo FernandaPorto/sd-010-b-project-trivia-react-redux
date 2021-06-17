@@ -224,7 +224,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => ({
-  playerScore: state.playerReducer.playerScore,
+  playerScore: state.player.score,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

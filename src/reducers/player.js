@@ -1,11 +1,11 @@
 const PLAYER_INITIAL_STATE = {
   playerGravatar: '',
   playerName: '',
-  playerScore: 0,
+  score: 0,
   assertions: 0,
 };
 
-function playerReducer(state = PLAYER_INITIAL_STATE, action) {
+function player(state = PLAYER_INITIAL_STATE, action) {
   switch (action.type) {
   case 'PLAYER':
     return {
@@ -20,7 +20,7 @@ function playerReducer(state = PLAYER_INITIAL_STATE, action) {
   case 'SCORE':
     return {
       ...state,
-      playerScore: action.payload.score,
+      score: action.payload.score,
     };
   case 'ASSERTIONS':
     return {
@@ -32,4 +32,4 @@ function playerReducer(state = PLAYER_INITIAL_STATE, action) {
   }
 }
 
-export default playerReducer;
+export default player;
