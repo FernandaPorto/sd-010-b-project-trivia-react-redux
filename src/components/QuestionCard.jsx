@@ -17,9 +17,14 @@ class QuestionCard extends React.Component {
     const button = e.target;
     if (button.className === 'correct-answer') {
       this.setState((prev) => ({ score: prev.score + 1 }));
-    } else {
-      // this.setState({ disabled: true });
     }
+    const wrongs = document.querySelectorAll('.wrong-answer');
+    const correct = document.getElementsByClassName('correct-answer');
+    console.log(wrongs, correct);
+    wrongs.forEach((item) => {
+      item.style.border = '3px solid rgb(255, 0, 0)';
+    });
+    correct[0].style.border = '3px solid rgb(6, 240, 15)';
   }
 
   render() {
