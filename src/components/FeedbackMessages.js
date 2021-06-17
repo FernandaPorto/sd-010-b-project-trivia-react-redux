@@ -38,12 +38,12 @@ class FeedbackMessages extends Component {
         </div>
         <p data-testid="feedback-total-score">{ score }</p>
         <p data-testid="feedback-total-question">{ assertions }</p>
-        <Link to="/">
-          <button type="button" data-testid="btn-play-again">Jogar novamente</button>
-        </Link>
-        <br />
         <Link to="/ranking">
           <button type="button" data-testid="btn-ranking">Ver Ranking</button>
+        </Link>
+        <br />
+        <Link to="/">
+          <button type="button" data-testid="btn-play-again">Jogar novamente</button>
         </Link>
       </>
     );

@@ -1,18 +1,19 @@
+body {
+  background-color: #0a7049;
+}
+
 .App {
+  display: flex;
+  flex-direction: column;
   text-align: center;
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 10em;
+  margin: auto;
+  padding: 5px 0;
   pointer-events: none;
-}
-
-.red-border {
-  border: 1px solid red;
-}
-
-.green-border {
-  border: 1px solid green;
+  width: 20em;
 }
 
 @media ( prefers-reduced-motion : no-preference ) {
@@ -24,13 +25,20 @@
 
 .App-header {
   align-items: center;
-  background-color: #282c34;
-  color: white;
+  align-self: center;
+  background-color: #9dd1bd;
+  border: 3px solid black;
+  border-radius: 5%;
+  color: black;
   display: flex;
   flex-direction: column;
   font-size: calc(10px + 2vmin);
+  height: fit-content;
   justify-content: center;
-  min-height: 100vh;
+  margin: auto;
+  margin-top: 5%;
+  padding: 15px;
+  width: fit-content;
 }
 
 .App-link {
@@ -62,4 +70,30 @@
 
 .incorrect {
   border: 3px solid red;
+}
+
+input {
+  align-content: center;
+  align-items: center;
+  background-color: rgb(218, 214, 214);
+  border-color: black;
+  border-radius: 10px;
+  display: flex;
+  font-size: x-large;
+  margin: 8px 15px;
+}
+
+button {
+  background-color: rgb(218, 214, 214);
+  border: 2px solid black;
+  border-radius: 10px;
+  font-family: monospace;
+  height: fit-content;
+  margin: 8px 5px;
+  padding: 10px;
+  width: fit-content;
+}
+
+.next-button {
+  margin: auto;
 }

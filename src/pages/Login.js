@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import logo from '../trivia.png';
+import logo from '../LOGO.png';
 import { userLogin, triviaFetching } from '../actions/index';
 
 class Login extends React.Component {
@@ -14,6 +14,7 @@ class Login extends React.Component {
       email: '',
       btnValidadeFields: true,
       redirect: false,
+      players: 0,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -44,12 +45,10 @@ class Login extends React.Component {
   }
 
   handleClick(name, email) {
+    const { players } = this.state;
     const { dispatchUserLogin, fetchingAsks } = this.props;
     dispatchUserLogin(name, email);
     fetchingAsks();
-    this.setState({
-      redirect: true,
-    });
     const state = {
       player: {
         name,
@@ -58,7 +57,12 @@ class Login extends React.Component {
         gravatarEmail: email,
       },
     };
+    // state[`player${players}`] = player;
     localStorage.setItem('state', JSON.stringify(state));
+    this.setState({
+      redirect: true,
+      players: players + 1,
+    });
   }
 
   render() {
@@ -67,47 +71,47 @@ class Login extends React.Component {
       return (<Redirect to="/game" />);
     }
     return (
-      <div>
+      <div className="App">
         <header className="App-header">
           <img src={ logo } className="App-logo" alt="logo" />
+          <form>
+            <label htmlFor="inputName">
+              Nome
+              <input
+                type="text"
+                data-testid="input-player-name"
+                id="inputName"
+                onChange={ this.handleChange }
+                value={ name }
+                name="name"
+              />
+            </label>
+            <label htmlFor="inputEmail">
+              Email
+              <input
+                type="email"
+                data-testid="input-gravatar-email"
+                id="inputEmail"
+                onChange={ this.handleChange }
+                value={ email }
+                name="email"
+              />
+            </label>
+            <button
+              type="button"
+              disabled={ btnValidadeFields }
+              onClick={ () => this.handleClick(name, email) }
+              data-testid="btn-play"
+            >
+              JOGAR
+            </button>
+          </form>
+          <div>
+            <Link to="/settings">
+              <button type="button" data-testid="btn-settings">CONFIGURAÇÕES</button>
+            </Link>
+          </div>
         </header>
-        <form>
-          <label htmlFor="inputName">
-            Nome
-            <input
-              type="text"
-              data-testid="input-player-name"
-              id="inputName"
-              onChange={ this.handleChange }
-              value={ name }
-              name="name"
-            />
-          </label>
-          <label htmlFor="inputEmail">
-            Email
-            <input
-              type="email"
-              data-testid="input-gravatar-email"
-              id="inputEmail"
-              onChange={ this.handleChange }
-              value={ email }
-              name="email"
-            />
-          </label>
-          <button
-            type="button"
-            disabled={ btnValidadeFields }
-            onClick={ () => this.handleClick(name, email) }
-            data-testid="btn-play"
-          >
-            JOGAR
-          </button>
-        </form>
-        <div>
-          <Link to="/settings">
-            <button type="button" data-testid="btn-settings">Configurações</button>
-          </Link>
-        </div>
       </div>
     );
   }
