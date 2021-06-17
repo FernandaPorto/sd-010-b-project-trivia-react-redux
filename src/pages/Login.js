@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import logo from '../trivia.png';
 import { userLogin, triviaFetching } from '../actions/index';
 
 class Login extends React.Component {
@@ -67,6 +68,9 @@ class Login extends React.Component {
     }
     return (
       <div>
+        <header className="App-header">
+          <img src={ logo } className="App-logo" alt="logo" />
+        </header>
         <form>
           <label htmlFor="inputName">
             Nome
