@@ -4,7 +4,18 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 class Feedback extends Component {
+  performanceGame() {
+    const { assertions } = this.props;
+    const minimumHit = 3;
+    if (assertions < minimumHit) {
+      return ('Podia ser melhor...');
+    }
+    return ('Mandou bem!');
+  }
+
   render() {
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    console.log(ranking);
     const { gravatar, name } = this.props;
     return (
       <div>
@@ -18,10 +29,10 @@ class Feedback extends Component {
             { name }
           </h4>
           <h4 data-testid="header-score">
-            { }
+            { ranking[0].score }
           </h4>
         </header>
-        <h2 data-testid="feedback-text">{ }</h2>
+        <h2 data-testid="feedback-text">{ this.performanceGame }</h2>
         <h3 data-testid="feedback-total-score">{ }</h3>
         <h3 data-testid="feedback-total-question">{ }</h3>
         <Link to="/" data-testid="btn-play-again">Jogar novamente</Link>
@@ -33,11 +44,15 @@ class Feedback extends Component {
 const mapStateToProps = (state) => ({
   name: state.reducerName.name,
   gravatar: state.reducerName.gravatar,
+  score: state.reducerName.score,
+  assertions: state.reducerName.assertions,
 });
 
 Feedback.propTypes = {
   name: PropTypes.string.isRequired,
   gravatar: PropTypes.string.isRequired,
+  // store: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, null)(Feedback);
