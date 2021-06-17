@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Settings from './pages/Settings';
 import Game from './pages/Game';
 import Feedback from './pages/Feedback';
+
 // import logo from './trivia.png';
 import './App.css';
 
