@@ -17,6 +17,17 @@ class Game extends React.Component {
     };
   }
 
+  componentDidMount() {
+    const { count, name, email, assertions } = this.props;
+    const player = {
+      name,
+      assertions,
+      score: count,
+      gravatarEmail: email,
+    };
+    localStorage.setItem('state', JSON.stringify(player));
+  }
+
   render() {
     const { count, name, email } = this.props;
     const { number, results } = this.state;
@@ -54,6 +65,7 @@ class Game extends React.Component {
 
 const mapStateToProps = (state) => ({
   count: state.player.score,
+  assertions: state.player.assertions,
   name: state.player.name,
   email: state.player.gravatarEmail,
   request: state.apiReducer.request,
@@ -63,6 +75,7 @@ export default connect(mapStateToProps)(Game);
 
 Game.propTypes = {
   count: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   request: PropTypes.arrayOf(PropTypes.any).isRequired,

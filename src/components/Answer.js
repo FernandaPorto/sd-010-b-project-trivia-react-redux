@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { revealedAction } from '../actions/gameAction';
+import correctAnswers from '../actions/correctAnswer';
 
 class Answer extends React.Component {
   constructor(props) {
@@ -30,14 +31,32 @@ class Answer extends React.Component {
     });
   }
 
-  handleClick() {
-    const { dispatchRevealed } = this.props;
+  transformDifficulty({ difficulty }) {
+    const TRES = 3;
+    if (difficulty === 'easy') {
+      return 1;
+    }
+    if (difficulty === 'medium') {
+      return 2;
+    }
+
+    return TRES;
+  }
+
+  handleClick({ target }) {
+    const {
+      dispatchRevealed, pointsCalculate, time, results, number, assertions,
+    } = this.props;
+    const DEZ = 10;
     dispatchRevealed(true);
-    // if (acertou) {
-    //   count += 1
-    // } else {
-    //   coint -= 1
-    // }
+    if (target.className === 'correct-answer') {
+      const difficulty = this.transformDifficulty(results[number]);
+      const total = DEZ + (time * difficulty);
+      pointsCalculate(total);
+      const player = JSON.parse(localStorage.getItem('state'));
+      player.score = total;
+      localStorage.setItem('state', JSON.stringify(player));
+    }
   }
 
   renderAnswer(
@@ -122,17 +141,23 @@ class Answer extends React.Component {
 
 Answer.propTypes = {
   number: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
   results: PropTypes.arrayOf(PropTypes.object).isRequired,
   dispatchRevealed: PropTypes.func.isRequired,
   isRevealed: PropTypes.bool.isRequired,
+  pointsCalculate: PropTypes.func.isRequired,
+  time: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   isRevealed: state.game.isRevealed,
+  time: state.game.time,
+  assertions: state.player.assertions,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchRevealed: (payload) => dispatch(revealedAction(payload)),
+  pointsCalculate: (score) => dispatch(correctAnswers(score)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Answer);
