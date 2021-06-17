@@ -71,7 +71,6 @@ class Answers extends Component {
       && (youreRight !== 'right-answer' && youreWrong !== 'wrong-answer')) {
       this.showCorrectAnswers();
     }
-
     if (shuffleAnswers.length === 0) {
       const half = 0.5;
       // reference shuffle https://dev.to/codebubb/how-to-shuffle-an-array-in-javascript-2ikj
@@ -79,7 +78,6 @@ class Answers extends Component {
         .map((i, id) => ({ id, answer: i }))].sort(() => Math.random() - half);
       this.setState({ shuffleAnswers: allAnswers });
     }
-
     return (
       <div>
         { shuffleAnswers.map(({ id, answer }) => (
@@ -89,6 +87,7 @@ class Answers extends Component {
             type="button"
             className={ id === 'c' ? youreRight : youreWrong }
             onClick={ () => this.selectAnswer(timer, difficulty, id) }
+
             disabled={ isDisableAnswers }
           >
             { answer }
@@ -109,6 +108,8 @@ Answers.propTypes = {
   isDisableAnswers: PropTypes.bool.isRequired,
   timer: PropTypes.number.isRequired,
   incorrect: PropTypes.arrayOf(PropTypes.string).isRequired,
+  isDisableAnswers: PropTypes.bool.isRequired,
+  funcDisable: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
