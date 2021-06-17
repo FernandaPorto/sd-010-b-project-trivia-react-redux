@@ -8,6 +8,6 @@ export default class Ranking extends Component {
         <h1 data-testid="ranking-title">RANKING</h1>
         <Link to="/" data-testid="btn-go-home">Tente Novamente</Link>
       </div>
-    );
+    )
   }
 }
