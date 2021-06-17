@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 class GameAsks extends Component {
   constructor(props) {
@@ -9,25 +10,25 @@ class GameAsks extends Component {
       loading: true,
       asks: [],
       answer: false,
-      disabled: false,
       countDown: 30,
       disabledButton: false,
+      redirect: false,
     };
     this.answer = this.answer.bind(this);
-    this.disabledButton = this.disabledButton.bind(this);
     this.counter = this.counter.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.setAsksState = this.setAsksState.bind(this);
+    this.timer = this.timer.bind(this);
+    this.totalSum = this.totalSum.bind(this);
   }
 
   componentDidMount() {
     this.setAsksState();
     this.counter();
-    this.disabledButton();
   }
 
   componentWillUnmount() {
-    clearInterval(this.counter);
+    clearInterval(this.timeInterval);
   }
 
   async setAsksState() {
@@ -44,19 +45,65 @@ class GameAsks extends Component {
 
   counter() {
     const SECOND = 1000;
-    setInterval(() => {
-      this.setState((state) => ({ countDown: state.countDown - 1 }));
-    }, SECOND);
+    this.timeInterval = setInterval(this.timer, SECOND);
+  }
+
+  timer() {
+    const { countDown } = this.state;
+    if (countDown <= 0) {
+      this.setState({
+        countDown: 0,
+      });
+    } else {
+      this.setState((state) => ({
+        countDown: state.countDown - 1,
+      }));
+    }
+    if (countDown === 0) {
+      this.setState({
+        disabledButton: true,
+      });
+    }
+  }
+
+  totalSum() {
+    const { asks, indexQuestion, countDown } = this.state;
+    const localStorageInfos = JSON.parse(localStorage.getItem('state'));
+    const { player: { score, assertions } } = localStorageInfos;
+    const UM = 1;
+    const DOIS = 2;
+    const TRES = 3;
+    const DEZ = 10;
+    switch (asks[indexQuestion].difficulty) {
+    case (asks[indexQuestion].difficulty === 'hard'):
+      localStorageInfos.player.score = score + DEZ + (countDown * TRES);
+      localStorageInfos.player.assertions = assertions + 1;
+      localStorage.setItem('state', JSON.stringify(localStorageInfos));
+      break;
+    case (asks[indexQuestion].difficulty === 'medium'):
+      localStorageInfos.player.score = score + DEZ + (countDown * DOIS);
+      localStorageInfos.player.assertions = assertions + 1;
+      localStorage.setItem('state', JSON.stringify(localStorageInfos));
+      break;
+    default:
+      localStorageInfos.player.score = score + DEZ + (countDown * UM);
+      localStorageInfos.player.assertions = assertions + 1;
+      localStorage.setItem('state', JSON.stringify(localStorageInfos));
+      break;
+    }
   }
 
   nextQuestion() {
+    clearInterval(this.counter);
     const { indexQuestion, asks } = this.state;
     this.setState((state) => ({
       indexQuestion: state.indexQuestion + 1,
       countDown: 30,
+      disabledButton: false,
+      answer: false,
     }));
-    if (asks.length - 2 === indexQuestion) {
-      this.setState({ disabled: true });
+    if (asks.length - 1 === indexQuestion) {
+      this.setState({ redirect: true });
     }
   }
 
@@ -66,20 +113,11 @@ class GameAsks extends Component {
     });
   }
 
-  disabledButton() {
-    const THIRTY_SECONDS = 30000;
-    setTimeout(() => this.setState({ disabledButton: true }), THIRTY_SECONDS);
-  }
-
   render() {
     const { indexQuestion,
-      loading, asks, answer, disabled, countDown, disabledButton } = this.state;
-    if (loading) {
-      return (
-        <span>Carregando...</span>
-      );
-    }
-    // console.log(this.timer());
+      loading, asks, answer, countDown, disabledButton, redirect } = this.state;
+    if (loading) return <span>Carregando...</span>;
+    if (redirect) return <Redirect to="/feedback" />;
     return (
       <section>
         <p>{countDown}</p>
@@ -101,7 +139,10 @@ class GameAsks extends Component {
           type="button"
           disabled={ disabledButton }
           data-testid="correct-answer"
-          onClick={ this.answer }
+          onClick={ () => {
+            this.answer();
+            this.totalSum();
+          } }
           className={ answer ? 'correct' : 'null' }
         >
           {asks[indexQuestion].correct_answer}
@@ -111,7 +152,6 @@ class GameAsks extends Component {
           type="button"
           style={ { display: `${answer ? 'block' : 'none'}` } }
           data-testid="btn-next"
-          disabled={ disabled }
           onClick={ this.nextQuestion }
         >
           Próxima

@@ -7,7 +7,7 @@ import Settings from './pages/Settings';
 import GamePage from './pages/GamePage';
 import FeedbackPage from './pages/FeedbackPage';
 
-export default function App() {
+function App() {
   return (
     <div className="App">
       <header className="App-header">
@@ -22,3 +22,5 @@ export default function App() {
     </div>
   );
 }
+
+export default App;
