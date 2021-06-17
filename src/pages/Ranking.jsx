@@ -21,12 +21,23 @@ class Ranking extends Component {
         com ${atual.player.score} pontos`}
         </h3>
         {getRanking.map((item, i) => (
-          <h3
-            key={ i }
-            data-testid={ `player-name-${i + 1}` }
-          >
-            {`${item.name} - ${item.score} pontos`}
-          </h3>))}
+          <div key={ i }>
+            <img
+              data-testid=""
+              height="20"
+              src={ `https://www.gravatar.com/avatar/${item.emailGravatar}` }
+              alt="Avatar"
+            />
+            <h3
+              data-testid={ `player-name-${i + 1}` }
+            >
+              {`${item.name} - `}
+            </h3>
+            <h3 data-testid={ `player-score-${i}` }>
+              {`${item.score} pontos`}
+            </h3>
+          </div>
+        ))}
 
         <Link to="/">
           <button data-testid="btn-go-home" type="button">Voltar</button>

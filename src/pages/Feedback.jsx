@@ -23,12 +23,13 @@ class Feedback extends Component {
 
   saveScore() {
     const Rodada = JSON.parse(localStorage.getItem('state'));
-    const { score, name } = Rodada.player;
+    const { score, name, gravatarEmail } = Rodada.player;
     const getRanking = JSON.parse(localStorage.getItem('ranking'));
+    console.log(gravatarEmail);
     let atualScore = [];
     if (getRanking) {
-      atualScore = [...getRanking, { name, score }];
-    } else { atualScore = [{ name, score }]; }
+      atualScore = [...getRanking, { name, score, gravatarEmail }];
+    } else { atualScore = [{ name, score, gravatarEmail }]; }
     const um = 1;
     const ordena = atualScore.sort((a, b) => {
       if (a.score > b.score) { return um; }
