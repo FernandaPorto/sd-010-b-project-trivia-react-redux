@@ -32,7 +32,8 @@ class Game extends React.Component {
 
   getPerfilGravatar() {
     const { location: { aboutProps: { name: { name },
-      email: { email }, score: { score } } } } = this.props;
+      email: { email } } } } = this.props;
+    const { score } = this.state;
     const convert = md5(email).toString();
     const endpoint = `https://www.gravatar.com/avatar/${convert}`;
 
@@ -50,7 +51,7 @@ class Game extends React.Component {
   }
 
   getScore() {
-    const { numberOfAssertions, numberQuestion } = this.state;
+    const { numberOfAssertions, numberQuestion, score } = this.state;
     const { questions } = this.props;
     let { difficulty } = questions[numberQuestion];
     const defaultNumber = 10;
@@ -69,7 +70,7 @@ class Game extends React.Component {
 
     this.setState({
       numberOfAssertions: numberOfAssertions + 1,
-      score: defaultNumber + (timer * difficulty),
+      score: score + (defaultNumber + (timer * difficulty)),
     });
   }
 
