@@ -3,20 +3,20 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import PropTypes from 'prop-types';
 
-import Questions from '../components/Questions';
+import Question from '../components/Question';
 import GameHeader from '../components/GameHeader';
 
-const NUMBER_FIVE = 5;
+const FIVE = 5;
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      count: 0,
+      questionIndex: 0,
     };
 
     this.getQuestions = this.getQuestions.bind(this);
-    this.handleNext = this.handleNext.bind(this);
+    this.handleNextQuestion = this.handleNextQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -24,21 +24,21 @@ class Game extends React.Component {
   }
 
   async getQuestions() {
-    const localToken = localStorage.getItem('token');
-    const { results } = await (await fetch(`https://opentdb.com/api.php?amount=5&token=${localToken}`)).json();
+    const { token } = this.props;
+    const request = await fetch(`https://opentdb.com/api.php?amount=5&token=${token}`);
+    const { results } = await request.json();
     this.setState({
-      results,
+      questions: results,
     });
   }
 
-  handleNext() {
+  handleNextQuestion() {
     const correct = document.querySelector('.correct');
     const wrong = document.querySelectorAll('.wrong');
 
-    const { count } = this.state;
-    this.setState({
-      count: count + 1,
-    });
+    this.setState((prevState) => ({
+      questionIndex: prevState.questionIndex + 1,
+    }));
 
     correct.style.border = '3px solid black';
     wrong.forEach((answer) => {
@@ -47,36 +47,27 @@ class Game extends React.Component {
   }
 
   render() {
-    const { results, count } = this.state;
-    const { name, gravatarEmail, score } = this.props;
+    const { questions, questionIndex } = this.state;
 
-    if (count === NUMBER_FIVE) {
+    if (questionIndex === FIVE) {
       return (<Redirect to="/" />);
-    }
-
-    if (results) {
-      return (
-        <section>
-          <GameHeader name={ name } gravatarEmail={ gravatarEmail } score={ score } />
-          <main>
-            <Questions result={ results[count] } />
-            <button
-              type="button"
-              onClick={ () => this.handleNext() }
-            >
-              Next
-            </button>
-          </main>
-        </section>
-
-      );
     }
 
     return (
       <section>
-        <GameHeader name={ name } gravatarEmail={ gravatarEmail } score={ score } />
+        <GameHeader />
         <main>
-          Loading...
+          { questions ? (
+            <main>
+              <Question result={ questions[questionIndex] } />
+              <button
+                type="button"
+                onClick={ () => this.handleNextQuestion() }
+              >
+                Next
+              </button>
+            </main>
+          ) : <p>Loading...</p> }
         </main>
       </section>
     );
@@ -84,14 +75,14 @@ class Game extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const { player: { name, gravatarEmail, score } } = state;
-  return { name, gravatarEmail, score };
+  const { player: { token } } = state;
+  return {
+    token,
+  };
 };
 
 Game.propTypes = {
-  name: PropTypes.string.isRequired,
-  gravatarEmail: PropTypes.string.isRequired,
-  score: PropTypes.string.isRequired,
+  token: PropTypes.string.isRequired,
 };
 
 export default connect(mapStateToProps)(Game);

@@ -1,8 +1,9 @@
 const initialState = {
   name: '',
   gravatarEmail: '',
-  score: '0',
-  assertions: '',
+  score: 0,
+  assertions: 0,
+  token: '',
 };
 
 export default function (state = initialState, action) {
@@ -13,6 +14,13 @@ export default function (state = initialState, action) {
       ...state,
       name,
       gravatarEmail,
+    };
+  }
+  case ('ADD_TOKEN'): {
+    const token = action.payload;
+    return {
+      ...state,
+      token,
     };
   }
   default:

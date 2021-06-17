@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 
-import { playerLogin } from '../actions/index';
+import { playerLogin, requestToken } from '../actions/index';
 
 class Login extends React.Component {
   constructor(props) {
@@ -19,8 +19,9 @@ class Login extends React.Component {
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.redirectToSettings = this.redirectToSettings.bind(this);
     this.handleStart = this.handleStart.bind(this);
+    this.redirectToGame = this.redirectToGame.bind(this);
+    this.redirectToSettings = this.redirectToSettings.bind(this);
   }
 
   verifyEmail(email) {
@@ -52,13 +53,7 @@ class Login extends React.Component {
     });
   }
 
-  async requestToken() {
-    const request = await fetch('https://opentdb.com/api_token.php?command=request');
-    const response = await request.json();
-    localStorage.setItem('token', response.token);
-  }
-
-  requestGravatar() {
+  requestUserInfo() {
     const { name, email } = this.state;
 
     const emailHash = md5(email).toString();
@@ -69,13 +64,16 @@ class Login extends React.Component {
     };
   }
 
-  async handleStart() {
-    const { userLoggedIn } = this.props;
+  handleStart() {
+    const { userLoggedIn, requestTokenAPI } = this.props;
 
-    await this.requestToken();
-    const nameAndImgPath = this.requestGravatar();
+    requestTokenAPI();
+    const userInfo = this.requestUserInfo();
+    userLoggedIn(userInfo);
+    this.redirectToGame();
+  }
 
-    userLoggedIn(nameAndImgPath);
+  redirectToGame() {
     this.setState({
       redirectToGame: true,
     });
@@ -139,10 +137,12 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   userLoggedIn: (userInfo) => dispatch(playerLogin(userInfo)),
+  requestTokenAPI: () => dispatch(requestToken()),
 });
 
 Login.propTypes = {
   userLoggedIn: PropTypes.func.isRequired,
+  requestTokenAPI: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Login);
