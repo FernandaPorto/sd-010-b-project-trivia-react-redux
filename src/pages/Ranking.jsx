@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Header from '../components/Header';
 
 class Ranking extends Component {
   render() {
@@ -17,8 +16,6 @@ class Ranking extends Component {
           data-testid="player-name-0"
         >{`Rodada atual - nome: ${atual.player.name}`} </h3>
         <h3 data-testid={ `player-score-0` }>{`com ${atual.player.score} pontos`}</h3>
-        
-        
         {getRanking.map((item, i) => (
           <div key={ i }>
             <img
