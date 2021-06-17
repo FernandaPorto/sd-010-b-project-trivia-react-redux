@@ -5,6 +5,10 @@ import PropTypes from 'prop-types';
 import Header from '../components/Header';
 
 class Feedback extends Component {
+  componentWillUnmount() {
+    this.saveScore();
+  }
+
   feedBack(assertions) {
     const NUMBER_THREE = 3;
     switch (true) {
@@ -15,6 +19,26 @@ class Feedback extends Component {
     default:
       return <h2>Error</h2>;
     }
+  }
+
+  saveScore() {
+    const Rodada = JSON.parse(localStorage.getItem('state'));
+    const { score, name } = Rodada.player;
+    const getRanking = JSON.parse(localStorage.getItem('ranking'));
+    let atualScore = [];
+    if (getRanking) {
+      atualScore = [...getRanking, { name, score }];
+    } else { atualScore = [{ name, score }]; }
+    const um = 1;
+    const ordena = atualScore.sort((a, b) => {
+      if (a.score > b.score) { return um; }
+      if (a.score < b.score) { return -um; }
+      return 0;
+    });
+    const reverse = ordena.reverse();
+    const max = 5;
+    localStorage.setItem('ranking', JSON.stringify(reverse.slice(0, max)));
+    console.log(getRanking);
   }
 
   render() {
@@ -32,7 +56,15 @@ class Feedback extends Component {
         <p data-testid="feedback-total-score">
           {score}
         </p>
-        <button type="button">VER RANKING</button>
+
+        <Link to="/ranking" data-testid="btn-ranking">
+          <button
+            type="button"
+            // data-testid="btn-ranking"
+          >
+            VER RANKING
+          </button>
+        </Link>
         <Link to="/">
           <button
             type="button"
@@ -41,7 +73,6 @@ class Feedback extends Component {
             JOGAR NOVAMENTE
           </button>
         </Link>
-
       </section>
     );
   }

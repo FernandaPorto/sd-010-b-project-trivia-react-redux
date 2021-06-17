@@ -39,9 +39,9 @@ class Login extends Component {
     const user = document.getElementById('name-input').value;
     localStorage.setItem('state', JSON.stringify({
       player: {
+        score: 0,
         name: user,
         gravatarEmail: email,
-        score: 0,
         assertions: 0,
       },
     }));
@@ -64,9 +64,6 @@ class Login extends Component {
   render() {
     const { loginTrue, isDisabled } = this.state;
     if (loginTrue) {
-      // const num = 0
-      // num += 1
-      // return <Redirect to={`/game/${num}`} />;
       return <Redirect to="/game" />;
     }
 
