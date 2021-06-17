@@ -9,7 +9,7 @@ import {
 const INITIALSTATE = {
   token: '',
   isRedirect: false,
-  questions: false,
+  questions: [],
   url: '',
   name: '',
   score: 0,

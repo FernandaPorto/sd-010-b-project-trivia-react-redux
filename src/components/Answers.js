@@ -10,7 +10,9 @@ const difficultyObj = { hard: 3, medium: 2, easy: 1 };
 class Answers extends Component {
   constructor(props) {
     super(props);
+
     const { difficulty } = this.props;
+
     this.state = {
       difficulty,
       youreRight: '',
@@ -18,10 +20,12 @@ class Answers extends Component {
       isNext: false,
       shuffleAnswers: [],
     };
+
     this.showCorrectAnswers = this.showCorrectAnswers.bind(this);
     this.selectAnswer = this.selectAnswer.bind(this);
     this.addScore = this.addScore.bind(this);
     this.storageInicial = this.storageInicial.bind(this);
+    this.resetAnswers = this.resetAnswers.bind(this);
   }
 
   storageInicial() {
@@ -65,9 +69,18 @@ class Answers extends Component {
     }, funcDisable());
   }
 
+  resetAnswers() {
+    this.setState({
+      shuffleAnswers: [],
+      youreRight: '',
+      youreWrong: '',
+      isNext: false,
+    });
+  }
+
   render() {
     const { youreRight, youreWrong, shuffleAnswers, difficulty, isNext } = this.state;
-    const { correct, incorrect, isDisableAnswers, timer } = this.props;
+    const { correct, incorrect, isDisableAnswers, timer, nextQuestion } = this.props;
     if (isDisableAnswers
       && (youreRight !== 'right-answer' && youreWrong !== 'wrong-answer')) {
       this.showCorrectAnswers();
@@ -93,7 +106,14 @@ class Answers extends Component {
             { answer }
           </button>
         )) }
-        { isNext && <button type="button" data-testid="btn-next">Próxima</button> }
+        { isNext && (
+          <button
+            type="button"
+            data-testid="btn-next"
+            onClick={ () => { this.resetAnswers(); nextQuestion(); } }
+          >
+            Próxima
+          </button>) }
       </div>
     );
   }
@@ -109,6 +129,7 @@ Answers.propTypes = {
   isDisableAnswers: PropTypes.bool.isRequired,
   timer: PropTypes.number.isRequired,
   incorrect: PropTypes.arrayOf(PropTypes.string).isRequired,
+  nextQuestion: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
