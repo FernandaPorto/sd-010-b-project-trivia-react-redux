@@ -37,7 +37,7 @@ class Perguntas extends Component {
     }
     return <p>Loading...</p>;
   }
-  
+
   render() {
     const { perguntaIndex } = this.state;
     const four = 4;
