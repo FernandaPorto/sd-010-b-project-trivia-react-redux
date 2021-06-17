@@ -18,12 +18,14 @@ class Jogo extends React.Component {
     this.temporizador = this.temporizador.bind(this);
     this.stopTimer = this.stopTimer.bind(this);
     this.stopOnClick = this.stopOnClick.bind(this);
+    this.renderTotal = this.renderTotal.bind(this);
     this.state = {
       randomAnswer: {},
       perguntaNumber: 0,
       buttonDisable: true,
       timer: 30,
       myTimer: null,
+      score: 0,
     };
   }
 
@@ -42,7 +44,7 @@ class Jogo extends React.Component {
     const { perguntaNumber } = this.state;
     const { questions: { results } } = this.props;
     const allAnswers = [...results[perguntaNumber].incorrect_answers];
-    const numberOfQuestions = 5;
+    const numberOfQuestions = 4;
     const randomPosition = Math.floor(Math.random() * numberOfQuestions);
     allAnswers.splice(randomPosition, 0, results[perguntaNumber].correct_answer);
     this.setState({
@@ -98,8 +100,9 @@ class Jogo extends React.Component {
   }
 
   temporizador() {
+    const SECOND = 1000;
     this.setState({
-      myTimer: setInterval(this.changeTimerState, 1000),
+      myTimer: setInterval(this.changeTimerState, SECOND),
     });
   }
 
@@ -110,39 +113,62 @@ class Jogo extends React.Component {
   }
 
   renderNextButton() {
-    const { buttonDisable } = this.state;
+    const lastQuestion = 4;
+    const { buttonDisable, perguntaNumber } = this.state;
     if (buttonDisable) {
       return null;
     }
+    if (perguntaNumber < lastQuestion) {
+      return (
+        <button
+          data-testid="btn-next"
+          type="button"
+          onClick={ () => this.somaPergunta() }
+          className="next-btn"
+        >
+          <span className="next-icon">&#10145;</span>
+        </button>
+      );
+    }
     return (
-      <button
-        data-testid="btn-next"
-        type="button"
-        onClick={ () => this.somaPergunta() }
-        className="next-btn"
-      >
-        <span className="next-icon">&#10145;</span>
-      </button>
+      <Link to="/feedback">
+        <button
+          type="button"
+          data-testid="btn-next"
+          className="next-btn"
+          onClick={ () => this.somaPergunta() }
+        >
+          Resultado
+        </button>
+      </Link>
     );
   }
 
+  renderTotal() {
+    const getScore = JSON.parse(localStorage.getItem('state'));
+    const { player: { score } } = getScore;
+    this.setState({
+      score,
+    });
+  }
+
   render() {
-    const { randomAnswer, timer, perguntaNumber } = this.state;
+    const { randomAnswer, timer, score } = this.state;
     return (
       <section>
-        <button onClick={ () => this.stopTimer() } type="button">AQUI</button>
-        <Header />
+        <Header score={ score } />
         <section className="game-section">
+          <div className="timer">
+            { timer }
+          </div>
           <PerguntaAtual
             randomAnswer={ randomAnswer }
             buttonAvaliable={ () => this.buttonAvaliable() }
             timer={ timer }
             stopOnClick={ () => this.stopOnClick() }
+            renderTotal={ this.renderTotal }
           />
-          <div>
-            { timer }
-          </div>
-          { perguntaNumber < 4 ? this.renderNextButton() : <Link to="/feedback" ><button type="button" data-testid="btn-next" >Resultado</button></Link>}
+          { this.renderNextButton() }
         </section>
       </section>
     );
@@ -160,6 +186,7 @@ Jogo.propTypes = {
       correct_answer: PropTypes.string,
       category: PropTypes.string,
       question: PropTypes.string,
+      difficulty: PropTypes.string,
     }).isRequired).isRequired,
   }).isRequired,
 };
