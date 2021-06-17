@@ -10,10 +10,12 @@ class Answers extends Component {
     this.state = {
       youreRight: '',
       youreWrong: '',
+      isNext: false,
       shuffleAnswers: [],
     };
 
     this.showCorrectAnswers = this.showCorrectAnswers.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   showCorrectAnswers() {
@@ -21,11 +23,16 @@ class Answers extends Component {
     this.setState({
       youreRight: 'right-answer',
       youreWrong: 'wrong-answer',
+      isNext: true,
     }, funcDisable());
   }
 
+  handleClick() {
+    this.showCorrectAnswers();
+  }
+
   render() {
-    const { youreRight, youreWrong, shuffleAnswers } = this.state;
+    const { youreRight, youreWrong, isNext, shuffleAnswers } = this.state;
     const { correct, incorrect, isDisableAnswers } = this.props;
     if (isDisableAnswers
       && (youreRight !== 'right-answer' && youreWrong !== 'wrong-answer')) {
@@ -46,12 +53,14 @@ class Answers extends Component {
             data-testid={ id === 'c' ? 'correct-answer' : `wrong-answer-${id}` }
             type="button"
             className={ id === 'c' ? youreRight : youreWrong }
-            onClick={ this.showCorrectAnswers }
+            onClick={ this.handleClick }
             disabled={ isDisableAnswers }
           >
             { answer }
           </button>
         )) }
+        { isNext === true ? <button type="button" data-testid="btn-next">Próxima</button>
+          : null }
       </div>
     );
   }
