@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import Header from '../components/Header';
 import { fetchApiQuestions, fetchAPI, saveAssertions, saveScore } from '../actions/index';
-import './trivia.css';
+import '../style/trivia.css';
 
 let pontosRender = 0;
 
