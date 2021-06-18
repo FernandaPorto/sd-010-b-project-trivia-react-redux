@@ -33,8 +33,10 @@ class Cronometer extends Component {
     this.setState({
       seconds: 0,
     });
-    const buttons = document.querySelectorAll('button');
+    const buttons = document.querySelectorAll('.options button');
+    const nextButton = document.querySelector('button[data-testid="btn-next"]');
     buttons.forEach((button) => { button.disabled = true; });
+    nextButton.hidden = false;
     clearInterval(this.cronometerInterval);
   }
 
