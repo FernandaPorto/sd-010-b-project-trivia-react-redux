@@ -15,6 +15,7 @@ class GameTrivia extends React.Component {
     };
     this.renderQuestions = this.renderQuestions.bind(this);
     this.setContagem = this.setContagem.bind(this);
+    this.handleClick = this.handleClick.bind(this);
     this.next = this.next.bind(this);
     // this.salvarPontos = this.salvarPontos.bind(this);
   }
@@ -48,6 +49,15 @@ class GameTrivia extends React.Component {
         next: next + 1,
       });
     }
+    this.setState({
+      colorQuestions: false,
+    });
+  }
+
+  handleClick() {
+    this.setState({
+      colorQuestions: true,
+    });
   }
 
   // componentDidMount() {
@@ -57,7 +67,7 @@ class GameTrivia extends React.Component {
   // Resolviddo problemas e finalizado requisitos 5 e 6
   renderQuestions() {
     const { getTriviaQuestions } = this.props;
-    const { next } = this.state;
+    const { next, colorQuestions } = this.state;
     const questions = getTriviaQuestions.results.results;
     if (questions) {
       return questions.filter((_questions, index) => index === next).map((question) => (
@@ -66,17 +76,23 @@ class GameTrivia extends React.Component {
           <h3 data-testid="question-text">{question.question}</h3>
           <button
             type="button"
+            id="correct-answer"
             data-testid="correct-answer"
-            // style={ (colorQuestions) ? { border: '3px solid rgb(6, 240, 15)' } : {} }
+            value="correct-answer"
+            onClick={ this.handleClick }
+            style={ (colorQuestions) ? { border: '3px solid rgb(6, 240, 15)' } : {} }
           >
             {question.correct_answer}
           </button>
           {question.incorrect_answers.map((incorrect) => (
             <button
+              onClick={ this.handleClick }
+              id="wrong-answer"
               key={ incorrect.index }
               type="button"
+              value="wrong-answer"
               data-testid={ `wrong-answer-${incorrect.index}` }
-              // style={ (colorQuestions) ? { border: '3px solid rgb(255, 0, 0)' } : {} }
+              style={ (colorQuestions) ? { border: '3px solid rgb(255, 0, 0)' } : {} }
             >
               {incorrect}
             </button>))}
