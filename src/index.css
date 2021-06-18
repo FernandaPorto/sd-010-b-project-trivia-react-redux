@@ -19,6 +19,7 @@ code {
   align-items: center;
   background-color: rgb(2, 3, 24);
   border: 4px ridge rgba(128, 128, 177, 0.541);
+  border-radius: 25px;
   display: flex;
   flex-direction: column;
   font-size: 20px;
@@ -27,8 +28,9 @@ code {
 }
 
 .img-logo {
-  width: 200px;
   border: 4px ridge rgba(128, 128, 177, 0.541);
+  border-radius: 25px;
+  width: 200px;
 }
 
 #email-input, #name-input {
@@ -37,6 +39,7 @@ code {
 }
 
 .login-button {
+  border-radius: 25px;
   font-size: 16px;
   margin: 10px;
   padding: 5px 30px;
