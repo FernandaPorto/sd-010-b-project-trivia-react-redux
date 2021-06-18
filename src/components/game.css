@@ -1,0 +1,54 @@
+.loading {
+  align-self: center;
+  color: white;
+  display: flex;
+  font-size: 2em;
+  font-weight: 800;
+  margin-top: 17%;
+}
+
+.questions {
+  align-self: center;
+  background-color: #9dd1bd;
+  border: 3px solid black;
+  border-radius: 5%;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  margin: 2% auto;
+  padding: 10px 20px;
+  width: 500px;
+}
+
+.questions p {
+  font-size: 1.5em;
+  margin-bottom: 5px;
+}
+
+.questions h1 {
+  font-size: 1.8em;
+  margin-top: 0;
+}
+
+.answers button {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  margin-top: 10px;
+  width: 300px;
+}
+
+.timer {
+  align-items: center;
+  border: 3px solid black;
+  border-radius: 50%;
+  display: flex;
+  font-weight: 800;
+  height: 30px;
+  justify-content: center;
+  margin: auto;
+  margin-top: 10px;
+  padding: 5px;
+  width: 30px;
+}

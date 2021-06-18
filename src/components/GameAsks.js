@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import './game.css';
 
 class GameAsks extends Component {
   constructor(props) {
@@ -62,6 +63,7 @@ class GameAsks extends Component {
     if (countDown === 0) {
       this.setState({
         disabledButton: true,
+        answer: true,
       });
     }
   }
@@ -110,43 +112,46 @@ class GameAsks extends Component {
   answer() {
     this.setState({
       answer: true,
+      disabledButton: true,
     });
   }
 
   render() {
     const { indexQuestion,
       loading, asks, answer, countDown, disabledButton, redirect } = this.state;
-    if (loading) return <span>Carregando...</span>;
+    if (loading) return <span className="loading">Carregando...</span>;
     if (redirect) return <Redirect to="/feedback" />;
     return (
-      <section>
-        <p>{countDown}</p>
+      <section className="questions">
+        <p className="timer">{countDown}</p>
         <p data-testid="question-category">{ asks[indexQuestion].category }</p>
         <h1 data-testid="question-text">{asks[indexQuestion].question}</h1>
-        {asks[indexQuestion].incorrect_answers.map((element, indexI) => (
+        <div className="answers">
+          {asks[indexQuestion].incorrect_answers.map((element, indexI) => (
+            <button
+              key={ indexI }
+              type="button"
+              disabled={ disabledButton }
+              onClick={ this.answer }
+              className={ answer ? 'incorrect' : 'null' }
+              data-testid={ `wrong-answer-${indexI}` }
+            >
+              { element }
+            </button>
+          ))}
           <button
-            key={ indexI }
             type="button"
             disabled={ disabledButton }
-            onClick={ this.answer }
-            className={ answer ? 'incorrect' : 'null' }
-            data-testid={ `wrong-answer-${indexI}` }
+            data-testid="correct-answer"
+            onClick={ () => {
+              this.answer();
+              this.totalSum();
+            } }
+            className={ answer ? 'correct' : 'null' }
           >
-            { element }
+            {asks[indexQuestion].correct_answer}
           </button>
-        ))}
-        <button
-          type="button"
-          disabled={ disabledButton }
-          data-testid="correct-answer"
-          onClick={ () => {
-            this.answer();
-            this.totalSum();
-          } }
-          className={ answer ? 'correct' : 'null' }
-        >
-          {asks[indexQuestion].correct_answer}
-        </button>
+        </div>
         <br />
         <button
           className="next-button"

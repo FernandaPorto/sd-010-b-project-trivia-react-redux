@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import './feedback.css';
 
 class FeedbackMessages extends Component {
   constructor(props) {
@@ -32,7 +33,7 @@ class FeedbackMessages extends Component {
     const localStorageInfos = JSON.parse(localStorage.getItem('state'));
     const { player: { assertions, score } } = localStorageInfos;
     return (
-      <>
+      <div className="feedback">
         <div>
           <span data-testid="feedback-text">{this.messages(assertions)}</span>
         </div>
@@ -45,7 +46,7 @@ class FeedbackMessages extends Component {
         <Link to="/">
           <button type="button" data-testid="btn-play-again">Jogar novamente</button>
         </Link>
-      </>
+      </div>
     );
   }
 }

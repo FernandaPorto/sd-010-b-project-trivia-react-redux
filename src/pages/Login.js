@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
 import logo from '../LOGO.png';
 import { userLogin, triviaFetching } from '../actions/index';
 
@@ -20,6 +21,7 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.btnValidadeFields = this.btnValidadeFields.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.emailConverter = this.emailConverter.bind(this);
   }
 
   handleChange({ target }) {
@@ -44,6 +46,12 @@ class Login extends React.Component {
     }
   }
 
+  emailConverter(email) {
+    const hash = md5(email).toString();
+    const gravatar = `https://www.gravatar.com/avatar/${hash}`;
+    return gravatar;
+  }
+
   handleClick(name, email) {
     const { players } = this.state;
     const { dispatchUserLogin, fetchingAsks } = this.props;
@@ -54,7 +62,7 @@ class Login extends React.Component {
         name,
         assertions: 0,
         score: 0,
-        gravatarEmail: email,
+        gravatarEmail: this.emailConverter(email),
       },
     };
     // state[`player${players}`] = player;

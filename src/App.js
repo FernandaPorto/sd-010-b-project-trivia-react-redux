@@ -9,15 +9,21 @@ import RankingPage from './pages/RankingPage';
 
 function App() {
   return (
-    <div className="App">
-      <Switch>
-        <Route exact path="/" component={ Login } />
-        <Route exact path="/settings" component={ Settings } />
-        <Route exact path="/game" component={ GamePage } />
-        <Route exact path="/feedback" component={ FeedbackPage } />
-        <Route exact path="/ranking" component={ RankingPage } />
-      </Switch>
-    </div>
+    <>
+      <div className="App">
+        <Switch>
+          <Route exact path="/" component={ Login } />
+          <Route exact path="/settings" component={ Settings } />
+          <Route exact path="/game" component={ GamePage } />
+          <Route exact path="/feedback" component={ FeedbackPage } />
+          <Route exact path="/ranking" component={ RankingPage } />
+        </Switch>
+      </div>
+      <footer>
+        Grupo 11 - Project TrybeTrivia - 2021 - TryB-X
+        <span role="img" aria-label="green-heart">💚</span>
+      </footer>
+    </>
   );
 }
 

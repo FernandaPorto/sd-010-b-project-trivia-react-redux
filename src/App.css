@@ -1,5 +1,6 @@
 body {
   background-color: #0a7049;
+  font-family: monospace;
 }
 
 .App {
@@ -36,7 +37,7 @@ body {
   height: fit-content;
   justify-content: center;
   margin: auto;
-  margin-top: 5%;
+  margin-top: 3.25%;
   padding: 15px;
   width: fit-content;
 }
@@ -96,4 +97,23 @@ button {
 
 .next-button {
   margin: auto;
+}
+
+footer {
+  align-items: center;
+  background-color: #043623;
+  bottom: 0;
+  color: white;
+  display: flex;
+  font-size: large;
+  font-weight: 800;
+  height: 40px;
+  justify-content: center;
+  margin-top: auto;
+  position: fixed;
+  width: 100%;
+}
+
+footer span {
+  margin-left: 10px;
 }

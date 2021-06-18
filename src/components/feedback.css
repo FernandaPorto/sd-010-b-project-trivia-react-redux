@@ -1,0 +1,18 @@
+.feedback {
+  align-items: center;
+  align-self: center;
+  background-color: #9dd1bd;
+  border: 3px solid black;
+  border-radius: 5%;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.8em;
+  font-weight: 600;
+  height: min-content;
+  justify-content: center;
+  margin: auto;
+  margin-top: 5%;
+  padding: 15px;
+  width: max-content;
+}

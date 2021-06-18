@@ -1,0 +1,31 @@
+.header-bar {
+  align-items: center;
+  background-color: #043623;
+  display: flex;
+  height: 90px;
+}
+
+.profile-picture {
+  border: 5px solid white;
+  border-radius: 50%;
+  height: 60px;
+  margin: 20px;
+  width: 60px;
+}
+
+.player-name {
+  color: white;
+  flex-grow: 1;
+  font-size: 1.8em;
+  margin: 0;
+}
+
+.header-score {
+  align-self: center;
+  color: white;
+  flex-grow: 1;
+  font-family: monospace;
+  font-size: 1.5em;
+  font-weight: 800;
+  margin: auto;
+}

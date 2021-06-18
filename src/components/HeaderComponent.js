@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
+import './header.css';
 // import { userLogin } from '../actions/index';
 
 class HeaderComponent extends Component {
@@ -22,16 +23,20 @@ class HeaderComponent extends Component {
     const { name } = this.props;
     const localStorageInfos = JSON.parse(localStorage.getItem('state'));
     const { player: { score } } = localStorageInfos;
-    console.log(score);
     return (
-      <header>
+      <header className="header-bar">
         <img
           src={ this.emailConverter() }
           alt="Profile"
+          className="profile-picture"
           data-testid="header-profile-picture"
         />
-        <h3 data-testid="header-player-name">{ name }</h3>
-        <span data-testid="header-score">{ score }</span>
+        <h3 data-testid="header-player-name" className="player-name">{ name }</h3>
+        <span data-testid="header-score" className="header-score">
+          Score:
+          {' '}
+          { score }
+        </span>
       </header>
     );
   }

@@ -1,0 +1,28 @@
+.profile-picture {
+  border: 5px solid white;
+  border-radius: 50%;
+  height: 130px;
+  margin-top: 30px;
+  width: 130px;
+}
+
+.player-name {
+  color: white;
+  font-family: monospace;
+  font-size: 2em;
+  margin: 0;
+}
+
+.header-score {
+  color: white;
+  font-family: monospace;
+  font-size: 1.8em;
+  font-weight: 800;
+  margin-top: 0;
+}
+
+img {
+  border-radius: 50%;
+  height: 80px;
+  width: 80px;
+}
