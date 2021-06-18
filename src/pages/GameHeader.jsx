@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import '../../node_modules/bulma/css/bulma.css';
 
 class GameHeader extends React.Component {
   render() {
@@ -8,14 +9,24 @@ class GameHeader extends React.Component {
       playerReducer: { gravatarEmail, name, score },
     } = this.props;
     return (
-      <header>
-        <img
-          src={ gravatarEmail }
-          data-testid="header-profile-picture"
-          alt="avatar do usuário"
-        />
-        <p data-testid="header-player-name">{name}</p>
-        <h2 data-testid="header-score">{score}</h2>
+      <header className="saiDaMargem">
+        <div className="perfil">
+          <img
+            src={ gravatarEmail }
+            data-testid="header-profile-picture"
+            alt="avatar do usuário"
+          />
+          <span className="title is-2" data-testid="header-player-name">{name}</span>
+        </div>
+        <div />
+        <div className="pontuacao">
+          <h2
+            className="title is-3"
+            data-testid="header-score"
+          >
+            {`Pontuação atual: ${score}`}
+          </h2>
+        </div>
       </header>
     );
   }

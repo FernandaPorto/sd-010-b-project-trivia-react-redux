@@ -169,9 +169,14 @@ class Game extends React.Component {
           <p
             data-testid="question-category"
           >
-            { apiResult.results[indexQuestion].category }
+            { `Categoria: ${apiResult.results[indexQuestion].category}` }
           </p>
-          <p data-testid="question-text">{ apiResult.results[indexQuestion].question }</p>
+          <p
+            data-testid="question-text"
+            className="notification is-link"
+          >
+            { apiResult.results[indexQuestion].question }
+          </p>
           <section className="section-answer-buttons">
             { newRandomArray.map((answer, index) => (
               <button
@@ -180,8 +185,9 @@ class Game extends React.Component {
                 key={ index }
                 type="submit"
                 disabled={ buttonDisabled }
-                className={ answer === apiResult.results[indexQuestion].correct_answer
-                  ? 'answer-button-correct' : 'answer-button-wrong' }
+                className={ `${answer === apiResult.results[indexQuestion].correct_answer
+                  ? 'answer-button-correct'
+                  : 'answer-button-wrong'} button is-success is-light` }
                 onClick={ (evento) => this.handleClick(evento) }
               >
                 {answer}
@@ -200,16 +206,18 @@ class Game extends React.Component {
     return (
       <section>
         <GameHeader />
-        {this.renderPage()}
-        <button
-          data-testid="btn-next"
-          type="button"
-          className="next-button"
-          onClick={ this.nextQuestion }
-        >
-          Próxima
-        </button>
-        <p id="timer">{`Tempo restante: ${currentTime}`}</p>
+        <div className="box">
+          {this.renderPage()}
+          <button
+            data-testid="btn-next"
+            type="button"
+            className="next-button button is-warning"
+            onClick={ this.nextQuestion }
+          >
+            Próxima
+          </button>
+          <p id="timer">{`Tempo restante: ${currentTime}`}</p>
+        </div>
       </section>
 
     );

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
 import { enviaDadosUsuario, getApiResultAction } from '../actions';
+import 'bulma/css/bulma.min.css';
 
 class Login extends React.Component {
   constructor(props) {
@@ -80,8 +81,11 @@ class Login extends React.Component {
     const { email, name, disabled } = this.state;
     return (
       <main>
-        <form>
+        <h1 className="title is-1">Grande Jogo de Trivia</h1>
+        <form className="box">
           <input
+            className="input"
+            placeholder="E-mail"
             data-testid="input-gravatar-email"
             type="email"
             id="email"
@@ -90,6 +94,7 @@ class Login extends React.Component {
             onChange={ this.handleChange }
           />
           <input
+            className="input"
             data-testid="input-player-name"
             type="text"
             id="name"
@@ -99,6 +104,7 @@ class Login extends React.Component {
           />
           <Link to="/game">
             <button
+              className="button is-primary"
               data-testid="btn-play"
               type="button"
               id="button"
@@ -109,7 +115,11 @@ class Login extends React.Component {
             </button>
           </Link>
           <Link to="/settings">
-            <button type="button" data-testid="btn-settings">
+            <button
+              className="button is-dark"
+              type="button"
+              data-testid="btn-settings"
+            >
               Configurações
             </button>
           </Link>
