@@ -245,7 +245,7 @@ class Game extends React.Component {
 
   render() {
     this.addInfoToLocalStorage();
-    const { score, timerInitial } = this.state;
+    const { score, timerInitial, numberOfAssertions } = this.state;
     const { questions } = this.props;
     const { location: { aboutProps: { name: { name },
       email: { email } } } } = this.props;
