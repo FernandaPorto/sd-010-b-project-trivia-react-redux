@@ -16,13 +16,16 @@ class Cronometer extends Component {
     }, ONE_SECOND);
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(_, prevState) {
     const { statusCronometer, getSeconds } = this.props;
     const MIN_SECONDS = 0;
-    if (prevState.seconds === MIN_SECONDS || statusCronometer === 'off') {
+    if (prevState.seconds === MIN_SECONDS) {
+      this.resetCronometer();
+    }
+
+    if (statusCronometer === 'off') {
       getSeconds(prevState.seconds);
       clearInterval(this.cronometerInterval);
-      // this.resetCronometer();
     }
   }
 
