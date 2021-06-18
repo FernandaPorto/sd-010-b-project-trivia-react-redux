@@ -1,7 +1,10 @@
+/* eslint-disable no-nested-ternary */
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import Questionaire from './Questionaire';
+import { assertionsPlayer } from '../actions';
 
 class Question extends React.Component {
   constructor(props) {
@@ -9,43 +12,79 @@ class Question extends React.Component {
 
     this.getQuestions = this.getQuestions.bind(this);
     this.handleAnswer = this.handleAnswer.bind(this);
+    this.handleAssertions = this.handleAssertions.bind(this);
+    this.handleNextQuestion = this.handleNextQuestion.bind(this);
+    this.handleTimer = this.handleTimer.bind(this);
 
     this.state = {
       questions: [],
       currentIndex: 0,
+      assertions: 0,
+      showAnswers: false,
+      colorGreen: '1px solid rgb(0, 0, 0)',
+      colorRed: '1px solid rgb(0, 0, 0)',
+      isRedirect: false,
+      timer: 30,
+      isDisable: false,
     };
   }
 
   componentDidMount() {
     this.getQuestions();
+    this.handleTimer();
   }
+
 
   async getQuestions() {
     const { tok } = this.props;
     const apiQuestion = (`https://opentdb.com/api.php?amount=5&token=${tok}`);
     const response = await fetch(apiQuestion);
     const data = await response.json();
-
-    /* const testeJ = [1, 2, 3, 4, 5, 6];
-    function testeAleatorio(arrayTeste) {
-      const arr = arrayTeste.slice();
-      for (let index = 0; index < data.results.length; index += 1) {
-        const index2 = Math.floor(Math.random() * (index + 1));
-        [arr[index], arr[index2]] = [arr[index2], arr[index]];
-      }
-      return arr;
-    } */
-
     this.setState({
       questions: data.results,
     });
   }
 
+  handleTimer() {
+    const ONE_SECOND = 1000;
+    this.interval = setInterval(() => {
+      const { timer, isDisable } = this.state;
+      this.setState((prev) => ({
+        timer: (prev.timer - 1),
+      }));
+      if (timer === 1) {
+        clearInterval(this.interval);
+        this.setState({
+          isDisable: true,
+          showAnswers: true,
+        });
+      }
+    }, ONE_SECOND);
+  }
+
   handleAnswer(answer) {
-    const { currentIndex } = this.state;
+    const { currentIndex, questions, assertions, showAnswers, colorGreen, colorRed } = this.state;
+    if (!showAnswers) {
+      if (answer === questions[currentIndex].correct_answer) {
+        // calculo do score
+        //questions[currentIndex].dificulty
+        this.setState({
+          assertions: assertions + 1,
+          //atualizar o score
+        });
+      }
+    }
+    // const newIndex = currentIndex + 1;
+    // this.setState({
+    //   currentIndex: newIndex,
+    // });
+
     this.setState({
-      currentIndex: currentIndex + 1,
+      showAnswers: true,
+      colorRed: '3px solid rgb(255, 0, 0)',
+      colorGreen: '3px solid rgb(6, 240, 15)',
     });
+
     // conferir a resposta
 
     // mostrar outra pergunta
@@ -53,48 +92,58 @@ class Question extends React.Component {
     // mudar placar se correto
   }
 
+  handleAssertions() {
+    const { assertions } = this.state;
+    const { points } = this.props;
+    points({ assertions });
+    // enviar a pontuação do score
+  }
+
+  handleNextQuestion() {
+    const { currentIndex, questions } = this.state;
+    if (currentIndex >= questions.length - 1) {
+      this.handleAssertions();
+      // enviar pro localstorage pontuação, nome, email, numero acertos
+      this.setState({
+        isRedirect: true,
+      });
+    }
+    this.setState({
+      showAnswers: false,
+      currentIndex: currentIndex + 1,
+      colorGreen: '1px solid rgb(0, 0, 0)',
+      colorRed: '1px solid rgb(0, 0, 0)',
+      timer: 30,
+      isDisable: false,
+    });
+  }
+
   render() {
-    const { questions, currentIndex } = this.state;
-    console.log(questions);
-    return (
-      questions.length > 0 ? (
-        <div className="container">
+    const { questions, currentIndex, showAnswers, colorRed, colorGreen, isRedirect, timer, isDisable } = this.state;
+    // console.log(questions);
+
+    return questions.length > 0 ? (
+      <div className="container">
+        {isRedirect ? (
+          <Redirect to="/score" />
+        ) : (
+          <div>
+          { timer }
           <Questionaire
             data={ questions[currentIndex] }
+            showAnswers={ showAnswers }
+            colorRed={ colorRed }
+            colorGreen={ colorGreen }
+            handleNextQuestion={ this.handleNextQuestion }
             handleAnswer={ this.handleAnswer }
+            handleAssertions={ this.handleAssertions }
+            isDisable={isDisable}
           />
-          {/* <p
-            data-testid="question-category"
-          >
-            { questions[0].category }
-          </p>
-          <h2
-            data-testid="question-text"
-            dangerouslySetInnerHTML={ { __html: questions[0].question } }
-          />
-          <div>
-            <div>
-              <button
-                type="button"
-                data-testid="correct-answer"
-              >
-                {questions[0].correct_answer}
-              </button>
-              {questions[0].incorrect_answers.map(
-                (elem, index) => (
-                  <button
-                    type="button"
-                    data-testid={ `wrong-answer-${index}` }
-                    key={ index }
-                  >
-                    { elem }
-                  </button>
-                ),
-              )}
-            </div>
-
-          </div> */}
-        </div>) : (<h2>Loading...</h2>)
+          </div>
+        )}
+      </div>
+    ) : (
+      <h2>Loading...</h2>
     );
   }
 }
@@ -103,8 +152,13 @@ const mapStateToProps = (state) => ({
   tok: state.api.token,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  points: (assertions) => dispatch(assertionsPlayer(assertions)),
+});
+
 Question.propTypes = {
   tok: PropTypes.string.isRequired,
+  points: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, null)(Question);
+export default connect(mapStateToProps, mapDispatchToProps)(Question);

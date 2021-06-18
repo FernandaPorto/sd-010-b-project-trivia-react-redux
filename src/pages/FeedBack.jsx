@@ -21,7 +21,7 @@ class FeedBack extends Component {
         <p data-testid="feedback-total-question">
           {totalAssertions}
         </p>
-        <Link to="/quiz">
+        <Link to="/">
           <button
             type="button"
             data-testid="btn-play-again"
