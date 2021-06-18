@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { pointsAction } from '../Actions';
-import shuffle from './randoFunc';
 import RenderWrong from './RenderWrong';
 
 const ONE_SECOND = 1000;
