@@ -55,6 +55,7 @@ Feedback.propTypes = {
   gravatar: PropTypes.string.isRequired,
   // store: PropTypes.number.isRequired,
   assertions: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, null)(Feedback);
