@@ -1,5 +1,3 @@
-export const ADD_PLAYER_NAME = 'ADD_PLAYER_NAME';
-
 export const RECEIVE_TOKEN = 'RECEIVE_TOKEN';
 
 export const RECEIVE_QUESTIONS = 'RECEIVE_QUESTIONS';

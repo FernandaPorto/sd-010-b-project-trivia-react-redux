@@ -1,8 +1,6 @@
 import { getQuestions } from '../services';
 import {
-  ADD_PLAYER_NAME, ADD_SCORE,
-  GET_SECONDS,
-  RECEIVE_QUESTIONS, RECEIVE_TOKEN, TOGGLE_CRONOMETER,
+  ADD_SCORE, GET_SECONDS, RECEIVE_QUESTIONS, RECEIVE_TOKEN, TOGGLE_CRONOMETER,
 } from './actionsType';
 
 const saveToken = (token) => ({ type: RECEIVE_TOKEN, token });
@@ -14,11 +12,6 @@ export const requestAPI = () => async () => {
   const { token } = await request.json();
   localStorage.setItem('token', token);
 };
-
-export const saveNamePlayer = (name) => ({
-  type: ADD_PLAYER_NAME,
-  payload: { name },
-});
 
 export const receiveToken = () => async (dispatch) => {
   const token = localStorage.getItem('token');

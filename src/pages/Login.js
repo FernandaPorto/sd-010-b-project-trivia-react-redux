@@ -95,12 +95,10 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   requestTriviaToken: () => dispatch(requestAPI()),
-  registerName: (name) => dispatch(saveNamePlayer(name)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
 
 Login.propTypes = {
   requestTriviaToken: propTypes.func.isRequired,
-  registerName: propTypes.func.isRequired,
 };
