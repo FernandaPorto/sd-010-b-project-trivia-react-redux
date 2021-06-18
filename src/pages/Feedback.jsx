@@ -31,6 +31,7 @@ class Feedback extends React.Component {
     }
     const gravatar = getGravatar(name, email);
     const magicNumber = 3;
+    console.log(this.props);
     const expression = correct >= magicNumber ? `NOSSA! ${name}` : `POXA! ${name}`;
     return (
       <div>
@@ -63,18 +64,16 @@ class Feedback extends React.Component {
   }
 }
 
+// console.log(name,email,score,getGravatar,correct)
 Feedback.propTypes = {
   location: PropTypes.shape({
     aboutProps: PropTypes.shape({
-      name: PropTypes.shape({
-        name: PropTypes.string }),
-      email: PropTypes.shape({
-        email: PropTypes.string }),
-      score: PropTypes.shape({
-        score: PropTypes.number }),
-      getGravatar: PropTypes.bool,
-      correct: PropTypes.number.isRequired,
-      numberOfAssertions: PropTypes.number.isRequired,
+      correct: PropTypes.number,
+      email: PropTypes.string,
+      name: PropTypes.string,
+      getGravatar: PropTypes.func,
+      score: PropTypes.number,
+      numberOfAssertions: PropTypes.number,
     }),
   }).isRequired,
 };
