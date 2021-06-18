@@ -20,6 +20,18 @@ class LoginForm extends Component {
     };
   }
 
+  componentDidMount() {
+    const oldRank = JSON.parse(localStorage.getItem('ranking'));
+    if (!oldRank) {
+      const newPlayer = [{
+        name: 'Rei do Jogo',
+        score: '999',
+        picture: 'https://robohash.org/a9ea09768c7698c5f1d7e0a1c9967b1d?set=set1&bgset=&size=200x200',
+      }];
+      localStorage.setItem('ranking', JSON.stringify(newPlayer));
+    }
+  }
+
   onHandleChange({ target }) {
     this.setState({
       [target.id]: target.value,
