@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { pointsAction } from '../Actions';
+import shuffle from './randoFunc';
+import RenderWrong from './RenderWrong';
 
 const ONE_SECOND = 1000;
 const THREE = 3;
@@ -11,6 +13,7 @@ class Trivia extends Component {
     super(props);
     const tres = 3;
     this.state = {
+      certo: 0,
       count: 0,
       seconds: 30,
       redirect: false,
@@ -21,7 +24,6 @@ class Trivia extends Component {
     this.correctAnswer = this.correctAnswer.bind(this);
     this.changeState = this.changeState.bind(this);
     this.random = this.random.bind(this);
-    this.shuffle = this.shuffle.bind(this);
   }
 
   componentDidMount() {
@@ -74,6 +76,7 @@ class Trivia extends Component {
   }
 
   correctAnswer(event) {
+    const { certo } = this.state;
     const btnC = document.querySelectorAll('#correct');
     const btnE = document.querySelectorAll('#errada');
     const btnNext = document.querySelector('#next');
@@ -88,6 +91,7 @@ class Trivia extends Component {
       e.disabled = true;
     }); if (event !== undefined && event.target.id === 'correct') {
       this.calcScore();
+      this.setState({ certo: certo + 1 });
     }
   }
 
@@ -117,24 +121,14 @@ class Trivia extends Component {
 
   random() {
     const { random } = this.state;
-    const x = this.shuffle(random);
+    const x = shuffle(random);
     return x;
   }
 
   random2() {
     const { random2 } = this.state;
-    const x = this.shuffle(random2);
+    const x = shuffle(random2);
     return x;
-  }
-
-  shuffle(array) {
-    let currentIndex = array.length;
-    while (currentIndex !== 0) {
-      const randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex], array[currentIndex]];
-    } return array;
   }
 
   renderquestionCorrect() {
@@ -152,58 +146,32 @@ class Trivia extends Component {
     );
   }
 
-  renderWrong1() {
+  renderWrong(num) {
     const { questions } = this.props;
     const { count } = this.state;
     return (
       <button
         id="errada"
         type="button"
-        data-testid={ `wrong-answer-${0}` }
+        data-testid={ `wrong-answer-${num}` }
         onClick={ this.correctAnswer }
       >
-        {questions[count].incorrect_answers[0]}
-      </button>);
-  }
-
-  renderWrong2() {
-    const { questions } = this.props;
-    const { count } = this.state;
-    return (
-      <button
-        id="errada"
-        type="button"
-        data-testid={ `wrong-answer-${1}` }
-        onClick={ this.correctAnswer }
-      >
-        {questions[count].incorrect_answers[1]}
-      </button>
-    );
-  }
-
-  renderWrong3() {
-    const { questions } = this.props;
-    const { count } = this.state;
-    return (
-      <button
-        id="errada"
-        type="button"
-        data-testid={ `wrong-answer-${2}` }
-        onClick={ this.correctAnswer }
-      >
-        {questions[count].incorrect_answers[2]}
+        {questions[count].incorrect_answers[num]}
       </button>);
   }
 
   render() {
     const { questions } = this.props;
     const { count, seconds, redirect, random, random2 } = this.state;
+
     if (redirect) {
       return <Redirect to="/feedback" />;
-    }
-    if (questions) {
+    } if (questions) {
+      const passProps = { count, questions, correctAnswer: this.correctAnswer };
       const respostas = [this.renderquestionCorrect(),
-        this.renderWrong1(), this.renderWrong2(), this.renderWrong3()];
+        ...[0, 1, 2].map((e) => <RenderWrong { ...passProps } key={ e } num={ e } />),
+      ];
+
       return (
         <>
           <h4 data-testid="question-category">{questions[count].category}</h4>
@@ -228,7 +196,8 @@ class Trivia extends Component {
             Next
           </button>
           <h4 id="id-timer">{seconds}</h4>
-        </>);
+        </>
+      );
     }
     return (
       <div />
@@ -241,7 +210,6 @@ Trivia.propTypes = {
 const mapDispatchToProps = (dispatch) => ({
   setPoints: (points) => dispatch(pointsAction(points)),
 });
-const mapStateToProps = (state) => ({
-  questions: state.loginReducer.payload,
+const mapStateToProps = (state) => ({ questions: state.loginReducer.payload,
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Trivia);
