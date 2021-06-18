@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { requestAPI, saveNamePlayer } from '../actions';
+import { requestAPI } from '../actions';
+import {
+  bootingPlayerLocalStorage, updatePlayerDataLocalStorage,
+} from '../helpers/localStorage';
 
 class Login extends Component {
   constructor(props) {
@@ -37,10 +40,12 @@ class Login extends Component {
   }
 
   handleClick() {
-    const { name } = this.state;
-    const { requestTriviaToken, registerName } = this.props;
+    const { name, email } = this.state;
+    const { requestTriviaToken } = this.props;
     requestTriviaToken();
-    registerName(name);
+    bootingPlayerLocalStorage();
+    updatePlayerDataLocalStorage('name', name);
+    updatePlayerDataLocalStorage('gravatarEmail', email);
   }
 
   render() {
