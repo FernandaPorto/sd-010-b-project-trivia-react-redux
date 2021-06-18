@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class Ranking extends React.Component {
   render() {
@@ -14,6 +15,9 @@ class Ranking extends React.Component {
               <span data-testid={ `player-score-${index}` }>{element.score}</span>
             </li>
           ))}
+          <button type="button" data-testid="btn-go-home">
+            <Link to="/">Jogar novamente</Link>
+          </button>
         </ul>
       </section>
     );
