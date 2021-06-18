@@ -32,7 +32,6 @@ class Login extends React.Component {
   async requisitarAPI(token) {
     const { requestApi, settings } = this.props;
     let { category, difficulty, type } = settings;
-    console.log(token);
     if (category !== '') {
       category = `&category=${category}`;
     }

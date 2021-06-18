@@ -31,7 +31,6 @@ class Settings extends React.Component {
   }
 
   handleChangeCategory({ target: { value } }) {
-    console.log(value);
     if (value !== 'Any Category') {
       this.setState({ category: value });
     }
