@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 class GameTrivia extends React.Component {
@@ -60,10 +61,38 @@ class GameTrivia extends React.Component {
     });
   }
 
-  // componentDidMount() {
-  //   const { getTriviaQuestions } = this.props;
-  //   getTriviaQuestions();
-  // }
+  renderButton() {
+    const { next, colorQuestions } = this.state;
+    const four = 4;
+    if (next === four) {
+      return (
+        <Link to="/feedback">
+          <button
+            data-testid="btn-next"
+            type="button"
+            style={
+              (colorQuestions) ? { visibility: 'visible' } : { visibility: 'hidden' }
+            }
+          >
+            Feedback
+          </button>
+        </Link>
+      );
+    }
+    return (
+      <button
+        data-testid="btn-next"
+        type="button"
+        onClick={ this.next }
+        style={
+          (colorQuestions) ? { visibility: 'visible' } : { visibility: 'hidden' }
+        }
+      >
+        Next
+      </button>
+    );
+  }
+
   // Resolviddo problemas e finalizado requisitos 5 e 6
   renderQuestions() {
     const { getTriviaQuestions } = this.props;
@@ -96,15 +125,8 @@ class GameTrivia extends React.Component {
             >
               {incorrect}
             </button>))}
-          <section>
-            <button
-              data-testid="btn-next"
-              type="button"
-              onClick={ this.next }
-            >
-              Next
-            </button>
-          </section>
+          <section />
+          { this.renderButton() }
         </section>
       ));
     }
