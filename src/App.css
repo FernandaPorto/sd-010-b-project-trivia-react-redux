@@ -7,14 +7,6 @@
   pointer-events: none;
 }
 
-.incorrect-answers {
-  border: 1px solid red;
-}
-
-.correct-answer {
-  border: 1px solid green;
-}
-
 @media ( prefers-reduced-motion : no-preference ) {
 
   .App-logo {

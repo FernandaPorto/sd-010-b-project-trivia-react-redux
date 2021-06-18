@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import '../GamePageCss.css';
 // import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import fetchURL from '../services/API';
-import '../App.css';
+import ButtonNextQuestion from '../components/ButtonNextQuestion';
+import ButtonFeedback from '../components/ButtonFeedback';
+import ButtonLogin from '../components/ButtonLogin';
 
 export const setToken = async () => {
   const token = await fetchURL();
@@ -20,6 +23,7 @@ class GamePage extends Component {
       categories: [{}],
       indexState: 0,
       loading: false,
+      seconds: 30,
     };
 
     this.getToken = this.getToken.bind(this);
@@ -28,7 +32,23 @@ class GamePage extends Component {
   }
 
   componentDidMount() {
+    const { seconds } = this.state;
+    const THIRTY_SECONDS = 30000;
     this.getToken();
+    this.myInterval = setInterval(() => {
+      if (seconds > 0) {
+        this.setState((previousState) => ({
+          seconds: previousState.seconds - 1,
+        }));
+      }
+      if (seconds === 0) {
+        this.isLoading();
+      }
+    }, THIRTY_SECONDS);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.myInterval);
   }
 
   async getToken() {
@@ -63,37 +83,38 @@ class GamePage extends Component {
             </option>))}
         </select>
         <section>
-          <h1
-            type="button"
-            data-testid="question-text"
-            key={ indexState }
-            // onClick={ this.handleClick }
-          >
-            {categories[indexState].question}
-          </h1>
-        </section>
-        <div
-          role="button"
-          tabIndex={ 0 }
-          className={ loading ? 'correct-answer' : '' }
-          onClick={ this.isLoading }
-          data-testid="correct-answer"
-          onKeyDown={ this.handleClick }
-        >
-          {categories[indexState].correct_answer}
-        </div>
-        {categories[indexState].incorrect_answers
-        && categories[indexState].incorrect_answers.map((item, index) => (
           <div
             role="button"
             tabIndex={ 0 }
+            data-testid="question-text"
+            key={ indexState }
+            onClick={ this.handleChange }
+            onKeyDown={ this.handleChange }
+          >
+            {categories[indexState].question}
+          </div>
+        </section>
+        <option
+          className={ loading ? 'correct-answer' : '' }
+          data-testid="correct-answer"
+          onKeyDown={ this.isLoading }
+        >
+          {categories[indexState].correct_answer}
+        </option>
+        {categories[indexState].incorrect_answers
+        && categories[indexState].incorrect_answers.map((item, index) => (
+          <option
             className={ loading ? 'incorrect-answers' : '' }
+            onClick={ this.isLoading }
             data-testid={ `wrong-answer-${index}` }
             key={ index }
           >
             {item}
-          </div>
+          </option>
         ))}
+        <ButtonFeedback />
+        <ButtonLogin />
+        <ButtonNextQuestion onClick={ this.handleChange } />
       </div>
     );
   }
@@ -104,3 +125,4 @@ class GamePage extends Component {
 // };
 
 export default GamePage;
+// https://betterprogramming.pub/building-a-simple-countdown-timer-with-react-4ca32763dda7
