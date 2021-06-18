@@ -36,18 +36,17 @@ class Question extends Component {
     });
   }
 
-  handleClick({ target: { id } }) {
-    const { setStatusCronometer, seconds, setScore, questions } = this.props;
-    const TEN = 10;
-    const { index } = this.state;
-    const { difficulty } = questions[index];
-    const difficultyScore = { hard: 3, medium: 2, easy: 1 };
-    this.insertClass();
-    setStatusCronometer('off');
-   /*  if (id === CORRECT_ANSWER) {
-      const score = TEN + (difficultyScore[difficulty] * seconds);
-      setScore(score);
-    } */
+  async handleClick({ target: { id } }) {
+    const { setStatusCronometer } = this.props;
+    this.updateButtonsStyle();
+    await setStatusCronometer('off');
+    if (id === 'correct-answer') {
+      const { indexQuestion } = this.state;
+      const { seconds, updateScore, questions } = this.props;
+      const { difficultyLevel } = questions[indexQuestion];
+      updateAssertionsAndScore(difficultyLevel, seconds);
+      updateScore();
+    }
   }
 
   render() {
