@@ -114,6 +114,7 @@ class Question extends React.Component {
 
 Question.propTypes = {
   result: PropTypes.arrayOf().isRequired,
+  isDisabled: PropTypes.bool.isRequired,
 };
 
 export default Question;
