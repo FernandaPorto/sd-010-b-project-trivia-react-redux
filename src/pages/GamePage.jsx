@@ -3,9 +3,9 @@ import '../GamePageCss.css';
 // import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import fetchURL from '../services/API';
+import ButtonNextQuestion from '../components/ButtonNextQuestion';
 import ButtonFeedback from '../components/ButtonFeedback';
 import ButtonLogin from '../components/ButtonLogin';
-import ButtonNextQuestion from '../components/ButtonNextQuestion';
 
 export const setToken = async () => {
   const token = await fetchURL();
@@ -23,6 +23,7 @@ class GamePage extends Component {
       categories: [{}],
       indexState: 0,
       loading: false,
+      seconds: 30,
     };
 
     this.getToken = this.getToken.bind(this);
@@ -31,14 +32,23 @@ class GamePage extends Component {
   }
 
   componentDidMount() {
+    const { seconds } = this.state;
+    const THIRTY_SECONDS = 30000;
     this.getToken();
+    this.myInterval = setInterval(() => {
+      if (seconds > 0) {
+        this.setState((previousState) => ({
+          seconds: previousState.seconds - 1,
+        }));
+      }
+      if (seconds === 0) {
+        this.isLoading();
+      }
+    }, THIRTY_SECONDS);
   }
 
-  componentDidUpdate() {
-    const NUMBER = 30000;
-    setTimeout(() => {
-      this.loading();
-    }, NUMBER);
+  componentWillUnmount() {
+    clearInterval(this.myInterval);
   }
 
   async getToken() {
@@ -73,19 +83,21 @@ class GamePage extends Component {
             </option>))}
         </select>
         <section>
-          <h1
-            type="button"
+          <div
+            role="button"
+            tabIndex={ 0 }
             data-testid="question-text"
             key={ indexState }
-            // onClick={ this.handleClick }
+            onClick={ this.handleChange }
+            onKeyDown={ this.handleChange }
           >
             {categories[indexState].question}
-          </h1>
+          </div>
         </section>
         <option
           className={ loading ? 'correct-answer' : '' }
-          onClick={ this.isLoading }
           data-testid="correct-answer"
+          onKeyDown={ this.isLoading }
         >
           {categories[indexState].correct_answer}
         </option>
@@ -102,7 +114,7 @@ class GamePage extends Component {
         ))}
         <ButtonFeedback />
         <ButtonLogin />
-        <ButtonNextQuestion />
+        <ButtonNextQuestion onClick={ this.handleChange } />
       </div>
     );
   }
@@ -113,3 +125,4 @@ class GamePage extends Component {
 // };
 
 export default GamePage;
+// https://betterprogramming.pub/building-a-simple-countdown-timer-with-react-4ca32763dda7
