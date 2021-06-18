@@ -10,13 +10,22 @@ class FeedBackMain extends Component {
 
   componentDidMount() {
     const playerInfo = JSON.parse(localStorage.getItem('state'));
-    // const oldPlayers = JSON.parse(localStorage.getItem('ranking'));
-    const newPlayer = [{
+    const oldPlayers = JSON.parse(localStorage.getItem('ranking'));
+    if (oldPlayers === null) {
+      const newPlayer = [{
+        name: playerInfo.player.name,
+        score: playerInfo.player.score,
+        picture: `https://www.gravatar.com/avatar/${this.userEmail()}`,
+      }];
+      return localStorage.setItem('ranking', JSON.stringify(newPlayer));
+    }
+    const newPlayer = {
       name: playerInfo.player.name,
       score: playerInfo.player.score,
       picture: `https://www.gravatar.com/avatar/${this.userEmail()}`,
-    }];
-    localStorage.setItem('ranking', JSON.stringify(newPlayer));
+    };
+    oldPlayers.push(newPlayer);
+    localStorage.setItem('ranking', JSON.stringify(oldPlayers));
   }
 
   userEmail() {

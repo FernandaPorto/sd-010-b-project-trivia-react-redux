@@ -7,17 +7,27 @@ export default class Ranking extends Component {
     return (
       <section>
         <h1 data-testid="ranking-title"> Ranking </h1>
-        {getRanking.map(((user) => (
+        {getRanking.sort((a, b) => {
+          if (a.score > b.score) {
+            const DECRESCENTE = -1;
+            return DECRESCENTE;
+          }
+          if (a.score < b.score) {
+            return 1;
+          }
+          // a must be equal to b
+          return 0;
+        }).map(((user) => (
           <section key={ user.index }>
-            <span>
-              Usuário:
-              {' '}
+            Usuário:
+            {' '}
+            <span data-testid={ `player-name-${user.index}` }>
               {user.name}
             </span>
             <br />
-            <span>
-              Score:
-              {' '}
+            Score:
+            {' '}
+            <span data-testid={ `player-score-${user.index}` }>
               {user.score}
             </span>
             <br />
