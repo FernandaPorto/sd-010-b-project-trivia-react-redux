@@ -8,11 +8,11 @@
 }
 
 .incorrect-answers {
-  border: 1px solid red;
+  border: 3px solid rgb(255, 0, 0);
 }
 
 .correct-answer {
-  border: 1px solid green;
+  border: 3px solid rgb(6, 240, 15);
 }
 
 @media ( prefers-reduced-motion : no-preference ) {

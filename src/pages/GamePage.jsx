@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import '../App.css';
 // import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import fetchURL from '../services/API';
-import '../App.css';
+import ButtonFeedback from '../components/ButtonFeedback';
+import ButtonLogin from '../components/ButtonLogin';
 
 export const setToken = async () => {
   const token = await fetchURL();
@@ -72,24 +74,26 @@ class GamePage extends Component {
             {categories[indexState].question}
           </h1>
         </section>
-        <input
-          type='button'
+        <option
           className={ loading ? 'correct-answer' : '' }
           onClick={ this.isLoading }
           data-testid="correct-answer"
         >
           {categories[indexState].correct_answer}
-        </input>
+        </option>
         {categories[indexState].incorrect_answers
         && categories[indexState].incorrect_answers.map((item, index) => (
-          <li
-            className="incorrect-answers"
+          <option
+            className={ loading ? 'incorrect-answers' : '' }
+            onClick={ this.isLoading }
             data-testid={ `wrong-answer-${index}` }
             key={ index }
           >
             {item}
-          </li>
+          </option>
         ))}
+        <ButtonFeedback />
+        <ButtonLogin />
       </div>
     );
   }
