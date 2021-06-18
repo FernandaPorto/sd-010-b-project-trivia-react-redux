@@ -2,16 +2,18 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-class Header extends Component {
+class HeaderFeedback extends Component {
   render() {
-    const { playerName, gravatarURL, score } = this.props;
+    const localState = JSON.parse(localStorage.getItem('state'));
+    const { gravatarURL } = this.props;
+    const { name, score } = localState.player;
     return (
       <header>
         <div>
           <img src={ gravatarURL } alt="player" data-testid="header-profile-picture" />
         </div>
         <div>
-          <h4 data-testid="header-player-name">{playerName}</h4>
+          <h4 data-testid="header-player-name">{name}</h4>
         </div>
         <div data-testid="header-score">{score}</div>
       </header>
@@ -20,15 +22,11 @@ class Header extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  playerName: state.player.name,
   gravatarURL: state.player.gravatarURL,
-  score: state.player.score,
 });
 
-Header.propTypes = {
-  playerName: PropTypes.string.isRequired,
+HeaderFeedback.propTypes = {
   gravatarURL: PropTypes.string.isRequired,
-  score: PropTypes.number.isRequired,
 };
 
-export default connect(mapStateToProps, null)(Header);
+export default connect(mapStateToProps, null)(HeaderFeedback);

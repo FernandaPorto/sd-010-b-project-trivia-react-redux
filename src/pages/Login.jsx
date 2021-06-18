@@ -1,12 +1,12 @@
 import React from 'react';
+import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router';
 import md5 from 'crypto-js/md5';
 
-import { loginActionCreator } from '../redux/actions';
+import { fetchToken } from '../services/api';
+import { loginActionCreator, startGameActionCreator } from '../redux/actions';
 import SettingsButton from '../components/SettingsButton';
-import fetchData from '../services/api';
 
 class Login extends React.Component {
   constructor(props) {
@@ -30,22 +30,35 @@ class Login extends React.Component {
 
   async handleClick() {
     const { name, email } = this.state;
-    const { login } = this.props;
-    const URL = 'https://opentdb.com/api_token.php?command=request';
+    const { login, startGame } = this.props;
 
     const hash = md5(email).toString();
     const gravatarURL = `https://www.gravatar.com/avatar/${hash}`;
+
     login({ name, email, gravatarURL });
 
-    const { token } = await fetchData(URL);
-    localStorage.setItem('token', token);
+    const { token } = await fetchToken();
+    const state = {
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: email,
+      },
+    };
 
+    localStorage.setItem('token', token);
+    localStorage.setItem('state', JSON.stringify(state));
+
+    startGame();
     this.setState({ redirect: true });
   }
 
   render() {
     const { name, email, redirect } = this.state;
+
     if (redirect) return <Redirect to="/Game" />;
+
     return (
       <section>
         <div>
@@ -81,6 +94,7 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   login: (payload) => dispatch(loginActionCreator(payload)),
+  startGame: () => dispatch(startGameActionCreator()),
 });
 
 Login.propTypes = {
