@@ -28,7 +28,7 @@ export default function (state = initialState, action) {
     return {
       ...state,
       score: score + state.score,
-      assertions: state.score + 1,
+      assertions: state.assertions + 1,
     };
   }
   default:

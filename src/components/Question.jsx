@@ -20,6 +20,18 @@ class Questions extends React.Component {
     this.calculatePoints = this.calculatePoints.bind(this);
   }
 
+  componentDidMount() {
+    const state = {
+      player: {
+        name: '',
+        gravatarEmail: '',
+        assertions: 0,
+        score: 0,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(state));
+  }
+
   changeBorder() {
     this.setState((prevState) => ({
       isAnswered: !prevState.isAnswered,
@@ -40,7 +52,7 @@ class Questions extends React.Component {
 
   scoreToLocalStorage(scoreToSum) {
     const { name, gravatarEmail, score, assertions } = this.props;
-    const ahvaitomanucutraibe = {
+    const state = {
       player: {
         name,
         gravatarEmail,
@@ -48,16 +60,16 @@ class Questions extends React.Component {
         score: score + scoreToSum,
       },
     };
-    localStorage.setItem('state', JSON.stringify(ahvaitomanucutraibe));
+    localStorage.setItem('state', JSON.stringify(state));
   }
 
   handleRightAnswerClick() {
     const { updateScore } = this.props;
 
-    this.handleAnswerClick();
     const score = this.calculatePoints();
     this.scoreToLocalStorage(score);
     updateScore(score);
+    this.handleAnswerClick();
   }
 
   handleAnswerClick() {
