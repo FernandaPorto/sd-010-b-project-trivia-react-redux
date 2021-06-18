@@ -97,7 +97,13 @@ class GameTrivia extends React.Component {
               {incorrect}
             </button>))}
           <section>
-            <button type="button" onClick={ this.next }>Next</button>
+            <button
+              data-testid="btn-next"
+              type="button"
+              onClick={ this.next }
+            >
+              Next
+            </button>
           </section>
         </section>
       ));
