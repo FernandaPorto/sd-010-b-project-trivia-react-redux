@@ -1,113 +1,163 @@
 import React from 'react';
-import fetchData from '../services/api';
+import { Redirect } from 'react-router';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+//
+import {
+  getQuestionsThunk,
+  answerQuestionActionCreator,
+  nextQuestionActionCreator,
+  updateSecondsActionCreator,
+} from '../redux/actions';
 
-class Trivia extends React.Component {
+import Timer from './Timer';
+
+class TriviaGame extends React.Component {
   constructor(props) {
     super(props);
-    this.updateState = this.updateState.bind(this);
-    this.handleAnswerClick = this.handleAnswerClick.bind(this);
+
+    this.handleScore = this.handleScore.bind(this);
     this.renderQuestion = this.renderQuestion.bind(this);
+    this.renderNextButton = this.renderNextButton.bind(this);
+    this.finishGame = this.finishGame.bind(this);
 
     this.state = {
-      answerColor: false,
-      deactivateButtons: false,
-      loading: true,
-      probabilityBase: 0.5,
-      questionIndex: 0,
-      questions: [],
+      redirect: false,
     };
   }
 
-  async componentDidMount() {
-    const { token } = localStorage;
-    const URL = `https://opentdb.com/api.php?amount=5&token=${token}`;
-
-    const requestQuestions = await fetchData(URL);
-    this.updateState(requestQuestions);
+  componentDidMount() {
+    const { getQuestions } = this.props;
+    getQuestions();
   }
 
-  updateState({ results }) {
-    this.setState({
-      loading: false,
-      questions: results,
-    });
+  handleScore() {
+    const { questions, questionIndex, secondsLeft } = this.props;
+
+    const TEN = 10;
+    const difficultyPoints = {
+      easy: 1,
+      medium: 2,
+      hard: 3,
+    };
+
+    const state = JSON.parse(localStorage.getItem('state'));
+    const { difficulty } = questions[questionIndex];
+    const level = difficultyPoints[difficulty];
+
+    const calculator = () => state.player.score + TEN + secondsLeft * level;
+
+    state.player.assertions += 1;
+    state.player.score = calculator();
+
+    localStorage.setItem('state', JSON.stringify(state));
   }
 
-  handleAnswerClick() {
-    this.setState({
-      answerColor: true,
-      deactivateButtons: true,
-    });
+  finishGame() {
+    const { name, picture } = this.props;
+
+    const state = JSON.parse(localStorage.getItem('state'));
+    const { player: { score } } = state;
+    const newRanking = {
+      name,
+      score,
+      picture,
+    };
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    ranking.push(newRanking);
+
+    ranking.sort((a, b) => b.score - a.score);
+
+    localStorage.setItem('ranking', JSON.stringify(ranking));
+    this.setState({ redirect: true });
+  }
+
+  renderNextButton() {
+    const { questions, questionIndex, nextQuestion } = this.props;
+    const isLast = questionIndex === questions.length - 1;
+    return (
+      <button
+        type="button"
+        onClick={ () => {
+          nextQuestion();
+          if (isLast) this.finishGame();
+        } }
+        data-testid="btn-next"
+      >
+        Próxima pergunta
+      </button>
+    );
   }
 
   renderQuestion() {
-    const { questions, probabilityBase,
-      questionIndex, answerColor, deactivateButtons } = this.state;
-    const randomizer = (array) => (array.sort(() => Math.random() - probabilityBase));
+    const { questions, questionIndex, isResolved, answerQuestion } = this.props;
+    const { category, question, answerOptions, correctAnswer } = questions[questionIndex];
 
-    const answers = [
-      questions[questionIndex].correct_answer,
-      ...questions[questionIndex].incorrect_answers,
-    ];
+    const renderAnswers = answerOptions.map((answer, index) => {
+      const isCorrect = answer === correctAnswer;
+      const coloredStyle = isCorrect ? 'green-border' : 'red-border';
+      const testId = isCorrect ? 'correct-answer' : `wrong-answer-${index}`;
 
-    const randomAnswers = randomizer(answers).map((answer, index) => {
-      const answerChecker = questions[questionIndex].correct_answer;
-
-      if (answer === answerChecker) {
-        return (
-          <button
-            type="button"
-            key={ index }
-            data-testid="correct-answer"
-            onClick={ this.handleAnswerClick }
-            className={ answerColor ? 'green-border' : 'default-button' }
-            disabled={ deactivateButtons }
-          >
-            { answer }
-          </button>
-        );
-      }
       return (
         <button
           type="button"
           key={ index }
-          data-testid={ `wrong-answer-${index}` }
-          onClick={ this.handleAnswerClick }
-          className={ answerColor ? 'red-border' : 'default-button' }
-          disabled={ deactivateButtons }
+          data-testid={ testId }
+          onClick={ () => {
+            answerQuestion();
+            if (isCorrect) this.handleScore();
+          } }
+          className={ isResolved ? coloredStyle : 'default-button' }
+          disabled={ isResolved }
         >
-          { answer }
+          {answer}
         </button>
       );
     });
 
     return (
       <div>
-        <h2 data-testid="question-category">{ questions[questionIndex].category }</h2>
-        <h3 data-testid="question-text">{ questions[questionIndex].question }</h3>
-        { randomAnswers }
+        <h2 data-testid="question-category">{category}</h2>
+        <h3 data-testid="question-text">{question}</h3>
+        {renderAnswers}
+        <div>{isResolved ? this.renderNextButton() : <Timer />}</div>
       </div>
     );
   }
 
   render() {
-    const { loading } = this.state;
+    const { redirect } = this.state;
+    const { isLoading } = this.props;
 
-    if (loading) {
-      return (
-        <div>
-          <h3>
-            LOADING...
-          </h3>
-        </div>
-      );
-    }
+    if (redirect) return <Redirect to="/feedback" />;
+
     return (
-      <div>
-        { this.renderQuestion() }
-      </div>
+      <section>
+        {isLoading ? <h3>LOADING...</h3> : this.renderQuestion()}
+      </section>
     );
   }
 }
 
-export default Trivia;
+const mapStateToProps = (state) => ({
+  isLoading: state.game.isLoading,
+  questions: state.game.questions,
+  questionIndex: state.game.questionIndex,
+  isResolved: state.game.isResolved,
+  secondsLeft: state.game.secondsLeft,
+  name: state.player.name,
+  picture: state.player.gravatarURL,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getQuestions: () => dispatch(getQuestionsThunk()),
+  answerQuestion: () => dispatch(answerQuestionActionCreator()),
+  nextQuestion: () => dispatch(nextQuestionActionCreator()),
+  updateSeconds: (payload) => dispatch(updateSecondsActionCreator(payload)),
+});
+
+TriviaGame.propTypes = {
+  secondsLeft: PropTypes.number,
+}.isRequired;
+
+export default connect(mapStateToProps, mapDispatchToProps)(TriviaGame);
