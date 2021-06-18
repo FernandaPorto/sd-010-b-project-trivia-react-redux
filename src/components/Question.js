@@ -51,23 +51,18 @@ class Question extends Component {
     const { indexQuestion } = this.state;
 
     if (questions.length) {
-      const {
-        category,
-        question,
-        correct_answer: correct,
-        incorrect_answers: incorrects } = questions[index];
-      const randonAnswers = this.generateRandomAnswers(correct, incorrects);
+      const { category, question, answers } = questions[indexQuestion];
       return (
         <section>
           <div data-testid="question-category">{ category }</div>
           <div data-testid="question-text">{ question }</div>
           <div>
-            {randonAnswers.map(({ id, answer, dataTestId }) => (
+            {answers.map(({ answer, dataTestId }, index) => (
               <button
-                onClick={ (event) => this.handleClick(event) }
+                onClick={ this.handleClick }
                 type="button"
                 data-testid={ `${dataTestId}` }
-                key={ id }
+                key={ index }
                 id={ `${dataTestId}` }
               >
                 {answer}
