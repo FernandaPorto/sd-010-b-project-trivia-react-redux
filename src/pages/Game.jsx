@@ -31,7 +31,7 @@ class Game extends React.Component {
     const { fetchQuestions: getQuestions } = this.props;
     const token = localStorage.getItem('token');
     getQuestions(token);
-    const segundo = 500;
+    const segundo = 1000;
     this.timerInterval = setInterval(() => {
       this.setState((state) => ({
         timerInitial: state.timerInitial - 1,
@@ -43,10 +43,8 @@ class Game extends React.Component {
   // https://medium.com/@ashleywnj/componentdidupdate-prevstate-prevprops-and-a-silly-mistake-38afc72f5abc
   componentDidUpdate(_prevProps, prevState) {
     if (prevState.timerInitial === 0) {
-      // console.log('Ta na hora de parar');
       this.resetTimer();
     }
-    // console.log('qualquer coisa');
   }
 
   handleOnClick({ target: { name } }) {
@@ -77,11 +75,11 @@ class Game extends React.Component {
 
   resetTimer() {
     this.setState({
-      timerInitial: 0,
+      timerInitial: 30,
       disabled: true,
     });
     clearInterval(this.timerInterval);
-    console.log(this.nextQuestion());
+    this.nextQuestion();
   }
 
   renderAnswers() {
@@ -123,7 +121,7 @@ class Game extends React.Component {
             </button>
           );
         })}
-        {nexButton(this.state, this.props, this.nextQuestion, getGravatar)}
+        {nexButton(this.state, this.props, this.nextQuestion, getGravatar, this.setState)}
       </div>
     );
   }
