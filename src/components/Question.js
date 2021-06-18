@@ -15,6 +15,7 @@ class Question extends Component {
     };
     this.handleClick = this.handleClick.bind(this);
     this.updateButtonsStyle = this.updateButtonsStyle.bind(this);
+    this.handleNext = this.handleNext.bind(this);
   }
 
   componentDidMount() {
@@ -49,6 +50,20 @@ class Question extends Component {
     }
   }
 
+  handleNext() {
+    this.setState((previousState) => ({
+      indexQuestion: previousState.indexQuestion + 1,
+    }));
+    const correctButton = document.querySelector('button[data-testid="correct-answer"]');
+    const wrongButton = document.querySelectorAll('button[data-testid*="wrong-answer"]');
+    correctButton.classList.remove('correct');
+    correctButton.disabled = false;
+    wrongButton.forEach((button) => {
+      button.classList.remove('incorrect');
+      button.disabled = false;
+    });
+  }
+
   render() {
     const { questions } = this.props;
     const { indexQuestion } = this.state;
@@ -73,7 +88,14 @@ class Question extends Component {
             ))}
           </div>
           <Cronometer />
-          <button type="button" data-testid="btn-next" hidden>Próxima</button>
+          <button
+            type="button"
+            data-testid="btn-next"
+            hidden
+            onClick={ this.handleNext }
+          >
+            Próxima
+          </button>
         </section>
       );
     }
