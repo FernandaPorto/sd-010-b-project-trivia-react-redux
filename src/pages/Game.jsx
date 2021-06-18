@@ -40,10 +40,6 @@ class Game extends React.Component {
       .then((data) => this.setState({ results: data.results }));
   }
 
-  nq() {
-    console.log(this.state.numQuestion);
-  }
-
   render() {
     const { results, numQuestion, timer, isDisabled } = this.state;
     return (
