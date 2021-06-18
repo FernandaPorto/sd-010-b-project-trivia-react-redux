@@ -9,7 +9,7 @@ class Login extends Component {
     this.state = {
       name: '',
       email: '',
-      redirect: false,
+      redirectToSettings: false,
     };
 
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -24,15 +24,16 @@ class Login extends Component {
 
   redirectSettings() {
     this.setState({
-      redirect: true,
+      redirectToSettings: true,
     });
   }
 
   render() {
-    const { name, email, redirect } = this.state;
-    if (redirect) {
+    const { name, email, redirectToSettings } = this.state;
+    if (redirectToSettings) {
       return <Redirect to="/settings" />;
     }
+
     return (
       <div>
         <header className="App-header">
@@ -49,6 +50,7 @@ class Login extends Component {
           >
             Configurações
           </button>
+
         </header>
       </div>
     );
