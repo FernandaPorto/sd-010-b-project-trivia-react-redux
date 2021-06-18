@@ -8,6 +8,7 @@ import GameHeader from '../components/GameHeader';
 import Timer from '../components/Timer';
 
 const NUMBER_FIVE = 5;
+const NUMBER_FOUR = 4;
 let timer;
 
 class Game extends React.Component {
@@ -18,6 +19,7 @@ class Game extends React.Component {
       time: 30,
       disabled: false,
       nextButton: false,
+      order: [],
     };
 
     this.getQuestions = this.getQuestions.bind(this);
@@ -25,6 +27,7 @@ class Game extends React.Component {
     this.decreaseTime = this.decreaseTime.bind(this);
     this.timerHasMounted = this.timerHasMounted.bind(this);
     this.stopTimer = this.stopTimer.bind(this);
+    this.randomQuestions = this.randomQuestions.bind(this);
   }
 
   componentDidMount() {
@@ -34,18 +37,30 @@ class Game extends React.Component {
   async getQuestions() {
     const localToken = localStorage.getItem('token');
     const { results } = await (await fetch(`https://opentdb.com/api.php?amount=5&token=${localToken}`)).json();
+    const order = this.randomQuestions(results[0]);
     this.setState({
       results,
+      order,
     });
   }
 
-  handleNext() {
+  randomQuestions({ incorrect_answers: iA, correct_answers: cA }) {
+    const allQuestionsLength = [...iA, cA];
+    const random = allQuestionsLength.map((_item, index) => index);
+    const zeroDotFive = 0.5;
+    random.sort(() => Math.random() - zeroDotFive);
+    return random;
+  }
+
+  handleNext(results) {
     this.showAnswersByColor();
+    const order = this.randomQuestions(results);
     this.setState((prevState) => ({
       count: prevState.count + 1,
       disabled: false,
       time: 30,
       nextButton: false,
+      order,
     }),
     () => this.timerHasMounted());
   }
@@ -87,9 +102,9 @@ class Game extends React.Component {
   }
 
   render() {
-    const { results, count, time, disabled, nextButton } = this.state;
+    const { results, count, time, disabled, nextButton, order } = this.state;
     const { name, gravatarEmail, score } = this.props;
-
+    const index = count < NUMBER_FOUR ? count + 1 : count;
     if (count === NUMBER_FIVE) {
       return (<Redirect to="/feedback" />);
     }
@@ -109,11 +124,12 @@ class Game extends React.Component {
               disabled={ disabled }
               time={ time }
               stopTimer={ this.stopTimer }
+              order={ order }
             />
             { nextButton === true ? (
               <button
                 type="button"
-                onClick={ () => this.handleNext() }
+                onClick={ () => { this.handleNext(results[index]); } }
                 data-testid="btn-next"
               >
                 Next
