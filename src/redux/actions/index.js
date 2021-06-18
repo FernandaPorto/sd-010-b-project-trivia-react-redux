@@ -1,4 +1,8 @@
+import { decode } from 'he';
 import { fetchQuestions } from '../../services/api';
+
+const PROBABILITY_BASE = 0.5;
+const randomizer = (array) => array.sort(() => Math.random() - PROBABILITY_BASE);
 
 export const LOGIN = 'LOGIN';
 export const START_GAME = 'START_GAME';
@@ -45,16 +49,23 @@ export const getQuestionsThunk = () => async (dispatch) => {
   try {
     const { results } = await fetchQuestions(token);
     // console.log(results);
-    const PROBABILITY_BASE = 0.5;
-    const randomizer = (array) => array.sort(() => Math.random() - PROBABILITY_BASE);
-    const questions = results.map((result) => ({
-      type: result.type,
-      category: result.category,
-      difficulty: result.difficulty,
-      question: result.question,
-      answerOptions: randomizer([...result.incorrect_answers, result.correct_answer]),
-      correctAnswer: result.correct_answer,
-    }));
+    const questions = results.map((result) => {
+      result.question = decode(result.question);
+      result.correct_answer = decode(result.correct_answer);
+
+      result.incorrect_answers.forEach((answer, index) => {
+        result.incorrect_answers[index] = decode(answer);
+      });
+
+      return ({
+        type: result.type,
+        category: result.category,
+        difficulty: result.difficulty,
+        question: result.question,
+        answerOptions: randomizer([...result.incorrect_answers, result.correct_answer]),
+        correctAnswer: result.correct_answer,
+      });
+    });
 
     dispatch(getQuestionsActionCreator({ questions }));
   } catch (error) {
