@@ -7,7 +7,7 @@ class GameTrivia extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      contador: 0,
+      pontoacao: 0,
       contagem: 30,
       disable: false,
       colorQuestions: false,
@@ -15,6 +15,7 @@ class GameTrivia extends React.Component {
       next: 0,
     };
     this.renderQuestions = this.renderQuestions.bind(this);
+    this.correctAnswerScore = this.correctAnswerScore.bind(this);
     this.setContagem = this.setContagem.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.next = this.next.bind(this);
@@ -48,15 +49,52 @@ class GameTrivia extends React.Component {
       this.setState({
         next: next + 1,
         contagem: 30,
+        disable: false,
       });
     }
     this.setState({
       colorQuestions: false,
     });
+    // this.correctAnswerScore();
   }
 
-  handleClick() {
+  correctAnswerScore() {
+    const { getTriviaQuestions } = this.props;
+    const { contagem, next } = this.state;
+    const questions = getTriviaQuestions.results.results;
+    questions.filter((_questions, index) => index === next).map(((question) => {
+      let dificuldade = 0;
+      if (question.difficulty === 'easy') {
+        dificuldade = 1;
+      } else if (question.difficulty === 'medium') {
+        dificuldade = 2;
+      } else if (question.difficulty === 'hard') {
+        const three = 3;
+        dificuldade = three;
+      }
+      const ten = 10;
+      const score = ten + (contagem * dificuldade);
+      const oldStorage = JSON.parse(localStorage.getItem('state'));
+      const newScore = score + oldStorage.player.score;
+      const newAssertion = oldStorage.player.assertions + 1;
+      const newStorage = { player: {
+        name: oldStorage.player.name,
+        assertions: newAssertion,
+        score: newScore,
+        gravatarEmail: oldStorage.player.gravatarEmail,
+      } };
+      localStorage.setItem('state', JSON.stringify(newStorage));
+      return score;
+    }));
+  }
+
+  handleClick({ target }) {
+    // const tempo = document.getElementById('timer').innerText;
+    if (target.value === 'correct-answer') {
+      this.correctAnswerScore();
+    }
     this.setState({
+      disable: true,
       colorQuestions: true,
     });
   }
@@ -70,6 +108,7 @@ class GameTrivia extends React.Component {
           <button
             data-testid="btn-next"
             type="button"
+            onClick={ this.next }
             style={
               (colorQuestions) ? { visibility: 'visible' } : { visibility: 'hidden' }
             }
@@ -141,7 +180,9 @@ class GameTrivia extends React.Component {
         <h1>Trivia</h1>
         <h3>
           Tempo:
-          { contagem }
+          <span id="timer">
+            { contagem }
+          </span>
         </h3>
         { this.renderQuestions() }
       </section>

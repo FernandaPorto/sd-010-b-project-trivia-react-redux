@@ -9,20 +9,20 @@ class FeedBackHeader extends Component {
   }
 
   userEmail() {
-    const player = localStorage.getItem('player');
+    const player = localStorage.getItem('state');
     const newPlayer = JSON.parse(player);
-    const userEmail = md5(newPlayer.gravatarEmail).toString();
+    const userEmail = md5(newPlayer.player.gravatarEmail).toString();
     return userEmail;
   }
 
   userName(user) {
-    const player = localStorage.getItem('player');
+    const player = localStorage.getItem('state');
     const newPlayer = JSON.parse(player);
     if (user === 'name') {
-      return newPlayer.name;
+      return newPlayer.player.name;
     }
     if (user === 'score') {
-      return newPlayer.score;
+      return newPlayer.player.score;
     }
   }
 
