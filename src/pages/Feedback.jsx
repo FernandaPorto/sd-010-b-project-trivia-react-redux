@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import HeaderFeedback from '../components/HeaderFeedback';
 
@@ -6,13 +7,11 @@ class Feedback extends React.Component {
   constructor() {
     super();
     const state = JSON.parse(localStorage.getItem('state'));
-    console.log(state);
     this.assertions = state.player.assertions;
     this.score = state.player.score;
   }
 
   feedbackMessage() {
-    console.log(this.assertions);
     if (this.assertions <= 2) {
       return (<p data-testid="feedback-text">Podia ser melhor...</p>);
     }
@@ -20,8 +19,6 @@ class Feedback extends React.Component {
   }
 
   render() {
-    // const { assertions, score } = this.props;
-    // console.log(assertions);
     return (
       <main>
         <HeaderFeedback />
@@ -37,6 +34,9 @@ class Feedback extends React.Component {
           </div>
           <button type="button" data-testid="btn-play-again">
             <Link to="/">Jogar novamente</Link>
+          </button>
+          <button type="button" data-testid="btn-ranking">
+            <Link to="/ranking">Ranking</Link>
           </button>
         </section>
       </main>
