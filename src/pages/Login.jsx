@@ -99,7 +99,7 @@ class Login extends Component {
       <div className="App">
         <header className="App-header">
           <img src={ logo } className="App-logo" alt="logo" />
-          { this.loginForm(name, email, disabled, redirect) }
+          { this.loginForm(name, email, disabled) }
         </header>
       </div>
     );

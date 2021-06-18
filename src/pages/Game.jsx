@@ -70,12 +70,9 @@ class Game extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  questions: state.gameReducer.data.results,
-  answered: state.timerReducer.answered,
-  ticTac: state.timerReducer.ticTac,
-  time: state.timerReducer.time,
-});
+const mapStateToProps = ({ gameReducer: { data: { results } },
+  timerReducer: { answered, ticTac, time } }) => ({
+  questions: results, answered, ticTac, time });
 
 const mapDispatchToProps = (dispatch) => ({
   propStartTimer: () => {

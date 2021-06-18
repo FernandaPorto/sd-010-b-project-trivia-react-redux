@@ -18,8 +18,8 @@ class QuestionCard extends React.Component {
 
   componentDidUpdate(prev) {
     const { answered } = this.props;
-    if (prev.answered === false && answered === true) this.changeBtn(true);
-    if (prev.answered === true && answered === false) this.changeBtn(false);
+    if (!prev.answered && answered) this.changeBtn(true);
+    if (prev.answered && !answered) this.changeBtn(false);
   }
 
   changeBtn(disabled) {
