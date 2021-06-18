@@ -3,10 +3,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import HeaderFeedback from '../components/HeaderFeedback';
-import PropTypes from 'prop-types';
-
-import HeaderFeedback from '../components/HeaderFeedback';
-
 
 class Feedback extends React.Component {
   render() {
@@ -25,7 +21,7 @@ class Feedback extends React.Component {
             <span data-testid="feedback-total-score">{score}</span>
           </div>
           <button type="button" data-testid="btn-play-again">
-          <Link to="/">Jogar novamente</Link>
+            <Link to="/">Jogar novamente</Link>
           </button>
         </section>
       </main>

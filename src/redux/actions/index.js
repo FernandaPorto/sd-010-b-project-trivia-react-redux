@@ -1,6 +1,7 @@
 import { fetchQuestions } from '../../services/api';
 
 export const LOGIN = 'LOGIN';
+export const START_GAME = 'START_GAME';
 export const UPDATE_SCORE = 'UPDATE_SCORE';
 export const GET_QUESTIONS = 'GET_QUESTIONS';
 export const ANSWER_QUESTION = 'ANSWER_QUESTION';
@@ -10,6 +11,10 @@ export const UPDATE_SECONDS = 'UPDATE_SECONDS';
 export const loginActionCreator = (payload) => ({
   type: LOGIN,
   payload,
+});
+
+export const startGameActionCreator = () => ({
+  type: START_GAME,
 });
 
 export const updateScoreActionCreator = (payload) => ({
@@ -22,14 +27,12 @@ export const getQuestionsActionCreator = (payload) => ({
   payload,
 });
 
-export const answerQuestionActionCreator = (payload) => ({
+export const answerQuestionActionCreator = () => ({
   type: ANSWER_QUESTION,
-  payload,
 });
 
-export const nextQuestionActionCreator = (payload) => ({
+export const nextQuestionActionCreator = () => ({
   type: NEXT_QUESTION,
-  payload,
 });
 
 export const updateSecondsActionCreator = (payload) => ({
