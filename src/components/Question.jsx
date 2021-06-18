@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { increaseScore } from '../actions';
+import { increaseScore, resetScore } from '../actions';
 
 class Questions extends React.Component {
   constructor(props) {
@@ -20,6 +20,11 @@ class Questions extends React.Component {
     this.handleNextButton = this.handleNextButton.bind(this);
     this.calculatePoints = this.calculatePoints.bind(this);
     this.changeNextBtnState = this.changeNextBtnState.bind(this);
+  }
+
+  componentDidMount() {
+    const { resetScoreAndAssertions } = this.props;
+    resetScoreAndAssertions();
   }
 
   changeBorder() {
@@ -175,6 +180,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   updateScore: (score) => dispatch(increaseScore(score)),
+  resetScoreAndAssertions: () => dispatch(resetScore()),
 });
 
 Questions.propTypes = {
@@ -186,6 +192,7 @@ Questions.propTypes = {
   name: PropTypes.string,
   gravatarEmail: PropTypes.string,
   assertions: PropTypes.number,
+  resetScoreAndAssertions: PropTypes.func,
 }.isRequired;
 
 Questions.default = {

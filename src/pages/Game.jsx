@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import Question from '../components/Question';
 import GameHeader from '../components/GameHeader';
 import Timer from '../components/Timer';
-import { resetScore } from '../actions';
 
 let timer;
 const FIVE = 5;
@@ -76,10 +75,8 @@ class Game extends React.Component {
 
   render() {
     const { questions, questionIndex, answerDisabled, time } = this.state;
-    const { resetScoreAndAssertions } = this.props;
 
     if (questionIndex === FIVE) {
-      resetScoreAndAssertions();
       return (<Redirect to="/feedback" />);
     }
 
@@ -112,13 +109,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  resetScoreAndAssertions: () => dispatch(resetScore()),
-});
-
 Game.propTypes = {
   token: PropTypes.string.isRequired,
-  resetScoreAndAssertions: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Game);
+export default connect(mapStateToProps)(Game);
