@@ -1,8 +1,12 @@
 import React from 'react';
+import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import md5 from 'crypto-js/md5';
 
+import { fetchToken } from '../services/api';
 import { loginActionCreator } from '../redux/actions';
+import SettingsButton from '../components/SettingsButton';
 
 class Login extends React.Component {
   constructor(props) {
@@ -14,6 +18,7 @@ class Login extends React.Component {
     this.state = {
       name: '',
       email: '',
+      redirect: false,
     };
   }
 
@@ -23,38 +28,66 @@ class Login extends React.Component {
     });
   }
 
-  handleClick() {
+  async handleClick() {
+    const { name, email } = this.state;
     const { login } = this.props;
 
-    login(this.state);
+    const hash = md5(email).toString();
+    const gravatarURL = `https://www.gravatar.com/avatar/${hash}`;
+
+    login({ name, email, gravatarURL });
+
+    const { token } = await fetchToken();
+
+    const state = {
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: email,
+      },
+    };
+
+    localStorage.setItem('token', token);
+    localStorage.setItem('state', JSON.stringify(state));
+
+    this.setState({ redirect: true });
   }
 
   render() {
-    const { name, email } = this.state;
+    const { name, email, redirect } = this.state;
+
+    if (redirect) return <Redirect to="/Game" />;
+
     return (
-      <div>
-        <input
-          type="text"
-          data-testid="input-player-name"
-          name="name"
-          placeholder=""
-          onChange={ this.handleChange }
-        />
-        <input
-          type="email"
-          data-testid="input-gravatar-email"
-          name="email"
-          placeholder=""
-          onChange={ this.handleChange }
-        />
-        <input
-          type="button"
-          value="Jogar"
-          disabled={ !(name && email) }
-          data-testid="btn-play"
-          onClick={ this.handleClick }
-        />
-      </div>
+      <section>
+        <div>
+          <input
+            type="text"
+            data-testid="input-player-name"
+            name="name"
+            placeholder=""
+            onChange={ this.handleChange }
+          />
+          <input
+            type="email"
+            data-testid="input-gravatar-email"
+            name="email"
+            placeholder=""
+            onChange={ this.handleChange }
+          />
+          <input
+            type="button"
+            value="Jogar"
+            disabled={ !(name && email) }
+            data-testid="btn-play"
+            onClick={ this.handleClick }
+          />
+        </div>
+        <div>
+          <SettingsButton />
+        </div>
+      </section>
     );
   }
 }
