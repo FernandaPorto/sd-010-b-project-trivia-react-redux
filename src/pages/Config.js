@@ -10,6 +10,7 @@ class Config extends React.Component {
     this.onChangeSelect = this.onChangeSelect.bind(this);
     this.onClick = this.onClick.bind(this);
     this.renderCategories = this.renderCategories.bind(this);
+    this.renderForm = this.renderForm.bind(this);
     this.state = {
       category: 'random',
       difficulty: 'random',
@@ -43,8 +44,51 @@ class Config extends React.Component {
       });
   }
 
-  render() {
+  renderForm() {
     const { categoriesList } = this.state;
+    return (
+      <form className="config-form">
+        <label htmlFor="category">
+          CATEGORIA
+          <select id="category" name="category" onChange={ this.onChangeSelect }>
+            <option name="random">Aleatório</option>
+            { categoriesList.map((category, index) => (
+              <option key={ index }>{category.name}</option>
+            ))}
+          </select>
+        </label>
+        <label htmlFor="difficulty">
+          DIFICULDADE
+          <select id="difficulty" name="difficulty" onChange={ this.onChangeSelect }>
+            <option name="random">Aleatório</option>
+            <option>Fácil</option>
+            <option>Médio</option>
+            <option>Difícil</option>
+          </select>
+        </label>
+        <label htmlFor="type">
+          TIPO
+          <select id="type" name="type" onChange={ this.onChangeSelect }>
+            <option name="random">Aleatório</option>
+            <option name="multiple">Multipla_Escolha</option>
+            <option name="boolean">Verdadeiro_ou_Falso</option>
+          </select>
+        </label>
+        <Link to="/">
+          <button
+            data-testid="btn-go-home"
+            type="button"
+            className="config-section-btn"
+            onClick={ this.onClick }
+          >
+            &#9658;
+          </button>
+        </Link>
+      </form>
+    );
+  }
+
+  render() {
     return (
       <section className="body-section">
         <section className="config-section">
@@ -52,44 +96,7 @@ class Config extends React.Component {
             <span role="img" aria-label="cog">&#9881;&#65039;</span>
             Configurações
           </h1>
-          <form className="config-form">
-            <label htmlFor="category">
-              CATEGORIA
-              <select id="category" name="category" onChange={ this.onChangeSelect }>
-                <option name="random">Aleatório</option>
-                { categoriesList.map((category, index) => (
-                  <option key={ index }>{category.name}</option>
-                ))}
-              </select>
-            </label>
-            <label htmlFor="difficulty">
-              DIFICULDADE
-              <select id="difficulty" name="difficulty" onChange={ this.onChangeSelect }>
-                <option name="random">Aleatório</option>
-                <option>Fácil</option>
-                <option>Médio</option>
-                <option>Difícil</option>
-              </select>
-            </label>
-            <label htmlFor="type">
-              TIPO
-              <select id="type" name="type" onChange={ this.onChangeSelect }>
-                <option name="random">Aleatório</option>
-                <option name="multiple">Multipla_Escolha</option>
-                <option name="boolean">Verdadeiro_ou_Falso</option>
-              </select>
-            </label>
-            <Link to="/">
-              <button
-                data-testid="btn-go-home"
-                type="button"
-                className="config-section-btn"
-                onClick={ this.onClick }
-              >
-                &#9658;
-              </button>
-            </Link>
-          </form>
+          { this.renderForm() }
         </section>
       </section>
     );
