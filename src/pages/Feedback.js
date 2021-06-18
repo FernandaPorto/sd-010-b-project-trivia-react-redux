@@ -4,19 +4,11 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 class Feedback extends Component {
-  performanceGame() {
-    const { assertions } = this.props;
-    const minimumHit = 3;
-    if (assertions < minimumHit) {
-      return ('Podia ser melhor...');
-    }
-    return ('Mandou bem!');
-  }
-
   render() {
+    const minimumHit = 3;
     const ranking = JSON.parse(localStorage.getItem('ranking'));
     console.log(ranking);
-    const { gravatar, name } = this.props;
+    const { gravatar, name, assertions } = this.props;
     return (
       <div>
         <header>
@@ -32,7 +24,10 @@ class Feedback extends Component {
             { ranking[0].score }
           </h4>
         </header>
-        <h2 data-testid="feedback-text">{ this.performanceGame }</h2>
+        <h2 data-testid="feedback-text">
+          { assertions < minimumHit && 'Podia ser melhor...' }
+        </h2>
+        <h2 data-testid="feedback-text">{ assertions >= minimumHit && 'Mandou bem!' }</h2>
         <h3 data-testid="feedback-total-score">{ }</h3>
         <h3 data-testid="feedback-total-question">{ }</h3>
         <Link to="/" data-testid="btn-play-again">Jogar novamente</Link>

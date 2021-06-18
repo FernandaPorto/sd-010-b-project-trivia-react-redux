@@ -1,7 +1,7 @@
-/* eslint-disable camelcase */
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import Header from '../components/Header';
 import { fetchApiQuestions, fetchAPI, saveAssertions } from '../actions/index';
 
@@ -19,7 +19,7 @@ class Trivia extends React.Component {
       pontosState: 0,
       next: true,
       OK: true,
-      index: 0,
+      contador: 0,
       assertions: 0,
     };
 
@@ -64,9 +64,11 @@ class Trivia extends React.Component {
     const tokenRequisition = token.result.token;
     const { apiQuestions } = this.props;
     const response = await apiQuestions(tokenRequisition, quantityQuestions);
+    const { contador } = this.state;
     this.setState({
-      questions: response.questions.results[0],
+      questions: response.questions.results[0], contador: contador + 1,
     });
+    console.log(contador);
   }
 
   update(state) {
@@ -126,7 +128,10 @@ class Trivia extends React.Component {
   }
 
   countAssertions() {
+    const { assertion } = this.props;
     this.setState((state) => ({ ...state, assertions: state.assertions + 1 }));
+    const { assertions } = this.state;
+    assertion(assertions);
   }
 
   colorAnswers() {
@@ -147,11 +152,15 @@ class Trivia extends React.Component {
     const { questions: {
       category,
       correct_answer: CERTA,
-      incorrect_answers,
+      incorrect_answers: ERRA,
       question },
     correct,
     reject,
-    disable } = this.state;
+    disable, contador } = this.state;
+    const max = 5;
+    if (contador === max) {
+      return <Redirect to="/feedback" />;
+    }
 
     return (
       <div>
@@ -168,14 +177,14 @@ class Trivia extends React.Component {
                 await this.acertou();
                 this.storange();
                 this.colorAnswers();
-                await this.countAssertions();
+                this.countAssertions();
               } }
             >
               {CERTA}
             </button>)
         }
-        {incorrect_answers
-        && incorrect_answers.map((erradas, index) => (
+        {ERRA
+        && ERRA.map((erradas, index) => (
           <button
             className={ reject }
             disabled={ disable }
@@ -221,7 +230,7 @@ Trivia.propTypes = {
   thunkToken: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
-  // assertion: PropTypes.func.isRequired,
+  assertion: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -236,6 +245,5 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Trivia);
-// errei o nome do commitS
 
 /* para criação do cronômetro, utilizamos como referência o exercício do bloco 13.1 feito pelo instrutor Ícaro <https://github1s.com/tryber/sd-10b-live-lectures/tree/lecture/13.1> */
