@@ -28,8 +28,10 @@ class LoginForm extends Component {
 
   setLocalStorage() {
     const { name, email } = this.state;
-    const testObject = { name, assertions: 0, score: 0, gravatarEmail: email };
-    localStorage.setItem('player', JSON.stringify(testObject));
+    const testObject = { player: {
+      name, assertions: 0, score: 0, gravatarEmail: email,
+    } };
+    localStorage.setItem('state', JSON.stringify(testObject));
   }
 
   validateLogin() {
