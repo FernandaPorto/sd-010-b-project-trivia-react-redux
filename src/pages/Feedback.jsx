@@ -11,9 +11,11 @@ class Feedback extends React.Component {
 
     this.state = {
       redirectToLogin: false,
+      redirectToRanking: false,
     };
 
     this.redirectToLogin = this.redirectToLogin.bind(this);
+    this.redirectToRanking = this.redirectToRanking.bind(this);
   }
 
   redirectToLogin() {
@@ -22,13 +24,25 @@ class Feedback extends React.Component {
     });
   }
 
+  redirectToRanking() {
+    this.setState({
+      redirectToRanking: true,
+    });
+  }
+
   render() {
     const { gravatarEmail, name, score, assertions } = this.props;
-    const { redirectToLogin } = this.state;
+    const { redirectToLogin, redirectToRanking } = this.state;
 
     if (redirectToLogin) {
       return (
         <Redirect to="/" />
+      );
+    }
+
+    if (redirectToRanking) {
+      return (
+        <Redirect to="/ranking" />
       );
     }
 
@@ -48,6 +62,13 @@ class Feedback extends React.Component {
           data-testid="btn-play-again"
         >
           Jogar novamente
+        </button>
+        <button
+          type="button"
+          onClick={ this.redirectToRanking }
+          data-testid="btn-ranking"
+        >
+          Ver ranking
         </button>
       </main>
     );

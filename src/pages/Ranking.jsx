@@ -6,7 +6,7 @@ class Ranking extends React.Component {
   render() {
     const { name, gravatarEmail, score } = this.props;
     return (
-      <div>
+      <div data-testid="ranking-title">
         { name + gravatarEmail + score }
       </div>
     );
