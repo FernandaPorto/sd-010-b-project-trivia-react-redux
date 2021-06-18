@@ -15,6 +15,7 @@ class Game extends React.Component {
       clicked: false,
       numberOfAssertions: 0,
       score: 0,
+
     };
     this.getPerfilGravatar = this.getPerfilGravatar.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
