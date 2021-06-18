@@ -20,7 +20,15 @@ export const receiveToken = () => async (dispatch) => {
 
 export const requestQuestions = (token) => async (dispatch) => {
   const result = await getQuestions(token);
-  dispatch(receiveQuestions(result));
+  const difficultyLevel = { hard: 3, medium: 2, easy: 1 };
+  const newQuestions = result.map((answer) => ({
+    category: answer.category,
+    type: answer.type,
+    difficultyLevel: difficultyLevel[answer.difficulty],
+    question: answer.question,
+    answers: generateRandomAnswers(answer.correct_answer, answer.incorrect_answers),
+  }));
+  dispatch(receiveQuestions(newQuestions));
 };
 
 export const increaseScore = (score) => ({
