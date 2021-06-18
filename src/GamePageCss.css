@@ -1,6 +1,6 @@
 :root {
 
-  --red: rgb(255,0,0);
+  --red: { color: rgb(255, 0, 0) ;}
 }
 
 .correct-answer {
