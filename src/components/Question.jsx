@@ -1,19 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './styleQuestion.css';
-// comentario p add
 
 class Question extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // correctButton: false,
-      // wrongButton: false,
       isClicked: false,
       arrRandom: [],
       fullResults: {},
     };
-    // this.handleButtonColor = this.handleButtonColor.bind(this);
+
     this.handleResult = this.handleResult.bind(this);
     this.insertDataTestId = this.insertDataTestId.bind(this);
     this.insertClass = this.insertClass.bind(this);
@@ -24,18 +21,11 @@ class Question extends React.Component {
     this.handleResult();
   }
 
-  // handleButtonColor() {
-  //   this.setState({
-  //     correctButton: true,
-  //     wrongButton: true,
-  //   });
-  // }
-
   handleResult() {
     const { result } = this.props;
     const arrAnswers = [result.correct_answer, ...result.incorrect_answers];
     const half = 0.5;
-    const shuffleArray = (array) => array.sort(() => Math.random() - half);
+    const shuffleArray = (array) => array.sort(() => Math.random() - half); // ref: https://flaviocopes.com/how-to-shuffle-array-javascript/
     this.setState({
       arrRandom: shuffleArray(arrAnswers),
       fullResults: result,
@@ -64,7 +54,6 @@ class Question extends React.Component {
   }
 
   clicked(answer) {
-    // isClicked ? (answer === fullResults.correct_answer ? 'correctButton' : 'wrongButton') : null
     const { fullResults, isClicked } = this.state;
     if (isClicked && answer === fullResults.correct_answer) {
       return 'correctButton';
@@ -76,7 +65,7 @@ class Question extends React.Component {
   }
 
   render() {
-    const { props: { result }, state: { arrRandom } } = this;
+    const { props: { result, disabled }, state: { arrRandom } } = this;
     return (
       <>
         <span data-testid="question-category">
@@ -101,7 +90,7 @@ class Question extends React.Component {
             data-testid={ this.insertDataTestId(answer, index) }
             onClick={ this.handleChange }
             className={ this.clicked(answer) }
-            // className={isClicked ? (answer === fullResults.correct_answer ? 'correctButton' : 'wrongButton') : null}
+            disabled={ disabled }
           >
             { answer }
           </button>
@@ -113,6 +102,7 @@ class Question extends React.Component {
 
 Question.propTypes = {
   result: PropTypes.arrayOf().isRequired,
+  disabled: PropTypes.bool.isRequired,
 };
 
 export default Question;
