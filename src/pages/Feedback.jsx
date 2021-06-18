@@ -46,31 +46,36 @@ class Feedback extends Component {
     return (
       <section>
         <Header />
-        { this.feedBack(assertions) }
-        <p>Acertos:</p>
-        <p data-testid="feedback-total-question">
-          {assertions}
-          {' '}
-        </p>
-        <p>Pontos:</p>
-        <p data-testid="feedback-total-score">
-          {score}
-        </p>
-        <Link to="/ranking" data-testid="btn-ranking">
-          <button
-            type="button"
-          >
-            VER RANKING
-          </button>
-        </Link>
-        <Link to="/">
-          <button
-            type="button"
-            data-testid="btn-play-again"
-          >
-            JOGAR NOVAMENTE
-          </button>
-        </Link>
+        <div className="question-card">
+          { this.feedBack(assertions) }
+          <div className="feedback-item">
+            <p>Acertos :</p>
+            <p data-testid="feedback-total-question">{assertions}</p>
+          </div>
+          <div className="feedback-item">
+            <p>Pontos :</p>
+            <p data-testid="feedback-total-score">
+              {score}
+            </p>
+          </div>
+          <Link to="/ranking" data-testid="btn-ranking">
+            <button
+              className="login-button"
+              type="button"
+            >
+              VER RANKING
+            </button>
+          </Link>
+          <Link to="/">
+            <button
+              className="login-button"
+              type="button"
+              data-testid="btn-play-again"
+            >
+              JOGAR NOVAMENTE
+            </button>
+          </Link>
+        </div>
       </section>
     );
   }

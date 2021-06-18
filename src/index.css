@@ -41,6 +41,10 @@ a {
   color: rgb(36, 36, 185);
 }
 
+p {
+  margin: 1px 7px;
+}
+
 .header {
   background-color: rgb(2, 3, 24);
   border: 4px ridge rgba(128, 128, 177, 0.541);
@@ -86,6 +90,21 @@ a {
   margin: 20px;
 }
 
-.timer{
+.timer {
   display: flex;
+}
+
+.feedback-item {
+  display: flex;
+  font-size: 20px;
+  margin: 20px;
+}
+
+.ranking-item {
+  display: flex;
+  margin: 10px;
+}
+
+h3 {
+  margin-left: 10px;
 }
