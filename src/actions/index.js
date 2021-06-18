@@ -1,5 +1,9 @@
+import generateRandomAnswers from '../helpers/generateRandomAnswers';
+import { getPlayerDataLocalStorage } from '../helpers/localStorage';
 import { getQuestions } from '../services';
-import { ADD_PLAYER_NAME, RECEIVE_QUESTIONS, RECEIVE_TOKEN } from './actionsType';
+import {
+  ADD_SCORE, GET_SECONDS, RECEIVE_QUESTIONS, RECEIVE_TOKEN, TOGGLE_CRONOMETER,
+} from './actionsType';
 
 const saveToken = (token) => ({ type: RECEIVE_TOKEN, token });
 
@@ -11,11 +15,6 @@ export const requestAPI = () => async () => {
   localStorage.setItem('token', token);
 };
 
-export const saveNamePlayer = (name) => ({
-  type: ADD_PLAYER_NAME,
-  payload: { name },
-});
-
 export const receiveToken = () => async (dispatch) => {
   const token = localStorage.getItem('token');
   dispatch(saveToken(token));
@@ -23,5 +22,33 @@ export const receiveToken = () => async (dispatch) => {
 
 export const requestQuestions = (token) => async (dispatch) => {
   const result = await getQuestions(token);
-  dispatch(receiveQuestions(result));
+  const difficultyLevel = { hard: 3, medium: 2, easy: 1 };
+  const newQuestions = result.map((answer) => ({
+    category: answer.category,
+    type: answer.type,
+    difficultyLevel: difficultyLevel[answer.difficulty],
+    question: answer.question,
+    answers: generateRandomAnswers(answer.correct_answer, answer.incorrect_answers),
+  }));
+  dispatch(receiveQuestions(newQuestions));
+};
+
+export const updateScore = (score) => ({
+  type: ADD_SCORE,
+  score,
+});
+
+export const toggleStatusCronometer = (status) => ({
+  type: TOGGLE_CRONOMETER,
+  status,
+});
+
+export const receiveSeconds = (seconds) => ({
+  type: GET_SECONDS,
+  seconds,
+});
+
+export const receiveScore = () => async (dispatch) => {
+  const score = getPlayerDataLocalStorage('score');
+  dispatch(updateScore(score));
 };

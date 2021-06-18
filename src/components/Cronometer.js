@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import propTypes from 'prop-types';
+import { receiveSeconds, toggleStatusCronometer } from '../actions';
 
 class Cronometer extends Component {
   constructor(props) {
@@ -13,10 +16,16 @@ class Cronometer extends Component {
     }, ONE_SECOND);
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(_, prevState) {
+    const { statusCronometer, getSeconds } = this.props;
     const MIN_SECONDS = 0;
     if (prevState.seconds === MIN_SECONDS) {
       this.resetCronometer();
+    }
+
+    if (statusCronometer === 'off') {
+      getSeconds(prevState.seconds);
+      clearInterval(this.cronometerInterval);
     }
   }
 
@@ -35,4 +44,18 @@ class Cronometer extends Component {
   }
 }
 
-export default Cronometer;
+const mapStateToProps = (state) => ({
+  statusCronometer: state.trivia.statusCronometer,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setStatusCronometer: (status) => dispatch(toggleStatusCronometer(status)),
+  getSeconds: (seconds) => dispatch(receiveSeconds(seconds)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cronometer);
+
+Cronometer.propTypes = {
+  statusCronometer: propTypes.string.isRequired,
+  getSeconds: propTypes.func.isRequired,
+};

@@ -1,5 +1,9 @@
-export const ADD_PLAYER_NAME = 'ADD_PLAYER_NAME';
-
 export const RECEIVE_TOKEN = 'RECEIVE_TOKEN';
 
 export const RECEIVE_QUESTIONS = 'RECEIVE_QUESTIONS';
+
+export const ADD_SCORE = 'ADD_SCORE';
+
+export const TOGGLE_CRONOMETER = 'TOGGLE_CRONOMETER';
+
+export const GET_SECONDS = 'GET_SECONDS';
