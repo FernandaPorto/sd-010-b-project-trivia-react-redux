@@ -98,21 +98,6 @@ class Game extends React.Component {
     this.nextQuestion();
   }
 
-  addInfoToLocalStorage() {
-    const { location: { aboutProps: { name: { name },
-      email: { email } } } } = this.props;
-    const { numberOfAssertions, score } = this.state;
-    const objLocalStorage = {
-      player: {
-        name,
-        assertions: numberOfAssertions,
-        score,
-        gravatarEmail: email,
-      },
-    };
-    localStorage.setItem('state', JSON.stringify(objLocalStorage)); // Referência https://www.horadecodar.com.br/2020/07/21/como-salvar-um-objeto-na-localstorage/
-  }
-
   handleOnClick({ target: { name } }) {
     const { numberQuestion, correct } = this.state;
     const { questions } = this.props;
