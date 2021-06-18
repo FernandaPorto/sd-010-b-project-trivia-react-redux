@@ -4,16 +4,6 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 class Feedback extends Component {
-  // performanceGame() {
-  //   const { assertions } = this.props;
-  //   const minimumHit = 3;
-  //   if (assertions < minimumHit) {
-  //     return <p>Podia ser melhor...</p>;
-  //   } if (assertions >= minimumHit) {
-  //     return <p>Mandou Bem!</p>;
-  //   }
-  // }
-
   render() {
     const minimumHit = 3;
     const ranking = JSON.parse(localStorage.getItem('ranking'));
