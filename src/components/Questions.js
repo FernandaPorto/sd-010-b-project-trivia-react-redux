@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
+import Typist from 'react-typist';
 import { playerScore } from '../actions';
-
+import Amp from '../img/amp.gif';
 import '../css/Questions.css';
 import Button from './Button';
 
@@ -177,25 +178,32 @@ class Questions extends Component {
     return (
 
       <div>
-        <h1 data-testid="question-category">
-          { unescape(questions[index].category) }
-        </h1>
-        <span data-testid="question-text">
+        <Typist ms={ 6000 }>
+          <h1 className="hborder" data-testid="question-category">
+            { unescape(questions[index].category) }
+          </h1>
+        </Typist>
+
+        <span className="question" data-testid="question-text">
           { unescape(questions[index].question) }
         </span>
+        <div>
+          {this.handleAnswers()}
 
-        {this.handleAnswers()}
-
-        { isClicked
-          ? (
-            <Button
-              test="btn-next"
-              clickable={ this.nextQuestion }
-              value="Próxima"
-            />)
-          : null }
-
-        <p>{ timer }</p>
+          { isClicked
+            ? (
+              <Button
+                className="buttonQuestion"
+                test="btn-next"
+                clickable={ this.nextQuestion }
+                value="Próxima"
+              />)
+            : null }
+        </div>
+        <div className="temp">
+          <img src={ Amp } alt="Ampulheta" />
+          <p>{ timer }</p>
+        </div>
       </div>
     );
   }

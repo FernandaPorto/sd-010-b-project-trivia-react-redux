@@ -1,7 +1,11 @@
 import { connect } from 'react-redux';
+import Typist from 'react-typist';
 import { playerData, questionsData } from '../actions';
 import Button from '../components/Button';
 import Input from '../components/Input';
+import './pages.css';
+
+import Albert from '../img/albertEinstein.gif';
 
 const React = require('react');
 const PropTypes = require('prop-types');
@@ -69,38 +73,49 @@ class Login extends React.Component {
   render() {
     const { isButtonDisabled } = this.state;
     const { history } = this.props;
-
     return (
       <main>
-        <section>
-          <Input
-            test="input-player-name"
-            onChange={ this.handleChange }
-            label="Nome"
-            id="name"
-            type="text"
-          />
-          <Input
-            test="input-gravatar-email"
-            onChange={ this.handleChange }
-            label="Email"
-            id="gravatarEmail"
-            type="email"
-          />
-        </section>
-        <section>
-          <Button
-            test="btn-play"
-            disableButton={ isButtonDisabled }
-            clickable={ this.playGame }
-            value="Jogar"
-          />
-          <Button
-            test="btn-settings"
-            clickable={ () => history.push('/settings') }
-            value="Configurações"
-          />
-        </section>
+        <form>
+          <fieldset>
+            <legend><Typist ms={ 10000 }>Einstein Trivia</Typist></legend>
+
+            <Input
+              test="input-player-name"
+              onChange={ this.handleChange }
+              id="name"
+              type="text"
+              placeholder="Nome"
+              className="login-input"
+            />
+            <Input
+              test="input-gravatar-email"
+              onChange={ this.handleChange }
+              id="gravatarEmail"
+              type="email"
+              placeholder="******"
+              className="login-input"
+            />
+          </fieldset>
+          <fieldset>
+            <Button
+              test="btn-play"
+              disableButton={ isButtonDisabled }
+              clickable={ this.playGame }
+              value="Jogar"
+            />
+            <Button
+              test="btn-settings"
+              clickable={ () => history.push('/settings') }
+              value="Configurações"
+            />
+          </fieldset>
+          <section className="albert">
+            <img src={ Albert } alt="Albert" />
+          </section>
+          <Typist ms={ 8000 }>
+            <h1 className="Inicial">Gerenciamento de estado com Redux</h1>
+          </Typist>
+        </form>
       </main>
     );
   }
