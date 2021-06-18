@@ -103,6 +103,7 @@ class LoginForm extends Component {
 
 LoginForm.propTypes = {
   config: PropTypes.func,
+  getTriviaApi: PropTypes.func,
   sendTokenToLocal: PropTypes.objectOf(PropTypes.arrayOf),
 }.isRequired;
 
