@@ -8,7 +8,8 @@ class Feedback extends Component {
     const minimumHit = 3;
     const ranking = JSON.parse(localStorage.getItem('ranking'));
     console.log(ranking);
-    const { gravatar, name, assertions } = this.props;
+    const { gravatar, name, assertions, score } = this.props;
+    console.log(assertions);
     return (
       <div>
         <header>
@@ -28,9 +29,15 @@ class Feedback extends Component {
           { assertions < minimumHit && 'Podia ser melhor...' }
         </h2>
         <h2 data-testid="feedback-text">{ assertions >= minimumHit && 'Mandou bem!' }</h2>
-        <h3 data-testid="feedback-total-score">{ }</h3>
-        <h3 data-testid="feedback-total-question">{ }</h3>
+        <h3 data-testid="feedback-total-score">{ score }</h3>
+        <h3 data-testid="feedback-total-question">{ assertions}</h3>
         <Link to="/" data-testid="btn-play-again">Jogar novamente</Link>
+        <Link to="/ranking">
+          <button type="button" data-testid="btn-ranking">
+            Ver Ranking
+          </button>
+
+        </Link>
       </div>
     );
   }
