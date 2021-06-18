@@ -3,6 +3,11 @@ import { Link } from 'react-router-dom';
 import { setToken } from '../pages/GamePage';
 
 class ButtonNextQuestion extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.getSetToken = this.getSetToken.bind(this);
+  }
 
   async getSetToken() {
     const awaitSetToken = await setToken();
@@ -12,7 +17,7 @@ class ButtonNextQuestion extends React.Component {
   render() {
     return (
       <Link to="/gamepage">
-        <button type="button" onClick={ () => getSetToken() }>
+        <button type="button" onClick={ this.getSetToken }>
           Próxima pergunta
         </button>
       </Link>

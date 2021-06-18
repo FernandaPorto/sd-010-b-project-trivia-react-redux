@@ -5,6 +5,7 @@ import Header from '../components/Header';
 import fetchURL from '../services/API';
 import ButtonFeedback from '../components/ButtonFeedback';
 import ButtonLogin from '../components/ButtonLogin';
+import ButtonNextQuestion from '../components/ButtonNextQuestion';
 
 export const setToken = async () => {
   const token = await fetchURL();
@@ -31,6 +32,13 @@ class GamePage extends Component {
 
   componentDidMount() {
     this.getToken();
+  }
+
+  componentDidUpdate() {
+    const NUMBER = 30000;
+    setTimeout(() => {
+      this.loading();
+    }, NUMBER);
   }
 
   async getToken() {
@@ -94,6 +102,7 @@ class GamePage extends Component {
         ))}
         <ButtonFeedback />
         <ButtonLogin />
+        <ButtonNextQuestion />
       </div>
     );
   }
