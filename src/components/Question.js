@@ -29,7 +29,11 @@ class Question extends Component {
     const correctButton = document.querySelector('button[data-testid="correct-answer"]');
     const wrongButton = document.querySelectorAll('button[data-testid*="wrong-answer"]');
     correctButton.classList.add('correct');
-    wrongButton.forEach((button) => button.classList.add('incorrect'));
+    correctButton.disabled = true;
+    wrongButton.forEach((button) => {
+      button.classList.add('incorrect');
+      button.disabled = true;
+    });
   }
 
   handleClick({ target: { id } }) {
