@@ -45,9 +45,22 @@ class Cronometro extends Component {
 
   render() {
     const { seconds } = this.state;
+    let time = `00:${seconds}`;
+    let id = 'color-cronometro';
+    if (seconds <= 15 && seconds > 5) {
+      id = 'color-cronometro-15';
+    }
+
+    if (seconds <= 5) {
+      id = 'color-cronometro-5';
+    }
+
+    if (seconds < 10) {
+      time = `00:0${seconds}`;
+    }
     return (
-      <div>
-        <p>{ seconds }</p>
+      <div className="cronometro-container">
+        <p className="cronometro" id={ id }>{ time }</p>
       </div>
     );
   }

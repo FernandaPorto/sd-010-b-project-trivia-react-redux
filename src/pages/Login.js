@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import md5 from 'crypto-js/md5';
 import { Redirect } from 'react-router-dom';
+import { Form, Button } from 'react-bootstrap';
 
 class Login extends Component {
   constructor() {
@@ -39,43 +40,47 @@ class Login extends Component {
     if (redirect) return <Redirect to="/jogo" />;
     if (settings) return <Redirect to="/settings" />;
     return (
-      <div>
-        <label htmlFor="nome">
+      <Form className="formsLogin">
+        <Form.Label htmlFor="nome">
           Nome:
-          <input
-            data-testid="input-player-name"
-            id="nome"
-            type="text"
-            value={ nome }
-            onChange={ this.handle }
-          />
-        </label>
-        <label htmlFor="email">
+        </Form.Label>
+        <Form.Control
+          data-testid="input-player-name"
+          id="nome"
+          type="text"
+          value={ nome }
+          onChange={ this.handle }
+        />
+        <Form.Label htmlFor="email">
           Email:
-          <input
-            data-testid="input-gravatar-email"
-            id="email"
-            type="email"
-            value={ email }
-            onChange={ this.handle }
-          />
-        </label>
-        <button
+        </Form.Label>
+        <Form.Control
+          data-testid="input-gravatar-email"
+          id="email"
+          type="email"
+          value={ email }
+          onChange={ this.handle }
+        />
+        <Button
+          className="buttonLogin"
+          variant="light"
           onClick={ this.submit }
           disabled={ isValid }
           data-testid="btn-play"
           type="button"
         >
           Fazer login!
-        </button>
-        <button
+        </Button>
+        <Button
+          className="buttonLogin"
+          variant="light"
           data-testid="btn-settings"
           type="button"
           onClick={ () => this.setState({ settings: true }) }
         >
-          Ir para Configurações
-        </button>
-      </div>
+          Ir para Configuracoes
+        </Button>
+      </Form>
     );
   }
 }

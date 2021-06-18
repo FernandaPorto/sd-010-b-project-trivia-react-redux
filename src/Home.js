@@ -9,7 +9,7 @@ class Home extends Component {
       <div>
         <header className="App-header">
           <img src={ logo } className="App-logo" alt="logo" />
-          <p>SUA VEZ</p>
+          <img src="./login.svg" className="login-logo" alt="logo" />
         </header>
         <Login />
       </div>

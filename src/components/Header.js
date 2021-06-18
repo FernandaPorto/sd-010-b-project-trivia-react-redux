@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { Container, Image } from 'react-bootstrap';
 import { getStorage } from '../services/token';
 
 class Header extends Component {
@@ -7,13 +8,22 @@ class Header extends Component {
     const { player: { gravatarEmail, name } } = getStorage();
     const { pontuacao } = this.props;
     return (
-      <div>
-        <img data-testid="header-profile-picture" src={ gravatarEmail } alt={ name } />
+      <Container className="header-container">
+        <Image
+          data-testid="header-profile-picture"
+          src={ gravatarEmail }
+          alt={ name }
+          roundedCircle
+        />
         <p data-testid="header-player-name">
           { name }
         </p>
-        <p data-testid="header-score">{ pontuacao }</p>
-      </div>
+        <p id="pontuacao" data-testid="header-score">
+          Score:
+          {' '}
+          { pontuacao }
+        </p>
+      </Container>
     );
   }
 }

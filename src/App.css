@@ -1,10 +1,30 @@
+@font-face {
+  font-family: 'Digital';
+  src: local('Digital'), url(./fonts/digital.woff) format('woff');
+}
+
+@font-face {
+  font-family: 'Beat-Word-demo';
+  src: local('Beat-Word-demo'), url(./fonts/Beat-Word-demo.woff) format('woff');
+}
+
+
 .App {
   text-align: center;
+  background-color: #0F0C24;
 }
 
 .App-logo {
-  height: 40vmin;
+  margin-top: 50px;
+  height: 20vmin;
   pointer-events: none;
+}
+
+.login-logo {
+  margin-top: 50px;
+  height: 20vmin !important;
+  border-radius: 50%;
+  border: double 5px #61dafb;
 }
 
 .red-border {
@@ -17,25 +37,298 @@
 
 @media ( prefers-reduced-motion : no-preference ) {
 
-  .App-logo {
-    animation: shake infinite 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  .App-logo, .feedback-text {
+    animation: shake infinite 2s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   }
 }
 
 .App-header {
   align-items: center;
-  background-color: #282c34;
-  color: white;
+  background-color: #0F0C24;
+  color: #DEB992;
   display: flex;
   flex-direction: column;
   font-size: calc(10px + 2vmin);
   justify-content: center;
-  min-height: 100vh;
 }
 
 .App-link {
   color: #61dafb;
 }
+
+.formsLogin {
+  background-color: #0F0C24;
+  color: #DEB992;
+  font-size: large;
+  padding-top: 50px;
+  padding-right: 20%;
+  padding-left: 20%;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.formsLogin input {
+  width: 300px !important;
+  margin-bottom: 25px;
+}
+
+.formsLogin label {
+  font-family: Beat-Word-demo;
+  font-size: 28px;
+  width: 300px !important;
+  color: white;
+  background-color: #c97414 !important;
+  border-radius: 3px;
+}
+
+.buttonLogin {
+  font-family: Beat-Word-demo;
+  font-size: 22px !important;
+  background-color: #fd7bec !important;
+  border: solid 3px #61dafb !important;
+  color: white !important;
+  margin: 10px;
+  width: 220px;
+}
+
+.buttonLogin:hover {
+  filter: brightness(90%);
+}
+
+.answers {
+  display: flex;
+  flex-wrap: wrap;
+  align-items:center;
+  justify-content: center;
+  padding-right: 10%;
+  padding-left: 10%;
+}
+
+.answers button {
+  font-family: Beat-Word-demo;
+  font-size: 34px !important;
+  width: 350px;
+  height: 180px;
+  background-color: #c97414 !important;
+  margin: 10px;
+}
+
+.answers button:hover {
+  filter: brightness(90%);
+}
+
+.title-question {
+  font-size: 20px;
+}
+
+.header-container img {
+  margin-top: 30px;
+  width: 120px;
+  border: double 5px #61dafb;
+}
+
+.header-container p {
+  font-family: Beat-Word-demo;
+  font-size: 32px !important;
+  margin-top: 15px;
+  font-size: 25px;
+}
+
+.game-container {
+  font-family: Beat-Word-demo;
+  color: #DEB992;
+  background-color: #0F0C24;
+  padding-bottom: 10px;
+}
+
+.card {
+  color: rgb(68, 28, 6);
+  background-color: #DEB992 !important;
+}
+
+.next-button {
+  margin-top: 20px;
+  font-size: 22px !important;
+  background-color: #fd7bec !important;
+  border-color: #fd7bec !important;
+  width: 150px;
+  height: 50px;
+}
+
+.next-button:hover {
+  filter: brightness(90%);
+}
+
+#pontuacao {
+  color: white;
+  background-color: #c97414 !important;
+  border-radius: 2px;
+  padding: 5px;
+} 
+
+.cronometro {
+  position: absolute;
+  right: 25%;
+  top: 25px;
+  font-family: Digital;
+  width: 150px;
+  font-size: 50px;
+  padding-bottom: 18px;
+  margin: 20px 0px !important;
+}
+
+.cronometro-container {
+  display: flex;
+  justify-content: center;
+}
+
+#color-cronometro {
+  color: #61dafb;
+  border: double 5px #61dafb;
+}
+
+#color-cronometro-15 {
+  color: #FFE166;
+  border: double 5px #FFE166;
+}
+
+#color-cronometro-5 {
+  color: #F44D48;
+  border: double 5px #F44D48;
+}
+
+.feedback {
+  color: white;
+  font-family: Beat-Word-demo;
+  font-size: 32px !important;
+  background-color: #0F0C24;
+  max-width: 650px !important;
+}
+
+.feedback .acertos {
+  background-color: #c97414 !important;
+  border-radius: 2px;
+  margin-left: 15px;
+  margin-right: 15px;
+  padding: 5px;
+}
+
+.feedback-text {
+  color: #61dafb;
+  font-size: 40px;
+  border: double 5px #61dafb;
+  padding: 10px;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.feedback button {
+  margin-left: 30px;
+  margin-right: 30px;
+  background-color: #fd7bec !important;
+  border-color: #fd7bec !important;
+}
+
+.feedback button:hover {
+  filter: brightness(90%);
+}
+
+.feedback button a {
+  color: white;
+  font-size: 22px !important;
+  text-decoration: none;
+}
+
+.ranking {
+  color: white;
+  font-family: Beat-Word-demo;
+  font-size: 32px !important;
+  max-width: 800px !important;
+}
+
+.header-ranking {
+  color: #61dafb;
+  font-size: 40px;
+  border: double 5px #61dafb;
+  padding: 10px;
+  margin: 25px;
+}
+
+.placar-container {
+  border: double 5px #61dafb;
+  margin: 25px;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  padding: 10px;
+}
+
+.placar {
+  max-height: 100px;
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+}
+
+.placar-text-1 {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center !important;
+  align-self: center;
+  text-align: center !important;
+  width: 200px;
+}
+
+.placar-text-2 {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center !important;
+  align-self: center;
+  text-align: center !important;
+  width: 100px;
+}
+
+.placar img {
+  border: double 5px #61dafb;
+  border-radius: 50%;
+}
+
+.ranking button {
+  width: 150px;
+  margin-left: 30px;
+  margin-right: 30px;
+  background-color: #fd7bec !important;
+  border-color: #fd7bec !important;
+}
+
+.ranking button:hover {
+  filter: brightness(90%);
+}
+
+.ranking button a {
+  color: white;
+  font-size: 28px !important;
+  text-decoration: none;
+}
+
+.settings {
+  display: flex;
+  justify-content: center;
+}
+
+.settings-text {
+  margin-top: 30px;
+  color: #FFE166;
+  border: double 5px #FFE166;
+  max-width: 500px;
+  margin: 25px;
+  padding: 30px;
+  font-family: Beat-Word-demo;
+  font-size: 32px !important;
+}
+
 
 @keyframes shake {
 

@@ -29,7 +29,7 @@ class Jogo extends Component {
     const { game, loading, value } = this.state;
     console.log(this.state);
     return (
-      <div>
+      <div className="game-container">
         <Header pontuacao={ value } />
         {!loading && <Questions { ...game } funcao={ this.change } />}
       </div>

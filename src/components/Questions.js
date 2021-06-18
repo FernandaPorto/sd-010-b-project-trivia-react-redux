@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router';
+import { Card, Button, Container } from 'react-bootstrap';
 import { getStorage } from '../services/token';
 import Cronometro from './Cronometro';
 
@@ -13,6 +14,7 @@ class Questions extends Component {
       isValid: false,
       value: false,
       restart: true,
+      int: true,
       isToggleOn: false };
     this.randAnswers = this.randAnswers.bind(this);
     this.listenerChange = this.listenerChange.bind(this);
@@ -22,17 +24,22 @@ class Questions extends Component {
   }
 
   randAnswers(c, i) {
-    // const { correct_answer: c, incorrect_answers: i } = this.state;
-    const inc = [...i];
-    const rand = Math.floor(Math.random() * ((inc.length - 1) + 1));
-    const swap = inc[rand];
-    inc.splice(rand, 0);
-    inc[rand] = c;
-    return [...inc, swap];
+    const { int } = this.state;
+    if (int) {
+      const inc = [...i];
+      const rand = Math.floor(Math.random() * ((inc.length - 1) + 1));
+      const swap = inc[rand];
+      inc.splice(rand, 0);
+      inc[rand] = c;
+      return [...inc, swap];
+    }
+    this.setState({
+      int: false,
+    });
   }
 
   listenerChange() {
-    this.setState({ isValid: true, isToggleOn: true });
+    this.setState({ isValid: true, isToggleOn: true, restart: false });
   }
 
   teste(state) {
@@ -48,6 +55,7 @@ class Questions extends Component {
     const { index } = this.state;
     const prev = index;
     this.setState({ index: prev + 1,
+      int: true,
       next: false,
       isValid: false,
       isToggleOn: false,
@@ -118,30 +126,37 @@ class Questions extends Component {
       return <Redirect to="/feedback" />;
     }
     return (
-      <div>
-        <h3 data-testid="question-category">{array[index].category}</h3>
-        <h3 data-testid="question-text">{array[index].question}</h3>
-        {this.randAnswers(array[index].correct_answer,
-          array[index].incorrect_answers).map((answer, idx) => {
-          const checkColor = answer === array[index].correct_answer
-            ? '3px solid rgb(6, 240, 15)'
-            : '3px solid rgb(255, 0, 0)';
-          const test = answer === array[index].correct_answer
-            ? 'correct-answer' : `wrong-answer-${idx}`;
-          const dataTestId = { 'data-testid': test };
-          return (
-            <button
-              style={ { border: `${next ? checkColor : ''}` } }
-              key={ answer }
-              type="button"
-              { ...dataTestId }
-              disabled={ isValid }
-              onClick={ () => this.somaPontuacao(dataTestId, array[index].difficulty) }
-            >
-              {answer}
-            </button>
-          );
-        })}
+      <Container>
+        <Card>
+          <Card.Header as="h2" data-testid="question-category">{array[index].category}</Card.Header>
+          <Card.Body>
+            <Card.Title as="h2" data-testid="question-text">{array[index].question}</Card.Title>
+            <div className="answers">
+              {this.randAnswers(array[index].correct_answer,
+                array[index].incorrect_answers).map((answer, idx) => {
+                const checkColor = answer === array[index].correct_answer
+                  ? '3px solid rgb(6, 240, 15)'
+                  : '3px solid rgb(255, 0, 0)';
+                const test = answer === array[index].correct_answer
+                  ? 'correct-answer' : `wrong-answer-${idx}`;
+                const dataTestId = { 'data-testid': test };
+                return (
+                  <Button
+                    className="answer-button"
+                    style={ { border: `${next ? checkColor : ''}` } }
+                    key={ answer }
+                    type="button"
+                    { ...dataTestId }
+                    disabled={ isValid }
+                    onClick={ () => this.somaPontuacao(dataTestId, array[index].difficulty) }
+                  >
+                    {answer}
+                  </Button>
+                );
+              })}
+            </div>
+          </Card.Body>
+        </Card>
         <Cronometro
           funcao={ this.listenerChange }
           funcaoStop={ this.teste }
@@ -149,14 +164,15 @@ class Questions extends Component {
           stop={ value }
         />
         { isToggleOn ? (
-          <button
+          <Button
+            className="next-button"
             type="button"
             data-testid="btn-next"
             onClick={ this.nextQuestion }
           >
-            Próxima
-          </button>) : null }
-      </div>
+            Proxima
+          </Button>) : null }
+      </Container>
     );
   }
 }
