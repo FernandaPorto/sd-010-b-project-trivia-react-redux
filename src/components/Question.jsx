@@ -76,7 +76,7 @@ class Question extends React.Component {
   }
 
   render() {
-    const { props: { result }, state: { arrRandom } } = this;
+    const { props: { result, isDisabled }, state: { arrRandom } } = this;
     return (
       <>
         <span data-testid="question-category">
@@ -101,6 +101,7 @@ class Question extends React.Component {
             data-testid={ this.insertDataTestId(answer, index) }
             onClick={ this.handleChange }
             className={ this.clicked(answer) }
+            disabled={ isDisabled }
             // className={isClicked ? (answer === fullResults.correct_answer ? 'correctButton' : 'wrongButton') : null}
           >
             { answer }

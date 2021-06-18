@@ -8,11 +8,25 @@ class Game extends React.Component {
     this.state = {
       results: [],
       numQuestion: 0,
+      timer: 5,
+      isDisabled: false,
     };
   }
 
   componentDidMount() {
     this.requestTrivia();
+    this.updateTimer();
+  }
+
+  updateTimer() {
+    const oneSecund = 1000;
+    const changeButtons = () => { this.setState({ isDisabled: true }); };
+    const { state: { timer } } = this;
+    const reduceTimer = () => {
+      this.state.timer <= 0 ? this.setState({ isDisabled: true }) :
+      this.setState({ timer: this.state.timer - 1 });
+    };
+    return timer < 0 ? changeButtons() : setInterval(reduceTimer, oneSecund);
   }
 
   requestTrivia() {
@@ -23,21 +37,16 @@ class Game extends React.Component {
   }
 
   render() {
-    const { results, numQuestion } = this.state;
+    const { results, numQuestion, timer, isDisabled } = this.state;
     return (
       <>
         <Header />
         {results.map(
           (result, index) => numQuestion === index && (
-            <Question result={ result } key={ numQuestion } />
+            <Question result={ result } key={ numQuestion } disabled={ isDisabled } />
           ),
         )}
-        {/* {results.map(
-          (result, index) =>{
-            if(            numQuestion === index){
-              return  <Question result={result} key={result.category} />
-            }}
-        )} */}
+        <span>{timer}</span>
       </>
     );
   }
