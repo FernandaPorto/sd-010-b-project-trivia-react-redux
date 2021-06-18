@@ -1,10 +1,38 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import md5 from 'crypto-js/md5';
 
 class FeedBackMain extends Component {
   constructor(props) {
     super(props);
     this.renderFeedback = this.renderFeedback.bind(this);
+  }
+
+  componentDidMount() {
+    const playerInfo = JSON.parse(localStorage.getItem('state'));
+    const oldPlayers = JSON.parse(localStorage.getItem('ranking'));
+    if (oldPlayers === null) {
+      const newPlayer = [{
+        name: playerInfo.player.name,
+        score: playerInfo.player.score,
+        picture: `https://www.gravatar.com/avatar/${this.userEmail()}`,
+      }];
+      return localStorage.setItem('ranking', JSON.stringify(newPlayer));
+    }
+    const newPlayer = {
+      name: playerInfo.player.name,
+      score: playerInfo.player.score,
+      picture: `https://www.gravatar.com/avatar/${this.userEmail()}`,
+    };
+    oldPlayers.push(newPlayer);
+    localStorage.setItem('ranking', JSON.stringify(oldPlayers));
+  }
+
+  userEmail() {
+    const player = localStorage.getItem('state');
+    const newPlayer = JSON.parse(player);
+    const userEmail = md5(newPlayer.player.gravatarEmail).toString();
+    return userEmail;
   }
 
   renderFeedback() {
@@ -25,9 +53,17 @@ class FeedBackMain extends Component {
       <section>
         <p>
           Você acertou
-          <span data-testid="feedback-total-question">{assertions}</span>
+          <span data-testid="feedback-total-question">
+            {' '}
+            {assertions}
+            {' '}
+          </span>
           e fez
-          <span data-testid="feedback-total-score">{score}</span>
+          <span data-testid="feedback-total-score">
+            {' '}
+            {score}
+            {' '}
+          </span>
           pontos!
         </p>
         <Link to="/" data-testid="btn-play-again">
