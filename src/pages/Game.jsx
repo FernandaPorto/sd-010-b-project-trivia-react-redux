@@ -24,13 +24,14 @@ class Game extends React.Component {
     this.renderAnswers = this.renderAnswers.bind(this);
     this.handleOnClick = this.handleOnClick.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.resetTimer = this.resetTimer.bind(this);
   }
 
   componentDidMount() {
     const { fetchQuestions: getQuestions } = this.props;
     const token = localStorage.getItem('token');
     getQuestions(token);
-    const segundo = 1000;
+    const segundo = 500;
     this.timerInterval = setInterval(() => {
       this.setState((state) => ({
         timerInitial: state.timerInitial - 1,
@@ -42,17 +43,10 @@ class Game extends React.Component {
   // https://medium.com/@ashleywnj/componentdidupdate-prevstate-prevprops-and-a-silly-mistake-38afc72f5abc
   componentDidUpdate(_prevProps, prevState) {
     if (prevState.timerInitial === 0) {
+      // console.log('Ta na hora de parar');
       this.resetTimer();
     }
-  }
-
-  resetTimer() {
-    this.setState({
-      timerInitial: 0,
-      disabled: true,
-    });
-    clearInterval(this.timerInterval);
-    this.nextQuestion();
+    // console.log('qualquer coisa');
   }
 
   handleOnClick({ target: { name } }) {
@@ -79,6 +73,15 @@ class Game extends React.Component {
       numberQuestion: numberQuestion + 1,
       clicked: false,
     });
+  }
+
+  resetTimer() {
+    this.setState({
+      timerInitial: 0,
+      disabled: true,
+    });
+    clearInterval(this.timerInterval);
+    console.log(this.nextQuestion());
   }
 
   renderAnswers() {

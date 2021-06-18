@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 function nextButton(state, props, nextQuestion, getGravatar) {
   const { clicked, numberQuestion } = state;
@@ -36,6 +36,7 @@ function nextButton(state, props, nextQuestion, getGravatar) {
               },
             } }
           />
+          Próxima
         </button>
       </div>
     );
