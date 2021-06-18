@@ -12,3 +12,8 @@ export const playerScore = (state) => ({
   type: 'SET_SCORE',
   state,
 });
+
+export const fetchData = (state) => ({
+  type: 'FETCH',
+  state,
+});

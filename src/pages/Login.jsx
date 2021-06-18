@@ -50,7 +50,10 @@ class Login extends React.Component {
   }
 
   async fetchQuestion(token) {
-    const request = await fetch(`https://opentdb.com/api.php?amount=5&encode=url3986&token=${token}`);
+    // const request = await fetch(`https://opentdb.com/api.php?amount=5&encode=url3986&token=${token}`);
+    const { params: { difficulty, type, category } } = this.props;
+    const request = await fetch(` https://opentdb.com/api.php?amount=5&category=${category}&difficulty=${difficulty}&type=${type}&encode=url3986&token=${token}`);
+
     const response = await request.json();
 
     return response.results;
@@ -125,6 +128,7 @@ Login.propTypes = {
   history: PropTypes.shape().isRequired,
   sendPlayerData: PropTypes.func.isRequired,
   sendQuestionsData: PropTypes.func.isRequired,
+  params: PropTypes.shape().isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -132,4 +136,8 @@ const mapDispatchToProps = (dispatch) => ({
   sendQuestionsData: (state) => dispatch(questionsData(state)),
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+const mapStateToProps = (state) => ({
+  params: state.fetch.params,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
