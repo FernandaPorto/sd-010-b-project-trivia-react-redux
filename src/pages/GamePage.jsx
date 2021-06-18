@@ -29,22 +29,11 @@ class GamePage extends Component {
     this.getToken = this.getToken.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.isLoading = this.isLoading.bind(this);
+    this.interval = this.interval.bind(this);
   }
 
   componentDidMount() {
-    const { seconds } = this.state;
-    const THIRTY_SECONDS = 30000;
-    this.getToken();
-    this.myInterval = setInterval(() => {
-      if (seconds > 0) {
-        this.setState((previousState) => ({
-          seconds: previousState.seconds - 1,
-        }));
-      }
-      if (seconds === 0) {
-        this.isLoading();
-      }
-    }, THIRTY_SECONDS);
+    this.interval();
   }
 
   componentWillUnmount() {
@@ -58,6 +47,22 @@ class GamePage extends Component {
     this.setState({
       categories: map,
     });
+  }
+
+  async interval() {
+    await this.getToken();
+    const { seconds } = this.state;
+    const THIRTY_SECONDS = 30000;
+    this.myInterval = setInterval(() => {
+      if (seconds > 0) {
+        this.setState((previousState) => ({
+          seconds: previousState.seconds - 1,
+        }));
+      }
+      if (seconds === 0) {
+        this.isLoading();
+      }
+    }, THIRTY_SECONDS);
   }
 
   handleChange() {
