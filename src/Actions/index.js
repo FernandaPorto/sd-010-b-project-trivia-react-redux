@@ -44,3 +44,10 @@ export const pointsAction = (points) => ({
   },
 }
 );
+
+export const correctAction = (correct) => ({
+  type: 'CORRECT',
+  payload: {
+    correct,
+  },
+});

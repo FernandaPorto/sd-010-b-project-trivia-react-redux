@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function RenderWrong(props) {
   const { questions, count, num, correctAnswer } = props;
@@ -13,3 +14,7 @@ export default function RenderWrong(props) {
       {questions[count].incorrect_answers[num]}
     </button>);
 }
+
+RenderWrong.propTypes = {
+  questions: PropTypes.shape(PropTypes.string),
+}.isRequired;

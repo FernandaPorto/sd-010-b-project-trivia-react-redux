@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { pointsAction } from '../Actions';
+import { pointsAction, correctAction } from '../Actions';
 import RenderWrong from './RenderWrong';
+import shuffle from './Shuffle';
 
 const ONE_SECOND = 1000;
 const THREE = 3;
@@ -76,6 +77,7 @@ class Trivia extends Component {
 
   correctAnswer(event) {
     const { certo } = this.state;
+    const { certoAction } = this.props;
     const btnC = document.querySelectorAll('#correct');
     const btnE = document.querySelectorAll('#errada');
     const btnNext = document.querySelector('#next');
@@ -90,7 +92,7 @@ class Trivia extends Component {
       e.disabled = true;
     }); if (event !== undefined && event.target.id === 'correct') {
       this.calcScore();
-      this.setState({ certo: certo + 1 });
+      this.setState({ certo: certo + 1 }, () => certoAction(certo));
     }
   }
 
@@ -206,8 +208,10 @@ class Trivia extends Component {
 Trivia.propTypes = {
   questions: PropTypes.shape(PropTypes.string),
 }.isRequired;
+
 const mapDispatchToProps = (dispatch) => ({
   setPoints: (points) => dispatch(pointsAction(points)),
+  certoAction: (correct) => dispatch(correctAction(correct)),
 });
 const mapStateToProps = (state) => ({ questions: state.loginReducer.payload,
 });
