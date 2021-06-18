@@ -2,20 +2,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+const accept = (assertion) => (
+  <p>
+    Você acertou
+    <span data-testid="feedback-total-question">
+      {' '}
+      {assertion}
+    </span>
+    {' '}
+    pergunta!
+  </p>
+);
 class FeedbackMessage extends Component {
   messageFeedback(assertions) {
     if (assertions === 1) {
-      return (
-        <p>
-          Você acertou
-          <span data-testid="feedback-total-question">
-            {' '}
-            {assertions}
-          </span>
-          {' '}
-          pergunta!
-        </p>
-      );
+      return accept(assertions);
     }
     if (assertions > 1) {
       return (
@@ -30,17 +31,8 @@ class FeedbackMessage extends Component {
         </p>
       );
     }
-    return (
-      <p>
-        Você acertou
-        <span data-testid="feedback-total-question">
-          {' '}
-          {assertions}
-        </span>
-        {' '}
-        perguntas!
-      </p>
-    );
+
+    return accept(assertions);
   }
 
   messageScore(score) {

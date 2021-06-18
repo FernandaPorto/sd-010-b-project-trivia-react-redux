@@ -56,7 +56,7 @@ class Login extends Component {
   render() {
     const { name, email } = this.state;
     return (
-      <div>
+      <div className="flex justify-start">
         <form>
           <input
             data-testid="input-player-name"
