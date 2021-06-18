@@ -3,9 +3,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import Header from '../components/Header';
-import { fetchApiQuestions, fetchAPI, saveAssertions } from '../actions/index';
-
+import { fetchApiQuestions, fetchAPI, saveAssertions, saveScore } from '../actions/index';
 import './trivia.css';
+
+let pontosRender = 0;
 
 class Trivia extends React.Component {
   constructor(props) {
@@ -21,6 +22,7 @@ class Trivia extends React.Component {
       OK: true,
       contador: 0,
       assertions: 0,
+      score: 0,
     };
 
     this.renderQuestion = this.renderQuestion.bind(this);
@@ -68,7 +70,6 @@ class Trivia extends React.Component {
     this.setState({
       questions: response.questions.results[0], contador: contador + 1,
     });
-    console.log(contador);
   }
 
   update(state) {
@@ -85,7 +86,6 @@ class Trivia extends React.Component {
   storange() {
     const { pontosState, questions } = this.state;
     const { name, email } = this.props;
-
     const play = {
       player: {
         name,
@@ -98,7 +98,6 @@ class Trivia extends React.Component {
     const ranking = [
       { name, score: pontosState, picture: email },
     ];
-
     localStorage.setItem('state', JSON.stringify(play));
     localStorage.setItem('ranking', JSON.stringify(ranking));
     localStorage.setItem('token', JSON.stringify(questions));
@@ -106,7 +105,6 @@ class Trivia extends React.Component {
 
   acertou() {
     const { questions, seconds } = this.state;
-    console.log(questions);
     if (questions) {
       const { difficulty } = questions;
       const levelQuestion = difficulty;
@@ -114,7 +112,6 @@ class Trivia extends React.Component {
       const pointsMedium = 2;
       const pointsEasy = 1;
       const somaPontos = 10;
-      let pontosRender = 0;
       if (levelQuestion === 'hard') {
         pontosRender = somaPontos + (seconds * pointsHard);
       } else if (levelQuestion === 'medium') {
@@ -122,16 +119,12 @@ class Trivia extends React.Component {
       } else if (levelQuestion === 'easy') {
         pontosRender = somaPontos + (seconds * pointsEasy);
       }
-
       this.setState((state) => ({ pontosState: state.pontosState + pontosRender }));
     }
   }
 
   countAssertions() {
-    const { assertion } = this.props;
     this.setState((state) => ({ ...state, assertions: state.assertions + 1 }));
-    const { assertions } = this.state;
-    assertion(assertions);
   }
 
   colorAnswers() {
@@ -144,8 +137,19 @@ class Trivia extends React.Component {
   async errou() {
     this.colorAnswers();
     this.storange();
-
     this.setState((state) => ({ pontosState: state.pontosState }));
+  }
+
+  async handleClick() {
+    await this.acertou();
+    await this.countAssertions();
+    const { pontosState, assertions } = this.state;
+    const { score, assertion } = this.props;
+    score(pontosState);
+    assertion(assertions);
+    // console.log(assertions);
+    this.storange();
+    this.colorAnswers();
   }
 
   renderQuestion() {
@@ -157,11 +161,10 @@ class Trivia extends React.Component {
     correct,
     reject,
     disable, contador } = this.state;
-    const max = 5;
+    const max = 6;
     if (contador === max) {
       return <Redirect to="/feedback" />;
     }
-
     return (
       <div>
         <p data-testid="question-category">{category}</p>
@@ -173,12 +176,7 @@ class Trivia extends React.Component {
               className={ correct }
               data-testid="correct-answer"
               type="button"
-              onClick={ async () => {
-                await this.acertou();
-                this.storange();
-                this.colorAnswers();
-                this.countAssertions();
-              } }
+              onClick={ () => this.handleClick() }
             >
               {CERTA}
             </button>)
@@ -231,6 +229,7 @@ Trivia.propTypes = {
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
   assertion: PropTypes.func.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -242,6 +241,7 @@ const mapDispatchToProps = (dispatch) => ({
   apiQuestions: (token, perguntas) => dispatch(fetchApiQuestions(token, perguntas)),
   thunkToken: () => dispatch(fetchAPI()),
   assertion: (acertos) => dispatch(saveAssertions(acertos)),
+  score: (state) => dispatch(saveScore(state)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Trivia);
