@@ -123,6 +123,64 @@ class Trivia extends Component {
     setPoints(countScore);
   }
 
+  renderquestionCorrect() {
+    const { questions } = this.props;
+    const { count } = this.state;
+    return (
+      <button
+        id="correct"
+        type="button"
+        data-testid="correct-answer"
+        onClick={ this.correctAnswer }
+      >
+        {questions[count].correct_answer}
+      </button>
+    );
+  }
+
+  renderWrong1() {
+    const { questions } = this.props;
+    const { count } = this.state;
+    return (
+      <button
+        id="errada"
+        type="button"
+        data-testid={ `wrong-answer-${0}` }
+        onClick={ this.correctAnswer }
+      >
+        {questions[count].incorrect_answers[0]}
+      </button>);
+  }
+
+  renderWrong2() {
+    const { questions } = this.props;
+    const { count } = this.state;
+    return (
+      <button
+        id="errada"
+        type="button"
+        data-testid={ `wrong-answer-${1}` }
+        onClick={ this.correctAnswer }
+      >
+        {questions[count].incorrect_answers[1]}
+      </button>
+    );
+  }
+
+  renderWrong3() {
+    const { questions } = this.props;
+    const { count } = this.state;
+    return (
+      <button
+        id="errada"
+        type="button"
+        data-testid={ `wrong-answer-${2}` }
+        onClick={ this.correctAnswer }
+      >
+        {questions[count].incorrect_answers[2]}
+      </button>);
+  }
+
   render() {
     const { questions } = this.props;
     const { count, seconds, redirect } = this.state;
@@ -130,33 +188,21 @@ class Trivia extends Component {
       return <Redirect to="/feedback" />;
     }
     if (questions) {
-      const repostas = [
-        ...questions[count].incorrect_answers];
+      const respostas = [this.renderquestionCorrect(),
+        this.renderWrong1(), this.renderWrong2(), this.renderWrong3()];
+
       return (
         <>
           <h4 data-testid="question-category">{questions[count].category}</h4>
           <h1 data-testid="question-text">{questions[count].question }</h1>
           <ul>
-            <button
-              id="correct"
-              type="button"
-              data-testid="correct-answer"
-              onClick={ this.correctAnswer }
-            >
-              {questions[count].correct_answer}
-            </button>
-            {repostas.map((element, index) => (
-              <button
-                id="errada"
-                type="button"
-                data-testid={ `wrong-answer-${index}` }
-                onClick={ this.correctAnswer }
-                key={ index }
-              >
-                {element}
-              </button>))}
+            {respostas[3]}
+            {respostas[1]}
+            {respostas[0]}
+            {respostas[2]}
+            ))
           </ul>
-          <br />
+
           <button
             id="next"
             style={ { display: 'none' } }
