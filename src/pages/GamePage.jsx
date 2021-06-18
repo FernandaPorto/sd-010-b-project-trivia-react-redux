@@ -51,9 +51,9 @@ class GamePage extends Component {
 
   async interval() {
     await this.getToken();
-    const { seconds } = this.state;
-    const THIRTY_SECONDS = 30000;
+    const A_SECOND = 1000;
     this.myInterval = setInterval(() => {
+      const { seconds } = this.state;
       if (seconds > 0) {
         this.setState((previousState) => ({
           seconds: previousState.seconds - 1,
@@ -62,7 +62,7 @@ class GamePage extends Component {
       if (seconds === 0) {
         this.isLoading();
       }
-    }, THIRTY_SECONDS);
+    }, A_SECOND);
   }
 
   handleChange() {
@@ -119,7 +119,7 @@ class GamePage extends Component {
         ))}
         <ButtonFeedback />
         <ButtonLogin />
-        <ButtonNextQuestion onClick={ this.handleChange } />
+        <ButtonNextQuestion handleChange={ this.handleChange } />
       </div>
     );
   }
