@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router';
-import scoreAction from '../actions/scoreAction';
+import { updateScoreAction } from '../actions/scoreAction';
 
 import './answersColors.css';
 
@@ -20,7 +19,6 @@ class Answers extends Component {
       youreWrong: '',
       isNext: false,
       shuffleAnswers: [],
-      goFeedback: false,
     };
 
     this.showCorrectAnswers = this.showCorrectAnswers.bind(this);
@@ -82,7 +80,7 @@ class Answers extends Component {
 
   render() {
     const { youreRight, youreWrong,
-      shuffleAnswers, difficulty, isNext, goFeedback } = this.state;
+      shuffleAnswers, difficulty, isNext } = this.state;
 
     const { correct, incorrect, isDisableAnswers, timer, nextQuestion } = this.props;
     if (isDisableAnswers
@@ -99,7 +97,6 @@ class Answers extends Component {
 
     return (
       <div>
-        { goFeedback && <Redirect to="/feedback" /> }
         { shuffleAnswers.map(({ id, answer }) => (
           <button
             key={ id }
@@ -144,7 +141,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  updateScore: (score) => dispatch(scoreAction(score)),
+  updateScore: (score) => dispatch(updateScoreAction(score)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Answers);

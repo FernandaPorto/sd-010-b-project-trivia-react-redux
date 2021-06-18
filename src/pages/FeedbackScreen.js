@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Redirect } from 'react-router';
+import { connect } from 'react-redux';
 import HeaderGame from '../components/HeaderGame';
+import { resetScoreAction } from '../actions/scoreAction';
 
 class FeedbackScreen extends Component {
   constructor() {
@@ -16,10 +19,26 @@ class FeedbackScreen extends Component {
     this.fillStorage = this.fillStorage.bind(this);
     this.goHome = this.goHome.bind(this);
     this.goRanking = this.goRanking.bind(this);
+    this.updateStorage = this.updateStorage.bind(this);
   }
 
   componentDidMount() {
     this.fillStorage();
+  }
+
+  updateStorage() {
+    const { name, score, url, resetScore } = this.props;
+    const rankingObj = { name, score, picture: url };
+    const storage = JSON.parse(localStorage.getItem('state'));
+
+    storage.player.name = '';
+    storage.player.assertions = 0;
+    storage.player.score = '';
+    storage.player.gravatarEmail = '';
+    storage.ranking.push(rankingObj);
+    storage.token = '';
+    resetScore();
+    localStorage.setItem('state', JSON.stringify(storage));
   }
 
   fillStorage() {
@@ -34,9 +53,9 @@ class FeedbackScreen extends Component {
     this.setState({ score, assertions, message });
   }
 
-  goHome() { this.setState({ goToHome: true }); }
+  goHome() { this.setState({ goToHome: true }, this.updateStorage()); }
 
-  goRanking() { this.setState({ goToRanking: true }); }
+  goRanking() { this.setState({ goToRanking: true }, this.updateStorage()); }
 
   render() {
     const { score, assertions, message, goToRanking, goToHome } = this.state;
@@ -69,4 +88,22 @@ class FeedbackScreen extends Component {
   }
 }
 
-export default FeedbackScreen;
+const mapStateToProps = (state) => ({
+  questions: state.triviaGame.questions,
+  name: state.triviaGame.name,
+  score: state.triviaGame.score,
+  url: state.triviaGame.url,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  resetScore: () => dispatch(resetScoreAction()),
+});
+
+FeedbackScreen.propTypes = {
+  name: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+  url: PropTypes.string.isRequired,
+  resetScore: PropTypes.func.isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FeedbackScreen);

@@ -3,6 +3,7 @@ export const ACTION_REDIRECT = 'ACTION_REDIRECT';
 export const ACTION_QUESTIONS = 'ACTION_QUESTIONS';
 export const ACTION_URL = 'ACTION_URL';
 export const ACTION_SCORE = 'ACTION_SCORE';
+export const ACTION_SCORE_ZERO = 'ACTION_SCORE_ZERO';
 
 const actionRedirect = () => ({
   type: ACTION_REDIRECT,
@@ -19,8 +20,7 @@ const actionQuestions = (questions) => ({
 });
 
 function fetchQuestionsAndAnswers(token) {
-  return (dispatch) => fetch(`https://opentdb.com/api.php?amount=5&token=${token}
-  `)
+  return (dispatch) => fetch(`https://opentdb.com/api.php?amount=5&token=${token}`)
     .then((response) => response.json())
     .then((questions) => dispatch(actionQuestions(questions.results))); // results is the key of the object response received from API with the questions and answers
 }
@@ -36,16 +36,22 @@ const storageInicial = {
   token: '',
 };
 
+const updateStorage = (token = '') => {
+  const Storage = JSON.parse(localStorage.getItem('state'));
+  const state = !Storage ? storageInicial : Storage;
+  state.token = token;
+  localStorage.setItem('state', JSON.stringify(state));
+};
+
 const saveLocalState = (token) => {
-  storageInicial.token = token;
-  localStorage.setItem('state', JSON.stringify(storageInicial));
+  updateStorage(token);
   localStorage.setItem('token', JSON.stringify(token));
 };
 
 export function fetchToken() {
   return (dispatch) => {
     dispatch(actionRedirect());
-    localStorage.setItem('state', JSON.stringify(storageInicial));
+    updateStorage();
     fetch('https://opentdb.com/api_token.php?command=request')
       .then((response) => response.json())
       .then((response) => {

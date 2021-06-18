@@ -69,7 +69,6 @@ class Login extends Component {
           <br />
           <button
             type="button"
-            // onClick={}
             disabled={ !isDisable }
             data-testid="btn-play"
             onClick={ () => { fetchAPIToken(); Gravatar(name, email); } }

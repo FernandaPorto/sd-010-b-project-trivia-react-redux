@@ -4,6 +4,7 @@ import {
   ACTION_QUESTIONS,
   ACTION_URL,
   ACTION_SCORE,
+  ACTION_SCORE_ZERO,
 } from '../actions/index';
 
 const INITIALSTATE = {
@@ -43,8 +44,13 @@ function triviaGame(state = INITIALSTATE, action) {
   case ACTION_SCORE:
     return {
       ...state,
-      isRedirect: false,
       score: state.score + action.score,
+    };
+  case ACTION_SCORE_ZERO:
+    return {
+      ...state,
+      isRedirect: false,
+      score: 0,
     };
   default:
     return state;
