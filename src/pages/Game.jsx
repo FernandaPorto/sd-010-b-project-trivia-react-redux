@@ -80,7 +80,7 @@ class Game extends React.Component {
 
     if (questionIndex === FIVE) {
       resetScoreAndAssertions();
-      return (<Redirect to="/" />);
+      return (<Redirect to="/feedback" />);
     }
 
     return (
