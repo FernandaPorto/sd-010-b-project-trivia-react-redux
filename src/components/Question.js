@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
-import {
-  receiveToken, requestQuestions,
-  increaseScore, toggleStatusCronometer } from '../actions';
+import { receiveToken, requestQuestions,
+  toggleStatusCronometer, receiveScore } from '../actions';
 import '../style/question.css';
-
-const CORRECT_ANSWER = 'correct-answer';
+import Cronometer from './Cronometer';
+import { updateAssertionsAndScore } from '../helpers/localStorage';
 
 class Question extends Component {
   constructor() {
@@ -14,7 +13,6 @@ class Question extends Component {
     this.state = {
       indexQuestion: 0,
     };
-    this.generateRandomAnswers = this.generateRandomAnswers.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.updateButtonsStyle = this.updateButtonsStyle.bind(this);
   }
