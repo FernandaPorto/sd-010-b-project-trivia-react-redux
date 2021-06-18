@@ -26,12 +26,14 @@ class Question extends Component {
   updateButtonsStyle() {
     const correctButton = document.querySelector('button[data-testid="correct-answer"]');
     const wrongButton = document.querySelectorAll('button[data-testid*="wrong-answer"]');
+    const nextButton = document.querySelector('button[data-testid="btn-next"]');
     correctButton.classList.add('correct');
     correctButton.disabled = true;
     wrongButton.forEach((button) => {
       button.classList.add('incorrect');
       button.disabled = true;
     });
+    nextButton.hidden = false;
   }
 
   async handleClick({ target: { id } }) {
@@ -57,7 +59,7 @@ class Question extends Component {
         <section>
           <div data-testid="question-category">{ category }</div>
           <div data-testid="question-text">{ question }</div>
-          <div>
+          <div className="options">
             {answers.map(({ answer, dataTestId }, index) => (
               <button
                 onClick={ this.handleClick }
@@ -71,6 +73,7 @@ class Question extends Component {
             ))}
           </div>
           <Cronometer />
+          <button type="button" data-testid="btn-next" hidden>Próxima</button>
         </section>
       );
     }
