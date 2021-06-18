@@ -5,12 +5,12 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchQuestions } from '../redux/actions';
 import combineArray from '../functions/combineArray';
+import addInfoToLocalStorage from '../functions/addInfoToStorage';
 
 class Game extends React.Component {
   constructor() {
     super();
-    this.state = {
-      numberQuestion: 0,
+    this.state = { numberQuestion: 0,
       correct: 0,
       clicked: false,
       numberOfAssertions: 0,
@@ -23,7 +23,6 @@ class Game extends React.Component {
     this.handleOnClick = this.handleOnClick.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
     this.nextButton = this.nextButton.bind(this);
-    this.addInfoToLocalStorage = this.addInfoToLocalStorage.bind(this);
     this.getGravatar = this.getGravatar.bind(this);
     this.getScore = this.getScore.bind(this);
   }
@@ -62,7 +61,6 @@ class Game extends React.Component {
         <img src={ endpoint } alt={ `foto de ${name}` } />
         <span data-testid="header-player-name">
           {`Bem-vindo ${name}`}
-          !
         </span>
         <span data-testid="header-profile-picture">{` Email: ${email}`}</span>
         <span data-testid="header-score">{` Pontuação: ${score}`}</span>
@@ -170,7 +168,7 @@ class Game extends React.Component {
       );
     }
     if (numberQuestion === questions.length - 1 && clicked) {
-      const { score, correct } = this.state;
+      const { score, correct, numberOfAssertions } = this.state;
       const { location: { aboutProps: { name: { name },
         email: { email } } } } = this.props;
       return (
@@ -178,12 +176,12 @@ class Game extends React.Component {
           <Link
             to={ {
               pathname: '/feedback',
-              aboutProps: {
-                email,
+              aboutProps: { email,
                 name,
                 getGravatar: this.getGravatar,
                 score,
                 correct,
+                numberOfAssertions,
               },
             } }
           >
@@ -251,6 +249,7 @@ class Game extends React.Component {
     const { questions } = this.props;
     const { location: { aboutProps: { name: { name },
       email: { email } } } } = this.props;
+    addInfoToLocalStorage(name, email, score, numberOfAssertions);
     return (
       <>
         {this.getPerfilGravatar(email, name, score)}

@@ -16,7 +16,7 @@
 //   return '';
 // }
 
-changeClassNameCorrect(clicked, answer) {
+/* changeClassNameCorrect(clicked, answer) {
   if (clicked && answer === 'correct') {
     return 'correct_answer';
   } else if(clicked && answer === 'incorrect') {
@@ -32,4 +32,4 @@ changeClassNameInCorrect() {
   }
 
   return '';
-}
+} */
