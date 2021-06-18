@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -129,7 +128,10 @@ class Trivia extends React.Component {
   }
 
   countAssertions() {
+    const { assertion } = this.props;
     this.setState((state) => ({ ...state, assertions: state.assertions + 1 }));
+    const { assertions } = this.state;
+    assertion(assertions);
   }
 
   colorAnswers() {
@@ -150,7 +152,7 @@ class Trivia extends React.Component {
     const { questions: {
       category,
       correct_answer: CERTA,
-      incorrect_answers,
+      incorrect_answers: ERRA,
       question },
     correct,
     reject,
@@ -175,14 +177,14 @@ class Trivia extends React.Component {
                 await this.acertou();
                 this.storange();
                 this.colorAnswers();
-                await this.countAssertions();
+                this.countAssertions();
               } }
             >
               {CERTA}
             </button>)
         }
-        {incorrect_answers
-        && incorrect_answers.map((erradas, index) => (
+        {ERRA
+        && ERRA.map((erradas, index) => (
           <button
             className={ reject }
             disabled={ disable }
@@ -228,7 +230,7 @@ Trivia.propTypes = {
   thunkToken: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
-  // assertion: PropTypes.func.isRequired,
+  assertion: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -243,6 +245,5 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Trivia);
-// errei o nome do commitS
 
 /* para criação do cronômetro, utilizamos como referência o exercício do bloco 13.1 feito pelo instrutor Ícaro <https://github1s.com/tryber/sd-10b-live-lectures/tree/lecture/13.1> */
