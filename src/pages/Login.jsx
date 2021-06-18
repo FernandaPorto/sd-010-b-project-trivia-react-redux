@@ -47,6 +47,12 @@ class Login extends React.Component {
       },
     };
 
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+
+    if (!ranking) {
+      localStorage.setItem('ranking', JSON.stringify([]));
+    }
+
     localStorage.setItem('token', token);
     localStorage.setItem('state', JSON.stringify(state));
 

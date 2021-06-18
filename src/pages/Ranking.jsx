@@ -2,11 +2,11 @@ import React from 'react';
 
 class Ranking extends React.Component {
   render() {
-    // const ranking = JSON.parse(localStorage.getItem('ranking'));
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
     return (
       <section>
         <h1 data-testid="ranking-title">Ranking</h1>
-        {/* <ul>
+        <ul>
           {ranking.map((element, index) => (
             <li key={ index }>
               <img src={ element.picture } alt="player" />
@@ -14,7 +14,7 @@ class Ranking extends React.Component {
               <span data-testid={ `player-score-${index}` }>{element.score}</span>
             </li>
           ))}
-        </ul> */}
+        </ul>
       </section>
     );
   }

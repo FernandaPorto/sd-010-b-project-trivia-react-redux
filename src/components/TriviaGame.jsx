@@ -19,6 +19,7 @@ class TriviaGame extends React.Component {
     this.handleScore = this.handleScore.bind(this);
     this.renderQuestion = this.renderQuestion.bind(this);
     this.renderNextButton = this.renderNextButton.bind(this);
+    this.finishGame = this.finishGame.bind(this);
 
     this.state = {
       redirect: false,
@@ -52,6 +53,25 @@ class TriviaGame extends React.Component {
     localStorage.setItem('state', JSON.stringify(state));
   }
 
+  finishGame() {
+    const { name, picture } = this.props;
+
+    const state = JSON.parse(localStorage.getItem('state'));
+    const { player: { score } } = state;
+    const newRanking = {
+      name,
+      score,
+      picture,
+    };
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    ranking.push(newRanking);
+
+    ranking.sort((a, b) => b.score - a.score);
+
+    localStorage.setItem('ranking', JSON.stringify(ranking));
+    this.setState({ redirect: true });
+  }
+
   renderNextButton() {
     const { questions, questionIndex, nextQuestion } = this.props;
     const isLast = questionIndex === questions.length - 1;
@@ -60,7 +80,7 @@ class TriviaGame extends React.Component {
         type="button"
         onClick={ () => {
           nextQuestion();
-          if (isLast) this.setState({ redirect: true });
+          if (isLast) this.finishGame();
         } }
         data-testid="btn-next"
       >
@@ -125,6 +145,8 @@ const mapStateToProps = (state) => ({
   questionIndex: state.game.questionIndex,
   isResolved: state.game.isResolved,
   secondsLeft: state.game.secondsLeft,
+  name: state.player.name,
+  picture: state.player.gravatarURL,
 });
 
 const mapDispatchToProps = (dispatch) => ({
