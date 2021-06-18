@@ -126,9 +126,9 @@ class Answer extends React.Component {
 }
 
 Answer.propTypes = {
+  dispatchRevealed: PropTypes.func.isRequired,
   number: PropTypes.number.isRequired,
   results: PropTypes.arrayOf(PropTypes.object).isRequired,
-  dispatchRevealed: PropTypes.func.isRequired,
   nextQuestion: PropTypes.func.isRequired,
   isRevealed: PropTypes.bool.isRequired,
   pointsCalculate: PropTypes.func.isRequired,

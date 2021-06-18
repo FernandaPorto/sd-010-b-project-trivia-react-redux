@@ -8,6 +8,10 @@ import Form from '../components/Form';
 import SettingBtn from '../components/SettingBtn';
 
 export default class Login extends React.Component {
+  // componentDidMount() {
+  //   localStorage.setItem('ranking', 'alo');
+  // }
+
   render() {
     const { history } = this.props;
     return (
