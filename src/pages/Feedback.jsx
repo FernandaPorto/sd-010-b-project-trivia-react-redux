@@ -10,12 +10,14 @@ class Feedback extends React.Component {
 
     return (
       <main>
-        <h2 data-testid="feedback-text">
-          { assertions >= THREE_POINTS ? 'Mandou bem!' : 'Podia ser melhor...' }
-        </h2>
         <img src={ gravatarEmail } alt={ name } data-testid="header-profile-picture" />
-        <h3 data-testid="header-player-name">{ name }</h3>
-        <h4 data-testid="header-score">{ score }</h4>
+        <h2 data-testid="header-player-name">{ name }</h2>
+        <h3 data-testid="header-score">{ score }</h3>
+        <h3 data-testid="feedback-text">
+          { assertions >= THREE_POINTS ? 'Mandou bem!' : 'Podia ser melhor...' }
+        </h3>
+        <p data-testid="feedback-total-score">{ score }</p>
+        <p data-testid="feedback-total-question">{ assertions }</p>
       </main>
     );
   }
