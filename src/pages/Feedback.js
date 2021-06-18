@@ -48,7 +48,7 @@ class Feedback extends React.Component {
       return (
         <div
           data-testid="feedback-text"
-          className="low-score"
+          className="score"
         >
           Podia ser melhor...
         </div>
@@ -57,7 +57,7 @@ class Feedback extends React.Component {
     return (
       <div
         data-testid="feedback-text"
-        className="high-score"
+        className="score"
       >
         Mandou bem!
       </div>
@@ -66,21 +66,22 @@ class Feedback extends React.Component {
 
   renderButtons() {
     return (
-      <div>
+      <div className="feedback-buttons">
         <Link to="/">
           <button
             data-testid="btn-play-again"
             type="button"
           >
-            Jogar novamente
+            &#9658;
           </button>
         </Link>
         <Link to="/ranking">
           <button
             data-testid="btn-ranking"
             type="button"
+            className="ranking-button"
           >
-            Ver Ranking
+            &#10032;
           </button>
         </Link>
       </div>
@@ -97,36 +98,40 @@ class Feedback extends React.Component {
     return (
       <div className="feedback-div">
         <h1 className="feedback-title">Resultado</h1>
-        <p
-          data-testid="feedback-total-question"
-          className="feedback-score"
-        >
-          { assertions }
-        </p>
-        <p
-          data-testid="feedback-total-score"
-          className="feedback-score"
-        >
-          { score }
-        </p>
-        <p
-          data-testid="header-score"
-          className="feedback-score-2"
-        >
-          { score }
-        </p>
+        <div className="feedback-results">
+          <span>Acertou:</span>
+          <p
+            data-testid="feedback-total-question"
+            className="feedback-score"
+          >
+            { assertions }
+          </p>
+          <span>Pontos</span>
+          <p
+            data-testid="feedback-total-score"
+            className="feedback-score"
+          >
+            { score }
+          </p>
+          <p
+            data-testid="header-score"
+            className="feedback-score-2"
+          >
+            { score }
+          </p>
+        </div>
         <div className="feedback-main">
           <img
             src={ `https://www.gravatar.com/avatar/${photo}` }
             data-testid="header-profile-picture"
             alt="my profile"
           />
-          <section className="feedback-data">
+          <section className="feedback-player-data">
             <p data-testid="header-player-name">{ name }</p>
             { this.renderMessage() }
           </section>
-          <section>{this.renderButtons()}</section>
         </div>
+        {this.renderButtons()}
       </div>
     );
   }
