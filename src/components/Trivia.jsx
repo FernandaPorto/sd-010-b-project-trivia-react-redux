@@ -8,15 +8,18 @@ const ONE_SECOND = 1000;
 class Trivia extends Component {
   constructor(props) {
     super(props);
-
+    const tres = 3;
     this.state = {
       count: 0,
       seconds: 30,
       redirect: false,
+      random: [0, 1, 2, tres],
     };
     this.handleClick = this.handleClick.bind(this);
     this.correctAnswer = this.correctAnswer.bind(this);
     this.changeState = this.changeState.bind(this);
+    this.random = this.random.bind(this);
+    this.shuffle = this.shuffle.bind(this);
   }
 
   componentDidMount() {
@@ -24,12 +27,10 @@ class Trivia extends Component {
       this.setState((state) => ({ seconds: state.seconds - 1 }));
     }, ONE_SECOND);
     const countScore = {
-      player: {
-        assertions: 0,
-        score: 0,
-      },
+      player: { assertions: 0, score: 0 },
     };
     localStorage.setItem('state', JSON.stringify(countScore));
+    this.random();
   }
 
   componentDidUpdate(_prevProps, prevState) {
@@ -54,22 +55,19 @@ class Trivia extends Component {
     const contador = count;
     if (count > THREE) {
       this.setState({ redirect: true });
-    }
-    this.setState({ count: contador + 1, seconds: 30 });
+    } this.setState({ count: contador + 1, seconds: 30 });
     const btnC = document.querySelectorAll('#correct');
     const btnE = document.querySelectorAll('#errada');
     const btnNext = document.querySelector('#next');
     const timer = document.querySelector('#id-timer');
-
+    this.random();
     timer.style.display = 'inline-block';
     btnNext.style.display = 'none';
     btnC.forEach((e) => {
-      e.style.border = '1px solid';
-      e.disabled = false;
+      e.style.border = '1px solid'; e.disabled = false;
     });
     btnE.forEach((e) => {
-      e.style.border = '1px solid';
-      e.disabled = false;
+      e.style.border = '1px solid'; e.disabled = false;
     });
   }
 
@@ -112,8 +110,7 @@ class Trivia extends Component {
     const totalPoints = BASE_POINTS + (seconds * difficulty);
 
     const countScore = {
-      player: {
-        name,
+      player: { name,
         assertions: count + 1,
         score: totalPoints + calc,
         gravatarEmail: email,
@@ -121,6 +118,22 @@ class Trivia extends Component {
     };
     localStorage.setItem('state', JSON.stringify(countScore));
     setPoints(countScore);
+  }
+
+  random() {
+    const { random } = this.state;
+    const x = this.shuffle(random);
+    return x;
+  }
+
+  shuffle(array) {
+    let currentIndex = array.length;
+    while (currentIndex !== 0) {
+      const randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    } return array;
   }
 
   renderquestionCorrect() {
@@ -183,7 +196,7 @@ class Trivia extends Component {
 
   render() {
     const { questions } = this.props;
-    const { count, seconds, redirect } = this.state;
+    const { count, seconds, redirect, random } = this.state;
     if (redirect) {
       return <Redirect to="/feedback" />;
     }
@@ -196,13 +209,13 @@ class Trivia extends Component {
           <h4 data-testid="question-category">{questions[count].category}</h4>
           <h1 data-testid="question-text">{questions[count].question }</h1>
           <ul>
-            {respostas[3]}
-            {respostas[1]}
-            {respostas[0]}
-            {respostas[2]}
-            ))
+            {(questions[count].incorrect_answers.length > 2)
+              ? respostas[random[0]] : null }
+            {respostas[random[1]]}
+            {respostas[random[2]]}
+            {(questions[count].incorrect_answers.length > 2)
+              ? respostas[random[3]] : null }
           </ul>
-
           <button
             id="next"
             style={ { display: 'none' } }
