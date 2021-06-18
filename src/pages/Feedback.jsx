@@ -1,12 +1,36 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 
 const THREE_POINTS = 3;
 
 class Feedback extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      redirectToLogin: false,
+    };
+
+    this.redirectToLogin = this.redirectToLogin.bind(this);
+  }
+
+  redirectToLogin() {
+    this.setState({
+      redirectToLogin: true,
+    });
+  }
+
   render() {
     const { gravatarEmail, name, score, assertions } = this.props;
+    const { redirectToLogin } = this.state;
+
+    if (redirectToLogin) {
+      return (
+        <Redirect to="/" />
+      );
+    }
 
     return (
       <main>
@@ -18,6 +42,13 @@ class Feedback extends React.Component {
         </h3>
         <p data-testid="feedback-total-score">{ score }</p>
         <p data-testid="feedback-total-question">{ assertions }</p>
+        <button
+          type="button"
+          onClick={ this.redirectToLogin }
+          data-testid="btn-play-again"
+        >
+          Jogar novamente
+        </button>
       </main>
     );
   }
