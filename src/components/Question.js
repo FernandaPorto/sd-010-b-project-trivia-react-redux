@@ -12,7 +12,7 @@ class Question extends Component {
   constructor() {
     super();
     this.state = {
-      index: 0,
+      indexQuestion: 0,
     };
     this.generateRandomAnswers = this.generateRandomAnswers.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -48,7 +48,7 @@ class Question extends Component {
 
   render() {
     const { questions } = this.props;
-    const { index } = this.state;
+    const { indexQuestion } = this.state;
 
     if (questions.length) {
       const {
