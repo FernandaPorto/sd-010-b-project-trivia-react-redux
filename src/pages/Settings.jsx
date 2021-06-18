@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchData } from '../actions';
 
+const PropTypes = require('prop-types');
+
 class Settings extends Component {
   constructor() {
     super();
