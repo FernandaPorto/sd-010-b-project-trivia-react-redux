@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import HeaderGame from '../components/HeaderGame';
 import Answers from '../components/Answers';
 import Stopwatch from '../components/Stopwatch';
-import { resetScoreAction } from '../actions/scoreAction';
 
 class GamePlay extends React.Component {
   constructor() {
@@ -22,7 +21,6 @@ class GamePlay extends React.Component {
     this.itsZero = this.itsZero.bind(this);
     this.isDisableAnswers = this.isDisableAnswers.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
-    this.updateStorage = this.updateStorage.bind(this);
   }
 
   isDisableAnswers() {
@@ -40,26 +38,10 @@ class GamePlay extends React.Component {
     }
   }
 
-  updateStorage() {
-    const { name, score, url, resetScore } = this.props;
-    const rankingObj = { name, score, picture: url };
-    const storage = JSON.parse(localStorage.getItem('state'));
-
-    storage.player.name = '';
-    storage.player.assertions = 0;
-    storage.player.score = '';
-    storage.player.gravatarEmail = '';
-    storage.ranking.push(rankingObj);
-    storage.token = '';
-    resetScore();
-    localStorage.setItem('state', JSON.stringify(storage));
-  }
-
   nextQuestion() {
     const { questionIndex } = this.state;
     const lastQuestion = 4;
     if (questionIndex === lastQuestion) {
-      this.updateStorage();
       this.setState({ goFeedback: true });
     } else {
       this.setState({
@@ -110,21 +92,10 @@ class GamePlay extends React.Component {
 
 const mapStateToProps = (state) => ({
   questions: state.triviaGame.questions,
-  name: state.triviaGame.name,
-  score: state.triviaGame.score,
-  url: state.triviaGame.url,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  resetScore: () => dispatch(resetScoreAction()),
 });
 
 GamePlay.propTypes = {
   questions: PropTypes.arrayOf(PropTypes.object).isRequired,
-  name: PropTypes.string.isRequired,
-  score: PropTypes.number.isRequired,
-  url: PropTypes.string.isRequired,
-  resetScore: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(GamePlay);
+export default connect(mapStateToProps)(GamePlay);
