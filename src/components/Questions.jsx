@@ -92,10 +92,11 @@ class Questions extends React.Component {
        },
     disabled,
     stopTimer,
+    order,
     } = this.props;
-
     if (correctAnswer) {
-      const allQuestions = [correctAnswer, ...incorrectAnswers];
+      let allQuestions = [correctAnswer, ...incorrectAnswers];
+      allQuestions = order.map((value) => allQuestions[value]);
       return (
         <>
           <h2 data-testid="question-category">
