@@ -56,6 +56,21 @@
   font-weight: 900;
 }
 
+.dev-btn:enabled {
+  background-image: url('https://files.wallpaperpass.com/2019/10/low%20poly%20wallpaper%20052%20-%201920x1080.jpg');
+  border: 3px solid silver;
+  border-radius: 10px;
+  box-shadow: 0 0 30px silver;
+  color: white;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.dev-btn:hover {
+  cursor: pointer;
+  text-shadow: 0 0 30px silver;
+}
+
 .play-btn:hover, .config-btn:hover {
   cursor: pointer;
   text-shadow: 0 0 30px greenyellow;
@@ -380,6 +395,58 @@ th {
   font-size: 100px;
   text-shadow: 0 0 7px rgb(205, 127, 50) , 0 0 10px rgb(205, 127, 50);
 }
+
+/* Grupo 16 page */
+.dev-div {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  width: 700px;
+}
+
+.dev-div div img {
+  border-radius: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100px;
+}
+
+.dev-div div {
+  margin: 30px;
+}
+
+.section-div {
+  background-image: url('https://images2.alphacoders.com/822/822456.jpg');
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  text-align: center;
+}
+
+.dev-div a img {
+  background-color: white;
+  border: 1px solid white;
+  box-sizing: border-box;
+  margin-left: 10px;
+  width: 30px;
+}
+
+.devs-media {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.bodega {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.dev-btn-div {
+  margin-bottom: 100px;
+}
+
 
 /* fonte do efeito flicker e do efeito neon:
 https://css-tricks.com/how-to-create-neon-text-with-css/ */

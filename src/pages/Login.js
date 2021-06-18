@@ -12,15 +12,52 @@ class Login extends React.Component {
     this.nameValidation = this.nameValidation.bind(this);
     this.buttonAvaliable = this.buttonAvaliable.bind(this);
     this.fetchToken = this.fetchToken.bind(this);
+    this.customCategory = this.customCategory.bind(this);
+    this.customDifficulty = this.customDifficulty.bind(this);
+    this.customType = this.customType.bind(this);
     this.state = {
       name: '',
       email: '',
     };
   }
 
+  customCategory() {
+    const { customGame: { category, categoriesList } } = this.props;
+    if (category !== 'random') {
+      const id = categoriesList.find((categList) => categList.name === category);
+      return `&category=${id.id}`;
+    }
+    return '';
+  }
+
+  customDifficulty() {
+    const translate = {
+      Fácil: 'easy',
+      Médio: 'medium',
+      Difícil: 'hard',
+    };
+    const { customGame: { difficulty } } = this.props;
+    if (difficulty !== 'random') {
+      return `&difficulty=${translate[difficulty]}`;
+    }
+    return '';
+  }
+
+  customType() {
+    const translate = {
+      Multipla_Escolha: 'multiple',
+      Verdadeiro_ou_Falso: 'boolean',
+    };
+    const { customGame: { type } } = this.props;
+    if (type !== 'random') {
+      return `&type=${translate[type]}`;
+    }
+    return '';
+  }
+
   emailValidation() {
     const { email } = this.state;
-    if (email.match(/[a-z]+@[a-z]+.com/g)) {
+    if (email.match(/\S+@\S+\.com/)) {
       return true;
     }
     return false;
@@ -57,7 +94,7 @@ class Login extends React.Component {
       .then((response) => {
         localStorage.setItem('token', JSON.stringify(response.token));
         localStorage.setItem('state', JSON.stringify(player));
-        return fetch(`https://opentdb.com/api.php?amount=5&token=${response.token}`);
+        return fetch(`https://opentdb.com/api.php?amount=5${this.customCategory()}${this.customDifficulty()}${this.customType()}&token=${response.token}`);
       })
       .then((response) => response.json())
       .then((response) => {
@@ -111,6 +148,9 @@ class Login extends React.Component {
             Configurações
           </button>
         </Link>
+        <Link to="/devs">
+          <button type="button" className="dev-btn">Desenvolvedores</button>
+        </Link>
       </section>
     );
   }
@@ -121,12 +161,22 @@ const mapDispatchToProps = (dispatch) => ({
   fetchQuestionsAction: (e) => dispatch(fetchQuestions(e)),
 });
 
+const mapStateToProps = (state) => ({
+  customGame: state.user.config,
+});
+
 Login.propTypes = {
   login: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func.isRequired,
   }).isRequired,
   fetchQuestionsAction: PropTypes.func.isRequired,
+  customGame: PropTypes.shape({
+    category: PropTypes.string.isRequired,
+    categoriesList: PropTypes.arrayOf(PropTypes.object).isRequired,
+    difficulty: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

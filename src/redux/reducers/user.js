@@ -2,6 +2,11 @@ const initialState = {
   email: '',
   name: '',
   questions: {},
+  config: {
+    category: 'random',
+    difficulty: 'random',
+    type: 'random',
+  },
 };
 
 function loginReducer(state = initialState, action) {
@@ -16,6 +21,11 @@ function loginReducer(state = initialState, action) {
     return ({
       ...state,
       questions: action.value,
+    });
+  case 'CUSTOM_GAME':
+    return ({
+      ...state,
+      config: action.value,
     });
   default:
     return state;
