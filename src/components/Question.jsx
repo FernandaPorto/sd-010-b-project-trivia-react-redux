@@ -10,6 +10,7 @@ class Questions extends React.Component {
 
     this.state = {
       isAnswered: false,
+      nextBtnState: false,
     };
 
     this.changeBorder = this.changeBorder.bind(this);
@@ -18,11 +19,18 @@ class Questions extends React.Component {
     this.createAnswers = this.createAnswers.bind(this);
     this.handleNextButton = this.handleNextButton.bind(this);
     this.calculatePoints = this.calculatePoints.bind(this);
+    this.changeNextBtnState = this.changeNextBtnState.bind(this);
   }
 
   changeBorder() {
     this.setState((prevState) => ({
       isAnswered: !prevState.isAnswered,
+    }));
+  }
+
+  changeNextBtnState() {
+    this.setState((prevState) => ({
+      nextBtnState: !prevState.nextBtnState,
     }));
   }
 
@@ -65,6 +73,7 @@ class Questions extends React.Component {
 
     this.changeBorder();
     stopTimer();
+    this.changeNextBtnState();
   }
 
   createAnswers(currentQuestion, index) {
@@ -104,6 +113,7 @@ class Questions extends React.Component {
     const { handleNext } = this.props;
     this.setState({
       isAnswered: false,
+      nextBtnState: false,
     });
     handleNext();
   }
@@ -115,7 +125,18 @@ class Questions extends React.Component {
       correct_answer: correctAnswer,
       incorrect_answers: incorrectAnswers,
     },
+    time,
     } = this.props;
+    const { nextBtnState } = this.state;
+
+    const nextButton = (
+      <button
+        type="button"
+        onClick={ this.handleNextButton }
+        data-testid="btn-next"
+      >
+        Next
+      </button>);
 
     if (correctAnswer) {
       const allAnswers = [correctAnswer, ...incorrectAnswers];
@@ -134,12 +155,8 @@ class Questions extends React.Component {
             {allAnswers.map((currentQuestion,
               index) => (this.createAnswers(currentQuestion, index))) }
           </div>
-          <button
-            type="button"
-            onClick={ this.handleNextButton }
-          >
-            Next
-          </button>
+          { nextBtnState || time === 0
+            ? nextButton : null }
         </section>
       );
     }
