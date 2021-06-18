@@ -2,6 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import Header from '../components/Header';
 import { fetchApiQuestions, fetchAPI, saveAssertions } from '../actions/index';
 
@@ -19,7 +20,7 @@ class Trivia extends React.Component {
       pontosState: 0,
       next: true,
       OK: true,
-      index: 0,
+      contador: 0,
       assertions: 0,
     };
 
@@ -64,9 +65,11 @@ class Trivia extends React.Component {
     const tokenRequisition = token.result.token;
     const { apiQuestions } = this.props;
     const response = await apiQuestions(tokenRequisition, quantityQuestions);
+    const { contador } = this.state;
     this.setState({
-      questions: response.questions.results[0],
+      questions: response.questions.results[0], contador: contador + 1,
     });
+    console.log(contador);
   }
 
   update(state) {
@@ -151,7 +154,11 @@ class Trivia extends React.Component {
       question },
     correct,
     reject,
-    disable } = this.state;
+    disable, contador } = this.state;
+    const max = 5;
+    if (contador === max) {
+      return <Redirect to="/feedback" />;
+    }
 
     return (
       <div>
