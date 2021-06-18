@@ -159,7 +159,7 @@ class Game extends React.Component {
     const { apiResult } = this.props;
 
     if (apiResult.response_code === 0) {
-      const NUMERO_PARA_SORTEAR_RESPOSTAS = 0.5;
+      const NUMERO_PARA_SORTEAR_RESPOSTAS = 5.0;
       const answersArray = apiResult.results[indexQuestion].incorrect_answers
         .concat(apiResult.results[indexQuestion].correct_answer);
       const newRandomArray = answersArray
