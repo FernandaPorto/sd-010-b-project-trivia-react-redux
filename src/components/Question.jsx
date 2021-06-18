@@ -79,7 +79,7 @@ class Question extends React.Component {
   }
 
   render() {
-    const { props: { result, disabled }, state: { arrRandom } } = this;
+    const { props: { result, disabled }, state: { arrRandom, isClicked } } = this;
     return (
       <>
         <span data-testid="question-category">
@@ -109,6 +109,9 @@ class Question extends React.Component {
             { answer }
           </button>
         ))}
+
+        { isClicked
+        && <button type="button" data-testid="btn-next">Próxima</button> }
       </>
     );
   }
