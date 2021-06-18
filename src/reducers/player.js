@@ -31,6 +31,13 @@ export default function (state = initialState, action) {
       assertions: state.assertions + 1,
     };
   }
+  case ('RESET_SCORE'): {
+    return {
+      ...state,
+      score: 0,
+      assertions: 0,
+    };
+  }
   default:
     return state;
   }

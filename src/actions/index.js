@@ -15,6 +15,10 @@ export const increaseScore = (score) => ({
   payload: score,
 });
 
+export const resetScore = () => ({
+  type: 'RESET_SCORE',
+});
+
 export const addToRanking = (userInfo) => ({
   type: 'ADD_TO_RANKING',
   payload: userInfo,

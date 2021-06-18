@@ -20,18 +20,6 @@ class Questions extends React.Component {
     this.calculatePoints = this.calculatePoints.bind(this);
   }
 
-  componentDidMount() {
-    const state = {
-      player: {
-        name: '',
-        gravatarEmail: '',
-        assertions: 0,
-        score: 0,
-      },
-    };
-    localStorage.setItem('state', JSON.stringify(state));
-  }
-
   changeBorder() {
     this.setState((prevState) => ({
       isAnswered: !prevState.isAnswered,

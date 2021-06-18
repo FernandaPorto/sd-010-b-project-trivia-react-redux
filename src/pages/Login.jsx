@@ -64,12 +64,26 @@ class Login extends React.Component {
     };
   }
 
+  createStateLocalStorage(userInfo) {
+    const { name, gravatarEmail } = userInfo;
+    const state = {
+      player: {
+        name,
+        gravatarEmail,
+        assertions: 0,
+        score: 0,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(state));
+  }
+
   handleStart() {
     const { userLoggedIn, requestTokenAPI } = this.props;
 
     requestTokenAPI();
     const userInfo = this.requestUserInfo();
     userLoggedIn(userInfo);
+    this.createStateLocalStorage(userInfo);
     this.redirectToGame();
   }
 
