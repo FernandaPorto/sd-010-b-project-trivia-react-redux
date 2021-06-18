@@ -21,11 +21,11 @@ export default class Ranking extends Component {
     this.setState({
       rankingPlayers: localRanking,
     });
+    console.log(localRanking);
   }
 
   render() {
     const { rankingPlayers } = this.state;
-
     return (
       <div>
         <h1 data-testid="ranking-title">
@@ -33,7 +33,7 @@ export default class Ranking extends Component {
         </h1>
         {rankingPlayers.map((item, index) => (
           <div key={ index }>
-            <img src={ item.picture } alt={ item.nome } />
+            <img src={ item.gravatarEmail } alt={ item.nome } />
             <p data-testid={ `player-name-${index}` }>{item.nome}</p>
             <p data-testid={ `player-score-${index}` }>{item.score}</p>
           </div>
