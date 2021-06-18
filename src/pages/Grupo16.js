@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+// tela dos devs
+
 class Grupo16 extends React.Component {
   renderDevInfos() {
     return (
