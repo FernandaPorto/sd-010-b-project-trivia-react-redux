@@ -15,7 +15,8 @@ class Game extends React.Component {
       clicked: false,
       numberOfAssertions: 0,
       score: 0,
-
+      timerInitial: 30,
+      disabled: false,
     };
     this.getPerfilGravatar = this.getPerfilGravatar.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
@@ -30,6 +31,21 @@ class Game extends React.Component {
     const { fetchQuestions: getQuestions } = this.props;
     const token = localStorage.getItem('token');
     getQuestions(token);
+    const segundo = 1000;
+    this.timerInterval = setInterval(() => {
+      this.setState((state) => ({
+        timerInitial: state.timerInitial - 1,
+      }));
+    }, segundo);
+  }
+
+  // https://www.youtube.com/watch?v=kIQbixDDq5w
+  // https://medium.com/@ashleywnj/componentdidupdate-prevstate-prevprops-and-a-silly-mistake-38afc72f5abc
+  componentDidUpdate(_prevProps, prevState) {
+    if (prevState.timerInitial === 0) {
+      this.resetTimer();
+    }
+    console.log('Aqui', prevState);
   }
 
   getGravatar(email) {
@@ -53,7 +69,7 @@ class Game extends React.Component {
   }
 
   getScore() {
-    const { numberOfAssertions, numberQuestion, score } = this.state;
+    const { numberOfAssertions, numberQuestion, score, timerInitial } = this.state;
     const { questions } = this.props;
     const defaultNumber = 10;
     const hardQuestion = 3;
@@ -67,11 +83,34 @@ class Game extends React.Component {
     } else {
       difficulty = easyQuestion;
     }
-    const timer = 2; // colocar o valor do timer que o Fioravante está fazendo
     this.setState({
       numberOfAssertions: numberOfAssertions + 1,
-      score: score + (defaultNumber + (timer * difficulty)),
+      score: score + (defaultNumber + (timerInitial * difficulty)),
     });
+  }
+
+  resetTimer() {
+    this.setState({
+      timerInitial: 0,
+      disabled: true,
+    });
+    clearInterval(this.timerInterval);
+    this.nextQuestion();
+  }
+
+  addInfoToLocalStorage() {
+    const { location: { aboutProps: { name: { name },
+      email: { email } } } } = this.props;
+    const { numberOfAssertions, score } = this.state;
+    const objLocalStorage = {
+      player: {
+        name,
+        assertions: numberOfAssertions,
+        score,
+        gravatarEmail: email,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(objLocalStorage)); // Referência https://www.horadecodar.com.br/2020/07/21/como-salvar-um-objeto-na-localstorage/
   }
 
   handleOnClick({ target: { name } }) {
@@ -146,61 +185,67 @@ class Game extends React.Component {
               },
             } }
           >
-            <button data-testid="btn-next" type="button">
-              Próxima
+            <button type="button">
+              Finalizar
             </button>
           </Link>
+          <button data-testid="btn-next" disabled type="button">
+            Próxima
+          </button>
         </div>
       );
     }
   }
 
   renderAnswers() {
-    const { numberQuestion } = this.state;
+    const { numberQuestion, disabled } = this.state;
     const { questions } = this.props;
-    if (numberQuestion < questions.length) {
-      return (
-        <div>
-          <p data-testid="question-category">{questions[numberQuestion].category}</p>
-          <p data-testid="question-text">
-            {questions[numberQuestion].question }
-          </p>
-          {combineArray(questions, numberQuestion).map((answer, index) => {
-            if (answer === questions[numberQuestion].correct_answer) {
-              return (
-                <button
-                  name={ `${answer}` }
-                  className={ this.changeClassNameCorrect() }
-                  key={ answer }
-                  type="button"
-                  data-testid="correct-answer"
-                  onClick={ this.handleOnClick }
-                >
-                  {answer}
-                </button>
-              );
-            }
+    // if (numberQuestion < questions.length) {
+    return (
+      <div>
+        <p data-testid="question-category">{questions[numberQuestion].category}</p>
+        <p data-testid="question-text">
+          {questions[numberQuestion].question }
+        </p>
+        {combineArray(questions, numberQuestion).map((answer, index) => {
+          if (answer === questions[numberQuestion].correct_answer) {
             return (
               <button
+                disabled={ disabled }
                 name={ `${answer}` }
-                className={ this.changeClassNameInCorrect() }
+                className={ this.changeClassNameCorrect() }
                 key={ answer }
                 type="button"
-                data-testid={ `wrong-answer-${index}` }
+                data-testid="correct-answer"
                 onClick={ this.handleOnClick }
               >
                 {answer}
               </button>
             );
-          })}
-          {this.nextButton()}
-        </div>
-      );
-    }
+          }
+          return (
+            <button
+              disabled={ disabled }
+              name={ `${answer}` }
+              className={ this.changeClassNameInCorrect() }
+              key={ answer }
+              type="button"
+              data-testid={ `wrong-answer-${index}` }
+              onClick={ this.handleOnClick }
+            >
+              {answer}
+            </button>
+          );
+        })}
+        {this.nextButton()}
+      </div>
+    );
+    // }
   }
 
   render() {
-    const { score, numberOfAssertions } = this.state;
+    this.addInfoToLocalStorage();
+    const { score, timerInitial, numberOfAssertions } = this.state;
     const { questions } = this.props;
     const { location: { aboutProps: { name: { name },
       email: { email } } } } = this.props;
@@ -209,6 +254,7 @@ class Game extends React.Component {
       <>
         {this.getPerfilGravatar(email, name, score)}
         {questions && this.renderAnswers()}
+        { timerInitial }
       </>
     );
   }
