@@ -31,10 +31,11 @@
 }
 
 .play-btn:enabled {
-  background-color: rgb(0, 255, 115);
-  border-color: transparent;
+  background-image: url('https://files.wallpaperpass.com/2019/10/low%20poly%20wallpaper%20052%20-%201920x1080.jpg');
+  border: 3px solid rgb(1, 184, 41);
   border-radius: 10px;
-  color: rgb(0, 66, 0);
+  box-shadow: 0 0 30px green;
+  color: rgb(1, 184, 41);
   font-size: 20px;
   font-weight: 900;
 }
@@ -42,31 +43,89 @@
 .play-btn:disabled {
   border-radius: 10px;
   font-size: 20px;
+  text-shadow: none;
 }
 
 .config-btn:enabled {
-  background-color: rgb(255, 230, 0);
-  border-color: transparent;
+  background-image: url('https://files.wallpaperpass.com/2019/10/low%20poly%20wallpaper%20052%20-%201920x1080.jpg');
+  border: 3px solid rgb(255, 230, 0);
   border-radius: 10px;
-  color: rgb(148, 96, 0);
+  box-shadow: 0 0 30px yellow;
+  color: yellow;
   font-size: 20px;
   font-weight: 900;
 }
 
 .play-btn:hover, .config-btn:hover {
   cursor: pointer;
+  text-shadow: 0 0 30px greenyellow;
 }
 
 /* Config-page */
 .config-section {
-  background-color: rgb(238, 238, 238);
+  background-image: url('https://images2.alphacoders.com/822/822456.jpg');
+  background-size: cover;
   border-radius: 10px;
   box-shadow: 0 5px 5px darkgreen;
+  color: white;
   height: 500px;
   margin: 20px auto;
   padding-top: 10px;
   text-align: center;
   width: 400px;
+}
+
+.config-section h1, .config-section label {
+  font-size: 24px;
+}
+
+.config-section h1 {
+  text-shadow: 0 0 7px white , 0 0 10px white;
+}
+
+.config-section form {
+  display: flex;
+  flex-direction: column;
+  height: 85%;
+  justify-content: space-around;
+  margin: auto;
+  text-align: start;
+  width: 80%;
+}
+
+.config-section form select {
+  background-color: transparent;
+  border-radius: 10px;
+  color: white;
+  height: 30px;
+  outline: none;
+  width: stretch;
+}
+
+.config-section form option {
+  color: black;
+}
+
+.config-section-btn {
+  background-image: url('https://images2.alphacoders.com/822/822456.jpg');
+  border-radius: 10px;
+  box-shadow: 0 0 7px white , 0 0 10px white;
+  color: #0fa;
+  cursor: pointer;
+  font-size: 50px;
+  width: 300px;
+}
+
+.config-section-btn:hover {
+  text-shadow: 0 0 7px white , 0 0 10px white;
+}
+
+.body-section {
+  align-items: center;
+  background-image: url('https://images2.alphacoders.com/822/822456.jpg');
+  background-size: cover;
+  display: flex;
+  height: 100vh;
 }
 
 /* Header component */
@@ -157,6 +216,28 @@
   width: 400px;
 }
 
+.ranking-page button {
+  background-image: url('https://images2.alphacoders.com/822/822456.jpg');
+  border-radius: 10px;
+  box-shadow: 0 0 7px white , 0 0 10px white;
+  color: #0fa;
+  cursor: pointer;
+  font-size: 50px;
+  width: 300px;
+}
+
+.feedback-buttons button {
+  background-image: url('https://images2.alphacoders.com/822/822456.jpg');
+  box-shadow: 0 0 7px white , 0 0 10px white;
+  color: #0fa;
+  cursor: pointer;
+  font-size: 100px;
+  height: 200px;
+  margin-bottom: 15px;
+  text-align: center;
+  width: 200px;
+}
+
 .questions-section button:hover {
   background-color: transparent;
   text-shadow: 0 0 7px white , 0 0 10px white , 0 0 102px #0fa , 0 0 151px #0fa;
@@ -169,7 +250,7 @@
 /* Feedback page */
 .feedback-div {
   align-items: center;
-  background-color: black;
+  background-image: url('https://images2.alphacoders.com/822/822456.jpg');
   background-size: cover;
   color: white;
   display: flex;
@@ -181,7 +262,8 @@
 
 .feedback-score {
   font-size: 50px;
-  text-shadow: 0 0 7px white , 0 0 10px white , 0 0 102px #0fa , 0 0 151px #0fa;
+  margin-left: 30px;
+  text-shadow: 0 0 7px white , 0 0 10px white;
 }
 
 .feedback-score-2 {
@@ -194,7 +276,7 @@
   justify-content: center;
 }
 
-.feedback-data {
+.feedback-player-data {
   margin-left: 50px;
   text-align: center;
 }
@@ -204,18 +286,99 @@
   width: 150px;
 }
 
+.feedback-buttons {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 10%;
+}
+
+.feedback-buttons button:hover {
+  text-shadow: 0 0 7px white , 0 0 10px white;
+}
+
 .feedback-title {
-  animation: flicker 1.5s infinite alternate;
   font-size: 70px;
+  margin-top: 0;
   text-shadow: 0 0 7px white , 0 0 10px white , 0 0 102px #0fa , 0 0 151px #0fa;
 }
 
-.low-score {
-  color: blueviolet;
+.feedback-results {
+  align-items: center;
+  display: flex;
 }
 
-.high-score {
+.feedback-results span {
+  margin-left: 50px;
+}
+
+.score {
   color: #0fa;
+}
+
+/* Ranking page */
+.ranking-page {
+  align-items: center;
+  background-image: url('https://images2.alphacoders.com/822/822456.jpg');
+  background-position-x: -800px;
+  border-radius: 10px;
+  box-shadow: 5px 2px 2px black;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  font-size: 24px;
+  height: max-content;
+  margin: auto;
+  min-height: 100vh;
+  padding: 20px;
+  width: fit-content;
+}
+
+.ranking-page h1 {
+  animation: flicker 1.5s infinite alternate;
+  font-size: 70px;
+  margin: 0 0 30px;
+  text-shadow: 0 0 7px white , 0 0 10px white , 0 0 102px #0fa , 0 0 151px #0fa;
+}
+
+table, th {
+  margin: 30px;
+  text-align: center;
+  width: 500px;
+}
+
+th {
+  padding-bottom: 15px;
+}
+
+.ranking-page-outer {
+  align-items: center;
+  background-image: url('https://images2.alphacoders.com/822/822456.jpg');
+  background-size: cover;
+  display: flex;
+  height: 100%;
+}
+
+.ranking-page button:hover {
+  text-shadow: 0 0 7px white , 0 0 10px white;
+}
+
+.podium1 {
+  color: gold;
+  font-size: 100px;
+  text-shadow: 0 0 7px gold , 0 0 10px gold;
+}
+
+.podium2 {
+  color: silver;
+  font-size: 100px;
+  text-shadow: 0 0 7px silver , 0 0 10px silver;
+}
+
+.podium3 {
+  color: rgb(205, 127, 50);
+  font-size: 100px;
+  text-shadow: 0 0 7px rgb(205, 127, 50) , 0 0 10px rgb(205, 127, 50);
 }
 
 /* fonte do efeito flicker e do efeito neon:
