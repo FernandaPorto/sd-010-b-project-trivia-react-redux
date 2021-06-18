@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../App.css';
+import '../GamePageCss.css';
 // import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import fetchURL from '../services/API';
