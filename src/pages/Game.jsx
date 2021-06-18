@@ -8,8 +8,9 @@ class Game extends React.Component {
     this.state = {
       results: [],
       numQuestion: 0,
-      timer: 5,
+      timer: 30,
       isDisabled: false,
+      // updateT: '',
     };
   }
 
@@ -19,14 +20,17 @@ class Game extends React.Component {
   }
 
   updateTimer() {
-    const oneSecund = 1000;
-    const changeButtons = () => { this.setState({ isDisabled: true }); };
-    const { state: { timer } } = this;
+    const oneSec = 1000;
     const reduceTimer = () => {
-      this.state.timer <= 0 ? this.setState({ isDisabled: true }) :
-      this.setState({ timer: this.state.timer - 1 });
+      const { state: { timer } } = this;
+      if (timer > 0) {
+        this.setState((oldState) => ({ timer: oldState.timer - 1 }));
+      } if (timer === 0) {
+        this.setState({ isDisabled: true });
+      }
     };
-    return timer < 0 ? changeButtons() : setInterval(reduceTimer, oneSecund);
+    setInterval(reduceTimer, oneSec);
+    // this.setState({ updateT: setInterval(reduceTimer, oneSec) });
   }
 
   requestTrivia() {
