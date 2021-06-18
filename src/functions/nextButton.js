@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function nextButton(state, props, nextQuestion, getGravatar) {
   const { clicked, numberQuestion } = state;
