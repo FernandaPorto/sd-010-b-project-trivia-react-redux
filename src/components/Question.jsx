@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import Questionaire from './Questionaire';
+import { assertionsPlayer } from '../actions/index';
 
 class Question extends React.Component {
   constructor(props) {
@@ -9,10 +11,12 @@ class Question extends React.Component {
 
     this.getQuestions = this.getQuestions.bind(this);
     this.handleAnswer = this.handleAnswer.bind(this);
+    this.handleAssertions = this.handleAssertions.bind(this);
 
     this.state = {
       questions: [],
       currentIndex: 0,
+      assertions: 0,
     };
   }
 
@@ -25,66 +29,48 @@ class Question extends React.Component {
     const apiQuestion = (`https://opentdb.com/api.php?amount=5&token=${tok}`);
     const response = await fetch(apiQuestion);
     const data = await response.json();
-
     this.setState({
       questions: data.results,
     });
   }
 
   handleAnswer(answer) {
-    const { currentIndex } = this.state;
+    const { currentIndex, questions } = this.state;
+    const newIndex = currentIndex + 1;
     this.setState({
-      currentIndex: currentIndex + 1,
+      currentIndex: newIndex,
     });
-    // conferir a resposta
+    if (answer === questions[currentIndex].correct_answer) {
+      this.setState((prev) => ({
+        assertions: prev.assertions + 1,
+      }));
+    }
+  }
 
-    // mostrar outra pergunta
-
-    // mudar placar se correto
+  handleAssertions() {
+    const { assertions } = this.state;
+    const { points } = this.props;
+    points({ assertions });
   }
 
   render() {
     const { questions, currentIndex } = this.state;
     console.log(questions);
-    return (
-      questions.length > 0 ? (
-        <div className="container">
+    return questions.length > 0 ? (
+      <div className="container">
+        {currentIndex >= questions.length ? (
+          <Redirect to="/score" />
+        ) : (
           <Questionaire
             data={ questions[currentIndex] }
             handleAnswer={ this.handleAnswer }
+            handleAssertions={ this.handleAssertions }
           />
-          {/* <p
-            data-testid="question-category"
-          >
-            { questions[0].category }
-          </p>
-          <h2
-            data-testid="question-text"
-            dangerouslySetInnerHTML={ { __html: questions[0].question } }
-          />
-          <div>
-            <div>
-              <button
-                type="button"
-                data-testid="correct-answer"
-              >
-                {questions[0].correct_answer}
-              </button>
-              {questions[0].incorrect_answers.map(
-                (elem, index) => (
-                  <button
-                    type="button"
-                    data-testid={ `wrong-answer-${index}` }
-                    key={ index }
-                  >
-                    { elem }
-                  </button>
-                ),
-              )}
-            </div>
+        )}
+      </div>
+    ) : (
+      <h2>Loading...</h2>
 
-          </div> */}
-        </div>) : (<h2>Loading...</h2>)
     );
   }
 }
@@ -93,8 +79,13 @@ const mapStateToProps = (state) => ({
   tok: state.api.token,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  points: (assertions) => dispatch(assertionsPlayer(assertions)),
+});
+
 Question.propTypes = {
   tok: PropTypes.string.isRequired,
+  points: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, null)(Question);
+export default connect(mapStateToProps, mapDispatchToProps)(Question);

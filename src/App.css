@@ -2,6 +2,14 @@
   text-align: center;
 }
 
+.correct {
+  border: 3px solid rgb(6, 240, 15);
+}
+
+.incorrect {
+  border: 3px solid rgb(255, 0, 0);
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

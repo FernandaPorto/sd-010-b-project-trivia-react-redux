@@ -1,21 +1,19 @@
-/* eslint-disable max-lines-per-function */
-/* eslint-disable react/no-multi-comp */
-import React from 'react';
+import React, { useState, useEffect} from 'react';
+import PropTypes from 'prop-types';
+import '../App.css';
 
-// const Button = ({ answer, className }) => (
-//   <button
-//     type="button"
-//     className={ `bg-white p-4 text-purple-800
-//     font-semibold rounded shadow ${className}` }>
-//     {answer}
-//   </button>
-// );
 const half = 0.5;
 const Questionaire = ({
-  handleAnswer, data: { category, question, correct_answer, incorrect_answers },
+  handleAssertions,
+  handleAnswer, data: {
+    category,
+    question,
+    correct_answer: correctAnswer,
+    incorrect_answers: incorrectAnswer,
+  },
 }) => {
-  const mixedAnswers = [correct_answer,
-    ...incorrect_answers].sort(() => Math.random() - half);
+  const mixedAnswers = [correctAnswer,
+    ...incorrectAnswer].sort(() => Math.random() - half);
   return (
     <div>
       <p
@@ -33,26 +31,29 @@ const Questionaire = ({
       <div className="grid grid-cols-2 gap-6 mt-6">
         {mixedAnswers.map((answer, index) => (
           <button
+            className="answerBtn"
             key={ index }
             type="button"
-            data-testid={ correct_answer === answer
+            data-testid={ correctAnswer === answer
               ? 'correct-answer' : `wrong-answer-${index}` }
-            className={ `${
-              correct_answer === answer
-                ? 'bg-purple-300'
-                : 'bg-white'
-            } p-4 text-purpe-800
-          font-semibold rounded shadow` }
-            onClick={ () => handleAnswer(answer) }
+            onClick={ () => { handleAnswer(answer); handleAssertions(); } }
           >
             { answer }
           </button>
-
         ))}
-
       </div>
     </div>
   );
+};
+
+Questionaire.propTypes = {
+  data: PropTypes.shape({
+    category: PropTypes.string,
+    question: PropTypes.string,
+    correct_answer: PropTypes.string,
+    incorrect_answers: PropTypes.arrayOf(PropTypes.object),
+  }).isRequired,
+  handleAnswer: PropTypes.func.isRequired,
 };
 
 export default Questionaire;
