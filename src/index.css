@@ -26,6 +26,11 @@ code {
   padding: 5%;
 }
 
+.img-logo {
+  width: 200px;
+  border: 4px ridge rgba(128, 128, 177, 0.541);
+}
+
 #email-input, #name-input {
   height: 30px;
   width:  300px;

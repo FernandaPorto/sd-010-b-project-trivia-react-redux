@@ -5,7 +5,10 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { actionLogin } from '../redux/actions/index';
 import fetchPerguntas from '../redux/actions/perguntasThunk';
+
 import * as fetToken from './Api';
+
+import logo from './quizlogo1.jpeg';
 
 class Login extends Component {
   constructor(props) {
@@ -70,9 +73,9 @@ class Login extends Component {
     return (
       <form>
         <fieldset className="login-card">
+          <img src={ logo } className="img-logo" alt="logo" />
           <input
             id="name-input"
-            type="text"
             data-testid="input-player-name"
             onChange={ this.validateLogin }
             placeholder="Nome"
