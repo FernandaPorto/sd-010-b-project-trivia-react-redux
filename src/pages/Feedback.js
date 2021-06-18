@@ -1,11 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import md5 from 'crypto-js/md5';
+
 import Header from '../components/Header';
 
-export default class Feedback extends React.Component {
+class Feedback extends React.Component {
   verifyAssertions() {
-    const { player: { assertions, score } } = JSON.parse(localStorage.getItem('state'));
+    const { player: { assertions, score, name, gravatarEmail } } = JSON
+      .parse(localStorage.getItem('state'));
+    const hashEmail = `https://www.gravatar.com/avatar/${md5(gravatarEmail).toString()}`;
     const TRES = 3;
+    if (localStorage.getItem('ranking')) {
+      console.log('cheguei');
+      let rank = JSON.parse(localStorage.getItem('ranking'));
+      rank = [...rank, { score, name, picture: hashEmail }];
+      localStorage.setItem('ranking', JSON.stringify(rank));
+    } else {
+      console.log('aqui');
+      localStorage.setItem('ranking', JSON
+        .stringify([{ name, score, picture: hashEmail }]));
+    }
     if (assertions < TRES) {
       return (
         <section>
@@ -33,9 +47,16 @@ export default class Feedback extends React.Component {
           <button type="button">Jogar Novamente</button>
         </Link>
         <Link to="/ranking" data-testid="btn-ranking">
-          <button type="button">Ver Ranking</button>
+          <button
+            type="button"
+            onClick={ this.handleClick }
+          >
+            Ver Ranking
+          </button>
         </Link>
       </div>
     );
   }
 }
+
+export default Feedback;
