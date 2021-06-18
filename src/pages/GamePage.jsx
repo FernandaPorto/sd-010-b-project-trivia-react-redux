@@ -23,7 +23,7 @@ class GamePage extends Component {
       categories: [{}],
       indexState: 0,
       loading: false,
-      seconds: 30,
+      seconds: 28,
     };
 
     this.getToken = this.getToken.bind(this);
@@ -105,6 +105,7 @@ class GamePage extends Component {
           className={ loading ? 'correct-answer' : '' }
           data-testid="correct-answer"
           onKeyDown={ this.isLoading }
+          onClick={ this.isLoading }
         >
           {categories[indexState].correct_answer}
         </option>
