@@ -35,6 +35,9 @@ class Feedback extends React.Component {
             <span>Pontuação final: </span>
             <span data-testid="feedback-total-score">{this.score}</span>
           </div>
+          <button type="button" data-testid="btn-play-again">
+            <Link to="/">Jogar novamente</Link>
+          </button>
         </section>
       </main>
     );

@@ -71,7 +71,6 @@ class TriviaGame extends React.Component {
 
   renderQuestion() {
     const { questions, questionIndex, isResolved, answerQuestion } = this.props;
-
     const { category, question, answerOptions, correctAnswer } = questions[questionIndex];
 
     const renderAnswers = answerOptions.map((answer, index) => {

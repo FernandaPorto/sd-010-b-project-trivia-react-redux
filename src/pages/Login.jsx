@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 
 import { fetchToken } from '../services/api';
-import { loginActionCreator } from '../redux/actions';
+import { loginActionCreator, startGameActionCreator } from '../redux/actions';
 import SettingsButton from '../components/SettingsButton';
 
 class Login extends React.Component {
@@ -30,7 +30,7 @@ class Login extends React.Component {
 
   async handleClick() {
     const { name, email } = this.state;
-    const { login } = this.props;
+    const { login, startGame } = this.props;
 
     const hash = md5(email).toString();
     const gravatarURL = `https://www.gravatar.com/avatar/${hash}`;
@@ -38,7 +38,6 @@ class Login extends React.Component {
     login({ name, email, gravatarURL });
 
     const { token } = await fetchToken();
-
     const state = {
       player: {
         name,
@@ -51,6 +50,7 @@ class Login extends React.Component {
     localStorage.setItem('token', token);
     localStorage.setItem('state', JSON.stringify(state));
 
+    startGame();
     this.setState({ redirect: true });
   }
 
@@ -94,6 +94,7 @@ class Login extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   login: (payload) => dispatch(loginActionCreator(payload)),
+  startGame: () => dispatch(startGameActionCreator()),
 });
 
 Login.propTypes = {
