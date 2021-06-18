@@ -15,7 +15,6 @@ class GamePage extends React.Component {
           <p data-testid="header-score">{ score }</p>
         </header>
         <Question />
-        <Cronometer />
       </>
     );
   }

@@ -74,6 +74,7 @@ class Question extends Component {
               </button>
             ))}
           </div>
+          <Cronometer />
         </section>
       );
     }
