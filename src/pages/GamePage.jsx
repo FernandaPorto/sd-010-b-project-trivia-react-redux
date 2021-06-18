@@ -23,28 +23,18 @@ class GamePage extends Component {
       categories: [{}],
       indexState: 0,
       loading: false,
-      seconds: 30,
+      seconds: 35,
     };
 
     this.getToken = this.getToken.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.isLoading = this.isLoading.bind(this);
+    this.interval = this.interval.bind(this);
+    this.questionAndAnswer = this.questionAndAnswer.bind(this);
   }
 
   componentDidMount() {
-    const { seconds } = this.state;
-    const THIRTY_SECONDS = 30000;
-    this.getToken();
-    this.myInterval = setInterval(() => {
-      if (seconds > 0) {
-        this.setState((previousState) => ({
-          seconds: previousState.seconds - 1,
-        }));
-      }
-      if (seconds === 0) {
-        this.isLoading();
-      }
-    }, THIRTY_SECONDS);
+    this.interval();
   }
 
   componentWillUnmount() {
@@ -60,6 +50,22 @@ class GamePage extends Component {
     });
   }
 
+  async interval() {
+    await this.getToken();
+    const A_SECOND = 1000;
+    this.myInterval = setInterval(() => {
+      const { seconds } = this.state;
+      if (seconds > 0) {
+        this.setState((previousState) => ({
+          seconds: previousState.seconds - 1,
+        }));
+      }
+      if (seconds === 0) {
+        this.isLoading();
+      }
+    }, A_SECOND);
+  }
+
   handleChange() {
     this.setState((previousState) => ({ indexState: previousState.indexState + 1 }));
   }
@@ -68,11 +74,10 @@ class GamePage extends Component {
     this.setState({ loading: true });
   }
 
-  render() {
+  questionAndAnswer() {
     const { categories, indexState, loading } = this.state;
     return (
       <div>
-        <Header />
         <select>
           {categories.map((item, indexMap) => (
             <option
@@ -82,6 +87,7 @@ class GamePage extends Component {
               {item.category}
             </option>))}
         </select>
+
         <section>
           <div
             role="button"
@@ -94,10 +100,12 @@ class GamePage extends Component {
             {categories[indexState].question}
           </div>
         </section>
+
         <option
           className={ loading ? 'correct-answer' : '' }
           data-testid="correct-answer"
           onKeyDown={ this.isLoading }
+          onClick={ this.isLoading }
         >
           {categories[indexState].correct_answer}
         </option>
@@ -112,9 +120,20 @@ class GamePage extends Component {
             {item}
           </option>
         ))}
+      </div>
+    );
+  }
+
+  render() {
+    const { seconds } = this.state;
+    return (
+      <div>
+        <Header />
+        { this.questionAndAnswer() }
+        { seconds > 0 ? `${seconds}` : '' }
         <ButtonFeedback />
         <ButtonLogin />
-        <ButtonNextQuestion onClick={ this.handleChange } />
+        <ButtonNextQuestion handleChange={ this.handleChange } />
       </div>
     );
   }
