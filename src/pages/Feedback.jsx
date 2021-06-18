@@ -73,6 +73,7 @@ Feedback.propTypes = {
       name: PropTypes.string,
       getGravatar: PropTypes.func,
       score: PropTypes.number,
+      numberOfAssertions: PropTypes.number,
     }),
   }).isRequired,
 };
