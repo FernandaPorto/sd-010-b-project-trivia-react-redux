@@ -16,20 +16,21 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleButton = this.handleButton.bind(this);
     this.requestToken = this.requestToken.bind(this);
+    this.sendToStorage = this.sendToStorage.bind(this);
   }
 
-  componentDidMount() {
-    localStorage.setItem('state', JSON.stringify({
-      player: {
-        name: '',
-        assertions: 0,
-        score: 0,
-        gravatarEmail: '',
-      },
-      ranking: '',
-      token: '',
-    }));
-  }
+  // componentDidMount() {
+  //   localStorage.setItem('state', JSON.stringify({
+  //     player: {
+  //       name: '',
+  //       assertions: 0,
+  //       score: 0,
+  //       gravatarEmail: '',
+  //     },
+  //     ranking: '',
+  //     token: '',
+  //   }));
+  // }
 
   handleButton() { // checa se o estado name/email tem algum valor, para habilitar o botão de jogar
     const { name, email } = this.state;
@@ -44,18 +45,33 @@ class Login extends React.Component {
 
   handleChange(event) { // muda o estado conforme é inserido valores nos inputs
     this.setState({ [event.target.name]: event.target.value }, this.handleButton);
-    const state = JSON.parse(localStorage.getItem('state'));
-    if (event.target.name === 'name') {
-      state.player.name = event.target.value;
-    }
-    if (event.target.name === 'email') {
-      state.player.gravatarEmail = event.target.value;
-    }
-    localStorage.setItem('state', JSON.stringify(state));
+    // const state = JSON.parse(localStorage.getItem('state'));
+    // if (event.target.name === 'name') {
+    //   state.player.name = event.target.value;
+    // }
+    // if (event.target.name === 'email') {
+    //   state.player.gravatarEmail = event.target.value;
+    // }
+    // localStorage.setItem('state', JSON.stringify(state));
+  }
+
+  sendToStorage() {
+    const { name, email } = this.state;
+    localStorage.setItem('state', JSON.stringify({
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: email,
+      },
+      ranking: [
+        { name, score: 0, picture: '' },
+      ],
+    }));
   }
 
   async requestToken() {
-    // const state = JSON.parse(localStorage.getItem('state'));
+    // const updateState = () => localStorage.setItem('token', JSON.stringify(state));
     const result = await fetch('https://opentdb.com/api_token.php?command=request');
     const data = await result.json(); localStorage.setItem('token', data.token);
     // state.token = data.token;
@@ -92,7 +108,9 @@ class Login extends React.Component {
           type="button"
           data-testid="btn-play"
           disabled={ isDisabled }
-          onClick={ () => { this.requestToken(); saveInfo(email, name); } }
+          onClick={ () => {
+            saveInfo(email, name); this.sendToStorage(); this.requestToken();
+          } }
         >
           Jogar
         </button>
