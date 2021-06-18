@@ -16,9 +16,10 @@ class Login extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleButton = this.handleButton.bind(this);
     this.requestToken = this.requestToken.bind(this);
+    this.sendToStorage = this.sendToStorage.bind(this);
   }
 
-  handleButton() { // checa se o estado name/email tem algum valor, para habilitar o botão de jogar
+  handleButton() {
     const { name, email } = this.state;
     if (name.length <= 0 || email.length <= 0) {
       this.setState({ isDisabled: true });
@@ -29,8 +30,21 @@ class Login extends React.Component {
     }
   }
 
-  handleChange(event) { // muda o estado conforme é inserido valores nos inputs
+  handleChange(event) {
     this.setState({ [event.target.name]: event.target.value }, this.handleButton);
+  }
+
+  sendToStorage() {
+    const { name, email } = this.state;
+    localStorage.setItem('state', JSON.stringify({
+      player: {
+        name,
+        assertions: 0,
+        score: 0,
+        gravatarEmail: email,
+      },
+    }));
+    localStorage.setItem('ranking', JSON.stringify([{ name, score: 0, picture: '' }]));
   }
 
   async requestToken() {
@@ -63,16 +77,16 @@ class Login extends React.Component {
           />
         </label>
 
-        {/* <Link to="/game"> */}
         <button
           type="button"
           data-testid="btn-play"
           disabled={ isDisabled }
-          onClick={ () => { this.requestToken(); saveInfo(email, name); } }
+          onClick={ () => {
+            saveInfo(email, name); this.sendToStorage(); this.requestToken();
+          } }
         >
           Jogar
         </button>
-        {/* </Link> */}
 
         <Link to="/config">
           <button

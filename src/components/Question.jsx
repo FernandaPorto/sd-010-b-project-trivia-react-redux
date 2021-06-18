@@ -15,6 +15,7 @@ class Question extends React.Component {
     this.insertDataTestId = this.insertDataTestId.bind(this);
     this.insertClass = this.insertClass.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.checkAnswer = this.checkAnswer.bind(this);
   }
 
   componentDidMount() {
@@ -46,6 +47,19 @@ class Question extends React.Component {
       event.target.className = 'correctButton';
     } else {
       event.target.className = 'wrongButton';
+    }
+  }
+
+  checkAnswer(answer) {
+    const { result, timer } = this.props;
+    const ten = 10;
+    const points = { hard: 3, medium: 2, easy: 1 };
+    const state = JSON.parse(localStorage.getItem('state'));
+    if (answer === result.correct_answer) {
+      const diff = result.difficulty;
+      const score = ten + (timer * points[diff]);
+      state.player.score += score;
+      return localStorage.setItem('state', JSON.stringify(state));
     }
   }
 
@@ -88,7 +102,7 @@ class Question extends React.Component {
             key={ answer }
             value={ answer }
             data-testid={ this.insertDataTestId(answer, index) }
-            onClick={ this.handleChange }
+            onClick={ () => { this.handleChange(); this.checkAnswer(answer); } }
             className={ this.clicked(answer) }
             disabled={ disabled }
           >
@@ -103,6 +117,7 @@ class Question extends React.Component {
 Question.propTypes = {
   result: PropTypes.arrayOf().isRequired,
   disabled: PropTypes.bool.isRequired,
+  timer: PropTypes.number.isRequired,
 };
 
 export default Question;

@@ -47,7 +47,12 @@ class Game extends React.Component {
         <Header />
         {results.map(
           (result, index) => numQuestion === index && (
-            <Question result={ result } key={ numQuestion } disabled={ isDisabled } />
+            <Question
+              result={ result }
+              key={ numQuestion }
+              disabled={ isDisabled }
+              timer={ timer }
+            />
           ),
         )}
         <span>{timer}</span>
