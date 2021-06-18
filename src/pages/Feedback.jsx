@@ -1,30 +1,39 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+
+import HeaderFeedback from '../components/HeaderFeedback';
 
 class Feedback extends React.Component {
+  constructor() {
+    super();
+    const state = JSON.parse(localStorage.getItem('state'));
+    console.log(state);
+    this.assertions = state.player.assertions;
+    this.score = state.player.score;
+  }
+
   feedbackMessage() {
-    const { assertions, score } = this.props;
-    let message = 'Mandou bem!';
-    if (assertions <= 2) {
-      message = 'Podia ser melhor...';
+    console.log(this.assertions);
+    if (this.assertions <= 2) {
+      return (<p data-testid="feedback-text">Podia ser melhor...</p>);
     }
-    return <p data-testid="feedback-text">{ message }</p>;
+    return (<p data-testid="feedback-text">Mandou bem!</p>);
   }
 
   render() {
+    // const { assertions, score } = this.props;
+    // console.log(assertions);
     return (
       <main>
         <HeaderFeedback />
         <section>
-          <p data-testid="feedback-text">{ feedbackMessage() }</p>
+          { this.feedbackMessage() }
           <div>
             <span>Número de acertos: </span>
-            <span data-testid="feedback-total-question">{assertions}</span>
+            <span data-testid="feedback-total-question">{this.assertions}</span>
           </div>
           <div>
             <span>Pontuação final: </span>
-            <span data-testid="feedback-total-score">{score}</span>
+            <span data-testid="feedback-total-score">{this.score}</span>
           </div>
         </section>
       </main>
@@ -32,14 +41,4 @@ class Feedback extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  assertions: state.player.assertions,
-  score: state.player.score,
-});
-
-Feedback.propTypes = {
-  assertions: PropTypes.number,
-  score: PropTypes.number,
-}.isRequired;
-
-export default connect(mapStateToProps)(Feedback);
+export default Feedback;
