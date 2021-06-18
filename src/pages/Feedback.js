@@ -15,12 +15,29 @@ class Feedback extends React.Component {
 
   componentDidMount() {
     this.photoSearch();
+    // this.getPlayer();
+  }
+
+  getPlayer(hash) {
+    // const { photo } = this.state;
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    const playerInfo = JSON.parse(localStorage.getItem('state'));
+    const player = {
+      name: playerInfo.player.name,
+      score: playerInfo.player.score,
+      picture: hash };
+    if (ranking) {
+      const rankingPlayers = [...ranking, player];
+      return localStorage.setItem('ranking', JSON.stringify(rankingPlayers));
+    }
+
+    return (localStorage.setItem('ranking', JSON.stringify([player])));
   }
 
   photoSearch() {
     const { email } = this.props;
     const hash = md5(email).toString();
-    this.setState({ photo: hash });
+    this.setState({ photo: hash }, () => this.getPlayer(hash));
   }
 
   renderMessage() {
@@ -43,6 +60,29 @@ class Feedback extends React.Component {
         className="high-score"
       >
         Mandou bem!
+      </div>
+    );
+  }
+
+  renderButtons() {
+    return (
+      <div>
+        <Link to="/">
+          <button
+            data-testid="btn-play-again"
+            type="button"
+          >
+            Jogar novamente
+          </button>
+        </Link>
+        <Link to="/ranking">
+          <button
+            data-testid="btn-ranking"
+            type="button"
+          >
+            Ver Ranking
+          </button>
+        </Link>
       </div>
     );
   }
@@ -85,14 +125,7 @@ class Feedback extends React.Component {
             <p data-testid="header-player-name">{ name }</p>
             { this.renderMessage() }
           </section>
-          <Link to="/">
-            <button
-              data-testid="btn-play-again"
-              type="button"
-            >
-              Jogar novamente
-            </button>
-          </Link>
+          <section>{this.renderButtons()}</section>
         </div>
       </div>
     );
