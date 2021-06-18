@@ -90,8 +90,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getQuestions: (token) => dispatch(requestQuestions(token)),
   getToken: () => dispatch(receiveToken()),
-  setScore: (score) => dispatch(increaseScore(score)),
   setStatusCronometer: (status) => dispatch(toggleStatusCronometer(status)),
+  updateScore: () => dispatch(receiveScore()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Question);
@@ -101,7 +101,7 @@ Question.propTypes = {
   getQuestions: propTypes.func.isRequired,
   getToken: propTypes.func.isRequired,
   token: propTypes.string.isRequired,
-  setScore: propTypes.func.isRequired,
   setStatusCronometer: propTypes.func.isRequired,
   seconds: propTypes.number.isRequired,
+  updateScore: propTypes.func.isRequired,
 };

@@ -9,7 +9,7 @@ function player(state = INITIAL_STATE, action) {
   case ADD_SCORE:
     return {
       ...state,
-      score: state.score + action.score,
+      score: action.score,
     };
   default:
     return state;

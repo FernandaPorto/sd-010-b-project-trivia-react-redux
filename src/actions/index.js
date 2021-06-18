@@ -33,7 +33,7 @@ export const requestQuestions = (token) => async (dispatch) => {
   dispatch(receiveQuestions(newQuestions));
 };
 
-export const increaseScore = (score) => ({
+export const updateScore = (score) => ({
   type: ADD_SCORE,
   score,
 });
@@ -47,3 +47,8 @@ export const receiveSeconds = (seconds) => ({
   type: GET_SECONDS,
   seconds,
 });
+
+export const receiveScore = () => async (dispatch) => {
+  const score = getPlayerDataLocalStorage('score');
+  dispatch(updateScore(score));
+};
