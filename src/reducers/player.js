@@ -23,6 +23,14 @@ export default function (state = initialState, action) {
       token,
     };
   }
+  case ('INCREASE_SCORE'): {
+    const score = action.payload;
+    return {
+      ...state,
+      score: score + state.score,
+      assertions: state.score + 1,
+    };
+  }
   default:
     return state;
   }

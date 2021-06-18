@@ -1,5 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+import { increaseScore } from '../actions';
 
 class Questions extends React.Component {
   constructor(props) {
@@ -10,15 +13,51 @@ class Questions extends React.Component {
     };
 
     this.changeBorder = this.changeBorder.bind(this);
+    this.handleRightAnswerClick = this.handleRightAnswerClick.bind(this);
     this.handleAnswerClick = this.handleAnswerClick.bind(this);
     this.createAnswers = this.createAnswers.bind(this);
     this.handleNextButton = this.handleNextButton.bind(this);
+    this.calculatePoints = this.calculatePoints.bind(this);
   }
 
   changeBorder() {
     this.setState((prevState) => ({
       isAnswered: !prevState.isAnswered,
     }));
+  }
+
+  calculatePoints() {
+    const { time, result: { difficulty } } = this.props;
+    const TEN_POINTS = 10;
+
+    const pointsByDifficulty = {
+      easy: 1,
+      medium: 2,
+      hard: 3,
+    };
+    return (TEN_POINTS + (time * pointsByDifficulty[difficulty]));
+  }
+
+  scoreToLocalStorage(scoreToSum) {
+    const { name, gravatarEmail, score, assertions } = this.props;
+    const ahvaitomanucutraibe = {
+      player: {
+        name,
+        gravatarEmail,
+        assertions: assertions + 1,
+        score: score + scoreToSum,
+      },
+    };
+    localStorage.setItem('state', JSON.stringify(ahvaitomanucutraibe));
+  }
+
+  handleRightAnswerClick() {
+    const { updateScore } = this.props;
+
+    this.handleAnswerClick();
+    const score = this.calculatePoints();
+    this.scoreToLocalStorage(score);
+    updateScore(score);
   }
 
   handleAnswerClick() {
@@ -28,21 +67,21 @@ class Questions extends React.Component {
     stopTimer();
   }
 
-  createAnswers(quest, index) {
+  createAnswers(currentQuestion, index) {
     const { isAnswered } = this.state;
     const { result: { correct_answer: correctAnswer }, answerDisabled } = this.props;
-    if (quest === correctAnswer) {
+    if (currentQuestion === correctAnswer) {
       return (
         <button
           key={ index }
           type="button"
-          onClick={ this.handleAnswerClick }
+          onClick={ this.handleRightAnswerClick }
           data-testid="correct-answer"
           style={ isAnswered || answerDisabled
             ? { border: '3px solid rgb(6, 240, 15)' } : null }
           disabled={ answerDisabled }
         >
-          { quest }
+          { currentQuestion }
         </button>
       );
     }
@@ -56,7 +95,7 @@ class Questions extends React.Component {
           ? { border: '3px solid rgb(255, 0, 0)' } : null }
         disabled={ answerDisabled }
       >
-        { quest }
+        { currentQuestion }
       </button>
     );
   }
@@ -92,8 +131,8 @@ class Questions extends React.Component {
             role="button"
             className="answers"
           >
-            {allAnswers.map((quest,
-              index) => (this.createAnswers(quest, index))) }
+            {allAnswers.map((currentQuestion,
+              index) => (this.createAnswers(currentQuestion, index))) }
           </div>
           <button
             type="button"
@@ -107,15 +146,33 @@ class Questions extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  const { player: { name, gravatarEmail, score, assertions } } = state;
+  return {
+    score,
+    name,
+    gravatarEmail,
+    assertions,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  updateScore: (score) => dispatch(increaseScore(score)),
+});
+
 Questions.propTypes = {
   result: PropTypes.shape({
     category: PropTypes.string,
   }),
   handleNextQuestion: PropTypes.func,
+  score: PropTypes.number,
+  name: PropTypes.string,
+  gravatarEmail: PropTypes.string,
+  assertions: PropTypes.number,
 }.isRequired;
 
 Questions.default = {
   result: undefined,
 };
 
-export default Questions;
+export default connect(mapStateToProps, mapDispatchToProps)(Questions);

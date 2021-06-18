@@ -91,6 +91,7 @@ class Game extends React.Component {
                 handleNext={ this.handleNextQuestion }
                 answerDisabled={ answerDisabled }
                 stopTimer={ this.stopTimer }
+                time={ time }
               />
               <Timer time={ time } hasMounted={ this.timerHasMounted } />
             </main>

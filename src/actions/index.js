@@ -10,6 +10,11 @@ export const addToken = (token) => ({
   payload: token,
 });
 
+export const increaseScore = (score) => ({
+  type: 'INCREASE_SCORE',
+  payload: score,
+});
+
 export const addToRanking = (userInfo) => ({
   type: 'ADD_TO_RANKING',
   payload: userInfo,
