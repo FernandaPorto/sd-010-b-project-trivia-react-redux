@@ -16,7 +16,7 @@ class Question extends Component {
     };
     this.generateRandomAnswers = this.generateRandomAnswers.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.insertClass = this.insertClass.bind(this);
+    this.updateButtonsStyle = this.updateButtonsStyle.bind(this);
   }
 
   componentDidMount() {
@@ -25,7 +25,7 @@ class Question extends Component {
     getQuestions(token);
   }
 
-  insertClass() {
+  updateButtonsStyle() {
     const correctButton = document.querySelector('button[data-testid="correct-answer"]');
     const wrongButton = document.querySelectorAll('button[data-testid*="wrong-answer"]');
     correctButton.classList.add('correct');
