@@ -54,12 +54,10 @@ class GameTrivia extends React.Component {
   //   const { getTriviaQuestions } = this.props;
   //   getTriviaQuestions();
   // }
-
+  // Resolviddo problemas e finalizado requisitos 5 e 6
   renderQuestions() {
     const { getTriviaQuestions } = this.props;
     const { next } = this.state;
-    console.log(getTriviaQuestions);
-    console.log(getTriviaQuestions.isLoadingTrivia);
     const questions = getTriviaQuestions.results.results;
     if (questions) {
       return questions.filter((_questions, index) => index === next).map((question) => (
