@@ -1,3 +1,5 @@
+import generateRandomAnswers from '../helpers/generateRandomAnswers';
+import { getPlayerDataLocalStorage } from '../helpers/localStorage';
 import { getQuestions } from '../services';
 import {
   ADD_SCORE, GET_SECONDS, RECEIVE_QUESTIONS, RECEIVE_TOKEN, TOGGLE_CRONOMETER,
