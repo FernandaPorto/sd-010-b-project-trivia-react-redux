@@ -4,20 +4,25 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchQuestions } from '../redux/actions';
+import combineArray from '../functions/combineArray';
 
 class Game extends React.Component {
   constructor() {
     super();
-    this.state = {
-      numberQuestion: 0,
+    this.state = { numberQuestion: 0,
+      correct: 0,
       clicked: false,
+      numberOfAssertions: 0,
+      score: 0,
     };
     this.getPerfilGravatar = this.getPerfilGravatar.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
     this.handleOnClick = this.handleOnClick.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
-    this.combineArray = this.combineArray.bind(this);
     this.nextButton = this.nextButton.bind(this);
+    this.addInfoToLocalStorage = this.addInfoToLocalStorage.bind(this);
+    this.getGravatar = this.getGravatar.bind(this);
+    this.getScore = this.getScore.bind(this);
   }
 
   componentDidMount() {
@@ -26,18 +31,19 @@ class Game extends React.Component {
     getQuestions(token);
   }
 
-  getPerfilGravatar() {
-    const { location: { aboutProps: { name: { name },
-      email: { email }, score: { score } } } } = this.props;
+  getGravatar(email) {
     const convert = md5(email).toString();
     const endpoint = `https://www.gravatar.com/avatar/${convert}`;
+    return endpoint;
+  }
 
+  getPerfilGravatar(email, name, score) {
+    const endpoint = this.getGravatar(email);
     return (
       <div>
         <img src={ endpoint } alt={ `foto de ${name}` } />
         <span data-testid="header-player-name">
           {`Bem-vindo ${name}`}
-          !
         </span>
         <span data-testid="header-profile-picture">{` Email: ${email}`}</span>
         <span data-testid="header-score">{` Pontuação: ${score}`}</span>
@@ -45,11 +51,46 @@ class Game extends React.Component {
     );
   }
 
+  getScore() {
+    const { numberOfAssertions, numberQuestion, score } = this.state;
+    const { questions } = this.props;
+    const defaultNumber = 10;
+    const hardQuestion = 3;
+    const mediumQuestion = 2;
+    const easyQuestion = 1;
+    let { difficulty } = questions[numberQuestion];
+    if (difficulty === 'hard') {
+      difficulty = hardQuestion;
+    } if (difficulty === 'medium') {
+      difficulty = mediumQuestion;
+    } else {
+      difficulty = easyQuestion;
+    }
+    const timer = 2; // colocar o valor do timer que o Fioravante está fazendo
+    this.setState({
+      numberOfAssertions: numberOfAssertions + 1,
+      score: score + (defaultNumber + (timer * difficulty)),
+    });
+  }
+
+  addInfoToLocalStorage() {
+    const { location: { aboutProps: { name: { name },
+      email: { email } } } } = this.props;
+    const { numberOfAssertions, score } = this.state;
+    const objLocalStorage = {
+      player: { name, assertions: numberOfAssertions, score, gravatarEmail: email },
+    };
+    localStorage.setItem('state', JSON.stringify(objLocalStorage)); // Referência https://www.horadecodar.com.br/2020/07/21/como-salvar-um-objeto-na-localstorage/
+  }
+
   handleOnClick({ target: { name } }) {
-    const { numberQuestion } = this.state;
+    const { numberQuestion, correct } = this.state;
     const { questions } = this.props;
     if (name === questions[numberQuestion].correct_answer) {
-      console.log('Acertou miseravel');
+      this.getScore();
+      this.setState({
+        correct: correct + 1,
+      });
     }
     this.setState({
       clicked: true,
@@ -69,7 +110,6 @@ class Game extends React.Component {
     if (clicked) {
       return 'correct_answer';
     }
-
     return '';
   }
 
@@ -78,25 +118,12 @@ class Game extends React.Component {
     if (clicked) {
       return 'incorrect_answer';
     }
-
     return '';
-  }
-
-  combineArray() {
-    const { questions } = this.props;
-    const { numberQuestion } = this.state;
-    const array = [questions[numberQuestion].correct_answer,
-      ...questions[numberQuestion].incorrect_answers];
-    const magicNumber = 0.5;
-    const answers = array.sort(() => Math.random() - magicNumber);
-    return answers;
   }
 
   nextButton() {
     const { clicked, numberQuestion } = this.state;
     const { questions } = this.props;
-    console.log(numberQuestion);
-    console.log(questions.length);
     if (numberQuestion < questions.length - 1 && clicked) {
       return (
         <div>
@@ -111,13 +138,24 @@ class Game extends React.Component {
       );
     }
     if (numberQuestion === questions.length - 1 && clicked) {
+      const { score, correct, numberOfAssertions } = this.state;
+      const { location: { aboutProps: { name: { name },
+        email: { email } } } } = this.props;
       return (
         <div>
-          <Link to="/feedback">
-            <button
-              data-testid="btn-next"
-              type="button"
-            >
+          <Link
+            to={ {
+              pathname: '/feedback',
+              aboutProps: { email,
+                name,
+                getGravatar: this.getGravatar,
+                score,
+                correct,
+                numberOfAssertions,
+              },
+            } }
+          >
+            <button data-testid="btn-next" type="button">
               Próxima
             </button>
           </Link>
@@ -136,7 +174,7 @@ class Game extends React.Component {
           <p data-testid="question-text">
             {questions[numberQuestion].question }
           </p>
-          {this.combineArray().map((answer, index) => {
+          {combineArray(questions, numberQuestion).map((answer, index) => {
             if (answer === questions[numberQuestion].correct_answer) {
               return (
                 <button
@@ -167,18 +205,18 @@ class Game extends React.Component {
           {this.nextButton()}
         </div>
       );
-    } return (
-      <div>
-        <h1>Fim!</h1>
-      </div>
-    );
+    }
   }
 
   render() {
+    this.addInfoToLocalStorage();
+    const { score } = this.state;
     const { questions } = this.props;
+    const { location: { aboutProps: { name: { name },
+      email: { email } } } } = this.props;
     return (
       <>
-        {this.getPerfilGravatar()}
+        {this.getPerfilGravatar(email, name, score)}
         {questions && this.renderAnswers()}
       </>
     );
@@ -189,16 +227,15 @@ Game.propTypes = {
   location: PropTypes.shape({
     aboutProps: PropTypes.shape({
       name: PropTypes.shape({
-        name: PropTypes.string,
-      }),
+        name: PropTypes.string }),
       email: PropTypes.shape({
-        email: PropTypes.string,
-      }),
+        email: PropTypes.string }),
       score: PropTypes.shape({
-        score: PropTypes.number,
-      }),
+        score: PropTypes.number }),
     }),
   }).isRequired,
+  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
+  fetchQuestions: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -209,8 +246,4 @@ const mapDispatchToProps = (dispatch) => ({
   fetchQuestions: (token) => dispatch(fetchQuestions(token)),
 });
 
-Game.propTypes = ({
-  questions: PropTypes.arrayOf(PropTypes.object).isRequired,
-  fetchQuestions: PropTypes.func.isRequired,
-});
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
