@@ -190,17 +190,15 @@ class Trivia extends Component {
     if (questions) {
       const respostas = [this.renderquestionCorrect(),
         this.renderWrong1(), this.renderWrong2(), this.renderWrong3()];
-
       return (
         <>
           <h4 data-testid="question-category">{questions[count].category}</h4>
           <h1 data-testid="question-text">{questions[count].question }</h1>
           <ul>
-            {respostas[3]}
+            {(questions[count].incorrect_answers.length > 2) ? respostas[3] : null }
             {respostas[1]}
             {respostas[0]}
-            {respostas[2]}
-            ))
+            {(questions[count].incorrect_answers.length > 2) ? respostas[2] : null }
           </ul>
 
           <button
