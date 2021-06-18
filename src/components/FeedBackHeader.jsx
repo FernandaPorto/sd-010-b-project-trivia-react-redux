@@ -35,10 +35,12 @@ class FeedBackHeader extends Component {
         <section data-testid="header-player-name">
           { this.userName('name') }
         </section>
-        <section data-testid="header-score">
-          Score :
+        <section>
+          Score:
           {' '}
-          {this.userName('score')}
+          <span data-testid="header-score">
+            {this.userName('score')}
+          </span>
         </section>
       </main>
     );
