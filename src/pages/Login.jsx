@@ -27,7 +27,7 @@ class Login extends React.Component {
         gravatarEmail: '',
       },
       ranking: '',
-      // token: '',
+      token: '',
     }));
   }
 
