@@ -1,6 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-
+import PropTypes from 'prop-types';
 import HeaderFeedback from '../components/HeaderFeedback';
 
 class Feedback extends React.Component {
@@ -17,7 +18,7 @@ class Feedback extends React.Component {
     }
     return (<p data-testid="feedback-text">Mandou bem!</p>);
   }
-
+  
   render() {
     return (
       <main>
