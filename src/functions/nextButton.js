@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 function nextButton(state, props, nextQuestion, getGravatar) {
   const { clicked, numberQuestion } = state;
@@ -23,24 +23,19 @@ function nextButton(state, props, nextQuestion, getGravatar) {
       email: { email } } } } = props;
     return (
       <div>
-        <Link
-          to={ {
-            pathname: '/feedback',
-            aboutProps: { email,
-              name,
-              getGravatar,
-              score,
-              correct,
-              numberOfAssertions,
-            },
-          } }
-        >
-          <button type="button">
-            Finalizar
-          </button>
-        </Link>
         <button data-testid="btn-next" disabled type="button">
-          Próxima
+          <Redirect
+            to={ {
+              pathname: '/feedback',
+              aboutProps: { email,
+                name,
+                getGravatar,
+                score,
+                correct,
+                numberOfAssertions,
+              },
+            } }
+          />
         </button>
       </div>
     );

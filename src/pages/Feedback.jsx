@@ -50,8 +50,8 @@ class Feedback extends React.Component {
             src={ gravatar }
             alt={ `avatar de ${name}` }
           />
-          <span data-testid="header-player-name">{expression}</span>
-          <span data-testid="header-score">{Number(objectInfos.player.score)}</span>
+          <p data-testid="header-player-name">{expression}</p>
+          <p data-testid="header-score">{Number(objectInfos.player.score)}</p>
         </header>
         {correct >= magicNumber
           ? <span data-testid="feedback-text">Mandou bem!</span>
