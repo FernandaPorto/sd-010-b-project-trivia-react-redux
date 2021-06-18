@@ -43,10 +43,8 @@ class Login extends React.Component {
         score: 0,
         gravatarEmail: email,
       },
-      ranking: [
-        { name, score: 0, picture: '' },
-      ],
     }));
+    localStorage.setItem('ranking', JSON.stringify([{ name, score: 0, picture: '' }]));
   }
 
   async requestToken() {
