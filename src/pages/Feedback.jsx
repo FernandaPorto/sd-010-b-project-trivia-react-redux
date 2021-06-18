@@ -41,7 +41,6 @@ class Feedback extends React.Component {
     }
     const gravatar = getGravatar(name, email);
     const magicNumber = 3;
-    console.log(this.props);
     const expression = correct >= magicNumber ? `NOSSA! ${name}` : `POXA! ${name}`;
     return (
       <div>

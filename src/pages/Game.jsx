@@ -1,11 +1,14 @@
 import React from 'react';
-import md5 from 'crypto-js/md5';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchQuestions } from '../redux/actions';
 import combineArray from '../functions/combineArray';
 import addInfoToLocalStorage from '../functions/addInfoToStorage';
+import nexButton from '../functions/nextButton';
+import { changeClassNameCorrect,
+  changeClassNameInCorrect } from '../functions/classNameFunction';
+import { getGravatar, getPerfilGravatar } from '../functions/getGravatar';
+import getScore from '../functions/getScore';
 
 class Game extends React.Component {
   constructor() {
@@ -18,13 +21,9 @@ class Game extends React.Component {
       timerInitial: 30,
       disabled: false,
     };
-    this.getPerfilGravatar = this.getPerfilGravatar.bind(this);
     this.renderAnswers = this.renderAnswers.bind(this);
     this.handleOnClick = this.handleOnClick.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
-    this.nextButton = this.nextButton.bind(this);
-    this.getGravatar = this.getGravatar.bind(this);
-    this.getScore = this.getScore.bind(this);
   }
 
   componentDidMount() {
@@ -45,48 +44,6 @@ class Game extends React.Component {
     if (prevState.timerInitial === 0) {
       this.resetTimer();
     }
-    console.log('Aqui', prevState);
-  }
-
-  getGravatar(email) {
-    const convert = md5(email).toString();
-    const endpoint = `https://www.gravatar.com/avatar/${convert}`;
-    return endpoint;
-  }
-
-  getPerfilGravatar(email, name, score) {
-    const endpoint = this.getGravatar(email);
-    return (
-      <div>
-        <img src={ endpoint } alt={ `foto de ${name}` } />
-        <span data-testid="header-player-name">
-          {`Bem-vindo ${name}`}
-        </span>
-        <span data-testid="header-profile-picture">{` Email: ${email}`}</span>
-        <span data-testid="header-score">{` Pontuação: ${score}`}</span>
-      </div>
-    );
-  }
-
-  getScore() {
-    const { numberOfAssertions, numberQuestion, score, timerInitial } = this.state;
-    const { questions } = this.props;
-    const defaultNumber = 10;
-    const hardQuestion = 3;
-    const mediumQuestion = 2;
-    const easyQuestion = 1;
-    let { difficulty } = questions[numberQuestion];
-    if (difficulty === 'hard') {
-      difficulty = hardQuestion;
-    } if (difficulty === 'medium') {
-      difficulty = mediumQuestion;
-    } else {
-      difficulty = easyQuestion;
-    }
-    this.setState({
-      numberOfAssertions: numberOfAssertions + 1,
-      score: score + (defaultNumber + (timerInitial * difficulty)),
-    });
   }
 
   resetTimer() {
@@ -102,10 +59,14 @@ class Game extends React.Component {
     const { numberQuestion, correct } = this.state;
     const { questions } = this.props;
     if (name === questions[numberQuestion].correct_answer) {
-      this.getScore();
-      this.setState({
+      const totalScore = getScore(this.state, this.props).score;
+      const totalAssertions = getScore(this.state, this.props).numberOfAssertions;
+      this.setState((old) => ({
+        ...old,
         correct: correct + 1,
-      });
+        score: totalScore,
+        numberOfAssertions: totalAssertions,
+      }));
     }
     this.setState({
       clicked: true,
@@ -120,72 +81,9 @@ class Game extends React.Component {
     });
   }
 
-  changeClassNameCorrect() {
-    const { clicked } = this.state;
-    if (clicked) {
-      return 'correct_answer';
-    }
-    return '';
-  }
-
-  changeClassNameInCorrect() {
-    const { clicked } = this.state;
-    if (clicked) {
-      return 'incorrect_answer';
-    }
-    return '';
-  }
-
-  nextButton() {
-    const { clicked, numberQuestion } = this.state;
-    const { questions } = this.props;
-    if (numberQuestion < questions.length - 1 && clicked) {
-      return (
-        <div>
-          <button
-            data-testid="btn-next"
-            onClick={ this.nextQuestion }
-            type="button"
-          >
-            Próxima
-          </button>
-        </div>
-      );
-    }
-    if (numberQuestion === questions.length - 1 && clicked) {
-      const { score, correct, numberOfAssertions } = this.state;
-      const { location: { aboutProps: { name: { name },
-        email: { email } } } } = this.props;
-      return (
-        <div>
-          <Link
-            to={ {
-              pathname: '/feedback',
-              aboutProps: { email,
-                name,
-                getGravatar: this.getGravatar,
-                score,
-                correct,
-                numberOfAssertions,
-              },
-            } }
-          >
-            <button type="button">
-              Finalizar
-            </button>
-          </Link>
-          <button data-testid="btn-next" disabled type="button">
-            Próxima
-          </button>
-        </div>
-      );
-    }
-  }
-
   renderAnswers() {
-    const { numberQuestion, disabled } = this.state;
+    const { numberQuestion, disabled, clicked } = this.state;
     const { questions } = this.props;
-    // if (numberQuestion < questions.length) {
     return (
       <div>
         <p data-testid="question-category">{questions[numberQuestion].category}</p>
@@ -198,7 +96,7 @@ class Game extends React.Component {
               <button
                 disabled={ disabled }
                 name={ `${answer}` }
-                className={ this.changeClassNameCorrect() }
+                className={ changeClassNameCorrect(clicked) }
                 key={ answer }
                 type="button"
                 data-testid="correct-answer"
@@ -212,7 +110,7 @@ class Game extends React.Component {
             <button
               disabled={ disabled }
               name={ `${answer}` }
-              className={ this.changeClassNameInCorrect() }
+              className={ changeClassNameInCorrect(clicked) }
               key={ answer }
               type="button"
               data-testid={ `wrong-answer-${index}` }
@@ -222,14 +120,12 @@ class Game extends React.Component {
             </button>
           );
         })}
-        {this.nextButton()}
+        {nexButton(this.state, this.props, this.nextQuestion, getGravatar)}
       </div>
     );
-    // }
   }
 
   render() {
-    this.addInfoToLocalStorage();
     const { score, timerInitial, numberOfAssertions } = this.state;
     const { questions } = this.props;
     const { location: { aboutProps: { name: { name },
@@ -237,7 +133,7 @@ class Game extends React.Component {
     addInfoToLocalStorage(name, email, score, numberOfAssertions);
     return (
       <>
-        {this.getPerfilGravatar(email, name, score)}
+        {getPerfilGravatar(email, name, score)}
         {questions && this.renderAnswers()}
         { timerInitial }
       </>
