@@ -1,0 +1,32 @@
+.login--section {
+  align-items: center;
+  background-image: url('https://images-na.ssl-images-amazon.com/images/I/71VpHPnLOjL.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  border: 2px solid gold;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  height: 700px;
+  justify-content: space-evenly;
+  margin: 2% auto 0;
+  width: 700px;
+}
+
+.login--section input {
+  border: 1px solid gold;
+  height: 1px;
+  padding: 10px;
+  width: 200px;
+}
+
+.login--section button {
+  background-color: #4c75af;
+  border: none;
+  color: black;
+  display: inline-block;
+  font-size: 17px;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+}

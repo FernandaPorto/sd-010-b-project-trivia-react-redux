@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import PropTypes from 'prop-types';
-
 import Questions from '../components/Questions';
 import GameHeader from '../components/GameHeader';
 import Timer from '../components/Timer';
+import './Game.css';
 
 const NUMBER_FIVE = 5;
 const NUMBER_FOUR = 4;
@@ -111,11 +111,9 @@ class Game extends React.Component {
 
     if (results) {
       return (
-        <section>
-          <header>
-            <GameHeader name={ name } gravatarEmail={ gravatarEmail } score={ score } />
-          </header>
-          <main>
+        <section className="game--section">
+          <GameHeader name={ name } gravatarEmail={ gravatarEmail } score={ score } />
+          <main className="game--main">
             <Questions
               name={ name }
               gravatarEmail={ gravatarEmail }
@@ -131,6 +129,7 @@ class Game extends React.Component {
                 type="button"
                 onClick={ () => { this.handleNext(results[index]); } }
                 data-testid="btn-next"
+                className="btn-next"
               >
                 Next
               </button>) : null }
@@ -142,9 +141,9 @@ class Game extends React.Component {
     }
 
     return (
-      <section>
+      <section className="game--section">
         <GameHeader name={ name } gravatarEmail={ gravatarEmail } score={ score } />
-        <main>
+        <main className="game--main">
           Loading...
         </main>
       </section>

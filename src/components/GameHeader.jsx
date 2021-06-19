@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './GameHeader.css';
 
 class GameHeader extends React.Component {
   render() {
     const { name, gravatarEmail, score } = this.props;
 
     return (
-      <header>
+      <header className="header--main">
         <span data-testid="header-player-name">
           { name }
         </span>

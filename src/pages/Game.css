@@ -1,0 +1,29 @@
+.game--section {
+  align-items: center;
+  background-image: url('https://store-images.s-microsoft.com/image/apps.48400.14573449505340069.0f503adc-58ce-4d41-a12d-792f97d4a1c0.172673f6-7954-4b39-90f1-701aee6722c8?mode=scale&q=90&h=1080&w=1920');
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  max-height: fit-content;
+  width: auto;
+}
+
+.game--main {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  justify-content: space-between;
+  margin: auto;
+}
+
+.btn-next {
+  background-color: rgba(255, 238, 2, 0.876);
+  border: 1px solid;
+  border-radius: 100px;
+  font-size: 17px;
+  margin-top: 10px;
+  padding: 5px;
+  width: 200px;
+}

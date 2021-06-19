@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { playerScore } from '../actions';
+import './Questions.css';
 
 class Questions extends React.Component {
   constructor(props) {
@@ -98,14 +99,14 @@ class Questions extends React.Component {
       let allQuestions = [correctAnswer, ...incorrectAnswers];
       allQuestions = order.map((value) => allQuestions[value]);
       return (
-        <>
-          <h2 data-testid="question-category">
+        <div className="questions">
+          <h2 data-testid="question-category" className="question--category">
             {category}
           </h2>
-          <div data-testid="question-text">
+          <div data-testid="question-text" className="question--text">
             {question}
           </div>
-          <section
+          <div
             role="link"
             className="answers"
           >
@@ -119,8 +120,8 @@ class Questions extends React.Component {
               };
               return this.createAnswers(info);
             }) }
-          </section>
-        </>
+          </div>
+        </div>
       );
     }
   }

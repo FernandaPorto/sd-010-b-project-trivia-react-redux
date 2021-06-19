@@ -3,8 +3,8 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
-
 import { playerLogin, addToken } from '../actions/index';
+import './Login.css';
 
 class Login extends React.Component {
   constructor(props) {
@@ -116,19 +116,19 @@ class Login extends React.Component {
         <Redirect to="/settings" />
       );
     }
-
     return (
-      <section>
+      <section className="login--section">
         <input
+          className="login--inputs"
           type="text"
-          placeholder="Nome"
+          placeholder="Insira seu nome"
           id="name"
           data-testid="input-player-name"
           onChange={ this.handleChange }
         />
         <input
           type="email"
-          placeholder="Email"
+          placeholder="Insira seu e-mail"
           id="email"
           data-testid="input-gravatar-email"
           onChange={ this.handleChange }
@@ -138,6 +138,7 @@ class Login extends React.Component {
           data-testid="btn-play"
           disabled={ disabled }
           onClick={ () => this.handleStart(userLogin, dispatchToken) }
+          style={ { backgroundColor: disabled ? '#AD3838' : 'gold' } }
         >
           Jogar
         </button>

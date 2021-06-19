@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './Timer.css';
 
 class Timer extends React.Component {
   componentDidMount() {
@@ -10,7 +11,7 @@ class Timer extends React.Component {
   render() {
     const { time } = this.props;
     return (
-      <div>
+      <div className="timer">
         { time }
       </div>
     );
