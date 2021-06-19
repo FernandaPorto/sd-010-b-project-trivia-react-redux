@@ -1,8 +1,8 @@
 import './TriviaGame.css';
 
 import React from 'react';
-import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 import PropTypes from 'prop-types';
 
 import {
@@ -10,6 +10,7 @@ import {
   answerQuestionActionCreator,
   nextQuestionActionCreator,
   updateSecondsActionCreator,
+  updateScoreActionCreator,
 } from '../redux/actions';
 
 import Timer from './Timer';
@@ -34,36 +35,27 @@ class TriviaGame extends React.Component {
   }
 
   handleScore() {
-    const { questions, questionIndex, secondsLeft } = this.props;
-
+    const { score, questions, questionIndex, secondsLeft, updateScore } = this.props;
     const TEN = 10;
     const difficultyPoints = {
       easy: 1,
       medium: 2,
       hard: 3,
     };
-
-    const state = JSON.parse(localStorage.getItem('state'));
     const { difficulty } = questions[questionIndex];
     const level = difficultyPoints[difficulty];
+    const newScore = score + TEN + secondsLeft * level;
 
-    const calculator = () => state.player.score + TEN + secondsLeft * level;
-
-    state.player.assertions += 1;
-    state.player.score = calculator();
-
-    localStorage.setItem('state', JSON.stringify(state));
+    updateScore({ newScore });
   }
 
   finishGame() {
-    const { name, picture } = this.props;
+    const { name, gravatarURL, score } = this.props;
 
-    const state = JSON.parse(localStorage.getItem('state'));
-    const { player: { score } } = state;
     const newRanking = {
       name,
       score,
-      picture,
+      gravatarURL,
     };
     const ranking = JSON.parse(localStorage.getItem('ranking'));
     ranking.push(newRanking);
@@ -141,13 +133,14 @@ class TriviaGame extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
+  name: state.player.name,
+  gravatarURL: state.player.gravatarURL,
+  score: state.player.score,
   isLoading: state.game.isLoading,
   questions: state.game.questions,
   questionIndex: state.game.questionIndex,
   isResolved: state.game.isResolved,
   secondsLeft: state.game.secondsLeft,
-  name: state.player.name,
-  picture: state.player.gravatarURL,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -155,6 +148,7 @@ const mapDispatchToProps = (dispatch) => ({
   answerQuestion: () => dispatch(answerQuestionActionCreator()),
   nextQuestion: (payload) => dispatch(nextQuestionActionCreator(payload)),
   updateSeconds: (payload) => dispatch(updateSecondsActionCreator(payload)),
+  updateScore: (payload) => dispatch(updateScoreActionCreator(payload)),
 });
 
 TriviaGame.propTypes = {

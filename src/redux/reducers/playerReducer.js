@@ -21,7 +21,7 @@ function playerReducer(state = INITIAL_STATE, { type, payload }) {
     return {
       ...state,
       assertions: state.assertions + 1,
-      score: state.score + payload.score,
+      score: state.score + payload.newScore,
     };
   default:
     return state;

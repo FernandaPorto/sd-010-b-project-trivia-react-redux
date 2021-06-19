@@ -1,8 +1,8 @@
 import './Login.css';
 
 import React from 'react';
-import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 
@@ -34,21 +34,8 @@ class Login extends React.Component {
     const { name, email } = this.state;
     const { login, startGame } = this.props;
 
-    const hash = md5(email).toString();
-    const gravatarURL = `https://www.gravatar.com/avatar/${hash}`;
-
-    login({ name, email, gravatarURL });
-
+    const gravatarURL = `https://www.gravatar.com/avatar/${md5(email).toString()}`;
     const { token } = await fetchToken();
-    const state = {
-      player: {
-        name,
-        assertions: 0,
-        score: 0,
-        gravatarEmail: email,
-      },
-    };
-
     const ranking = JSON.parse(localStorage.getItem('ranking'));
 
     if (!ranking) {
@@ -56,8 +43,7 @@ class Login extends React.Component {
     }
 
     localStorage.setItem('token', token);
-    localStorage.setItem('state', JSON.stringify(state));
-
+    login({ name, email, gravatarURL });
     startGame();
     this.setState({ redirect: true });
   }

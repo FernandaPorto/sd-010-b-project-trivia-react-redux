@@ -10,7 +10,7 @@ class Ranking extends React.Component {
         <ul>
           {ranking.map((element, index) => (
             <li key={ index }>
-              <img src={ element.picture } alt="player" />
+              <img src={ element.gravatarURL } alt="player" />
               <span>{element.name}</span>
               <span>{element.score}</span>
             </li>
