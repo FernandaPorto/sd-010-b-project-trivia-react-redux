@@ -41,7 +41,10 @@ class GamePage extends Component {
 
   componentDidMount() {
     this.interval();
-    this.setState({ answered: true });
+  }
+
+  componentDidUpdate() {
+    this.updatePage();
   }
 
   componentWillUnmount() {
@@ -55,6 +58,10 @@ class GamePage extends Component {
     this.setState({
       categories: map,
     });
+  }
+
+  updatePage() {
+    this.setState({ answered: true });
   }
 
   async interval() {
@@ -185,7 +192,7 @@ class GamePage extends Component {
 
 GamePage.propTypes = {
   playerScore: PropTypes.func.isRequired,
-  totalScore: PropTypes.number.isRequired,
+  // totalScore: PropTypes.number.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
