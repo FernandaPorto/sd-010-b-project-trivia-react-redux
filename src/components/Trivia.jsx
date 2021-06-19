@@ -77,7 +77,6 @@ class Trivia extends Component {
 
   correctAnswer(event) {
     const { certo } = this.state;
-    const { certoAction } = this.props;
     const btnC = document.querySelectorAll('#correct');
     const btnE = document.querySelectorAll('#errada');
     const btnNext = document.querySelector('#next');
@@ -91,14 +90,14 @@ class Trivia extends Component {
       e.style.border = '3px solid rgb(255, 0, 0)';
       e.disabled = true;
     }); if (event !== undefined && event.target.id === 'correct') {
+      this.setState({ certo: certo + 1 });
       this.calcScore();
-      this.setState({ certo: certo + 1 }, () => certoAction(certo));
     }
   }
 
   calcScore() {
     const { name, email, setPoints, questions } = this.props;
-    const { count, seconds } = this.state;
+    const { count, seconds, certo } = this.state;
     const maxDifficulty = 3;
     let difficulty = 0;
     if (questions[count].difficulty === 'easy') { difficulty = 1; } else if (
@@ -111,7 +110,7 @@ class Trivia extends Component {
 
     const countScore = {
       player: { name,
-        assertions: count + 1,
+        assertions: certo + 1,
         score: totalPoints + calc,
         gravatarEmail: email,
       },
@@ -162,10 +161,11 @@ class Trivia extends Component {
   }
 
   render() {
-    const { questions } = this.props;
-    const { count, seconds, redirect, random, random2 } = this.state;
+    const { questions, certoAction } = this.props;
+    const { count, seconds, redirect, random, random2, certo } = this.state;
 
     if (redirect) {
+      certoAction(certo);
       return <Redirect to="/feedback" />;
     } if (questions) {
       const passProps = { count, questions, correctAnswer: this.correctAnswer };

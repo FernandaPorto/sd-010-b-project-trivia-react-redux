@@ -1,7 +1,8 @@
 const POINTS = 'POINTS';
+const CORRECT = 'CORRECT';
 const intialState = {
   points: 0,
-  correct: 1,
+  correct: 0,
 };
 
 const pointsReducer = (state = intialState, { type, payload }) => {
@@ -10,10 +11,9 @@ const pointsReducer = (state = intialState, { type, payload }) => {
     return { ...state,
       points: payload.points.player.score,
     };
-
-  case 'CORRECT':
+  case CORRECT:
     return { ...state,
-      correct: payload.certo,
+      correct: payload.correct,
     };
 
   default:

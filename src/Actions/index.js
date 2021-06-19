@@ -2,7 +2,7 @@ import { getFullAPI, getTrivaQuestions } from '../Services/API';
 
 export const GET_API = 'GET_API';
 export const ERROR = 'ERROR';
-
+const CORRECT = 'CORRECT';
 export const getToken = (param) => ({
   type: GET_API,
   payload: param,
@@ -46,7 +46,7 @@ export const pointsAction = (points) => ({
 );
 
 export const correctAction = (correct) => ({
-  type: 'CORRECT',
+  type: CORRECT,
   payload: {
     correct,
   },
