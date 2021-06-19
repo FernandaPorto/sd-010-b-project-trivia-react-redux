@@ -24,13 +24,16 @@ class GamePage extends Component {
       indexState: 0,
       loading: false,
       seconds: 35,
+      rightAnswer: true,
     };
 
     this.getToken = this.getToken.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.isLoading = this.isLoading.bind(this);
+    // this.isLoading = this.isLoading.bind(this);
     this.interval = this.interval.bind(this);
     this.questionAndAnswer = this.questionAndAnswer.bind(this);
+    this.correctAnswer = this.correctAnswer.bind(this);
+    this.wrongAnswer = this.wrongAnswer.bind(this);
   }
 
   componentDidMount() {
@@ -70,7 +73,12 @@ class GamePage extends Component {
     this.setState((previousState) => ({ indexState: previousState.indexState + 1 }));
   }
 
-  isLoading() {
+  correctAnswer() {
+    this.setState({ loading: true });
+    this.setState({ rightAnswer: false });
+  }
+
+  wrongAnswer() {
     this.setState({ loading: true });
   }
 
@@ -104,8 +112,8 @@ class GamePage extends Component {
         <option
           className={ loading ? 'correct-answer' : '' }
           data-testid="correct-answer"
-          onKeyDown={ this.isLoading }
-          onClick={ this.isLoading }
+          onKeyDown={ this.correctAnswer }
+          onClick={ this.correctAnswer }
         >
           {categories[indexState].correct_answer}
         </option>
@@ -113,7 +121,7 @@ class GamePage extends Component {
         && categories[indexState].incorrect_answers.map((item, index) => (
           <option
             className={ loading ? 'incorrect-answers' : '' }
-            onClick={ this.isLoading }
+            onClick={ this.wrongAnswer }
             data-testid={ `wrong-answer-${index}` }
             key={ index }
           >
@@ -125,7 +133,7 @@ class GamePage extends Component {
   }
 
   render() {
-    const { seconds } = this.state;
+    const { seconds, rightAnswer } = this.state;
     return (
       <div>
         <Header />
@@ -133,7 +141,11 @@ class GamePage extends Component {
         { seconds > 0 ? `${seconds}` : '' }
         <ButtonFeedback />
         <ButtonLogin />
-        <ButtonNextQuestion handleChange={ this.handleChange } />
+        <ButtonNextQuestion
+          rightAnswer={ rightAnswer }
+          handleChange={ this
+            .handleChange }
+        />
       </div>
     );
   }

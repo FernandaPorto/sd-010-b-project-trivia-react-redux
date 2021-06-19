@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 
 class ButtonNextQuestion extends React.Component {
   render() {
-    const { handleChange } = this.props;
+    const { handleChange, rightAnswer } = this.props;
     return (
       <Link to="/gamepage">
-        <button type="button" onClick={ handleChange }>
+        <button type="button" disabled={ rightAnswer } onClick={ handleChange }>
           Próxima pergunta
         </button>
       </Link>
@@ -18,6 +18,7 @@ class ButtonNextQuestion extends React.Component {
 
 ButtonNextQuestion.propTypes = {
   handleChange: PropTypes.func.isRequired,
+  rightAnswer: PropTypes.bool.isRequired,
 };
 
 export default ButtonNextQuestion;
