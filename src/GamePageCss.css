@@ -5,3 +5,7 @@
 .incorrect-answers {
   border: 3px solid rgb(255, 0, 0, 1);
 }
+
+.score {
+  border: 5px solid rgb(28, 0, 0, 1);
+}

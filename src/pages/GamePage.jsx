@@ -98,7 +98,6 @@ class GamePage extends Component {
     }
     this.setState({ loading: true });
     this.setState({ answered: false });
-
     this.componentWillUnmount();
   }
 
@@ -165,13 +164,16 @@ class GamePage extends Component {
 
   render() {
     const { seconds, answered } = this.state;
-    // const { totalScore } = this.props;
+    const { totalScore } = this.props;
+    console.log(totalScore);
     return (
       <div>
         <Header />
         { this.questionAndAnswer() }
         { seconds > 0 ? `${seconds}` : '' }
-        {/* { totalScore } */}
+        <p className="score">
+          { totalScore }
+        </p>
         <ButtonFeedback />
         <ButtonLogin />
         <ButtonNextQuestion
@@ -189,11 +191,11 @@ class GamePage extends Component {
 
 GamePage.propTypes = {
   playerScore: PropTypes.func.isRequired,
-  // totalScore: PropTypes.number.isRequired,
+  totalScore: PropTypes.number.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  playerScore: (score) => dispatch(scoreAction(score)),
+  playerScore: (score) => dispatch(scoreAction([score])),
 });
 
 const mapStateToProps = (state) => ({

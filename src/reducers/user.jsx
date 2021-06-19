@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   name: '',
   email: '',
   gravatar: '',
-  userScore: 0,
+  userScore: [0],
 };
 
 export default function user(state = INITIAL_STATE, action) {
@@ -24,7 +24,7 @@ export default function user(state = INITIAL_STATE, action) {
   case SCORE:
     return {
       ...state,
-      userScore: action.payload.score,
+      userScore: parseInt(state.userScore, 10) + parseInt(action.payload, 10),
 
     };
   default:
