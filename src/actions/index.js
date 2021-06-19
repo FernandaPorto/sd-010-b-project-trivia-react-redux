@@ -1,5 +1,6 @@
 export const LOGIN = 'login';
 export const GRAVATAR = 'gravatar';
+export const SCORE = 'score';
 
 export function loginAction({ name, email }) {
   return ({
@@ -15,6 +16,13 @@ export function gravatarAction(gravatar) {
   return ({
     type: GRAVATAR,
     gravatar,
+  });
+}
+
+export function scoreAction(score) {
+  return ({
+    type: SCORE,
+    payload: score,
   });
 }
 

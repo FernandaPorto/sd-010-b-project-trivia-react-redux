@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { loginAction } from '../actions';
 import ButtonSettings from '../components/ButtonSettings';
 import { setToken } from './GamePage';
+import logo from '../trivia.png';
 
 class LoginPage extends Component {
   constructor(props) {
@@ -56,44 +57,46 @@ class LoginPage extends Component {
       return <Redirect to="/gamepage" />;
     }
     return (
-      <div>
-        <label htmlFor="name">
-          <input
-            id="name"
-            type="text"
-            data-testid="input-player-name"
-            placeholder="insert your name"
-            value={ name }
-            onInput={ emailPlay }
-            onChange={ ({ target: { value } }) => {
-              this.setState({ name: value }, () => this.validationFields());
-            } }
-            required
-          />
-        </label>
-        <div />
-        <label htmlFor="email">
-          <input
-            id="email"
-            data-testid="input-gravatar-email"
-            type="email"
-            placeholder="insert your email"
-            value={ emailAdress }
-            onChange={ ({ target: { value } }) => {
-              this.setState({ emailAdress: value }, () => this.validationFields());
-            } }
-            required
-          />
-        </label>
-        <button
-          type="button"
-          disabled={ buttonEnabler }
-          data-testid="btn-play"
-          onClick={ () => this.onClick() }
-        >
-          Jogar
-        </button>
-        <ButtonSettings />
+      <div className="App">
+        <header className="App-header">
+          <img src={ logo } className="App-logo" alt="logo" />
+          <label htmlFor="name">
+            <input
+              id="name"
+              type="text"
+              data-testid="input-player-name"
+              placeholder="insert your name"
+              value={ name }
+              onInput={ emailPlay }
+              onChange={ ({ target: { value } }) => {
+                this.setState({ name: value }, () => this.validationFields());
+              } }
+              required
+            />
+          </label>
+          <label htmlFor="email">
+            <input
+              id="email"
+              data-testid="input-gravatar-email"
+              type="email"
+              placeholder="insert your email"
+              value={ emailAdress }
+              onChange={ ({ target: { value } }) => {
+                this.setState({ emailAdress: value }, () => this.validationFields());
+              } }
+              required
+            />
+          </label>
+          <button
+            type="button"
+            disabled={ buttonEnabler }
+            data-testid="btn-play"
+            onClick={ () => this.onClick() }
+          >
+            Jogar
+          </button>
+          <ButtonSettings />
+        </header>
       </div>
     );
   }
