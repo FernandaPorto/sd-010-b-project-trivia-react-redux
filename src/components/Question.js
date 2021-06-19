@@ -1,49 +1,75 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import { receiveToken, requestQuestions,
   toggleStatusCronometer, receiveScore } from '../actions';
 import '../style/question.css';
-import Cronometer from './Cronometer';
 import { updateAssertionsAndScore } from '../helpers/localStorage';
+
+const MAX_INDEX = 4;
 
 class Question extends Component {
   constructor() {
     super();
     this.state = {
       indexQuestion: 0,
+      showBorders: false,
+      disabledOptions: false,
+      showNextButton: false,
     };
     this.handleClick = this.handleClick.bind(this);
-    this.updateButtonsStyle = this.updateButtonsStyle.bind(this);
     this.handleNext = this.handleNext.bind(this);
+    this.startCronometer = this.startCronometer.bind(this);
+    this.stopCronometer = this.stopCronometer.bind(this);
+    this.resetButtons = this.resetButtons.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const { getQuestions, getToken, token } = this.props;
     getToken();
-    getQuestions(token);
+    await getQuestions(token);
+    this.startCronometer();
   }
 
-  updateButtonsStyle() {
-    const correctButton = document.querySelector('button[data-testid="correct-answer"]');
-    const wrongButton = document.querySelectorAll('button[data-testid*="wrong-answer"]');
-    const nextButton = document.querySelector('button[data-testid="btn-next"]');
-    correctButton.classList.add('correct');
-    correctButton.disabled = true;
-    wrongButton.forEach((button) => {
-      button.classList.add('incorrect');
-      button.disabled = true;
+  componentDidUpdate(_, prevState) {
+    const MIN_SECONDS = 1;
+    if (prevState.seconds === MIN_SECONDS) {
+      this.stopCronometer();
+      this.resetButtons();
+    }
+  }
+
+  resetButtons() {
+    this.setState({
+      showBorders: false,
+      disabledOptions: true,
+      showNextButton: true,
     });
-    nextButton.hidden = false;
   }
 
-  async handleClick({ target: { id } }) {
-    const { setStatusCronometer } = this.props;
-    this.updateButtonsStyle();
-    await setStatusCronometer('off');
+  startCronometer() {
+    this.setState({ seconds: 30 });
+    const ONE_SECOND = 1000; // 1 second in miliseconds
+    this.cronometerInterval = setInterval(() => {
+      this.setState((state) => ({ seconds: state.seconds - 1 }));
+    }, ONE_SECOND);
+  }
+
+  stopCronometer() {
+    clearInterval(this.cronometerInterval);
+  }
+
+  handleClick({ target: { id } }) {
+    this.setState({
+      showBorders: true,
+      disabledOptions: true,
+      showNextButton: true,
+    });
+    this.stopCronometer();
     if (id === 'correct-answer') {
-      const { indexQuestion } = this.state;
-      const { seconds, updateScore, questions } = this.props;
+      const { indexQuestion, seconds } = this.state;
+      const { updateScore, questions } = this.props;
       const { difficultyLevel } = questions[indexQuestion];
       updateAssertionsAndScore(difficultyLevel, seconds);
       updateScore();
@@ -51,22 +77,24 @@ class Question extends Component {
   }
 
   handleNext() {
-    this.setState((previousState) => ({
-      indexQuestion: previousState.indexQuestion + 1,
+    this.setState((prevState) => ({
+      indexQuestion: prevState.indexQuestion + 1,
+      showBorders: false,
+      disabledOptions: false,
+      showNextButton: false,
     }));
-    const correctButton = document.querySelector('button[data-testid="correct-answer"]');
-    const wrongButton = document.querySelectorAll('button[data-testid*="wrong-answer"]');
-    correctButton.classList.remove('correct');
-    correctButton.disabled = false;
-    wrongButton.forEach((button) => {
-      button.classList.remove('incorrect');
-      button.disabled = false;
-    });
+    this.startCronometer();
   }
 
   render() {
     const { questions } = this.props;
-    const { indexQuestion } = this.state;
+    const {
+      indexQuestion, seconds, showBorders, disabledOptions, showNextButton,
+    } = this.state;
+
+    if (indexQuestion > MAX_INDEX) {
+      return <Redirect to="/feedback" />;
+    }
 
     if (questions.length) {
       const { category, question, answers } = questions[indexQuestion];
@@ -82,20 +110,19 @@ class Question extends Component {
                 data-testid={ `${dataTestId}` }
                 key={ index }
                 id={ `${dataTestId}` }
+                disabled={ disabledOptions }
+                className={ showBorders && (
+                  dataTestId.match(/wrong/g) ? 'incorrect' : 'correct') }
               >
                 {answer}
               </button>
             ))}
           </div>
-          <Cronometer />
-          <button
-            type="button"
-            data-testid="btn-next"
-            hidden
-            onClick={ this.handleNext }
-          >
-            Próxima
-          </button>
+          <div>{ seconds }</div>
+          {showNextButton && (
+            <button type="button" data-testid="btn-next" onClick={ this.handleNext }>
+              Próxima
+            </button>)}
         </section>
       );
     }
@@ -123,7 +150,5 @@ Question.propTypes = {
   getQuestions: propTypes.func.isRequired,
   getToken: propTypes.func.isRequired,
   token: propTypes.string.isRequired,
-  setStatusCronometer: propTypes.func.isRequired,
-  seconds: propTypes.number.isRequired,
   updateScore: propTypes.func.isRequired,
 };
