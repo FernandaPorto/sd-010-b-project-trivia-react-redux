@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { addUserInfo, fetchToken, resetSomething } from '../redux/actions';
 import { setOnLocalStorage } from '../services/helpers/localStorage';
-
+import triviaBigodesLogo from '../assets/images/headerBigodes.png';
+import "../style/Login.css"
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -56,25 +57,49 @@ class Login extends Component {
   render() {
     const { name, email } = this.state;
     return (
-      <div className="flex justify-start">
-        <form>
-          <input
-            data-testid="input-player-name"
-            name="name"
-            value={ name }
-            placeholder="Seu Nome"
-            onChange={ this.handleChange }
+      <div
+        className="flex justify-center items-center w-screen
+        h-screen bg-light_gray_color"
+      >
+        <form
+          className="flex flex-col items-center bg-primary_color
+          shadow-lg min-w-1/4 min-h-1/4 rounded-lg"
+        >
+          <img
+            className="w-40 mt-8 mb-10"
+            src={ triviaBigodesLogo }
+            alt="Logo trivia Bigodes"
           />
+          <div className="flex flex-col mb-4 w-2/3 login__control">
+            <input
+              data-testid="input-player-name"
+              className="rounded pl-2 border border-light_gray_color login__input"
+              name="name"
+              id="name"
+              value={ name }
+              placeholder="."
+              onChange={ this.handleChange }
+            />
+            <label className="login__label" htmlFor="name">Seu Nome</label>
+          </div>
+          <div className="flex flex-col mb-4 w-2/3 login__control">
           <input
             data-testid="input-gravatar-email"
             type="email"
+            className="rounded pl-2 border border-light_gray_color login__input"
             name="email"
+            id="email"
             value={ email }
-            placeholder="Seu Email"
+            placeholder="."
             onChange={ this.handleChange }
           />
+          <label className="login__label" htmlFor="email">Seu Email</label>
+          </div>
+          
+          <div className="w-2/3 flex justify-between mb-10">
           <button
             type="button"
+            className="bg-secundary_color text-white px-4 py-1 rounded login__button-effects"
             data-testid="btn-play"
             disabled={ this.verifyLogin() }
             onClick={ () => this.saveInLocalStorage() }
@@ -84,11 +109,13 @@ class Login extends Component {
           <Link to="/config">
             <button
               type="button"
+              className="bg-secundary_color text-white px-4 py-1 rounded login__button-effects"
               data-testid="btn-settings"
             >
               Configurações
             </button>
           </Link>
+          </div>
         </form>
       </div>
     );

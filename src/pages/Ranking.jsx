@@ -26,11 +26,11 @@ class Ranking extends Component {
             Inicio
           </button>
         </Link>
-        <ul>
+        <ul className="flex justify-center items-center w-screen h-screen flex-col">
           {this.handlesort().map((element, index) => {
             const { name, score, picture } = element;
             return (
-              <li key={ index }>
+              <li key={ index } className="flex-nowrap">
                 <span data-testid={ `player-score-${index}` }>{score}</span>
                 {' '}
                 <span data-testid={ `player-name-${index}` }>{name}</span>
@@ -39,7 +39,6 @@ class Ranking extends Component {
               </li>);
           })}
         </ul>
-
       </div>
     );
   }

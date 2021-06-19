@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 // import { connect } from 'react-redux';
-
+import '../style/GloomEffect.css';
 class ButtonFeed extends Component {
   constructor() {
     super();
@@ -25,6 +25,7 @@ class ButtonFeed extends Component {
         <button
           type="button"
           data-testid="btn-play-again"
+          className="main-div main-div2"
           onClick={ this.redirectLogin }
         >
           Jogar novamente

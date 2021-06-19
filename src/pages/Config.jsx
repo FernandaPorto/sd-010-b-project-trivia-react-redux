@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { changeConfig } from '../redux/actions';
+import '../style/Moustache.css';
 
 const INITIAL_STATE = {
   categories: [],
@@ -93,6 +94,7 @@ class Config extends Component {
 
   render() {
     return (
+      <>
       <div>
         <section>
           <title data-testid="settings-title">
@@ -104,6 +106,7 @@ class Config extends Component {
         </section>
         <Link to="/"> Voltar</Link>
       </div>
+     </>
     );
   }
 }

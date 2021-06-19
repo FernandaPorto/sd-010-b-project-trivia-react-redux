@@ -1,5 +1,23 @@
+
 @tailwind base;
 
 @tailwind components;
 
 @tailwind utilities;
+
+/* black #0D0D0D
+yellow morta #D9CC1E
+yellow primary #F2E529
+gray secundary #BFBBBA */
+.root,
+#root,
+#docs-root {
+  --primary_color: #F2E529 ;
+  --secundary_color: #0D0D0D;
+  --yellow_dead_color: #D9CC1E;
+  --light_gray_color: #A9A9A9;
+}
+
+body {
+
+}

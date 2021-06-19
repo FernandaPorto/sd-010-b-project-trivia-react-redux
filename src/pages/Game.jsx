@@ -9,7 +9,7 @@ import {
 import { updateLocalStorage, setOnLocalStorage,
   getFromLocalStorage } from '../services/helpers/localStorage';
 import Cronometer from '../components/Cronometer';
-
+import '../style/GloomEffect.css'
 const INITIAL_STATE = {
   answered: false,
   assertions: 0,
@@ -107,7 +107,7 @@ class Game extends Component {
         type="button"
         onClick={ () => this.checkAnswer(true) }
         data-testid="correct-answer"
-        className={ answered && 'correctAnswer' }
+        className={ `w-1/3 m-2 bg-yellow_dead_color rounded focus:outline-none main-div1::before ${answered && 'correctAnswer'}` }
         disabled={ isDisabled }
       >
         {atob(correct)}
@@ -122,7 +122,7 @@ class Game extends Component {
         type="button"
         onClick={ () => this.checkAnswer() }
         data-testid={ `wrong-answer-${index}` }
-        className={ answered && 'incorrectAnswer' }
+        className={ `w-1/3 m-2 bg-yellow_dead_color rounded focus:outline-none ${answered && 'incorrectAnswer'}` }
         disabled={ isDisabled }
       >
         {atob(incorrect)}
@@ -133,13 +133,14 @@ class Game extends Component {
   handleButton() {
     return (
       <button
+        className="text-5xl bg-primary_color px-6 py-1 rounded "
         type="button"
         data-testid="btn-next"
         onClick={ () => {
           this.nextQuestion();
         } }
       >
-        Próxima
+        Next
       </button>
     );
   }
@@ -166,21 +167,38 @@ class Game extends Component {
       const { answered } = this.state;
       const { category, question } = questAPI[idAPI];
       return (
-        <div>
+        <div className="flex-col">
           <Header />
-          <h2 data-testid="question-category">{atob(category)}</h2>
-          <h3 data-testid="question-text">{atob(question)}</h3>
-          <section>{this.renderAlternatives()}</section>
-          <Cronometer
-            answered={ answered }
-            disabled={ this.checkDisabled }
-            checkAnswer={ this.checkAnswer }
-          />
-          {nextButton && this.handleButton()}
+          <div className="flex-col grid justify-items-center bg-secundary_color w-screen
+                 h-screen game__body">
+            <h3 className="pt-12 text-3xl text-gray-50" data-testid="question-text">{atob(question)}</h3>
+            <section className="flex flex-wrap w-3/4 justify-center text-3xl text-gray-50">{this.renderAlternatives()}</section>
+            <div className="flex w-screen justify-between">
+              <div className="w-1/3">
+               <h3 className="block	text-white mt-44 ml-20 text-lg">Category:</h3>
+               <h4 className="items-center text-3xl text-gray-50 ml-20" data-testid="question-category">{atob(category)}</h4>
+              </div>
+              <div className="w-1/3 flex items-center justify-center">
+                <Cronometer
+                  answered={ answered }
+                  disabled={ this.checkDisabled }
+                  checkAnswer={ this.checkAnswer }
+                />
+              </div>
+              <div className="w-1/3 flex items-center justify-center">
+                <p>
+                  .
+                  {nextButton && this.handleButton()}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       );
     }
-    return <h1>Loading...</h1>;
+    return <div className="moustache__container">
+            <div className="moustache__anim"></div>
+          </div>;
   }
 }
 

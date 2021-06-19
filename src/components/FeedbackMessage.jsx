@@ -68,10 +68,10 @@ class FeedbackMessage extends Component {
     // const scoreMessage = this.messageScore(score);
     // const assertionMessage = this.messageFeedback(assertions);
     return (
-      <>
-        <p data-testid="feedback-total-score">{summedScore}</p>
-        <p data-testid="feedback-total-question">{assertions}</p>
-      </>
+      <div className="flex justify-center ">
+        <p data-testid="feedback-total-score" className="p-16">{` Pontuação ${summedScore}`}</p>
+        <p data-testid="feedback-total-question" className="p-16">{` Questões Acertadas ${assertions}`}</p>
+      </div>
     );
   }
 

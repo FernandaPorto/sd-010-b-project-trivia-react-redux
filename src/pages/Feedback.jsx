@@ -5,8 +5,6 @@ import Header from '../components/Header';
 import BtnRanking from '../components/Buttons';
 import FeedbackMessage from '../components/FeedbackMessage';
 import ButtonFeed from '../components/ButtonFeed';
-// import { connect } from 'react-redux';
-
 class Feedback extends Component {
   constructor(props) {
     super(props);
@@ -26,12 +24,15 @@ class Feedback extends Component {
       <>
         <Header />
         <div>
-          <h1 data-testid="feedback-text">
+          <h1 data-testid="feedback-text" className="flex flex-col items-center bg-primary_color
+          shadow-lg min-w-1/4 min-h-1/4 rounded-lg">
             {this.renderFinalMessage()}
           </h1>
-          <FeedbackMessage />
+           <FeedbackMessage />
+          <div className="flex justify-center ">
           <BtnRanking />
           <ButtonFeed />
+          </div>
         </div>
       </>
     );

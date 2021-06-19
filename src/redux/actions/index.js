@@ -83,8 +83,8 @@ export const changeConfig = (value, name) => ({
 
 export function fetchQuestions({ category, difficulty, type }) {
   const catConfig = category === 'any' ? '' : `category=${category}&`;
-  const difConfig = category === 'any' ? '' : `difficulty=${difficulty}&`;
-  const typeConfig = category === 'any' ? '' : `type=${type}&`;
+  const difConfig = difficulty === 'any' ? '' : `difficulty=${difficulty}&`;
+  const typeConfig = type === 'any' ? '' : `type=${type}&`;
   console.log(category, difficulty, type);
   return async (dispatch) => {
     try {
