@@ -27,6 +27,7 @@ class GamePage extends Component {
       loading: false,
       seconds: 30,
       answered: true,
+      button: false,
     };
 
     this.getToken = this.getToken.bind(this);
@@ -98,12 +99,14 @@ class GamePage extends Component {
     }
     this.setState({ loading: true });
     this.setState({ answered: false });
+    this.setState({ button: true });
     this.componentWillUnmount();
   }
 
   wrongAnswer() {
     this.setState({ loading: true });
     this.setState({ answered: false });
+    this.setState({ answered: true });
     this.componentWillUnmount();
   }
 
@@ -163,7 +166,7 @@ class GamePage extends Component {
   }
 
   render() {
-    const { seconds, answered } = this.state;
+    const { seconds, answered, button } = this.state;
     return (
       <div>
         <Header />
@@ -171,14 +174,14 @@ class GamePage extends Component {
         { seconds > 0 ? `Timer:${seconds}` : '' }
         <ButtonFeedback />
         <ButtonLogin />
-        <ButtonNextQuestion
+
+        { button ? <ButtonNextQuestion
           answered={ answered }
-          handleChange={ this
-            .handleChange }
+          handleChange={ this.handleChange }
           nextQuestion={ this.nextQuestion }
           interval={ this.interval }
-
         />
+          : ''}
       </div>
     );
   }
