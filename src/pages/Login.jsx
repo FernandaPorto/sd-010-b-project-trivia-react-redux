@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import PropTypes from 'prop-types';
-import { loginAction } from '../actions';
-import ButtonSettings from '../components/ButtonSettings';
 import { setToken } from './GamePage';
+import ButtonSettings from '../components/ButtonSettings';
+import { loginAction } from '../actions';
 import logo from '../trivia.png';
 
 class LoginPage extends Component {
@@ -38,6 +38,7 @@ class LoginPage extends Component {
     // const { firstDispatch } = this.props;
     // firstDispatch(emailAdress, passwordData);
     this.setState({ shouldRedirect: true });
+    localStorage.setItem('name', JSON.stringify(name));
     await setToken();
   }
 
@@ -58,7 +59,7 @@ class LoginPage extends Component {
     }
     return (
       <div className="App">
-        <header className="App-header">
+        <main className="Login">
           <img src={ logo } className="App-logo" alt="logo" />
           <label htmlFor="name">
             <input
@@ -96,7 +97,7 @@ class LoginPage extends Component {
             Jogar
           </button>
           <ButtonSettings />
-        </header>
+        </main>
       </div>
     );
   }

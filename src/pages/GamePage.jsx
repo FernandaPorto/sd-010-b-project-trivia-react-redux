@@ -105,6 +105,7 @@ class GamePage extends Component {
     this.setState({ loading: true });
     this.setState({ answered: false });
     this.setState({ button: true });
+    localStorage.setItem('score', JSON.stringify(playerScore));
     this.componentWillUnmount();
   }
 
@@ -172,20 +173,23 @@ class GamePage extends Component {
   render() {
     const { seconds, answered, button } = this.state;
     return (
-      <div>
+      <div className="App">
         <Header />
-        { this.questionAndAnswer() }
-        { seconds > 0 ? `Timer:${seconds}` : '' }
-        <ButtonFeedback />
-        <ButtonLogin />
-
-        { button ? <ButtonNextQuestion
-          answered={ answered }
-          handleChange={ this.handleChange }
-          nextQuestion={ this.nextQuestion }
-          interval={ this.interval }
-        />
-          : ''}
+        <div className="Gamepage">
+          { this.questionAndAnswer() }
+        </div>
+        <div className="Buttons">
+          { seconds > 0 ? `Timer:${seconds}` : '' }
+          <ButtonLogin />
+          <ButtonFeedback />
+          { button ? <ButtonNextQuestion
+            answered={ answered }
+            handleChange={ this.handleChange }
+            nextQuestion={ this.nextQuestion }
+            interval={ this.interval }
+          />
+            : ''}
+        </div>
       </div>
     );
   }
