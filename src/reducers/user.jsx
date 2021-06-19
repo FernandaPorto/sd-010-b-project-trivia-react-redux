@@ -10,9 +10,11 @@ const INITIAL_STATE = {
     score: 0,
     gravatarEmail: '',
   },
-  ranking:
-  [
-    { name: '', score: 0, picture: '' },
+  ranking: [
+    { name: '',
+      score: 0,
+      picture: '',
+    },
   ],
 };
 
@@ -25,9 +27,9 @@ export default function user(state = INITIAL_STATE, action) {
       email: action.payload.email,
       player: {
         name: action.payload.name,
-        assertions: action.payload.assertions,
-        score: action.payload.score,
-        gravatarEmail: action.payload.email,
+        assertions: action.assertions,
+        score: action.score,
+        gravatarEmail: action.payload.gravatar,
       },
       ranking: {
         name: action.payload.name,
