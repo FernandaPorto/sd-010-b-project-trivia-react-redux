@@ -28,7 +28,7 @@ class FeedBackHeader extends Component {
 
   render() {
     return (
-      <main>
+      <main className="main-header">
         <section data-testid="header-profile-picture">
           <img src={ `https://www.gravatar.com/avatar/${this.userEmail()}` } alt="userimg" />
         </section>

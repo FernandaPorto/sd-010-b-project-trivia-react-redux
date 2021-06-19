@@ -67,12 +67,12 @@ class FeedBackMain extends Component {
           pontos!
         </p>
         <Link to="/" data-testid="btn-play-again">
-          <button type="button">
+          <button className="btn" type="button">
             Jogar Novamente
           </button>
         </Link>
         <Link to="/ranking" data-testid="btn-ranking">
-          <button type="button">
+          <button className="btn" type="button">
             Ver Ranking
           </button>
         </Link>
@@ -83,10 +83,10 @@ class FeedBackMain extends Component {
 
   render() {
     return (
-      <section>
+      <main className="main-feedback">
         {this.renderFeedback()}
         {this.renderFinal()}
-      </section>
+      </main>
     );
   }
 }

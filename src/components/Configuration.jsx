@@ -5,7 +5,7 @@ class Configuration extends Component {
   render() {
     const { config } = this.props;
     return (
-      <div>
+      <main className="main-config">
         <h1 data-testid="settings-title">
           Configuração do jogo
         </h1>
@@ -17,7 +17,7 @@ class Configuration extends Component {
         >
           Ok
         </button>
-      </div>
+      </main>
     );
   }
 }

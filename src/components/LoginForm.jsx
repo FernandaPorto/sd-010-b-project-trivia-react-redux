@@ -60,9 +60,9 @@ class LoginForm extends Component {
     const { config } = this.props;
     const { redirect } = this.state;
     return (
-      <main>
+      <main className="main-login">
         <h1>Trivia</h1>
-        <form>
+        <form className="main-form">
           <label htmlFor="name">
             Nome
             <input

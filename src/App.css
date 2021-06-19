@@ -1,57 +1,166 @@
-/* .App {
-  text-align: center;
+body {
+  background: rgb(82, 81, 81);
+
+  /* background: linear-gradient(to top, #16222a, #054d70); */
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+    sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+  width: 100%;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.red-border {
-  border: 1px solid red;
-}
-
-.green-border {
-  border: 1px solid green;
-}
-
-@media ( prefers-reduced-motion : no-preference ) {
-
-  .App-logo {
-    animation: shake infinite 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-  }
-}
-
-.App-header {
+/* Página login */
+.main-login {
   align-items: center;
-  background-color: #282c34;
   color: white;
   display: flex;
   flex-direction: column;
-  font-size: calc(10px + 2vmin);
-  justify-content: center;
-  min-height: 100vh;
+  height: 100%;
 }
 
-.App-link {
-  color: #61dafb;
+.main-form {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
 }
 
-@keyframes shake {
+input {
+  border: 0;
+  color: black;
+  display: flex;
+  font: inherit;
+  margin: 0;
+  outline: 0;
+  padding: 0;
+}
 
-  10%, 90% {
-    transform: translate3d(-1px, 0, 0);
-  }
+.main-config button {
+  background-color: #00b9bc;
+  color: #eee;
+  display: flex;
+  font-weight: 700;
+  justify-content: space-around;
+  margin: 5px;
+  text-align: center;
+  text-transform: uppercase;
+}
 
-  20%, 80% {
-    transform: translate3d(2px, 0, 0);
-  }
+.main-config button:focus , .main-config button:hover {
+  background-color: #197071;
+}
 
-  30%, 50%, 70% {
-    transform: translate3d(-4px, 0, 0);
-  }
+.main-form button:enabled {
+  background-color: #00b9bc;
+  color: #eee;
+  display: flex;
+  font-weight: 700;
+  justify-content: space-around;
+  margin: 5px;
+  text-align: center;
+  text-transform: uppercase;
+}
 
-  40%, 60% {
-    transform: translate3d(4px, 0, 0);
-  }
-} */
+.main-form button:enabled:focus , .main-form button:enabled:hover {
+  background-color: #197071;
+}
+
+.main-config {
+  align-items: center;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Página jogo */
+.main-header {
+  align-items: center;
+  color: white;
+  display: flex;
+  justify-content: space-around;
+}
+
+.main-game {
+  color: white;
+}
+
+.questions {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+}
+
+.answers {
+  display: inline-grid;
+  grid-gap: 40px 80px;
+  margin-bottom: 20px;
+}
+
+.grid-item:enabled {
+  background-color: #9ca333;
+  color: #eee;
+  display: flex;
+  font-weight: 700;
+  justify-content: space-around;
+  margin: 5px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.grid-item:disabled {
+  background-color: silver;
+  color: #eee;
+  display: flex;
+  font-weight: 700;
+  justify-content: space-around;
+  margin: 5px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.grid-item:enabled:focus , .grid-item:enabled:hover {
+  background-color: #7d850e;
+}
+
+/* Feedback */
+.main-feedback {
+  align-items: center;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-top: 50px;
+}
+
+.btn {
+  background-color: #00b9bc;
+  color: #eee;
+  display: flex;
+  font-weight: 700;
+  justify-content: space-around;
+  margin: 5px;
+  text-align: center;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+.btn:hover , .btn:focus {
+  background-color: #197071;
+}
+
+/* Ranking */
+.main-ranking {
+  color: white;
+}
+
+.rank {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+hr {
+  width: 100%;
+}

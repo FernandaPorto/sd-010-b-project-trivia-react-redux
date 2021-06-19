@@ -106,6 +106,7 @@ class GameTrivia extends React.Component {
       return (
         <Link to="/feedback">
           <button
+            className="btn"
             data-testid="btn-next"
             type="button"
             onClick={ this.next }
@@ -120,6 +121,7 @@ class GameTrivia extends React.Component {
     }
     return (
       <button
+        className="btn"
         data-testid="btn-next"
         type="button"
         onClick={ this.next }
@@ -139,34 +141,37 @@ class GameTrivia extends React.Component {
     const questions = getTriviaQuestions.results.results;
     if (questions) {
       return questions.filter((_questions, index) => index === next).map((question) => (
-        <section key={ question.index }>
+        <section className="questions" key={ question.index }>
           <h2 data-testid="question-category">{question.category}</h2>
           <h3 data-testid="question-text">{question.question}</h3>
-          <button
-            type="button"
-            id="correct-answer"
-            data-testid="correct-answer"
-            value="correct-answer"
-            onClick={ this.handleClick }
-            style={ (colorQuestions) ? { border: '3px solid rgb(6, 240, 15)' } : {} }
-            disabled={ disable }
-          >
-            {question.correct_answer}
-          </button>
-          {question.incorrect_answers.map((incorrect) => (
+          <section className="answers">
             <button
-              onClick={ this.handleClick }
-              id="wrong-answer"
-              key={ incorrect.index }
+              className="grid-item"
               type="button"
-              value="wrong-answer"
-              data-testid={ `wrong-answer-${incorrect.index}` }
-              style={ (colorQuestions) ? { border: '3px solid rgb(255, 0, 0)' } : {} }
+              id="correct-answer"
+              data-testid="correct-answer"
+              value="correct-answer"
+              onClick={ this.handleClick }
+              style={ (colorQuestions) ? { border: '3px solid rgb(6, 240, 15)' } : {} }
               disabled={ disable }
             >
-              {incorrect}
-            </button>))}
-          <section />
+              {question.correct_answer}
+            </button>
+            {question.incorrect_answers.map((incorrect) => (
+              <button
+                className="grid-item"
+                onClick={ this.handleClick }
+                id="wrong-answer"
+                key={ incorrect.index }
+                type="button"
+                value="wrong-answer"
+                data-testid={ `wrong-answer-${incorrect.index}` }
+                style={ (colorQuestions) ? { border: '3px solid rgb(255, 0, 0)' } : {} }
+                disabled={ disable }
+              >
+                {incorrect}
+              </button>))}
+          </section>
           { this.renderButton() }
         </section>
       ));
@@ -176,7 +181,7 @@ class GameTrivia extends React.Component {
   render() {
     const { contagem } = this.state;
     return (
-      <section>
+      <main className="main-game">
         <h1>Trivia</h1>
         <h3>
           Tempo:
@@ -185,7 +190,7 @@ class GameTrivia extends React.Component {
           </span>
         </h3>
         { this.renderQuestions() }
-      </section>
+      </main>
     );
   }
 }

@@ -5,8 +5,9 @@ export default class Ranking extends Component {
   render() {
     const getRanking = JSON.parse(localStorage.getItem('ranking'));
     return (
-      <section>
+      <main className="main-ranking">
         <h1 data-testid="ranking-title"> Ranking </h1>
+
         {getRanking.sort((a, b) => {
           if (a.score > b.score) {
             const DECRESCENTE = -1;
@@ -18,14 +19,14 @@ export default class Ranking extends Component {
           // a must be equal to b
           return 0;
         }).map(((user) => (
-          <section key={ user.index }>
-            Usuário:
+          <section className="rank" key={ user.index }>
+            <span>Usuário:</span>
             {' '}
             <span data-testid={ `player-name-${user.index}` }>
               {user.name}
             </span>
             <br />
-            Score:
+            <span>Score:</span>
             {' '}
             <span data-testid={ `player-score-${user.index}` }>
               {user.score}
@@ -38,12 +39,13 @@ export default class Ranking extends Component {
           </section>
         )
         ))}
+
         <Link to="/">
-          <button data-testid="btn-go-home" type="button">
+          <button className="btn" data-testid="btn-go-home" type="button">
             Voltar para Home
           </button>
         </Link>
-      </section>
+      </main>
     );
   }
 }
