@@ -1,13 +1,21 @@
+import { getGravatar } from './getGravatar';
+
 function addInfoToLocalStorage(name, email, score, numberOfAssertions) {
   const objLocalStorage = {
     player: {
       name,
       assertions: numberOfAssertions,
       score,
-      gravatarEmail: email,
+      gravatarEmail: getGravatar(email),
     },
   };
-  localStorage.setItem('state', JSON.stringify(objLocalStorage)); // Referência https://www.horadecodar.com.br/2020/07/21/como-salvar-um-objeto-na-localstorage/
+  const verifyItem = JSON.parse(localStorage.getItem('state'));
+  const setItem = localStorage.setItem('state', JSON.stringify(objLocalStorage));
+  const result = !verifyItem ? setItem : verifyItem;
+  if (!result) {
+    localStorage.setItem('state', JSON.stringify([objLocalStorage]));
+  } else {
+    localStorage.setItem('state', JSON.stringify([...result, objLocalStorage]));
+  }
 }
-
 export default addInfoToLocalStorage;

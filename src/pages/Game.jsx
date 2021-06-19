@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchQuestions } from '../redux/actions';
 import combineArray from '../functions/combineArray';
-import addInfoToLocalStorage from '../functions/addInfoToStorage';
 import nexButton from '../functions/nextButton';
 import { changeClassNameCorrect,
   changeClassNameInCorrect } from '../functions/classNameFunction';
@@ -127,11 +126,10 @@ class Game extends React.Component {
   }
 
   render() {
-    const { score, timerInitial, numberOfAssertions } = this.state;
+    const { score, timerInitial } = this.state;
     const { questions } = this.props;
     const { location: { aboutProps: { name: { name },
       email: { email } } } } = this.props;
-    addInfoToLocalStorage(name, email, score, numberOfAssertions);
     return (
       <>
         {getPerfilGravatar(email, name, score)}

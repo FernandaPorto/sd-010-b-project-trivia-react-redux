@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import addInfoToLocalStorage from '../functions/addInfoToStorage';
 
 class Feedback extends React.Component {
   constructor() {
@@ -12,6 +13,12 @@ class Feedback extends React.Component {
     };
     this.redirectToHome = this.redirectToHome.bind(this);
     this.redirectToRanking = this.redirectToRanking.bind(this);
+  }
+
+  componentDidMount() {
+    const { location: { aboutProps: { email, score,
+      name, numberOfAssertions } } } = this.props;
+    addInfoToLocalStorage(name, email, score, numberOfAssertions);
   }
 
   redirectToHome() {
@@ -29,15 +36,15 @@ class Feedback extends React.Component {
   render() {
     const { location:
       { aboutProps: { name, email,
-        getGravatar, correct, numberOfAssertions } } } = this.props;
-    const InfoLocalStorage = localStorage.getItem('state');
-    const objectInfos = JSON.parse(InfoLocalStorage);
+        getGravatar, correct, numberOfAssertions, score } } } = this.props;
+    // const InfoLocalStorage = localStorage.getItem('state');
+    // const objectInfos = JSON.parse(InfoLocalStorage);
     const { redirect, redirectRankig } = this.state;
     if (redirect) {
       return <Redirect to="/" />;
     }
     if (redirectRankig) {
-      return <Redirect to="/ranking" />;
+      return (<Redirect to="ranking" />);
     }
     const gravatar = getGravatar(name, email);
     const magicNumber = 3;
@@ -45,13 +52,14 @@ class Feedback extends React.Component {
     return (
       <div>
         <header>
+          {/* { addInfoToLocalStorage(name, email, score, numberOfAssertions)} */}
           <img
             data-testid="header-profile-picture"
             src={ gravatar }
             alt={ `avatar de ${name}` }
           />
           <p data-testid="header-player-name">{expression}</p>
-          <p data-testid="header-score">{Number(objectInfos.player.score)}</p>
+          <p data-testid="header-score">{score}</p>
         </header>
         {correct >= magicNumber
           ? <span data-testid="feedback-text">Mandou bem!</span>
@@ -70,7 +78,7 @@ class Feedback extends React.Component {
         >
           Ver Ranking
         </button>
-        <p data-testid="feedback-total-score">{Number(objectInfos.player.score)}</p>
+        <p data-testid="feedback-total-score">{score}</p>
         <p data-testid="feedback-total-question">{numberOfAssertions}</p>
       </div>
     );
