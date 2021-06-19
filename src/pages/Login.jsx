@@ -24,25 +24,30 @@ class Login extends React.Component {
     };
   }
 
+  async componentDidMount() {
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    let token = localStorage.getItem('token');
+
+    if (!ranking) localStorage.setItem('ranking', JSON.stringify([]));
+    if (!token) {
+      token = await fetchToken();
+      localStorage.setItem('token', token);
+    }
+  }
+
   handleChange({ target: { name, value } }) {
     this.setState({
       [name]: value,
     });
   }
 
-  async handleClick() {
+  handleClick() {
     const { name, email } = this.state;
     const { login, startGame } = this.props;
 
-    const gravatarURL = `https://www.gravatar.com/avatar/${md5(email).toString()}`;
-    const { token } = await fetchToken();
-    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    const hash = md5(email).toString();
+    const gravatarURL = `https://www.gravatar.com/avatar/${hash}`;
 
-    if (!ranking) {
-      localStorage.setItem('ranking', JSON.stringify([]));
-    }
-
-    localStorage.setItem('token', token);
     login({ name, email, gravatarURL });
     startGame();
     this.setState({ redirect: true });
