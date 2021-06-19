@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Header from '../components/Header';
 import Question from '../components/Question';
 
@@ -7,7 +9,7 @@ class Game extends React.Component {
     super(props);
     this.state = {
       results: [],
-      numQuestion: 0,
+      // numQuestion: 0,
       timer: 30,
       isDisabled: false,
       // updateT: '',
@@ -41,7 +43,8 @@ class Game extends React.Component {
   }
 
   render() {
-    const { results, numQuestion, timer, isDisabled } = this.state;
+    const { results, timer, isDisabled } = this.state;
+    const { numQuestion } = this.props;
     return (
       <>
         <Header />
@@ -61,4 +64,12 @@ class Game extends React.Component {
   }
 }
 
-export default Game;
+Game.propTypes = {
+  numQuestion: PropTypes.number.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  numQuestion: state.game.numQuestion,
+});
+
+export default connect(mapStateToProps)(Game);

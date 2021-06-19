@@ -7,11 +7,12 @@ import './styleQuestion.css';
 class Question extends React.Component {
   constructor(props) {
     super(props);
+    const { numQuestion } = this.props;
     this.state = {
       isClicked: false,
       arrRandom: [],
       fullResults: {},
-      numQuestion: 0,
+      numQuestion,
     };
 
     this.handleResult = this.handleResult.bind(this);
@@ -137,10 +138,15 @@ Question.propTypes = {
   disabled: PropTypes.bool.isRequired,
   timer: PropTypes.number.isRequired,
   saveNumQ: PropTypes.func.isRequired,
+  numQuestion: PropTypes.number.isRequired,
 };
+
+const mapStateToProps = (state) => ({
+  numQuestion: state.game.numQuestion,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   saveNumQ: (numQuestion) => dispatch(saveNumQuestion(numQuestion)),
 });
 
-export default connect(null, mapDispatchToProps)(Question);
+export default connect(mapStateToProps, mapDispatchToProps)(Question);
