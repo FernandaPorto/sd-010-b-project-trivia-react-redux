@@ -42,6 +42,7 @@ class GamePage extends Component {
   }
 
   componentDidMount() {
+    console.log('foi chamado');
     this.interval();
   }
 
@@ -61,8 +62,8 @@ class GamePage extends Component {
   async interval() {
     await this.getToken();
     const A_SECOND = 1000;
-    const number = 30;
-    this.setState({ seconds: 30 });
+    const number = 28;
+    this.setState({ seconds: 28 });
     this.myInterval = setInterval(() => {
       const { seconds = number } = this.state;
       if (seconds > 0) {
@@ -121,7 +122,6 @@ class GamePage extends Component {
 
   questionAndAnswer() {
     const { categories, indexState, loading, timeIsOut } = this.state;
-    console.log(categories);
     return (
       <div>
         <select>
