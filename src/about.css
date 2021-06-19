@@ -1,0 +1,47 @@
+.dev-team {
+  align-items: center;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+}
+
+.dev-team section {
+  margin: 0 5em;
+}
+
+.dev-team img {
+  border-radius: 100%;
+  width: 180px;
+}
+
+.dev-container {
+  align-items: center;
+  color: rgb(51, 51, 51);
+  display: flex;
+  flex-flow: column wrap;
+  font-weight: 600;
+  max-width: 320px;
+}
+
+.dev-container span {
+  margin: 10px 0;
+}
+
+.social {
+  display: flex;
+  font-size: 30px;
+  text-decoration: none;
+}
+
+.social button {
+  background-color: transparent;
+  border: none;
+  color: rgb(51, 51, 51);
+  font-size: 30px;
+  text-decoration: none;
+}
+
+.social button:hover {
+  color: rgba(10, 245, 155, 0.8);
+
+}

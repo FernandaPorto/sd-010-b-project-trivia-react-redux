@@ -1,32 +1,35 @@
 import React, { Component } from 'react';
 import { Transition, animated, config } from 'react-spring';
+import { AiFillGithub, AiFillLinkedin } from 'react-icons/ai';
+
+import '../about.css';
 
 const devTeam = [
   {
     name: 'Lucas Rodrigues',
-    picture: 'picture',
-    github: 'github',
+    picture: 'https://avatars.githubusercontent.com/u/78750077?v=4',
+    github: 'https://github.com/LucasRPontes',
     linkedin: 'linkedin',
     delay: 200,
   },
   {
     name: 'Leandro Reis',
-    picture: 'picture',
-    github: 'github',
+    picture: 'https://avatars.githubusercontent.com/u/72284886?v=4',
+    github: 'https://github.com/leandrofcr',
     linkedin: 'linkedin',
     delay: 400,
   },
   {
-    name: 'Jonathan',
-    picture: 'picture',
-    github: 'github',
+    name: 'Jonathan Souza',
+    picture: 'https://avatars.githubusercontent.com/u/49069814?v=4',
+    github: 'https://github.com/JSouza27',
     linkedin: 'linkedin',
     delay: 600,
   },
   {
-    name: 'Maximiliano',
-    picture: 'picture',
-    github: 'github',
+    name: 'Maximiliano Alvarenga',
+    picture: 'https://avatars.githubusercontent.com/u/84460365?v=4',
+    github: 'https://github.com/maximilianoalvarenga',
     linkedin: 'linkedin',
     delay: 800,
   },
@@ -48,12 +51,21 @@ class About extends Component {
         >
           {(styles, item) => item
           && (
-            <animated.div style={ styles }>
+            <animated.div style={ styles } className="dev-container">
 
-              <section>
-                <div>{item.name}</div>
-                <div>{item.github}</div>
-                <div>{item.linkedin}</div>
+              <img src={ item.picture } alt="Foto do desenvolvedor" />
+              <span>{item.name}</span>
+              <section className="social">
+                <button type="button">
+                  {' '}
+                  <AiFillGithub />
+                  {' '}
+                </button>
+                <button type="button">
+                  {' '}
+                  <AiFillLinkedin />
+                  {' '}
+                </button>
               </section>
 
             </animated.div>)}
