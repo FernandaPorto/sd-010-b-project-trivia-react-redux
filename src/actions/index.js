@@ -10,6 +10,18 @@ export function loginAction({ name, email }) {
     payload: {
       name,
       email,
+      player: {
+        name: '',
+        assertions: 0,
+        score: 0,
+        gravatarEmail: '',
+      },
+      ranking: [
+        { name: '',
+          score: 0,
+          picture: '',
+        },
+      ],
     },
   });
 }
