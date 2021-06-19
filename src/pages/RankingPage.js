@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import HeaderComponent from '../components/HeaderComponent';
 import './ranking.css';
 
 class RankingPage extends React.Component {
@@ -12,24 +13,33 @@ class RankingPage extends React.Component {
 
   render() {
     const ranking = JSON.parse(localStorage.getItem('ranking')) || [];
-
     return (
       <>
-        <h1 data-testid="ranking-title">Ranking</h1>
+        <header>
+          <HeaderComponent />
+        </header>
+        <h1 data-testid="ranking-title" className="title">Ranking</h1>
         {ranking
           .map(
-            (e) => (
-              <div key="ranking">
+            (e, index) => (
+              <div key="ranking" className="ranking">
                 <img src={ e.gravatarEmail } alt="Profile" key="profile" />
-                <p key={ e.name } className="player-name">
+                <p
+                  key={ e.name }
+                  data-testid={ `player-name-${index}` }
+                >
                   { e.name }
                   ,
+                </p>
+                <p
+                  key={ e.score }
+                  data-testid={ `player-score-${index}` }
+                >
                   { e.score }
                 </p>
               </div>
-            ),
-          ).sort((a, b) => b - a)}
-
+            ), console.log(ranking),
+          )}
         <Link to="/">
           <button type="button" data-testid="btn-go-home">Jogar novamente</button>
         </Link>

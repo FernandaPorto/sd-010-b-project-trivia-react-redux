@@ -2,6 +2,7 @@
   align-items: center;
   background-color: #043623;
   display: flex;
+  flex-basis: content;
   height: 90px;
 }
 
