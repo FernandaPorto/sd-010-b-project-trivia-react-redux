@@ -63,7 +63,6 @@ class GamePage extends Component {
     await this.getToken();
     const A_SECOND = 1000;
     const number = 28;
-    this.setState({ seconds: 28 });
     this.myInterval = setInterval(() => {
       const { seconds = number } = this.state;
       if (seconds > 0) {
@@ -76,6 +75,7 @@ class GamePage extends Component {
         this.setState({ timeIsOut: true });
         this.setState({ loading: true });
         this.setState({ button: true });
+        this.setState({ answered: false });
       }
     }, A_SECOND);
   }
