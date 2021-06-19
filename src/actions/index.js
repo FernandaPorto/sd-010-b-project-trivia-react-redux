@@ -1,6 +1,8 @@
 export const LOGIN = 'login';
 export const GRAVATAR = 'gravatar';
 export const SCORE = 'score';
+export const EACH_SCORE = 'each_score';
+export const ASSERTIONS = 'assertions';
 
 export function loginAction({ name, email }) {
   return ({
@@ -23,6 +25,20 @@ export function scoreAction(score) {
   return ({
     type: SCORE,
     payload: score,
+  });
+}
+
+export function eachScoreAction(score) {
+  return ({
+    type: EACH_SCORE,
+    payload: score,
+  });
+}
+
+export function assertionsAction(rightAnswers) {
+  return ({
+    type: ASSERTIONS,
+    payload: rightAnswers,
   });
 }
 

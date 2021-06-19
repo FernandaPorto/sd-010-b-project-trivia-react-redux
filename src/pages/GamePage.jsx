@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import fetchURL from '../services/API';
 import Header from '../components/Header';
 import ButtonNextQuestion from '../components/ButtonNextQuestion';
 import ButtonFeedback from '../components/ButtonFeedback';
 import ButtonLogin from '../components/ButtonLogin';
-import { scoreAction } from '../actions';
+import { scoreAction, eachScoreAction, assertionsAction } from '../actions';
 import '../GamePageCss.css';
 
 export const setToken = async () => {
@@ -29,6 +30,7 @@ class GamePage extends Component {
       answered: true,
       button: false,
       timeIsOut: false,
+      finalQuestion: false,
     };
 
     this.getToken = this.getToken.bind(this);
@@ -86,7 +88,7 @@ class GamePage extends Component {
     if (indexState < maxQuestionsNumber) {
       return categories[indexState].question;
     }
-    this.setState((previousState) => ({ indexState: previousState.indexState + 1 }));
+    this.setState({ finalQuestion: true });
   }
 
   correctAnswer() {
@@ -96,17 +98,18 @@ class GamePage extends Component {
     const hard = 3;
     const standardNumber = 10;
     if (level === 'easy') {
-      playerScore(standardNumber + seconds);
+      scoreAction(standardNumber + seconds);
     } else if (level === 'medium') {
-      playerScore(standardNumber + (seconds * 2));
+      scoreAction(standardNumber + (seconds * 2));
     } else {
-      playerScore(standardNumber + (seconds * hard));
+      scoreAction(standardNumber + (seconds * hard));
     }
     this.setState({ loading: true });
     this.setState({ answered: false });
     this.setState({ button: true });
     localStorage.setItem('score', JSON.stringify(playerScore));
     this.componentWillUnmount();
+    assertionsAction(1);
   }
 
   wrongAnswer() {
@@ -119,10 +122,12 @@ class GamePage extends Component {
   nextQuestion() {
     this.setState({ loading: false });
     this.setState({ answered: true });
+    this.setState((previousState) => ({ indexState: previousState.indexState + 1 }));
   }
 
   questionAndAnswer() {
     const { categories, indexState, loading, timeIsOut } = this.state;
+    console.log(categories);
     return (
       <div>
         <select>
@@ -171,7 +176,7 @@ class GamePage extends Component {
   }
 
   render() {
-    const { seconds, answered, button, loading } = this.state;
+    const { seconds, answered, button, loading, finalQuestion } = this.state;
     return (
       <div className="App">
         <Header />
@@ -191,6 +196,7 @@ class GamePage extends Component {
           />
             : ''}
         </div>
+        {finalQuestion ? <Redirect to="/feedback" /> : '' }
       </div>
     );
   }
@@ -203,6 +209,8 @@ GamePage.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
   playerScore: (score) => dispatch(scoreAction([score])),
+  eachQuestionScore: (score) => dispatch(eachScoreAction([score])),
+  totalAssertions: (score) => dispatch(assertionsAction([score])),
 });
 
 const mapStateToProps = () => ({

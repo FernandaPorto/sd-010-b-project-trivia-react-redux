@@ -7,7 +7,7 @@ class Feedback extends Component {
     return (
       <>
         <Header />
-        <h1>Página de FeedBacks</h1>
+        <h1 data-testid="feedback-text">Página de FeedBacks</h1>
         <Link to="/">
           Voltar
         </Link>
