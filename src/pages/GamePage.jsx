@@ -177,12 +177,12 @@ class GamePage extends Component {
   render() {
     const { seconds, answered, button, loading, finalQuestion } = this.state;
     return (
-      <div className="App">
+      <div>
         <Header />
-        <div className="Gamepage">
+        <div>
           { this.questionAndAnswer() }
         </div>
-        <div className="Buttons">
+        <div>
           { seconds > 0 ? `Timer:${seconds}` : '' }
           <ButtonLogin />
           <ButtonFeedback />

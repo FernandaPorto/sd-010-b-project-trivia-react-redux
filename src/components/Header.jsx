@@ -14,10 +14,10 @@ class Header extends Component {
 
   render() {
     const { nome, gravatar, eachPoints } = this.props;
-    console.log(eachPoints);
+    console.log(eachPoints, nome, gravatar);
     return (
       <header>
-        <img src={ gravatar } alt="imege" data-testid="header-profile-picture" />
+        <img src={ gravatar } alt="imageGravatar" data-testid="header-profile-picture" />
         <span data-testid="header-player-name">{nome}</span>
         <span data-testid="header-score">{eachPoints}</span>
       </header>
