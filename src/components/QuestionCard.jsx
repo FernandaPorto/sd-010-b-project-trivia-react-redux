@@ -1,7 +1,7 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import { isAnswered } from '../actions';
+import { isAnswered, setPlayerScore } from '../actions';
 import '../pages/CSS/game.css';
 
 class QuestionCard extends React.Component {
@@ -11,7 +11,6 @@ class QuestionCard extends React.Component {
     this.options = this.options.bind(this);
     this.changeBtn = this.changeBtn.bind(this);
     this.state = {
-      // score: 0,
       disabled: false,
     };
   }
@@ -26,27 +25,34 @@ class QuestionCard extends React.Component {
     this.setState({ disabled });
   }
 
-  handleClick() {
-    const { propIsAnswered, time } = this.props;
+  handleClick(dif, correct) {
+    const { propIsAnswered, propSetPlayerScore, time } = this.props;
     propIsAnswered(true);
-    console.log(time);
+    if (correct) {
+      const mult = { hard: 3, medium: 2, easy: 1 };
+      const acc = 10;
+      propSetPlayerScore({ score: acc + (time * mult[dif]),
+        assertions: 1 });
+    }
   }
 
   options(answered) {
     const { disabled } = this.state;
+    const correct = 'correct-answer';
     const { question:
-      { incorrect_answers: iAnswers, correct_answer: cAnswers } } = this.props;
+      { difficulty, incorrect_answers: iAnswers, correct_answer: cAnswers },
+    } = this.props;
     const answers = [...iAnswers, cAnswers];
     const changeClasse = (option) => (
-      option !== cAnswers ? 'wrong-answer' : 'correct-answer');
+      option !== cAnswers ? 'wrong-answer' : correct);
 
     return answers.map((option, i) => (
       <button
         type="button"
-        data-testid={ option !== cAnswers ? `wrong-answer-${i}` : 'correct-answer' }
+        data-testid={ option !== cAnswers ? `wrong-answer-${i}` : correct }
         className={ answered ? changeClasse(option) : null }
         disabled={ disabled }
-        onClick={ () => this.handleClick() }
+        onClick={ () => this.handleClick(difficulty, option === cAnswers) }
         key={ i }
       >
         { option }
@@ -79,6 +85,7 @@ const mapStateToProps = ({ timerReducer: { time, answered } }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   propIsAnswered: (payload) => dispatch(isAnswered(payload)),
+  propSetPlayerScore: (payload) => dispatch(setPlayerScore(payload)),
 });
 
 QuestionCard.propTypes = {
