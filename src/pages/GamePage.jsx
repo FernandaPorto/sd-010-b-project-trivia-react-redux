@@ -43,10 +43,6 @@ class GamePage extends Component {
     this.interval();
   }
 
-  componentDidUpdate() {
-    this.updatePage();
-  }
-
   componentWillUnmount() {
     clearInterval(this.myInterval);
   }
@@ -58,10 +54,6 @@ class GamePage extends Component {
     this.setState({
       categories: map,
     });
-  }
-
-  updatePage() {
-    this.setState({ answered: true });
   }
 
   async interval() {
@@ -83,6 +75,11 @@ class GamePage extends Component {
   }
 
   handleChange() {
+    const { indexState, categories } = this.state;
+    const maxQuestionsNumber = 6;
+    if (indexState < maxQuestionsNumber) {
+      return categories[indexState].question;
+    }
     this.setState((previousState) => ({ indexState: previousState.indexState + 1 }));
   }
 
@@ -113,6 +110,7 @@ class GamePage extends Component {
 
   nextQuestion() {
     this.setState({ loading: false });
+    this.setState({ answered: true });
   }
 
   questionAndAnswer() {
@@ -129,7 +127,6 @@ class GamePage extends Component {
               {item.category}
             </option>))}
         </select>
-
         <section>
           <div
             role="button"
@@ -140,9 +137,9 @@ class GamePage extends Component {
             onKeyDown={ this.handleChange }
           >
             {categories[indexState].question}
+
           </div>
         </section>
-
         <option
           className={ loading ? 'correct-answer' : '' }
           data-testid="correct-answer"
