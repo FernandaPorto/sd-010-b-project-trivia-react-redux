@@ -99,17 +99,9 @@ class TriviaGame extends Component {
   }
 
   render() {
-    const { questions, score, name, urlAvatar, gravatarEmail } = this.props;
+    const { questions } = this.props;
     const { wasAnswered, questionIndex } = this.state;
     if (questionIndex > FOUR) {
-      const ranking = JSON.parse(localStorage.getItem('ranking'));
-      ranking.push({
-        name,
-        score,
-        picture: urlAvatar,
-        gravatarEmail,
-      });
-      localStorage.setItem('ranking', JSON.stringify(ranking));
       return <Redirect to="/feedback" />;
     }
     return (

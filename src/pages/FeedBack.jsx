@@ -7,6 +7,18 @@ import { resetState } from '../action';
 import '../feedback.css';
 
 class FeedBack extends Component {
+  componentDidMount() {
+    const { score, name, urlAvatar, gravatarEmail } = this.props;
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    ranking.push({
+      name,
+      score,
+      picture: urlAvatar,
+      gravatarEmail,
+    });
+    localStorage.setItem('ranking', JSON.stringify(ranking));
+  }
+
   render() {
     const { score, assertions, history, reset } = this.props;
 
@@ -58,6 +70,9 @@ class FeedBack extends Component {
 const mapStateToProps = (state) => ({
   score: state.player.score,
   assertions: state.player.assertions,
+  name: state.player.name,
+  urlAvatar: state.player.urlAvatar,
+  gravatarEmail: state.player.gravatarEmail,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -65,10 +80,13 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 FeedBack.propTypes = {
-  score: PropTypes.number.isRequired,
-  assertions: PropTypes.arrayOf(PropTypes.shape).isRequired,
-  history: PropTypes.shape.isRequired,
-  reset: PropTypes.func.isRequired,
-};
+  score: PropTypes.number,
+  assertions: PropTypes.arrayOf(PropTypes.shape),
+  history: PropTypes.shape,
+  reset: PropTypes.func,
+  name: PropTypes.string,
+  urlAvatar: PropTypes.string,
+  gravatarEmail: PropTypes.string,
+}.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(FeedBack);
