@@ -18,9 +18,7 @@ class Header extends Component {
       <header>
         <img src={ gravatar } alt="imege" data-testid="header-profile-picture" />
         <span data-testid="header-player-name">{nome}</span>
-        <span data-testid="header-score">
-          {totalScore}
-        </span>
+        <span data-testid="header-score">{totalScore}</span>
       </header>
     );
   }

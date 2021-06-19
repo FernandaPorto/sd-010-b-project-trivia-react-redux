@@ -1,9 +1,12 @@
 .App {
+  background-color: #264686;
+  display: flex;
+  justify-content: center;
   text-align: center;
 }
 
 .App-logo {
-  height: 40vmin;
+  height: 15vmin;
   pointer-events: none;
 }
 
@@ -14,16 +17,42 @@
   }
 }
 
-.App-header {
+/* .App-header {
   align-items: center;
-  background-color: #282c34;
+  background-color: #40444d80;
+  color: white;
+  font-size: calc(10px + 2vmin);
+  justify-content: center;
+  min-height: 20vh;
+} */
+
+.Buttons {
+  background-color: #6d707580;
+  display: flex;
+  flex-direction: column;
+  font-size: calc(18px + 2vmin);
+}
+
+.Gamepage {
+  align-items: center;
+  background-color: #6d707580;
+  display: flex;
+  font-size: calc(18px + 2vmin);
+  min-height: 60vh;
+  padding: 5%;
+}
+
+.Login {
+  align-items: center;
+  background-color: #40444d80;
   color: white;
   display: flex;
   flex-direction: column;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(20px + 2vmin);
   justify-content: center;
-  min-height: 100vh;
+  min-height: 95.5vh;
 }
+
 
 .App-link {
   color: #61dafb;
