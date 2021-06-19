@@ -29,18 +29,18 @@ export default function user(state = INITIAL_STATE, action) {
         name: action.payload.name,
         assertions: action.assertions,
         score: action.score,
-        gravatarEmail: action.payload.gravatar,
+        gravatarEmail: action.payload.email,
       },
       ranking: {
         name: action.payload.name,
-        score: action.payload.score,
+        score: action.score,
         picture: action.payload.gravatarEmail,
       },
     };
   case GRAVATAR:
     return {
       ...state,
-      gravatar: action.payload.gravatar,
+      gravatar: action.gravatar,
 
     };
   case SCORE:
