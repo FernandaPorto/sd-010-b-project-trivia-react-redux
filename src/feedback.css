@@ -1,0 +1,40 @@
+.feedback-container {
+  align-items: center;
+  display: flex;
+  flex-flow: column wrap;
+  height: 100vh;
+  justify-content: center;
+}
+
+.feedback-message {
+  align-items: center;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 0.3em 1.5em rgb(53, 53, 53);
+  color: rgb(51, 51, 51);
+  display: flex;
+  flex-flow: column wrap;
+  font-weight: 600;
+  min-width: 20em;
+  padding: 1em;
+  text-align: center;
+  width: 40%;
+}
+
+.fb-btn-container button {
+  background-color: rgba(10, 245, 155, 0.8);
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 15px 25px -4px rgba(30, 30, 60, 0.25);
+  color: white;
+  font-weight: 700;
+  margin: 10px;
+  padding: 15px 10px;
+  transition: transform 0.5s;
+  width: 20em;
+}
+
+.fb-btn-container button:hover {
+  background-color: rgba(10, 245, 155, 1);
+  transform: scale(1.1);
+}

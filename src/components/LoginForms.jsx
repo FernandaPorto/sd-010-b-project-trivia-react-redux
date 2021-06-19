@@ -41,13 +41,8 @@ class Login extends Component {
       this.setState({ btnEnable: false });
     }
 
-    if (name.length === 0) {
-      errors.errorName = 'Por favor, insira um nome';
-      this.setState({ btnEnable: true, errors });
-    }
-
-    if (!/(\w+[0-9]*)+@\w+\.\w+/.test(gravatarEmail)) {
-      errors.errorEmail = 'Por favor, insira um email válido';
+    if (!/(\w+[0-9]*)+@\w+\.\w+/.test(gravatarEmail) || name.length === 0) {
+      errors.errorEmail = 'Nome ou email incorreto';
       this.setState({ btnEnable: true, errors });
     }
 
@@ -59,7 +54,7 @@ class Login extends Component {
   }
 
   nameInfo() {
-    const { name, errors } = this.state;
+    const { name } = this.state;
     return (
       <label htmlFor="name">
         Nome:
@@ -73,7 +68,6 @@ class Login extends Component {
             this.setState({ name: target.value }, this.verifyLogin);
           } }
         />
-        {errors.errorName && <span>{errors.errorName}</span>}
       </label>
     );
   }
@@ -105,24 +99,23 @@ class Login extends Component {
       return <Redirect to="/trivia" />;
     }
     return (
-      <section>
-        <form>
-          { this.nameInfo() }
-          { this.emailInfo() }
-          <button
-            type="button"
-            disabled={ btnEnable }
-            data-testid="btn-play"
-            onClick={ () => {
-              getTokenData();
-              this.redirectToGame();
-            } }
-          >
-            Jogar
-          </button>
+      <form>
+        { this.nameInfo() }
+        { this.emailInfo() }
 
-        </form>
-      </section>
+        <button
+          type="button"
+          disabled={ btnEnable }
+          data-testid="btn-play"
+          onClick={ () => {
+            getTokenData();
+            this.redirectToGame();
+          } }
+        >
+          Jogar
+        </button>
+
+      </form>
     );
   }
 }

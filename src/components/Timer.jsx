@@ -29,13 +29,13 @@ class Timer extends Component {
 
   stopTimer() {
     clearInterval(this.timerInterval);
-    this.setState({ seconds: '--' });
+    this.setState({ seconds: '0' });
   }
 
   render() {
     const { disableButtons, updateSeconds, wasAnswered } = this.props;
     const { seconds } = this.state;
-    if (seconds < 1 || wasAnswered) {
+    if (seconds === 0 || wasAnswered) {
       this.stopTimer();
       disableButtons();
     }
@@ -43,11 +43,8 @@ class Timer extends Component {
     updateSeconds(seconds);
 
     return (
-      <p>
-        Tempo:
-        {' '}
+      <p className="timer">
         {seconds}
-        s
       </p>
     );
   }
