@@ -32,3 +32,10 @@ body {
   transition: transform 0.5s;
   width: 20em;
 }
+
+@media ( max-width : 767px ) {
+
+  .correct-answer, .wrong-answer {
+    width: 15em;
+  }
+}

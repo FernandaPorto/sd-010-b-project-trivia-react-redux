@@ -19,11 +19,12 @@ class Header extends Component {
               alt="Avatar do jogador"
               data-testid="header-profile-picture"
             />
-            <p data-testid="header-player-name">
-              Player:
-              {' '}
-              {name}
-            </p>
+            <section className="player-name-container">
+              <span>Player:</span>
+              <p data-testid="header-player-name">
+                {name}
+              </p>
+            </section>
           </section>
           <section className="score-container">
             <p>
