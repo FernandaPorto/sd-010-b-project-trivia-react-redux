@@ -58,9 +58,9 @@ class LoginPage extends Component {
       return <Redirect to="/gamepage" />;
     }
     return (
-      <div className="App">
-        <main className="Login">
-          <img src={ logo } className="App-logo" alt="logo" />
+      <div>
+        <main>
+          <img src={ logo } alt="logo" />
           <label htmlFor="name">
             <input
               id="name"
