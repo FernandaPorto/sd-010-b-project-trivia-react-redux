@@ -106,7 +106,7 @@ class GamePage extends Component {
   wrongAnswer() {
     this.setState({ loading: true });
     this.setState({ answered: false });
-    this.setState({ answered: true });
+    this.setState({ button: true });
     this.componentWillUnmount();
   }
 
