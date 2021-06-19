@@ -4,10 +4,7 @@ import PropTypes from 'prop-types';
 
 class Header extends React.Component {
   render() {
-    const localState = JSON.parse(localStorage.getItem('state'));
-    const { gravatarURL } = this.props;
-    const { name, score } = localState.player;
-    console.log(score);
+    const { name, gravatarURL, score } = this.props;
     return (
       <header>
         <div>
@@ -23,11 +20,15 @@ class Header extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
+  name: state.player.name,
   gravatarURL: state.player.gravatarURL,
+  score: state.player.score,
 });
 
 Header.propTypes = {
-  gravatarURL: PropTypes.string.isRequired,
-};
+  name: PropTypes.string,
+  gravatarURL: PropTypes.string,
+  score: PropTypes.number,
+}.isRequired;
 
 export default connect(mapStateToProps)(Header);

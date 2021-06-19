@@ -1,8 +1,8 @@
 import './Login.css';
 
 import React from 'react';
-import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 
@@ -24,13 +24,24 @@ class Login extends React.Component {
     };
   }
 
+  async componentDidMount() {
+    const ranking = JSON.parse(localStorage.getItem('ranking'));
+    let token = localStorage.getItem('token');
+
+    if (!ranking) localStorage.setItem('ranking', JSON.stringify([]));
+    if (!token) {
+      token = await fetchToken();
+      localStorage.setItem('token', token);
+    }
+  }
+
   handleChange({ target: { name, value } }) {
     this.setState({
       [name]: value,
     });
   }
 
-  async handleClick() {
+  handleClick() {
     const { name, email } = this.state;
     const { login, startGame } = this.props;
 
@@ -38,26 +49,6 @@ class Login extends React.Component {
     const gravatarURL = `https://www.gravatar.com/avatar/${hash}`;
 
     login({ name, email, gravatarURL });
-
-    const { token } = await fetchToken();
-    const state = {
-      player: {
-        name,
-        assertions: 0,
-        score: 0,
-        gravatarEmail: email,
-      },
-    };
-
-    const ranking = JSON.parse(localStorage.getItem('ranking'));
-
-    if (!ranking) {
-      localStorage.setItem('ranking', JSON.stringify([]));
-    }
-
-    localStorage.setItem('token', token);
-    localStorage.setItem('state', JSON.stringify(state));
-
     startGame();
     this.setState({ redirect: true });
   }

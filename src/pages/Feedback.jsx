@@ -1,36 +1,25 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import Header from '../components/Header';
 
 class Feedback extends React.Component {
-  constructor() {
-    super();
-    const state = JSON.parse(localStorage.getItem('state'));
-    this.assertions = state.player.assertions;
-    this.score = state.player.score;
-  }
-
-  feedbackMessage() {
-    if (this.assertions <= 2) {
-      return (<p>Podia ser melhor...</p>);
-    }
-    return (<p>Mandou bem!</p>);
-  }
-
   render() {
+    const { assertions, score } = this.props;
     return (
       <main>
         <Header />
         <section>
-          { this.feedbackMessage() }
+          <p>{ assertions <= 2 ? 'Podia ser melhor...' : 'Mandou bem!'}</p>
           <div>
             <span>Número de acertos: </span>
-            <span>{this.assertions}</span>
+            <span>{assertions}</span>
           </div>
           <div>
             <span>Pontuação final: </span>
-            <span>{this.score}</span>
+            <span>{score}</span>
           </div>
           <button type="button">
             <Link to="/">Jogar novamente</Link>
@@ -44,4 +33,14 @@ class Feedback extends React.Component {
   }
 }
 
-export default Feedback;
+const mapStateToProps = (state) => ({
+  assertions: state.player.assertions,
+  score: state.player.score,
+});
+
+Feedback.propTypes = {
+  assertions: PropTypes.number,
+  score: PropTypes.number,
+}.isRequired;
+
+export default connect(mapStateToProps)(Feedback);
