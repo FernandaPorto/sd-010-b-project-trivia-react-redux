@@ -1,21 +1,38 @@
-/* eslint-disable react/no-danger */
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
+import Questionaire from './Questionaire';
+import { assertionsPlayer, scorePlayer } from '../actions';
 
 class Question extends React.Component {
   constructor(props) {
     super(props);
 
     this.getQuestions = this.getQuestions.bind(this);
+    this.handleAnswer = this.handleAnswer.bind(this);
+    this.handleAssertions = this.handleAssertions.bind(this);
+    this.handleNextQuestion = this.handleNextQuestion.bind(this);
+    this.handleTimer = this.handleTimer.bind(this);
+    this.handleScore = this.handleScore.bind(this);
 
     this.state = {
       questions: [],
+      currentIndex: 0,
+      assertions: 0,
+      score: 0,
+      showAnswers: false,
+      colorGreen: '',
+      colorRed: '',
+      isRedirect: false,
+      timer: 30,
+      isDisable: false,
     };
   }
 
   componentDidMount() {
     this.getQuestions();
+    this.handleTimer();
   }
 
   async getQuestions() {
@@ -23,69 +40,148 @@ class Question extends React.Component {
     const apiQuestion = (`https://opentdb.com/api.php?amount=5&token=${tok}`);
     const response = await fetch(apiQuestion);
     const data = await response.json();
-
-    /* const testeJ = [1, 2, 3, 4, 5, 6];
-    function testeAleatorio(arrayTeste) {
-      const arr = arrayTeste.slice();
-      for (let index = 0; index < data.results.length; index += 1) {
-        const index2 = Math.floor(Math.random() * (index + 1));
-        [arr[index], arr[index2]] = [arr[index2], arr[index]];
-      }
-      return arr;
-    } */
-
     this.setState({
       questions: data.results,
     });
   }
 
-  render() {
-    const { questions } = this.state;
-    return (
-      questions.length > 0 ? (
-        <div>
-          <p
-            data-testid="question-category"
-          >
-            { questions[0].category }
-          </p>
-          <h2
-            data-testid="question-text"
-            dangerouslySetInnerHTML={ { __html: questions[0].question } }
-          />
-          <div>
-            <div>
-              <button
-                type="button"
-                data-testid="correct-answer"
-              >
-                {questions[0].correct_answer}
-              </button>
-              {questions[0].incorrect_answers.map(
-                (elem, index) => (
-                  <button
-                    type="button"
-                    data-testid={ `wrong-answer-${index}` }
-                    key={ index }
-                  >
-                    { elem }
-                  </button>
-                ),
-              )}
-            </div>
+  handleTimer() {
+    const ONE_SECOND = 1000;
+    this.interval = setInterval(() => {
+      const { timer } = this.state;
+      this.setState((prev) => ({
+        timer: (prev.timer - 1),
+      }));
+      if (timer === 1) {
+        clearInterval(this.interval);
+        this.setState({
+          isDisable: true,
+          showAnswers: true,
+        });
+      }
+    }, ONE_SECOND);
+  }
 
+  handleAnswer(answer) {
+    const { currentIndex,
+      questions,
+      assertions,
+      showAnswers } = this.state;
+    if ((!showAnswers) && answer === questions[currentIndex].correct_answer) {
+      this.setState({
+        assertions: assertions + 1,
+      });
+      this.handleScore(questions[currentIndex]);
+      const { points, totalScore } = this.props;
+      points();
+      totalScore(this.handleScore(questions[currentIndex]));
+    }
+
+    this.setState({
+      showAnswers: true,
+      colorRed: '3px solid rgb(255, 0, 0)',
+      colorGreen: '3px solid rgb(6, 240, 15)',
+    });
+  }
+
+  handleAssertions() {
+    const { score } = this.state;
+    const { points, totalScore } = this.props;
+    points();
+    totalScore(score);
+  }
+
+  handleScore(questions) {
+    const { timer } = this.state;
+    const inicitalScore = 10;
+    const easy = 1;
+    const medium = 2;
+    const hard = 3;
+    let result = 0;
+    switch (questions.difficulty) {
+    case 'easy':
+      result = inicitalScore + (timer * easy);
+      return result;
+    case 'medium':
+      result = inicitalScore + (timer * medium);
+      return result;
+    case 'hard':
+      result = inicitalScore + (timer * hard);
+      return result;
+    default:
+      return result;
+    }
+  }
+
+  handleNextQuestion() {
+    const { currentIndex, questions } = this.state;
+    if (currentIndex >= questions.length - 1) {
+      // this.handleAssertions();
+      this.setState({
+        isRedirect: true,
+      });
+    }
+    this.setState({
+      showAnswers: false,
+      currentIndex: currentIndex + 1,
+      colorGreen: '1px solid rgb(0, 0, 0)',
+      colorRed: '1px solid rgb(0, 0, 0)',
+      timer: 30,
+      isDisable: false,
+    });
+  }
+
+  render() {
+    const { questions,
+      currentIndex,
+      showAnswers,
+      colorRed,
+      colorGreen,
+      isRedirect,
+      timer,
+      isDisable } = this.state;
+    console.log(questions);
+    return questions.length > 0 ? (
+      <div className="container">
+        {isRedirect ? (
+          <Redirect to="/score" />
+        ) : (
+          <div>
+            { timer }
+            <Questionaire
+              data={ questions[currentIndex] }
+              showAnswers={ showAnswers }
+              colorRed={ colorRed }
+              colorGreen={ colorGreen }
+              handleNextQuestion={ this.handleNextQuestion }
+              handleAnswer={ this.handleAnswer }
+              // handleAssertions={ this.handleAssertions }
+              isDisable={ isDisable }
+            />
           </div>
-        </div>) : (<h2>Loading...</h2>)
+        )}
+      </div>
+    ) : (
+      <h2>Loading...</h2>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
   tok: state.api.token,
+  score: state.player.score,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  points: (assertions) => dispatch(assertionsPlayer(assertions)),
+  totalScore: (score) => dispatch(scorePlayer(score)),
 });
 
 Question.propTypes = {
   tok: PropTypes.string.isRequired,
+  points: PropTypes.func.isRequired,
+  totalScore: PropTypes.func.isRequired,
+  // score: PropTypes.number.isRequired,
 };
 
-export default connect(mapStateToProps, null)(Question);
+export default connect(mapStateToProps, mapDispatchToProps)(Question);

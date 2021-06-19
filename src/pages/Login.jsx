@@ -16,6 +16,8 @@ class Login extends Component {
       email: '',
     };
     this.handleChange = this.handleChange.bind(this);
+    this.toLocalStorage = this.toLocalStorage.bind(this);
+    this.handleMultipleFunctions = this.handleMultipleFunctions.bind(this);
   }
 
   handleChange({ target }) {
@@ -25,9 +27,20 @@ class Login extends Component {
     });
   }
 
-  render() {
+  handleMultipleFunctions() {
     const { name, email } = this.state;
     const { Token, Player } = this.props;
+    Token(); Player({ name, email }); this.toLocalStorage();
+  }
+
+  toLocalStorage() {
+    if (localStorage.getItem('state') === null) {
+      localStorage.setItem('state', JSON.stringify([]));
+    }
+  }
+
+  render() {
+    const { name, email } = this.state;
     const nameLength = 0;
     return (
       <div className="Login">
@@ -55,7 +68,7 @@ class Login extends Component {
                   !(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(email)
                   || name.length <= nameLength
                 }
-                onClick={ () => { Token(); Player({ name, email }); } }
+                onClick={ () => this.handleMultipleFunctions() }
               >
                 Jogar
               </button>

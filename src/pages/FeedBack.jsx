@@ -12,7 +12,7 @@ class FeedBack extends Component {
       <div>
         <Header />
         <h4 data-testid="feedback-text">
-          { totalAssertions < corrects ? 'Podia ser melhor...' : 'Mandou bem'}
+          { totalAssertions < corrects ? 'Podia ser melhor...' : 'Mandou bem!'}
         </h4>
         <h3>Resultado Final</h3>
         <p data-testid="feedback-total-score">
@@ -21,7 +21,7 @@ class FeedBack extends Component {
         <p data-testid="feedback-total-question">
           {totalAssertions}
         </p>
-        <Link to="/quiz">
+        <Link to="/">
           <button
             type="button"
             data-testid="btn-play-again"
