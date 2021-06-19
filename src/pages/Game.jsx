@@ -52,7 +52,6 @@ class Game extends React.Component {
               key={ numQuestion }
               disabled={ isDisabled }
               timer={ timer }
-              nq={ this.nq }
             />
           ),
         )}

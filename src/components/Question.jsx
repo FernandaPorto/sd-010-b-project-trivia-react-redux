@@ -1,5 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { saveNumQuestion } from '../actions/index';
 import './styleQuestion.css';
 
 class Question extends React.Component {
@@ -9,6 +11,7 @@ class Question extends React.Component {
       isClicked: false,
       arrRandom: [],
       fullResults: {},
+      numQuestion: 0,
     };
 
     this.handleResult = this.handleResult.bind(this);
@@ -78,8 +81,13 @@ class Question extends React.Component {
     return null;
   }
 
+  add1ToNQ() {
+    this.setState((oldState) => ({ numQuestion: oldState.numQuestion + 1 }));
+  }
+
   render() {
-    const { props: { result, disabled }, state: { arrRandom, isClicked } } = this;
+    const { props: { result, disabled, saveNumQ },
+      state: { arrRandom, isClicked, numQuestion } } = this;
     return (
       <>
         <span data-testid="question-category">
@@ -111,7 +119,14 @@ class Question extends React.Component {
         ))}
 
         { isClicked
-        && <button type="button" data-testid="btn-next">Próxima</button> }
+        && (
+          <button
+            type="button"
+            data-testid="btn-next"
+            onClick={ () => { this.add1ToNQ(); saveNumQ(numQuestion); } }
+          >
+            Próxima
+          </button>) }
       </>
     );
   }
@@ -121,6 +136,11 @@ Question.propTypes = {
   result: PropTypes.arrayOf().isRequired,
   disabled: PropTypes.bool.isRequired,
   timer: PropTypes.number.isRequired,
+  saveNumQ: PropTypes.func.isRequired,
 };
 
-export default Question;
+const mapDispatchToProps = (dispatch) => ({
+  saveNumQ: (numQuestion) => dispatch(saveNumQuestion(numQuestion)),
+});
+
+export default connect(null, mapDispatchToProps)(Question);
