@@ -25,7 +25,7 @@ class GamePage extends Component {
       categories: [{}],
       indexState: 0,
       loading: false,
-      seconds: 35,
+      seconds: 30,
       rightAnswer: true,
     };
 
@@ -58,7 +58,7 @@ class GamePage extends Component {
 
   async interval() {
     await this.getToken();
-    const A_SECOND = 100;
+    const A_SECOND = 1000;
     this.setState({ seconds: 30 });
     this.myInterval = setInterval(() => {
       const { seconds } = this.state;
@@ -68,7 +68,7 @@ class GamePage extends Component {
         }));
       }
       if (seconds === 0) {
-        this.isLoading();
+        this.nextQuestion();
       }
     }, A_SECOND);
   }
