@@ -17,13 +17,13 @@ class ButtonNextQuestion extends React.Component {
   }
 
   render() {
-    const { rightAnswer } = this.props;
+    const { answered } = this.props;
     return (
       <Link to="/gamepage">
         <button
           type="button"
           data-testid="btn-next"
-          disabled={ rightAnswer }
+          disabled={ answered }
           onClick={ this.functionsGamePage }
         >
           Próxima
@@ -35,7 +35,7 @@ class ButtonNextQuestion extends React.Component {
 
 ButtonNextQuestion.propTypes = {
   handleChange: PropTypes.func.isRequired,
-  rightAnswer: PropTypes.bool.isRequired,
+  answered: PropTypes.bool.isRequired,
   nextQuestion: PropTypes.func.isRequired,
   interval: PropTypes.func.isRequired,
 };

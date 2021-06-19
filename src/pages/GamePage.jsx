@@ -26,14 +26,14 @@ class GamePage extends Component {
       indexState: 0,
       loading: false,
       seconds: 30,
-      rightAnswer: true,
+      answered: true,
     };
 
     this.getToken = this.getToken.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.interval = this.interval.bind(this);
     this.questionAndAnswer = this.questionAndAnswer.bind(this);
-    this.correctAnswer = this.correctAnswer.bind(this);
+    // this.correctAnswer = this.correctAnswer.bind(this);
     this.wrongAnswer = this.wrongAnswer.bind(this);
     this.componentWillUnmount = this.componentWillUnmount.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
@@ -91,13 +91,14 @@ class GamePage extends Component {
       playerScore(standardNumber + (seconds * hard));
     }
     this.setState({ loading: true });
-    this.setState({ rightAnswer: false });
+    this.setState({ answered: false });
 
     this.componentWillUnmount();
   }
 
   wrongAnswer() {
     this.setState({ loading: true });
+    this.setState({ answered: false });
     this.componentWillUnmount();
   }
 
@@ -156,7 +157,7 @@ class GamePage extends Component {
   }
 
   render() {
-    const { seconds, rightAnswer } = this.state;
+    const { seconds, answered } = this.state;
     const { totalScore } = this.props;
     return (
       <div>
@@ -167,7 +168,7 @@ class GamePage extends Component {
         <ButtonFeedback />
         <ButtonLogin />
         <ButtonNextQuestion
-          rightAnswer={ rightAnswer }
+          answered={ answered }
           handleChange={ this
             .handleChange }
           nextQuestion={ this.nextQuestion }
