@@ -8,7 +8,6 @@ class Quiz extends Component {
       <div>
         <Header />
         <Question />
-        {/* <h1>{questions[0].question}</h1> */}
       </div>
     );
   }

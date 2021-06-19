@@ -40,7 +40,7 @@ export function scorePlayer(score) {
   };
 }
 
-export function assertionsPlayer({ assertions }) {
+export function assertionsPlayer(assertions) {
   return {
     type: ASSERTIONS_PLAYER,
     assertions,

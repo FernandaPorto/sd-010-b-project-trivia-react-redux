@@ -1,10 +1,9 @@
-/* eslint-disable no-nested-ternary */
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import Questionaire from './Questionaire';
-import { assertionsPlayer } from '../actions';
+import { assertionsPlayer, scorePlayer } from '../actions';
 
 class Question extends React.Component {
   constructor(props) {
@@ -15,14 +14,16 @@ class Question extends React.Component {
     this.handleAssertions = this.handleAssertions.bind(this);
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
     this.handleTimer = this.handleTimer.bind(this);
+    this.handleScore = this.handleScore.bind(this);
 
     this.state = {
       questions: [],
       currentIndex: 0,
       assertions: 0,
+      score: 0,
       showAnswers: false,
-      colorGreen: '1px solid rgb(0, 0, 0)',
-      colorRed: '1px solid rgb(0, 0, 0)',
+      colorGreen: '',
+      colorRed: '',
       isRedirect: false,
       timer: 30,
       isDisable: false,
@@ -33,7 +34,6 @@ class Question extends React.Component {
     this.getQuestions();
     this.handleTimer();
   }
-
 
   async getQuestions() {
     const { tok } = this.props;
@@ -48,7 +48,7 @@ class Question extends React.Component {
   handleTimer() {
     const ONE_SECOND = 1000;
     this.interval = setInterval(() => {
-      const { timer, isDisable } = this.state;
+      const { timer } = this.state;
       this.setState((prev) => ({
         timer: (prev.timer - 1),
       }));
@@ -63,47 +63,60 @@ class Question extends React.Component {
   }
 
   handleAnswer(answer) {
-    const { currentIndex, questions, assertions, showAnswers, colorGreen, colorRed } = this.state;
-    if (!showAnswers) {
-      if (answer === questions[currentIndex].correct_answer) {
-        // calculo do score
-        //questions[currentIndex].dificulty
-        this.setState({
-          assertions: assertions + 1,
-          //atualizar o score
-        });
-      }
+    const { currentIndex,
+      questions,
+      assertions,
+      showAnswers } = this.state;
+    if ((!showAnswers) && answer === questions[currentIndex].correct_answer) {
+      this.setState({
+        assertions: assertions + 1,
+      });
+      this.handleScore(questions[currentIndex]);
+      const { points, totalScore } = this.props;
+      points();
+      totalScore(this.handleScore(questions[currentIndex]));
     }
-    // const newIndex = currentIndex + 1;
-    // this.setState({
-    //   currentIndex: newIndex,
-    // });
 
     this.setState({
       showAnswers: true,
       colorRed: '3px solid rgb(255, 0, 0)',
       colorGreen: '3px solid rgb(6, 240, 15)',
     });
-
-    // conferir a resposta
-
-    // mostrar outra pergunta
-
-    // mudar placar se correto
   }
 
   handleAssertions() {
-    const { assertions } = this.state;
-    const { points } = this.props;
-    points({ assertions });
-    // enviar a pontuação do score
+    const { score } = this.state;
+    const { points, totalScore } = this.props;
+    points();
+    totalScore(score);
+  }
+
+  handleScore(questions) {
+    const { timer } = this.state;
+    const inicitalScore = 10;
+    const easy = 1;
+    const medium = 2;
+    const hard = 3;
+    let result = 0;
+    switch (questions.difficulty) {
+    case 'easy':
+      result = inicitalScore + (timer * easy);
+      return result;
+    case 'medium':
+      result = inicitalScore + (timer * medium);
+      return result;
+    case 'hard':
+      result = inicitalScore + (timer * hard);
+      return result;
+    default:
+      return result;
+    }
   }
 
   handleNextQuestion() {
     const { currentIndex, questions } = this.state;
     if (currentIndex >= questions.length - 1) {
-      this.handleAssertions();
-      // enviar pro localstorage pontuação, nome, email, numero acertos
+      // this.handleAssertions();
       this.setState({
         isRedirect: true,
       });
@@ -119,26 +132,32 @@ class Question extends React.Component {
   }
 
   render() {
-    const { questions, currentIndex, showAnswers, colorRed, colorGreen, isRedirect, timer, isDisable } = this.state;
-    // console.log(questions);
-
+    const { questions,
+      currentIndex,
+      showAnswers,
+      colorRed,
+      colorGreen,
+      isRedirect,
+      timer,
+      isDisable } = this.state;
+    console.log(questions);
     return questions.length > 0 ? (
       <div className="container">
         {isRedirect ? (
           <Redirect to="/score" />
         ) : (
           <div>
-          { timer }
-          <Questionaire
-            data={ questions[currentIndex] }
-            showAnswers={ showAnswers }
-            colorRed={ colorRed }
-            colorGreen={ colorGreen }
-            handleNextQuestion={ this.handleNextQuestion }
-            handleAnswer={ this.handleAnswer }
-            handleAssertions={ this.handleAssertions }
-            isDisable={isDisable}
-          />
+            { timer }
+            <Questionaire
+              data={ questions[currentIndex] }
+              showAnswers={ showAnswers }
+              colorRed={ colorRed }
+              colorGreen={ colorGreen }
+              handleNextQuestion={ this.handleNextQuestion }
+              handleAnswer={ this.handleAnswer }
+              // handleAssertions={ this.handleAssertions }
+              isDisable={ isDisable }
+            />
           </div>
         )}
       </div>
@@ -150,15 +169,19 @@ class Question extends React.Component {
 
 const mapStateToProps = (state) => ({
   tok: state.api.token,
+  score: state.player.score,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   points: (assertions) => dispatch(assertionsPlayer(assertions)),
+  totalScore: (score) => dispatch(scorePlayer(score)),
 });
 
 Question.propTypes = {
   tok: PropTypes.string.isRequired,
   points: PropTypes.func.isRequired,
+  totalScore: PropTypes.func.isRequired,
+  // score: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Question);
