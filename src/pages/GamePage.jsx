@@ -25,9 +25,10 @@ class GamePage extends Component {
       categories: [{}],
       indexState: 0,
       loading: false,
-      seconds: 30,
+      seconds: 28,
       answered: true,
       button: false,
+      timeIsOut: false,
     };
 
     this.getToken = this.getToken.bind(this);
@@ -41,6 +42,7 @@ class GamePage extends Component {
   }
 
   componentDidMount() {
+    console.log('foi chamado');
     this.interval();
   }
 
@@ -60,8 +62,8 @@ class GamePage extends Component {
   async interval() {
     await this.getToken();
     const A_SECOND = 1000;
-    const number = 30;
-    this.setState({ seconds: 30 });
+    const number = 28;
+    this.setState({ seconds: 28 });
     this.myInterval = setInterval(() => {
       const { seconds = number } = this.state;
       if (seconds > 0) {
@@ -71,6 +73,9 @@ class GamePage extends Component {
       }
       if (seconds === 0) {
         this.nextQuestion();
+        this.setState({ timeIsOut: true });
+        this.setState({ loading: true });
+        this.setState({ button: true });
       }
     }, A_SECOND);
   }
@@ -116,8 +121,7 @@ class GamePage extends Component {
   }
 
   questionAndAnswer() {
-    const { categories, indexState, loading } = this.state;
-    console.log(categories);
+    const { categories, indexState, loading, timeIsOut } = this.state;
     return (
       <div>
         <select>
@@ -129,6 +133,7 @@ class GamePage extends Component {
               {item.category}
             </option>))}
         </select>
+
         <section>
           <div
             role="button"
@@ -139,14 +144,13 @@ class GamePage extends Component {
             onKeyDown={ this.handleChange }
           >
             {categories[indexState].question}
-
           </div>
         </section>
         <option
           className={ loading ? 'correct-answer' : '' }
           data-testid="correct-answer"
-          onKeyDown={ this.correctAnswer }
-          onClick={ this.correctAnswer }
+          onKeyDown={ timeIsOut ? '' : this.correctAnswer }
+          onClick={ timeIsOut ? '' : this.correctAnswer }
         >
           {categories[indexState].correct_answer}
         </option>
@@ -154,7 +158,7 @@ class GamePage extends Component {
         && categories[indexState].incorrect_answers.map((item, index) => (
           <option
             className={ loading ? 'incorrect-answers' : '' }
-            onClick={ this.wrongAnswer }
+            onClick={ timeIsOut ? '' : this.wrongAnswer }
             data-testid={ `wrong-answer-${index}` }
             key={ index }
           >
