@@ -40,10 +40,10 @@ export function scoreAction(score) {
   });
 }
 
-export function eachScoreAction(score) {
+export function eachScoreAction(eachScore) {
   return ({
     type: EACH_SCORE,
-    payload: score,
+    payload: eachScore,
   });
 }
 

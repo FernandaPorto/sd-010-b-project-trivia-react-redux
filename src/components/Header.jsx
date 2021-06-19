@@ -13,12 +13,13 @@ class Header extends Component {
   }
 
   render() {
-    const { nome, gravatar, totalScore } = this.props;
+    const { nome, gravatar, eachPoints } = this.props;
+    console.log(eachPoints);
     return (
       <header>
         <img src={ gravatar } alt="imege" data-testid="header-profile-picture" />
         <span data-testid="header-player-name">{nome}</span>
-        <span data-testid="header-score">{totalScore}</span>
+        <span data-testid="header-score">{eachPoints}</span>
       </header>
     );
   }
@@ -26,9 +27,9 @@ class Header extends Component {
 
 const mapStateToProps = (state) => ({
   email: state.user.email,
-  nome: state.user.player.name,
+  nome: state.user.name,
   gravatar: state.user.gravatar,
-  totalScore: state.user.player.score,
+  eachPoints: state.user.player.eachScore,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -40,7 +41,7 @@ Header.propTypes = ({
   nome: PropTypes.string.isRequired,
   gravatar: PropTypes.string.isRequired,
   getGravatar: PropTypes.func.isRequired,
-  totalScore: PropTypes.number.isRequired,
+  eachPoints: PropTypes.number.isRequired,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

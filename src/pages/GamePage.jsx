@@ -93,21 +93,22 @@ class GamePage extends Component {
 
   correctAnswer() {
     const { categories, indexState, seconds } = this.state;
-    const { playerScore } = this.props;
+    const { eachQuestionScore } = this.props;
     const level = categories[indexState].difficulty;
     const hard = 3;
     const standardNumber = 10;
     if (level === 'easy') {
-      scoreAction(standardNumber + seconds);
+      eachQuestionScore(standardNumber + seconds);
     } else if (level === 'medium') {
-      scoreAction(standardNumber + (seconds * 2));
+      eachQuestionScore(standardNumber + (seconds * 2));
     } else {
-      scoreAction(standardNumber + (seconds * hard));
+      eachQuestionScore(standardNumber + (seconds * hard));
     }
     this.setState({ loading: true });
     this.setState({ answered: false });
     this.setState({ button: true });
-    localStorage.setItem('score', JSON.stringify(playerScore));
+    console.log(eachQuestionScore);
+    // localStorage.setItem('score', JSON.stringify(playerScore));
     this.componentWillUnmount();
     assertionsAction(1);
   }
@@ -146,8 +147,6 @@ class GamePage extends Component {
             tabIndex={ 0 }
             data-testid="question-text"
             key={ indexState }
-            onClick={ this.handleChange }
-            onKeyDown={ this.handleChange }
           >
             {categories[indexState].question}
           </div>
@@ -203,13 +202,13 @@ class GamePage extends Component {
 }
 
 GamePage.propTypes = {
-  playerScore: PropTypes.func.isRequired,
+  eachQuestionScore: PropTypes.func.isRequired,
   // totalScore: PropTypes.number.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   playerScore: (score) => dispatch(scoreAction([score])),
-  eachQuestionScore: (score) => dispatch(eachScoreAction([score])),
+  eachQuestionScore: (eachScore) => dispatch(eachScoreAction(eachScore)),
   totalAssertions: (score) => dispatch(assertionsAction([score])),
 });
 
