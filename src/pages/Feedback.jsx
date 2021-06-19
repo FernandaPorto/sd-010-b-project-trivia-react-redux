@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import HeaderFeedback from '../components/HeaderFeedback';
+import Header from '../components/Header';
 
 class Feedback extends React.Component {
   constructor() {
@@ -13,29 +13,29 @@ class Feedback extends React.Component {
 
   feedbackMessage() {
     if (this.assertions <= 2) {
-      return (<p data-testid="feedback-text">Podia ser melhor...</p>);
+      return (<p>Podia ser melhor...</p>);
     }
-    return (<p data-testid="feedback-text">Mandou bem!</p>);
+    return (<p>Mandou bem!</p>);
   }
 
   render() {
     return (
       <main>
-        <HeaderFeedback />
+        <Header />
         <section>
           { this.feedbackMessage() }
           <div>
             <span>Número de acertos: </span>
-            <span data-testid="feedback-total-question">{this.assertions}</span>
+            <span>{this.assertions}</span>
           </div>
           <div>
             <span>Pontuação final: </span>
-            <span data-testid="feedback-total-score">{this.score}</span>
+            <span>{this.score}</span>
           </div>
-          <button type="button" data-testid="btn-play-again">
+          <button type="button">
             <Link to="/">Jogar novamente</Link>
           </button>
-          <button type="button" data-testid="btn-ranking">
+          <button type="button">
             <Link to="/ranking">Ranking</Link>
           </button>
         </section>

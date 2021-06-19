@@ -18,14 +18,11 @@ function playerReducer(state = INITIAL_STATE, { type, payload }) {
       gravatarURL: payload.gravatarURL,
     };
   case UPDATE_SCORE:
-    if (payload.score !== 0) {
-      return {
-        ...state,
-        assertions: state.assertions + 1,
-        score: state.score + payload.score,
-      };
-    }
-    return state;
+    return {
+      ...state,
+      assertions: state.assertions + 1,
+      score: state.score + payload.score,
+    };
   default:
     return state;
   }

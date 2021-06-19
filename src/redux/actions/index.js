@@ -35,8 +35,9 @@ export const answerQuestionActionCreator = () => ({
   type: ANSWER_QUESTION,
 });
 
-export const nextQuestionActionCreator = () => ({
+export const nextQuestionActionCreator = (payload) => ({
   type: NEXT_QUESTION,
+  payload,
 });
 
 export const updateSecondsActionCreator = (payload) => ({

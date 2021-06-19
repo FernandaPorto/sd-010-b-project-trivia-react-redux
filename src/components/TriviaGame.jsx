@@ -1,8 +1,10 @@
+import './TriviaGame.css';
+
 import React from 'react';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-//
+
 import {
   getQuestionsThunk,
   answerQuestionActionCreator,
@@ -75,14 +77,17 @@ class TriviaGame extends React.Component {
   renderNextButton() {
     const { questions, questionIndex, nextQuestion } = this.props;
     const isLast = questionIndex === questions.length - 1;
+
+    let nextIndex = questionIndex + 1;
+    if (isLast) nextIndex = 0;
+
     return (
       <button
         type="button"
         onClick={ () => {
-          nextQuestion();
+          nextQuestion({ nextIndex });
           if (isLast) this.finishGame();
         } }
-        data-testid="btn-next"
       >
         Próxima pergunta
       </button>
@@ -96,13 +101,11 @@ class TriviaGame extends React.Component {
     const renderAnswers = answerOptions.map((answer, index) => {
       const isCorrect = answer === correctAnswer;
       const coloredStyle = isCorrect ? 'green-border' : 'red-border';
-      const testId = isCorrect ? 'correct-answer' : `wrong-answer-${index}`;
 
       return (
         <button
           type="button"
           key={ index }
-          data-testid={ testId }
           onClick={ () => {
             answerQuestion();
             if (isCorrect) this.handleScore();
@@ -117,8 +120,8 @@ class TriviaGame extends React.Component {
 
     return (
       <div>
-        <h2 data-testid="question-category">{category}</h2>
-        <h3 data-testid="question-text">{question}</h3>
+        <h2>{category}</h2>
+        <h3>{question}</h3>
         {renderAnswers}
         <div>{isResolved ? this.renderNextButton() : <Timer />}</div>
       </div>
@@ -128,9 +131,7 @@ class TriviaGame extends React.Component {
   render() {
     const { redirect } = this.state;
     const { isLoading } = this.props;
-
     if (redirect) return <Redirect to="/feedback" />;
-
     return (
       <section>
         {isLoading ? <h3>LOADING...</h3> : this.renderQuestion()}
@@ -152,7 +153,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getQuestions: () => dispatch(getQuestionsThunk()),
   answerQuestion: () => dispatch(answerQuestionActionCreator()),
-  nextQuestion: () => dispatch(nextQuestionActionCreator()),
+  nextQuestion: (payload) => dispatch(nextQuestionActionCreator(payload)),
   updateSeconds: (payload) => dispatch(updateSecondsActionCreator(payload)),
 });
 

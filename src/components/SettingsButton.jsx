@@ -4,10 +4,7 @@ import { Link } from 'react-router-dom';
 class Button extends React.Component {
   render() {
     return (
-      <button
-        type="button"
-        data-testid="btn-settings"
-      >
+      <button type="button">
         <Link to="/settings">Settings</Link>
       </button>
     );

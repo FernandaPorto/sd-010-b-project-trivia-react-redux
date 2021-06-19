@@ -32,18 +32,13 @@ function gameReducer(state = INITIAL_STATE, { type, payload }) {
       ...state,
       isResolved: true,
     };
-  case NEXT_QUESTION: {
-    let questionIndex = state.questionIndex + 1;
-    if (state.questionIndex === state.questions.length - 1) {
-      questionIndex = 0;
-    }
+  case NEXT_QUESTION:
     return {
       ...state,
-      questionIndex,
+      questionIndex: payload.nextIndex,
       isResolved: false,
       secondsLeft: 30,
     };
-  }
   case UPDATE_SECONDS:
     return {
       ...state,

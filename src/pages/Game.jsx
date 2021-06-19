@@ -1,4 +1,5 @@
 import React from 'react';
+
 import TriviaGame from '../components/TriviaGame';
 import Header from '../components/Header';
 

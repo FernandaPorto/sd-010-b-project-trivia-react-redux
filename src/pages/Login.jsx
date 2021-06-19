@@ -1,3 +1,5 @@
+import './Login.css';
+
 import React from 'react';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
@@ -63,21 +65,19 @@ class Login extends React.Component {
   render() {
     const { name, email, redirect } = this.state;
 
-    if (redirect) return <Redirect to="/Game" />;
+    if (redirect) return <Redirect to="/game" />;
 
     return (
-      <section>
+      <main>
         <div>
           <input
             type="text"
-            data-testid="input-player-name"
             name="name"
             placeholder=""
             onChange={ this.handleChange }
           />
           <input
             type="email"
-            data-testid="input-gravatar-email"
             name="email"
             placeholder=""
             onChange={ this.handleChange }
@@ -86,14 +86,13 @@ class Login extends React.Component {
             type="button"
             value="Jogar"
             disabled={ !(name && email) }
-            data-testid="btn-play"
             onClick={ this.handleClick }
           />
         </div>
         <div>
           <SettingsButton />
         </div>
-      </section>
+      </main>
     );
   }
 }
