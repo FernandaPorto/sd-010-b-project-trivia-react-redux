@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import '../GamePageCss.css';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Header from '../components/Header';
 import fetchURL from '../services/API';
 import ButtonNextQuestion from '../components/ButtonNextQuestion';
 import ButtonFeedback from '../components/ButtonFeedback';
 import ButtonLogin from '../components/ButtonLogin';
+import { scoreAction } from '../actions';
 
 export const setToken = async () => {
   const token = await fetchURL();
@@ -29,11 +31,12 @@ class GamePage extends Component {
 
     this.getToken = this.getToken.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    // this.isLoading = this.isLoading.bind(this);
     this.interval = this.interval.bind(this);
     this.questionAndAnswer = this.questionAndAnswer.bind(this);
     this.correctAnswer = this.correctAnswer.bind(this);
     this.wrongAnswer = this.wrongAnswer.bind(this);
+    this.componentWillUnmount = this.componentWillUnmount.bind(this);
+    this.nextQuestion = this.nextQuestion.bind(this);
   }
 
   componentDidMount() {
@@ -56,6 +59,7 @@ class GamePage extends Component {
   async interval() {
     await this.getToken();
     const A_SECOND = 1000;
+    this.setState({ seconds: 30 });
     this.myInterval = setInterval(() => {
       const { seconds } = this.state;
       if (seconds > 0) {
@@ -74,12 +78,31 @@ class GamePage extends Component {
   }
 
   correctAnswer() {
+    const { categories, indexState, seconds } = this.state;
+    const { playerScore } = this.props;
+    const level = categories[indexState].difficulty;
+    const hard = 3;
+    const standardNumber = 10;
+    if (level === 'easy') {
+      playerScore(standardNumber + seconds);
+    } else if (level === 'medium') {
+      playerScore(standardNumber + (seconds * 2));
+    } else {
+      playerScore(standardNumber + (seconds * hard));
+    }
     this.setState({ loading: true });
     this.setState({ rightAnswer: false });
+
+    this.componentWillUnmount();
   }
 
   wrongAnswer() {
     this.setState({ loading: true });
+    this.componentWillUnmount();
+  }
+
+  nextQuestion() {
+    this.setState({ loading: false });
   }
 
   questionAndAnswer() {
@@ -134,26 +157,40 @@ class GamePage extends Component {
 
   render() {
     const { seconds, rightAnswer } = this.state;
+    const { totalScore } = this.props;
     return (
       <div>
         <Header />
         { this.questionAndAnswer() }
         { seconds > 0 ? `${seconds}` : '' }
+        { totalScore }
         <ButtonFeedback />
         <ButtonLogin />
         <ButtonNextQuestion
           rightAnswer={ rightAnswer }
           handleChange={ this
             .handleChange }
+          nextQuestion={ this.nextQuestion }
+          interval={ this.interval }
+
         />
       </div>
     );
   }
 }
 
-// GamePage.propTypes = {
-//   resultFetchTrivia: PropTypes.arrayOf(Object).isRequired,
-// };
+GamePage.propTypes = {
+  playerScore: PropTypes.func.isRequired,
+  totalScore: PropTypes.number.isRequired,
+};
 
-export default GamePage;
+const mapDispatchToProps = (dispatch) => ({
+  playerScore: (score) => dispatch(scoreAction(score)),
+});
+
+const mapStateToProps = (state) => ({
+  totalScore: state.user.userScore,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(GamePage);
 // https://betterprogramming.pub/building-a-simple-countdown-timer-with-react-4ca32763dda7

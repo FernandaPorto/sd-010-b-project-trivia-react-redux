@@ -4,11 +4,23 @@ import PropTypes from 'prop-types';
 // import { setToken } from '../pages/GamePage';
 
 class ButtonNextQuestion extends React.Component {
+  constructor(props) {
+    super(props);
+    this.functionsGamePage = this.functionsGamePage.bind(this);
+  }
+
+  functionsGamePage() {
+    const { handleChange, nextQuestion, interval } = this.props;
+    handleChange();
+    nextQuestion();
+    interval();
+  }
+
   render() {
-    const { handleChange, rightAnswer } = this.props;
+    const { rightAnswer } = this.props;
     return (
       <Link to="/gamepage">
-        <button type="button" disabled={ rightAnswer } onClick={ handleChange }>
+        <button type="button" disabled={ rightAnswer } onClick={ this.functionsGamePage }>
           Próxima pergunta
         </button>
       </Link>
@@ -19,6 +31,8 @@ class ButtonNextQuestion extends React.Component {
 ButtonNextQuestion.propTypes = {
   handleChange: PropTypes.func.isRequired,
   rightAnswer: PropTypes.bool.isRequired,
+  nextQuestion: PropTypes.func.isRequired,
+  interval: PropTypes.func.isRequired,
 };
 
 export default ButtonNextQuestion;

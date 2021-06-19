@@ -1,9 +1,10 @@
-import { LOGIN, GRAVATAR } from '../actions';
+import { LOGIN, GRAVATAR, SCORE } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
   email: '',
   gravatar: '',
+  userScore: 0,
 };
 
 export default function user(state = INITIAL_STATE, action) {
@@ -18,6 +19,12 @@ export default function user(state = INITIAL_STATE, action) {
     return {
       ...state,
       gravatar: action.gravatar,
+
+    };
+  case SCORE:
+    return {
+      ...state,
+      userScore: action.payload.score,
 
     };
   default:
