@@ -44,19 +44,19 @@ export default function user(state = INITIAL_STATE, action) {
   case SCORE:
     return {
       ...state,
-      score: parseInt(state.player.assertions, 10) + parseInt(action.ranking.score, 10),
+      score: parseInt(state.player.assertions, 10) + parseInt(action.player.score, 10),
 
     };
   case EACH_SCORE:
     return {
       ...state,
-      eachScore: parseInt(action.ranking.score, 10),
+      eachScore: parseInt(action.player.score, 10),
 
     };
   case ASSERTIONS:
     return {
       ...state,
-      assertions: parseInt(action.ranking.score, 10)
+      assertions: parseInt(action.assertions.score, 10)
       + parseInt(action.payload.player.assertions, 10),
 
     };
