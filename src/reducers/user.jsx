@@ -43,7 +43,7 @@ export default function user(state = INITIAL_STATE, action) {
   case SCORE:
     return {
       ...state,
-      score: parseInt(state.ranking.score, 10) + parseInt(action.ranking.score, 10),
+      score: parseInt(state.player.score, 10) + parseInt(action.player.score, 10),
 
     };
   default:
