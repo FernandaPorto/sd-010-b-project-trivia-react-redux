@@ -32,9 +32,9 @@ class Feedback extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  assertions: state.player.assertions,
-  score: state.player.score,
+const mapStateToProps = ({ player }) => ({
+  assertions: player.assertions,
+  score: player.score,
 });
 
 export default connect(mapStateToProps)(Feedback);

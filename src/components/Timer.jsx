@@ -31,8 +31,8 @@ class Timer extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  secondsLeft: state.game.secondsLeft,
+const mapStateToProps = ({ game }) => ({
+  secondsLeft: game.secondsLeft,
 });
 
 const mapDispatchToProps = (dispatch) => ({

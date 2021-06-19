@@ -3,7 +3,7 @@ import { decode } from 'he';
 import { fetchQuestions } from '../../services/api';
 
 const PROBABILITY_BASE = 0.5;
-const TEN = 10;
+const BASE_POINTS = 10;
 const randomizer = (array) => array.sort(() => Math.random() - PROBABILITY_BASE);
 
 export const ANSWER_QUESTION = 'ANSWER_QUESTION';
@@ -75,8 +75,12 @@ export const getQuestionsThunk = () => async (dispatch) => {
 };
 
 export const updateScoreThunk = ({ secondsLeft, difficulty }) => (dispatch) => {
-  const difficultyPoints = { easy: 1, medium: 2, hard: 3 };
+  const difficultyPoints = {
+    easy: 1,
+    medium: 2,
+    hard: 3,
+  };
   const level = difficultyPoints[difficulty];
-  const newScore = TEN + secondsLeft * level;
+  const newScore = BASE_POINTS + secondsLeft * level;
   dispatch(updateScoreActionCreator({ newScore }));
 };

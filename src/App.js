@@ -1,5 +1,3 @@
-import './App.css';
-
 import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
@@ -10,6 +8,7 @@ import Settings from './pages/Settings';
 import Game from './pages/Game';
 import Feedback from './pages/Feedback';
 import Ranking from './pages/Ranking';
+import './App.css';
 
 export default function App() {
   return (

@@ -123,15 +123,15 @@ class TriviaGame extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  gravatarURL: state.player.gravatarURL,
-  isLoading: state.game.isLoading,
-  isResolved: state.game.isResolved,
-  name: state.player.name,
-  questions: state.game.questions,
-  questionIndex: state.game.questionIndex,
-  score: state.player.score,
-  secondsLeft: state.game.secondsLeft,
+const mapStateToProps = ({ game, player }) => ({
+  gravatarURL: player.gravatarURL,
+  isLoading: game.isLoading,
+  isResolved: game.isResolved,
+  name: player.name,
+  questions: game.questions,
+  questionIndex: game.questionIndex,
+  score: player.score,
+  secondsLeft: game.secondsLeft,
 });
 
 const mapDispatchToProps = (dispatch) => ({

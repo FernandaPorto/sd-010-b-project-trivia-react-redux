@@ -1,0 +1,13 @@
+header {
+  align-items: center;
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 50px;
+  padding: 20px;
+  width: 100%;
+}
+
+header > div {
+  display: flex;
+  align-items: center;
+}

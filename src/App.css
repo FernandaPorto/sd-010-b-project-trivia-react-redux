@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -7,4 +9,78 @@
 body {
   background-color: #201b28;
   color: #efeff1;
+  font-family: 'Roboto', sans-serif;
+}
+
+main {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+input[type='text'],
+input[type='email'] {
+  background-color: #efeff1;
+  border: 1px solid #efeff1;
+  border-radius: 3px;
+  font-family: inherit;
+  height: 40px;
+  margin-bottom: 10px;
+  text-align: center;
+  text-transform: uppercase;
+  width: 90%;
+}
+
+.button-alt {
+  background-color: #6ac045;
+  border: none;
+  padding: 5px;
+}
+
+.button-main {
+  background-color: #6052e7;
+  background-image: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.25),
+    rgba(255, 255, 255, 0)
+  );
+  border: 1px solid #6052e7;
+  color: inherit;
+  cursor: pointer;
+  font-weight: bold;
+  height: 25px;
+  text-transform: uppercase;
+  width: 200px;
+}
+
+.container {
+  background-color: rgba(96, 82, 231, .12);
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.svg-icon {
+  height: 36px;
+  width: 36px;
+}
+
+.svg-icon:hover {
+  animation: rotation 5s infinite linear;
+}
+
+.gravatar-img {
+  border-radius: 50%;
+  height: 80px;
+  margin-right: 20px;
+  width: 80px;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

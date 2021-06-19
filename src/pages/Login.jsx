@@ -1,5 +1,3 @@
-import './Login.css';
-
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
@@ -8,6 +6,7 @@ import md5 from 'crypto-js/md5';
 import { fetchToken } from '../services/api';
 import { loginActionCreator, startGameActionCreator } from '../redux/actions';
 import SettingsButton from '../components/SettingsButton';
+import './Login.css';
 
 class Login extends React.Component {
   constructor(props) {
@@ -17,8 +16,8 @@ class Login extends React.Component {
     this.handleClick = this.handleClick.bind(this);
 
     this.state = {
-      name: '',
-      email: '',
+      inputName: '',
+      inputEmail: '',
       redirect: false,
     };
   }
@@ -40,39 +39,43 @@ class Login extends React.Component {
   }
 
   handleClick() {
-    const { name, email } = this.state;
+    const { inputName, inputEmail } = this.state;
     const { login, startGame } = this.props;
-    const hash = md5(email).toString();
+    const hash = md5(inputEmail).toString();
     const gravatarURL = `https://www.gravatar.com/avatar/${hash}`;
-    login({ name, email, gravatarURL });
+    login({ inputName, inputEmail, gravatarURL });
     startGame();
     this.setState({ redirect: true });
   }
 
   render() {
-    const { name, email, redirect } = this.state;
+    const { inputName, inputEmail, redirect } = this.state;
 
     if (redirect) return <Redirect to="/game" />;
 
     return (
-      <main>
+      <main id="login-page">
         <div>
+          <h1>Trivia Game</h1>
+        </div>
+        <div id="login" className="container">
           <input
             type="text"
-            name="name"
-            placeholder=""
+            name="inputName"
+            placeholder="Name"
             onChange={ this.handleChange }
           />
           <input
             type="email"
-            name="email"
-            placeholder=""
+            name="inputEmail"
+            placeholder="E-mail"
             onChange={ this.handleChange }
           />
           <input
             type="button"
-            value="Jogar"
-            disabled={ !(name && email) }
+            className="button-main"
+            value="Start"
+            disabled={ !(inputName && inputEmail) }
             onClick={ this.handleClick }
           />
         </div>
