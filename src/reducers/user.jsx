@@ -1,4 +1,4 @@
-import { LOGIN, GRAVATAR, SCORE } from '../actions';
+import { LOGIN, GRAVATAR, SCORE, EACH_SCORE, ASSERTIONS } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -8,6 +8,7 @@ const INITIAL_STATE = {
     name: '',
     assertions: 0,
     score: 0,
+    eachScore: '',
     gravatarEmail: '',
   },
   ranking: [
@@ -46,7 +47,20 @@ export default function user(state = INITIAL_STATE, action) {
   case SCORE:
     return {
       ...state,
-      score: parseInt(state.player.score, 10) + parseInt(action.payload, 10),
+      score: parseInt(state.player.assertions, 10) + parseInt(action.ranking.score, 10),
+
+    };
+  case EACH_SCORE:
+    return {
+      ...state,
+      eachScore: parseInt(action.ranking.score, 10),
+
+    };
+  case ASSERTIONS:
+    return {
+      ...state,
+      assertions: parseInt(action.ranking.score, 10)
+      + parseInt(action.payload.player.assertions, 10),
     };
   default:
     return state;
