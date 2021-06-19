@@ -21,7 +21,7 @@ class ButtonNextQuestion extends React.Component {
     return (
       <Link to="/gamepage">
         <button type="button" disabled={ rightAnswer } onClick={ this.functionsGamePage }>
-          Próxima pergunta
+          Próxima
         </button>
       </Link>
     );

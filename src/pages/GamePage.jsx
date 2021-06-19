@@ -58,7 +58,7 @@ class GamePage extends Component {
 
   async interval() {
     await this.getToken();
-    const A_SECOND = 1000;
+    const A_SECOND = 100;
     this.setState({ seconds: 30 });
     this.myInterval = setInterval(() => {
       const { seconds } = this.state;
