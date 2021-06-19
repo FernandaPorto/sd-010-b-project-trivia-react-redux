@@ -3,7 +3,6 @@ import './Login.css';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
-import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 
 import { fetchToken } from '../services/api';
@@ -27,7 +26,6 @@ class Login extends React.Component {
   async componentDidMount() {
     const ranking = JSON.parse(localStorage.getItem('ranking'));
     let token = localStorage.getItem('token');
-
     if (!ranking) localStorage.setItem('ranking', JSON.stringify([]));
     if (!token) {
       token = await fetchToken();
@@ -44,10 +42,8 @@ class Login extends React.Component {
   handleClick() {
     const { name, email } = this.state;
     const { login, startGame } = this.props;
-
     const hash = md5(email).toString();
     const gravatarURL = `https://www.gravatar.com/avatar/${hash}`;
-
     login({ name, email, gravatarURL });
     startGame();
     this.setState({ redirect: true });
@@ -92,9 +88,5 @@ const mapDispatchToProps = (dispatch) => ({
   login: (payload) => dispatch(loginActionCreator(payload)),
   startGame: () => dispatch(startGameActionCreator()),
 });
-
-Login.propTypes = {
-  login: PropTypes.func,
-}.isRequired;
 
 export default connect(undefined, mapDispatchToProps)(Login);

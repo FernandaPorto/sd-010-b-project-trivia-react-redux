@@ -3,14 +3,13 @@ import './TriviaGame.css';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
-import PropTypes from 'prop-types';
 
 import {
-  getQuestionsThunk,
   answerQuestionActionCreator,
+  getQuestionsThunk,
   nextQuestionActionCreator,
   updateSecondsActionCreator,
-  updateScoreActionCreator,
+  updateScoreThunk,
 } from '../redux/actions';
 
 import Timer from './Timer';
@@ -19,10 +18,8 @@ class TriviaGame extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handleScore = this.handleScore.bind(this);
     this.renderQuestion = this.renderQuestion.bind(this);
     this.renderNextButton = this.renderNextButton.bind(this);
-    this.finishGame = this.finishGame.bind(this);
 
     this.state = {
       redirect: false,
@@ -34,42 +31,66 @@ class TriviaGame extends React.Component {
     getQuestions();
   }
 
-  handleScore() {
-    const { score, questions, questionIndex, secondsLeft, updateScore } = this.props;
-    const TEN = 10;
-    const difficultyPoints = {
-      easy: 1,
-      medium: 2,
-      hard: 3,
-    };
-    const { difficulty } = questions[questionIndex];
-    const level = difficultyPoints[difficulty];
-    const newScore = score + TEN + secondsLeft * level;
-
-    updateScore({ newScore });
-  }
-
-  finishGame() {
-    const { name, gravatarURL, score } = this.props;
-
+  componentWillUnmount() {
+    const { gravatarURL, name, score } = this.props;
     const newRanking = {
+      gravatarURL,
       name,
       score,
-      gravatarURL,
     };
     const ranking = JSON.parse(localStorage.getItem('ranking'));
     ranking.push(newRanking);
-
-    ranking.sort((a, b) => b.score - a.score);
-
     localStorage.setItem('ranking', JSON.stringify(ranking));
-    this.setState({ redirect: true });
+  }
+
+  renderQuestion() {
+    const {
+      isResolved,
+      questionIndex,
+      questions,
+      secondsLeft,
+      answerQuestion,
+      updateScore,
+    } = this.props;
+
+    const {
+      answerOptions,
+      category,
+      correctAnswer,
+      difficulty,
+      question,
+    } = questions[questionIndex];
+
+    return (
+      <div>
+        <h2>{category}</h2>
+        <h3>{question}</h3>
+        {answerOptions.map((answer, index) => {
+          const isCorrect = answer === correctAnswer;
+          const coloredStyle = isCorrect ? 'green-border' : 'red-border';
+
+          return (
+            <button
+              type="button"
+              key={ index }
+              onClick={ () => {
+                answerQuestion();
+                if (isCorrect) updateScore({ secondsLeft, difficulty });
+              } }
+              className={ isResolved ? coloredStyle : 'default-button' }
+              disabled={ isResolved }
+            >
+              {answer}
+            </button>
+          );
+        })}
+      </div>
+    );
   }
 
   renderNextButton() {
-    const { questions, questionIndex, nextQuestion } = this.props;
+    const { questionIndex, questions, nextQuestion } = this.props;
     const isLast = questionIndex === questions.length - 1;
-
     let nextIndex = questionIndex + 1;
     if (isLast) nextIndex = 0;
 
@@ -78,7 +99,7 @@ class TriviaGame extends React.Component {
         type="button"
         onClick={ () => {
           nextQuestion({ nextIndex });
-          if (isLast) this.finishGame();
+          if (isLast) this.setState({ redirect: true });
         } }
       >
         Próxima pergunta
@@ -86,73 +107,39 @@ class TriviaGame extends React.Component {
     );
   }
 
-  renderQuestion() {
-    const { questions, questionIndex, isResolved, answerQuestion } = this.props;
-    const { category, question, answerOptions, correctAnswer } = questions[questionIndex];
-
-    const renderAnswers = answerOptions.map((answer, index) => {
-      const isCorrect = answer === correctAnswer;
-      const coloredStyle = isCorrect ? 'green-border' : 'red-border';
-
-      return (
-        <button
-          type="button"
-          key={ index }
-          onClick={ () => {
-            answerQuestion();
-            if (isCorrect) this.handleScore();
-          } }
-          className={ isResolved ? coloredStyle : 'default-button' }
-          disabled={ isResolved }
-        >
-          {answer}
-        </button>
-      );
-    });
-
-    return (
-      <div>
-        <h2>{category}</h2>
-        <h3>{question}</h3>
-        {renderAnswers}
-        <div>{isResolved ? this.renderNextButton() : <Timer />}</div>
-      </div>
-    );
-  }
-
   render() {
     const { redirect } = this.state;
-    const { isLoading } = this.props;
+    const { isLoading, isResolved } = this.props;
+
     if (redirect) return <Redirect to="/feedback" />;
+    if (isLoading) return <h2>Loading...</h2>;
+
     return (
       <section>
-        {isLoading ? <h3>LOADING...</h3> : this.renderQuestion()}
+        <div>{this.renderQuestion()}</div>
+        <div>{isResolved ? this.renderNextButton() : <Timer />}</div>
       </section>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  name: state.player.name,
   gravatarURL: state.player.gravatarURL,
-  score: state.player.score,
   isLoading: state.game.isLoading,
+  isResolved: state.game.isResolved,
+  name: state.player.name,
   questions: state.game.questions,
   questionIndex: state.game.questionIndex,
-  isResolved: state.game.isResolved,
+  score: state.player.score,
   secondsLeft: state.game.secondsLeft,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getQuestions: () => dispatch(getQuestionsThunk()),
   answerQuestion: () => dispatch(answerQuestionActionCreator()),
+  getQuestions: () => dispatch(getQuestionsThunk()),
   nextQuestion: (payload) => dispatch(nextQuestionActionCreator(payload)),
+  updateScore: (payload) => dispatch(updateScoreThunk(payload)),
   updateSeconds: (payload) => dispatch(updateSecondsActionCreator(payload)),
-  updateScore: (payload) => dispatch(updateScoreActionCreator(payload)),
 });
-
-TriviaGame.propTypes = {
-  secondsLeft: PropTypes.number,
-}.isRequired;
 
 export default connect(mapStateToProps, mapDispatchToProps)(TriviaGame);

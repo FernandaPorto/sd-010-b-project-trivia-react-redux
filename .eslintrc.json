@@ -138,6 +138,11 @@
         "logical": "ignore",
         "prop": "ignore"
       }
+    ],
+    
+    "react/prop-types": [
+      "error",
+      {"skipUndeclared": true}
     ]
   }
 }

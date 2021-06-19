@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 class Ranking extends React.Component {
   render() {
     const ranking = JSON.parse(localStorage.getItem('ranking'));
+    ranking.sort((a, b) => b.score - a.score);
+
     return (
       <main>
         <h1>Ranking</h1>
