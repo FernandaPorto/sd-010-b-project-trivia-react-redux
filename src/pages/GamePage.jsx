@@ -25,7 +25,7 @@ class GamePage extends Component {
       categories: [{}],
       indexState: 0,
       loading: false,
-      seconds: 0,
+      seconds: 30,
       answered: true,
       button: false,
       timeIsOut: false,
@@ -62,8 +62,7 @@ class GamePage extends Component {
   async interval() {
     await this.getToken();
     const A_SECOND = 1000;
-    const number = 30;
-    this.setState({ seconds: 30 });
+    const number = 28;
     this.myInterval = setInterval(() => {
       const { seconds = number } = this.state;
       if (seconds > 0) {
@@ -76,6 +75,7 @@ class GamePage extends Component {
         this.setState({ timeIsOut: true });
         this.setState({ loading: true });
         this.setState({ button: true });
+        this.setState({ answered: false });
       }
     }, A_SECOND);
   }
@@ -171,7 +171,7 @@ class GamePage extends Component {
   }
 
   render() {
-    const { seconds, answered, button } = this.state;
+    const { seconds, answered, button, loading } = this.state;
     return (
       <div className="App">
         <Header />
@@ -182,6 +182,7 @@ class GamePage extends Component {
           { seconds > 0 ? `Timer:${seconds}` : '' }
           <ButtonLogin />
           <ButtonFeedback />
+          {console.log(loading)}
           { button ? <ButtonNextQuestion
             answered={ answered }
             handleChange={ this.handleChange }
