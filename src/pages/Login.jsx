@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router';
 import LoginForms from '../components/LoginForms';
 
 class Login extends Component {
@@ -13,7 +13,7 @@ class Login extends Component {
   render() {
     const { redirectSettings } = this.state;
     if (redirectSettings) {
-      return <Redirect to="settings" />;
+      return <Redirect to="/settings" />;
     }
     return (
       <section>

@@ -4,6 +4,8 @@ import {
   GET_TOKEN,
   UPDATE_SCORE,
   UPDATE_TIME,
+  UPDATE_ASSERTIONS,
+  SAVE_AVATAR,
 } from '../action';
 
 const INITIAL_STATE = {
@@ -12,9 +14,10 @@ const INITIAL_STATE = {
   token: '',
   score: 0,
   questions: [],
-  assertions: [],
+  assertions: 0,
   isQuestions: false,
   timeLeft: 0,
+  urlAvatar: '',
 };
 
 function player(state = INITIAL_STATE, { type, payload }) {
@@ -29,8 +32,12 @@ function player(state = INITIAL_STATE, { type, payload }) {
     return { ...state, timeLeft: payload };
   case UPDATE_SCORE:
     return { ...state, score: payload };
+  case UPDATE_ASSERTIONS:
+    return { ...state, assertions: state.assertions + payload };
+  case SAVE_AVATAR:
+    return { ...state, urlAvatar: payload };
   default:
-    return state;
+    return INITIAL_STATE;
   }
 }
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
-import { getPLayerInfo, getTokenAPI } from '../action';
+import { getPlayerInfo, getTokenAPI } from '../action';
 
 class Login extends Component {
   constructor() {
@@ -12,25 +12,90 @@ class Login extends Component {
       gravatarEmail: '',
       btnEnable: true,
       login: false,
+      errors: {},
     };
+
     this.verifyLogin = this.verifyLogin.bind(this);
+    this.nameInfo = this.nameInfo.bind(this);
+    this.emailInfo = this.emailInfo.bind(this);
   }
 
   componentWillUnmount() {
     const { savePlayerInfo } = this.props;
     const { name, gravatarEmail } = this.state;
     savePlayerInfo({ name, gravatarEmail });
+
+    if (localStorage.getItem('ranking') === null) {
+      localStorage.setItem('ranking', JSON.stringify([]));
+    }
+
+    // const ranking = JSON.parse(localStorage.getItem('ranking'));
+    // const check = ranking.filter((player) => player.gravatarEmail !== gravatarEmail);
+    // localStorage.setItem('ranking', JSON.stringify(check));
   }
 
   verifyLogin() {
     const { name, gravatarEmail } = this.state;
+    const errors = {};
     if (name.length > 0 && gravatarEmail.length > 0) {
       this.setState({ btnEnable: false });
     }
+
+    if (name.length === 0) {
+      errors.errorName = 'Por favor, insira um nome';
+      this.setState({ btnEnable: true, errors });
+    }
+
+    if (!/(\w+[0-9]*)+@\w+\.\w+/.test(gravatarEmail)) {
+      errors.errorEmail = 'Por favor, insira um email válido';
+      this.setState({ btnEnable: true, errors });
+    }
+
+    return this.setState({ errors });
   }
 
   redirectToGame() {
     this.setState({ login: true });
+  }
+
+  nameInfo() {
+    const { name, errors } = this.state;
+    return (
+      <label htmlFor="name">
+        Nome:
+        <input
+          data-testid="input-player-name"
+          id="name"
+          name="name"
+          type="text"
+          value={ name }
+          onChange={ ({ target }) => {
+            this.setState({ name: target.value }, this.verifyLogin);
+          } }
+        />
+        {errors.errorName && <span>{errors.errorName}</span>}
+      </label>
+    );
+  }
+
+  emailInfo() {
+    const { gravatarEmail, errors } = this.state;
+    return (
+      <label htmlFor="email">
+        Email:
+        <input
+          data-testid="input-gravatar-email"
+          id="email"
+          name="email"
+          type="text"
+          value={ gravatarEmail }
+          onChange={ ({ target }) => {
+            this.setState({ gravatarEmail: target.value }, this.verifyLogin);
+          } }
+        />
+        {errors.errorEmail && <span>{errors.errorEmail}</span>}
+      </label>
+    );
   }
 
   render() {
@@ -42,30 +107,8 @@ class Login extends Component {
     return (
       <section>
         <form>
-          <label htmlFor="name">
-            Nome:
-            <input
-              type="text"
-              id="name"
-              name="name"
-              data-testid="input-player-name"
-              onChange={ ({ target }) => {
-                this.setState({ name: target.value }, this.verifyLogin);
-              } }
-            />
-          </label>
-          <label htmlFor="email">
-            Email:
-            <input
-              type="text"
-              id="email"
-              name="email"
-              data-testid="input-gravatar-email"
-              onChange={ ({ target }) => {
-                this.setState({ gravatarEmail: target.value }, this.verifyLogin);
-              } }
-            />
-          </label>
+          { this.nameInfo() }
+          { this.emailInfo() }
           <button
             type="button"
             disabled={ btnEnable }
@@ -86,7 +129,7 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   getTokenData: () => dispatch(getTokenAPI()),
-  savePlayerInfo: (value) => dispatch(getPLayerInfo(value)),
+  savePlayerInfo: (value) => dispatch(getPlayerInfo(value)),
 });
 
 const mapStateToProps = (state) => ({

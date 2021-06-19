@@ -33,9 +33,9 @@ class Timer extends Component {
   }
 
   render() {
-    const { disableButtons, updateSeconds } = this.props;
+    const { disableButtons, updateSeconds, wasAnswered } = this.props;
     const { seconds } = this.state;
-    if (seconds < 1) {
+    if (seconds < 1 || wasAnswered) {
       this.stopTimer();
       disableButtons();
     }
