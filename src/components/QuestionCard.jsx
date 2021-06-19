@@ -7,11 +7,11 @@ import '../pages/CSS/game.css';
 class QuestionCard extends React.Component {
   constructor() {
     super();
-
     this.handleClick = this.handleClick.bind(this);
+    this.options = this.options.bind(this);
     this.changeBtn = this.changeBtn.bind(this);
     this.state = {
-      score: 0,
+      // score: 0,
       disabled: false,
     };
   }
@@ -26,48 +26,37 @@ class QuestionCard extends React.Component {
     this.setState({ disabled });
   }
 
-  handleClick({ target }) {
-    const { propIsAnswered } = this.props;
+  handleClick() {
+    const { propIsAnswered, time } = this.props;
     propIsAnswered(true);
-    const button = target;
-    const wrongs = document.querySelectorAll('.wrong-answer');
-    const correct = document.getElementsByClassName('correct-answer');
-    if (button.className === 'correct-answer') {
-      this.setState((prev) => ({ score: prev.score + 1 }));
-    }
-    wrongs.forEach((item) => {
-      item.style.border = '3px solid rgb(255, 0, 0)';
-    });
-    correct[0].style.border = '3px solid rgb(6, 240, 15)';
+    console.log(time);
+  }
+
+  options(answered) {
+    const { disabled } = this.state;
+    const { question:
+      { incorrect_answers: iAnswers, correct_answer: cAnswers } } = this.props;
+    const answers = [...iAnswers, cAnswers];
+    const changeClasse = (option) => (
+      option !== cAnswers ? 'wrong-answer' : 'correct-answer');
+
+    return answers.map((option, i) => (
+      <button
+        type="button"
+        data-testid={ option !== cAnswers ? `wrong-answer-${i}` : 'correct-answer' }
+        className={ answered ? changeClasse(option) : null }
+        disabled={ disabled }
+        onClick={ () => this.handleClick() }
+        key={ i }
+      >
+        { option }
+      </button>
+    ));
   }
 
   render() {
-    const { question } = this.props;
-    const { disabled } = this.state;
-    const wrongList = question.incorrect_answers.map((ans, i) => (
-      <button
-        type="button"
-        className="wrong-answer"
-        data-testid={ `wrong-answer-${i}` }
-        disabled={ disabled }
-        onClick={ (e) => this.handleClick(e) }
-        key={ i }
-      >
-        {ans}
-      </button>));
-    const optionsList = [
-      <button
-        type="button"
-        className="correct-answer"
-        data-testid="correct-answer"
-        disabled={ disabled }
-        onClick={ (e) => this.handleClick(e) }
-        key="correct"
-      >
-        {question.correct_answer}
-      </button>,
-      ...wrongList,
-    ];
+    const { question, answered } = this.props;
+    const optionsList = this.options(answered);
     return (
       <div className="card-container">
         <h4 data-testid="question-category">

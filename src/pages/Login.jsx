@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 import { func } from 'prop-types';
 import { setPlayerInfo, fetchGameData } from '../actions';
-import { getToken } from '../services/triviaApi';
+import { getToken, getAnswers } from '../services/triviaApi';
 import logo from '../trivia.png';
 import './CSS/login.css';
 
@@ -22,13 +22,21 @@ class Login extends Component {
     };
   }
 
-  componentWillUnmount() {
-    const { propfetchGameData } = this.props;
-    const payload = {
-      token: localStorage.getItem('token'),
-      numAnswer: 5, // buscar no redux, depois de setar as configurações
-    };
-    propfetchGameData(payload);
+  componentDidMount() {
+    this.fetchToken();
+  }
+
+  async fetchToken() {
+    const token = localStorage.getItem('token');
+    const numChar = 64;
+    if (token && token.length === numChar) {
+      const { response_code: responseCode } = await getAnswers(1, token);
+      if (responseCode !== 0) {
+        localStorage.setItem('token', '');
+      }
+    } else {
+      localStorage.setItem('token', '');
+    }
   }
 
   handleChange({ target: { id, value } }) {
@@ -42,10 +50,16 @@ class Login extends Component {
   }
 
   async startGame() {
-    const { propSetPlayerInfo } = this.props;
+    const { propFetchGameData, propSetPlayerInfo } = this.props;
     const { name, email } = this.state;
-    const tokenObj = await getToken();
-    localStorage.setItem('token', tokenObj.token);
+    const localToken = localStorage.getItem('token');
+    if (!localToken) {
+      const tokenObj = await getToken();
+      localStorage.setItem('token', tokenObj.token);
+      propFetchGameData({ numAnswer: 5, token: tokenObj.token });
+    } else {
+      propFetchGameData({ numAnswer: 5, token: localStorage.getItem('token') });
+    }
     propSetPlayerInfo({ name, email });
     this.setState({ redirect: true });
   }
@@ -108,7 +122,7 @@ class Login extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   propSetPlayerInfo: (payload) => dispatch(setPlayerInfo(payload)),
-  propfetchGameData: (payload) => dispatch(fetchGameData(payload)),
+  propFetchGameData: (payload) => dispatch(fetchGameData(payload)),
 });
 
 Login.propTypes = {
