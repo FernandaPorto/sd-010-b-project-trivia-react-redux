@@ -1,14 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { saveNumQuestion } from '../actions/index';
+import { saveNumQuestion, saveCorrectAnswer } from '../actions/index';
 import './styleQuestion.css';
 import history from '../history';
 
 class Question extends React.Component {
   constructor(props) {
     super(props);
-    const { numQuestion } = this.props;
+    const { numQuestion, correctAnswer } = this.props;
     this.state = {
       isClicked: false,
       arrRandom: [],
@@ -17,6 +17,7 @@ class Question extends React.Component {
       timer: 30,
       isDisabled: false,
       updateT: '',
+      correctAnswer,
     };
 
     this.handleResult = this.handleResult.bind(this);
@@ -80,6 +81,13 @@ class Question extends React.Component {
     const points = { hard: 3, medium: 2, easy: 1 };
     const state = JSON.parse(localStorage.getItem('state'));
     if (answer === result.correct_answer) {
+      const { saveCA } = this.props;
+      this.setState((oldState) => ({
+        correctAnswer: oldState.correctAnswer + 1,
+      }), () => {
+        const { correctAnswer } = this.state;
+        saveCA(correctAnswer);
+      });
       const diff = result.difficulty;
       const score = ten + (timer * points[diff]);
       state.player.score += score;
@@ -170,14 +178,18 @@ Question.propTypes = {
   // timer: PropTypes.number.isRequired,
   saveNumQ: PropTypes.func.isRequired,
   numQuestion: PropTypes.number.isRequired,
+  saveCA: PropTypes.func.isRequired,
+  correctAnswer: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   numQuestion: state.game.numQuestion,
+  correctAnswer: state.game.correctAnswer,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   saveNumQ: (numQuestion) => dispatch(saveNumQuestion(numQuestion)),
+  saveCA: (correctAnswer) => dispatch(saveCorrectAnswer(correctAnswer)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Question);
