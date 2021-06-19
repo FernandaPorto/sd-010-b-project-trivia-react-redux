@@ -7,6 +7,8 @@ import Question from '../components/Question';
 import GameHeader from '../components/GameHeader';
 import Timer from '../components/Timer';
 
+import { addToRanking } from '../actions/index';
+
 let timer;
 const FIVE = 5;
 
@@ -24,10 +26,15 @@ class Game extends React.Component {
     this.decreaseTime = this.decreaseTime.bind(this);
     this.timerHasMounted = this.timerHasMounted.bind(this);
     this.stopTimer = this.stopTimer.bind(this);
+    this.playerResultsToLocalStorage = this.playerResultsToLocalStorage.bind(this);
   }
 
   componentDidMount() {
     this.getQuestions();
+  }
+
+  componentWillUnmount() {
+    clearInterval(timer);
   }
 
   async getQuestions() {
@@ -73,10 +80,24 @@ class Game extends React.Component {
     timer = setInterval(this.decreaseTime, ONE_SECOND);
   }
 
+  playerResultsToLocalStorage(infoToRanking, ranking) {
+    const newRanking = [...ranking, infoToRanking];
+    localStorage.setItem('ranking', JSON.stringify(newRanking));
+  }
+
   render() {
     const { questions, questionIndex, answerDisabled, time } = this.state;
+    const {
+      dispatchPlayerInfoToRanking,
+      name,
+      picture,
+      score,
+      ranking,
+    } = this.props;
 
     if (questionIndex === FIVE) {
+      this.playerResultsToLocalStorage({ name, picture, score }, ranking);
+      dispatchPlayerInfoToRanking({ name, picture, score });
       return (<Redirect to="/feedback" />);
     }
 
@@ -103,14 +124,27 @@ class Game extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const { player: { token } } = state;
+  const { player: { name, gravatarEmail, score, token }, ranking } = state;
   return {
+    name,
+    picture: gravatarEmail,
+    score,
     token,
+    ranking,
   };
 };
 
+const mapDispatchToProps = (dispatch) => ({
+  dispatchPlayerInfoToRanking: (playerInfo) => dispatch(addToRanking(playerInfo)),
+});
+
 Game.propTypes = {
   token: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  picture: PropTypes.string.isRequired,
+  score: PropTypes.number.isRequired,
+  ranking: PropTypes.arrayOf(PropTypes.object).isRequired,
+  dispatchPlayerInfoToRanking: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(Game);
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
