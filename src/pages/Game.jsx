@@ -43,7 +43,7 @@ class Game extends Component {
   }
 
   render() {
-    const { questions, answered } = this.props;
+    const { questions, answered, gravatarEmail } = this.props;
     const { index, numQ, redirect } = this.state;
     if (questions) {
       return redirect ? <Redirect to="/feedback" /> : (
@@ -65,14 +65,16 @@ class Game extends Component {
       );
     }
     return (
-      <div>Loading...</div>
+      gravatarEmail ? <div>Loading...</div> : <Redirect to="/" />
     );
   }
 }
 
-const mapStateToProps = ({ gameReducer: { data: { results } },
-  timerReducer: { answered, ticTac, time } }) => ({
-  questions: results, answered, ticTac, time });
+const mapStateToProps = ({
+  gameReducer: { data: { results } },
+  timerReducer: { answered, ticTac, time },
+  loginReducer: { gravatarEmail } }) => ({
+  questions: results, answered, ticTac, time, gravatarEmail });
 
 const mapDispatchToProps = (dispatch) => ({
   propStartTimer: () => {
