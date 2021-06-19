@@ -23,7 +23,7 @@ class GamePage extends Component {
       categories: [{}],
       indexState: 0,
       loading: false,
-      seconds: 35,
+      seconds: 32,
     };
 
     this.getToken = this.getToken.bind(this);
