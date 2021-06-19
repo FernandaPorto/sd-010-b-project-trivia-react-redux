@@ -1,14 +1,22 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { saveNumQuestion } from '../actions/index';
 import './styleQuestion.css';
+import history from '../history';
 
 class Question extends React.Component {
   constructor(props) {
     super(props);
+    const { numQuestion } = this.props;
     this.state = {
       isClicked: false,
       arrRandom: [],
       fullResults: {},
+      numQuestion,
+      timer: 30,
+      isDisabled: false,
+      updateT: '',
     };
 
     this.handleResult = this.handleResult.bind(this);
@@ -20,6 +28,21 @@ class Question extends React.Component {
 
   componentDidMount() {
     this.handleResult();
+    this.updateTimer();
+  }
+
+  updateTimer() {
+    const oneSec = 1000;
+    const reduceTimer = () => {
+      const { state: { timer } } = this;
+      if (timer > 0) {
+        this.setState((oldState) => ({ timer: oldState.timer - 1 }));
+      } if (timer === 0) {
+        this.setState({ isDisabled: true });
+      }
+    };
+    // setInterval(reduceTimer, oneSec);
+    this.setState({ updateT: setInterval(reduceTimer, oneSec) });
   }
 
   handleResult() {
@@ -51,7 +74,8 @@ class Question extends React.Component {
   }
 
   checkAnswer(answer) {
-    const { result, timer } = this.props;
+    const { result } = this.props;
+    const { timer } = this.state;
     const ten = 10;
     const points = { hard: 3, medium: 2, easy: 1 };
     const state = JSON.parse(localStorage.getItem('state'));
@@ -78,8 +102,23 @@ class Question extends React.Component {
     return null;
   }
 
+  add1ToNQ() {
+    const { saveNumQ } = this.props;
+    const { updateT } = this.state;
+    this.setState((oldState) => ({
+      numQuestion: oldState.numQuestion + 1,
+    }), () => {
+      const { numQuestion } = this.state;
+      saveNumQ(numQuestion);
+    }, clearInterval(updateT)); // Ajuda: Victor Cabrera Lopes Cardoso / ref: https://github.com/tryber/sd-010-b-project-trivia-react-redux/commits/main-group-19
+    const four = 4;
+    const { numQuestion } = this.state;
+    if (numQuestion === four) { history.push('/feedback'); }
+  }
+
   render() {
-    const { props: { result, disabled }, state: { arrRandom, isClicked } } = this;
+    const { props: { result },
+      state: { arrRandom, isClicked, timer, isDisabled } } = this;
     return (
       <>
         <span data-testid="question-category">
@@ -104,14 +143,22 @@ class Question extends React.Component {
             data-testid={ this.insertDataTestId(answer, index) }
             onClick={ () => { this.handleChange(); this.checkAnswer(answer); } }
             className={ this.clicked(answer) }
-            disabled={ disabled }
+            disabled={ isDisabled }
           >
             { answer }
           </button>
         ))}
 
         { isClicked
-        && <button type="button" data-testid="btn-next">Próxima</button> }
+        && (
+          <button
+            type="button"
+            data-testid="btn-next"
+            onClick={ () => { this.add1ToNQ(); } }
+          >
+            Próxima
+          </button>) }
+        <span>{timer}</span>
       </>
     );
   }
@@ -119,8 +166,18 @@ class Question extends React.Component {
 
 Question.propTypes = {
   result: PropTypes.arrayOf().isRequired,
-  disabled: PropTypes.bool.isRequired,
-  timer: PropTypes.number.isRequired,
+  // disabled: PropTypes.bool.isRequired,
+  // timer: PropTypes.number.isRequired,
+  saveNumQ: PropTypes.func.isRequired,
+  numQuestion: PropTypes.number.isRequired,
 };
 
-export default Question;
+const mapStateToProps = (state) => ({
+  numQuestion: state.game.numQuestion,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  saveNumQ: (numQuestion) => dispatch(saveNumQuestion(numQuestion)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Question);
