@@ -20,7 +20,12 @@ class ButtonNextQuestion extends React.Component {
     const { rightAnswer } = this.props;
     return (
       <Link to="/gamepage">
-        <button type="button" disabled={ rightAnswer } onClick={ this.functionsGamePage }>
+        <button
+          type="button"
+          data-testid="btn-next"
+          disabled={ rightAnswer }
+          onClick={ this.functionsGamePage }
+        >
           Próxima
         </button>
       </Link>
