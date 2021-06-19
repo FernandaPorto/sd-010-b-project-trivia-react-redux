@@ -12,6 +12,19 @@ p {
   margin-left: 10px;
 }
 
+.regress {
+  background-color: rgb(223, 220, 220);
+  height: 0.5em;
+  position: relative;
+  transition: width 500ms ease-out;
+}
+
+.bar {
+  background-color: #a8f9f3;
+  height: 100%;
+  position: absolute;
+}
+
 .main {
   align-items: center;
   display: flex;

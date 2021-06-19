@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import md5 from 'crypto-js/md5';
 import { saveAvatar } from '../action';
+import RegressBar from './RegressBar';
 
 class Header extends Component {
   render() {
@@ -10,28 +11,31 @@ class Header extends Component {
     const hash = md5(gravatarEmail).toString();
     avatar(`https://www.gravatar.com/avatar/${hash}`);
     return (
-      <header>
-        <section className="player-info">
-          <img
-            src={ `https://www.gravatar.com/avatar/${hash}` }
-            alt="Avatar do jogador"
-            data-testid="header-profile-picture"
-          />
-          <p data-testid="header-player-name">
-            Player:
-            {' '}
-            {name}
-          </p>
-        </section>
-        <section className="score-container">
-          <p>
-            Score:
-          </p>
-          <p data-testid="header-score">
-            {score}
-          </p>
-        </section>
-      </header>
+      <section>
+        <header>
+          <section className="player-info">
+            <img
+              src={ `https://www.gravatar.com/avatar/${hash}` }
+              alt="Avatar do jogador"
+              data-testid="header-profile-picture"
+            />
+            <p data-testid="header-player-name">
+              Player:
+              {' '}
+              {name}
+            </p>
+          </section>
+          <section className="score-container">
+            <p>
+              Score:
+            </p>
+            <p data-testid="header-score">
+              {score}
+            </p>
+          </section>
+        </header>
+        <RegressBar />
+      </section>
     );
   }
 }
