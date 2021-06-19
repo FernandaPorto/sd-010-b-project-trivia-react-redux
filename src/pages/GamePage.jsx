@@ -33,7 +33,7 @@ class GamePage extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.interval = this.interval.bind(this);
     this.questionAndAnswer = this.questionAndAnswer.bind(this);
-    // this.correctAnswer = this.correctAnswer.bind(this);
+    this.correctAnswer = this.correctAnswer.bind(this);
     this.wrongAnswer = this.wrongAnswer.bind(this);
     this.componentWillUnmount = this.componentWillUnmount.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
@@ -59,9 +59,10 @@ class GamePage extends Component {
   async interval() {
     await this.getToken();
     const A_SECOND = 1000;
+    const number = 30;
     this.setState({ seconds: 30 });
     this.myInterval = setInterval(() => {
-      const { seconds } = this.state;
+      const { seconds = number } = this.state;
       if (seconds > 0) {
         this.setState((previousState) => ({
           seconds: previousState.seconds - 1,
