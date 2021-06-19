@@ -9,31 +9,12 @@ class Game extends React.Component {
     super(props);
     this.state = {
       results: [],
-      // numQuestion: 0,
-      // timer: 30,
-      // isDisabled: false,
-      // updateT: '',
     };
   }
 
   componentDidMount() {
     this.requestTrivia();
-    // this.updateTimer();
   }
-
-  // updateTimer() {
-  //   const oneSec = 1000;
-  //   const reduceTimer = () => {
-  //     const { state: { timer } } = this;
-  //     if (timer > 0) {
-  //       this.setState((oldState) => ({ timer: oldState.timer - 1 }));
-  //     } if (timer === 0) {
-  //       this.setState({ isDisabled: true });
-  //     }
-  //   };
-  //   setInterval(reduceTimer, oneSec);
-  //   // this.setState({ updateT: setInterval(reduceTimer, oneSec) });
-  // }
 
   requestTrivia() {
     const token = localStorage.getItem('token');
@@ -53,12 +34,9 @@ class Game extends React.Component {
             <Question
               result={ result }
               key={ numQuestion }
-              // disabled={ isDisabled }
-              // timer={ timer }
             />
           ),
         )}
-        {/* <span>{timer}</span> */}
       </>
     );
   }

@@ -16,10 +16,13 @@ class Feedback extends React.Component {
   }
 
   render() {
-    const { name } = this.props;
+    const { name, correctAnswer } = this.props;
+    const three = 3;
     return (
       <>
-        <span data-testid="feedback-text">PASSA PELO AMOR DE DEUS</span>
+        { correctAnswer < three
+        && <span data-testid="feedback-text">Podia ser melhor...</span>}
+        { correctAnswer >= three && <span data-testid="feedback-text">Mandou bem!</span>}
         <header>
           <img
             src={ this.convert() }
@@ -40,11 +43,13 @@ class Feedback extends React.Component {
 Feedback.propTypes = {
   email: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  correctAnswer: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   email: state.user.email,
   name: state.user.name,
+  correctAnswer: state.game.correctAnswer,
 });
 
 export default connect(mapStateToProps)(Feedback);
