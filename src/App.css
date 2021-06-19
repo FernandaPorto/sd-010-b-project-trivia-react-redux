@@ -15,7 +15,6 @@ body {
   padding: 15px;
   transition: transform 0.5s;
   width: 20em;
-
 }
 
 .wrong-answer {
@@ -31,4 +30,15 @@ body {
   padding: 15px;
   transition: transform 0.5s;
   width: 20em;
+}
+
+.dev-team {
+  align-items: center;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+}
+
+.dev-team section {
+  margin: 5em;
 }

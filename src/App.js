@@ -7,6 +7,7 @@ import {
   Login,
   FeedBack,
   Ranking,
+  About,
 } from './pages';
 import './App.css';
 
@@ -30,6 +31,7 @@ export default function App() {
             <Route path="/settings" component={ Settings } />
             <Route path="/feedback" component={ FeedBack } />
             <Route path="/ranking" component={ Ranking } />
+            <Route path="/about" component={ About } />
           </Switch>
         </animated.div>
       ))}

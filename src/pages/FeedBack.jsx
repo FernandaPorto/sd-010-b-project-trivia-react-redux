@@ -21,7 +21,6 @@ class FeedBack extends Component {
 
   render() {
     const { score, assertions, history, reset } = this.props;
-
     const THREE = 3;
     return (
       <>
@@ -34,11 +33,9 @@ class FeedBack extends Component {
                 : <span data-testid="feedback-text">Podia ser melhor...</span>
             }
             <span data-testid="feedback-total-question">
-              {/* {`Você acertou ${} questões!`} */}
               {assertions}
             </span>
             <span data-testid="feedback-total-score">
-              {/* {`Um total de ${score} pontos`} */}
               {score}
             </span>
           </section>
@@ -59,6 +56,12 @@ class FeedBack extends Component {
               } }
             >
               Jogar novamente
+            </button>
+            <button
+              type="button"
+              onClick={ () => { history.replace('/about'); } }
+            >
+              Sobre
             </button>
           </section>
         </section>
