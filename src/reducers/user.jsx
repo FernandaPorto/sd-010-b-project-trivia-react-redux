@@ -11,9 +11,11 @@ const INITIAL_STATE = {
     eachScore: '',
     gravatarEmail: '',
   },
-  ranking:
-  [
-    { name: '', score: 0, picture: '' },
+  ranking: [
+    { name: '',
+      score: 0,
+      picture: '',
+    },
   ],
 };
 
@@ -22,16 +24,17 @@ export default function user(state = INITIAL_STATE, action) {
   case LOGIN:
     return {
       ...state,
+      name: action.payload.name,
+      email: action.payload.email,
       player: {
         name: action.payload.name,
-        assertions: action.payload.assertions,
-        score: action.payload.score,
+        assertions: action.assertions,
+        score: action.score,
         gravatarEmail: action.payload.email,
       },
-      email: action.payload.email,
       ranking: {
         name: action.payload.name,
-        score: action.payload.score,
+        score: action.score,
         picture: action.payload.gravatarEmail,
       },
     };
@@ -58,7 +61,6 @@ export default function user(state = INITIAL_STATE, action) {
       ...state,
       assertions: parseInt(action.ranking.score, 10)
       + parseInt(action.payload.player.assertions, 10),
-
     };
   default:
     return state;
