@@ -68,7 +68,7 @@ class Login extends Component {
                   !(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(email)
                   || name.length <= nameLength
                 }
-                onClick={ () => this.handleMultipleFunctions }
+                onClick={ () => this.handleMultipleFunctions() }
               >
                 Jogar
               </button>
