@@ -164,16 +164,11 @@ class GamePage extends Component {
 
   render() {
     const { seconds, answered } = this.state;
-    const { totalScore } = this.props;
-    console.log(totalScore);
     return (
       <div>
         <Header />
         { this.questionAndAnswer() }
-        { seconds > 0 ? `${seconds}` : '' }
-        <p className="score">
-          { totalScore }
-        </p>
+        { seconds > 0 ? `Timer:${seconds}` : '' }
         <ButtonFeedback />
         <ButtonLogin />
         <ButtonNextQuestion
@@ -191,15 +186,15 @@ class GamePage extends Component {
 
 GamePage.propTypes = {
   playerScore: PropTypes.func.isRequired,
-  totalScore: PropTypes.number.isRequired,
+  // totalScore: PropTypes.number.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   playerScore: (score) => dispatch(scoreAction([score])),
 });
 
-const mapStateToProps = (state) => ({
-  totalScore: state.user.userScore,
+const mapStateToProps = () => ({
+  // totalScore: state.user.userScore,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GamePage);
