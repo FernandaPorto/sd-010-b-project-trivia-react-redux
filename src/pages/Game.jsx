@@ -33,9 +33,9 @@ class Game extends Component {
   }
 
   async getQuestion() {
-    const { questTrivia } = this.props;
+    const { questTrivia, category, difficulty, type } = this.props;
     const { score, assertions } = this.state;
-    await questTrivia();
+    await questTrivia({ category, difficulty, type });
     updateLocalStorage('state', { player: { score, assertions } });
   }
 
@@ -110,7 +110,7 @@ class Game extends Component {
         className={ answered && 'correctAnswer' }
         disabled={ isDisabled }
       >
-        {correct}
+        {atob(correct)}
       </button>
     );
   }
@@ -125,7 +125,7 @@ class Game extends Component {
         className={ answered && 'incorrectAnswer' }
         disabled={ isDisabled }
       >
-        {incorrect}
+        {atob(incorrect)}
       </button>
     );
   }
@@ -168,8 +168,8 @@ class Game extends Component {
       return (
         <div>
           <Header />
-          <h2 data-testid="question-category">{category}</h2>
-          <h3 data-testid="question-text">{question}</h3>
+          <h2 data-testid="question-category">{atob(category)}</h2>
+          <h3 data-testid="question-text">{atob(question)}</h3>
           <section>{this.renderAlternatives()}</section>
           <Cronometer
             answered={ answered }
@@ -194,10 +194,13 @@ const mapStateToProps = (state) => ({
   email: state.userReducer.email,
   picture: state.userReducer.picture,
   summedScore: state.questReducer.totalScore,
+  category: state.configReducer.category,
+  difficulty: state.configReducer.difficulty,
+  type: state.configReducer.type,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  questTrivia: () => dispatch(fetchQuestions()),
+  questTrivia: (config) => dispatch(fetchQuestions(config)),
   setNextQuestion: (newId) => dispatch(updateId(newId)),
   somethingReset: (something) => dispatch(resetSomething(something)),
   updtPoints: (score) => dispatch(updatePoints(score)),
@@ -220,6 +223,9 @@ Game.propTypes = {
   addScore: PropTypes.func.isRequired,
   nameUser: PropTypes.string.isRequired,
   picture: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired,
+  difficulty: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
 
