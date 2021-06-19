@@ -21,13 +21,14 @@ export default function user(state = INITIAL_STATE, action) {
   case LOGIN:
     return {
       ...state,
+      name: action.payload.name,
+      email: action.payload.email,
       player: {
         name: action.payload.name,
         assertions: action.payload.assertions,
         score: action.payload.score,
         gravatarEmail: action.payload.email,
       },
-      email: action.payload.email,
       ranking: {
         name: action.payload.name,
         score: action.payload.score,
@@ -37,14 +38,13 @@ export default function user(state = INITIAL_STATE, action) {
   case GRAVATAR:
     return {
       ...state,
-      gravatar: action.gravatar,
+      gravatar: action.payload.gravatar,
 
     };
   case SCORE:
     return {
       ...state,
-      score: parseInt(state.player.score, 10) + parseInt(action.player.score, 10),
-
+      score: parseInt(state.player.score, 10) + parseInt(action.payload, 10),
     };
   default:
     return state;
