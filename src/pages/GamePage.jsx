@@ -41,6 +41,7 @@ class GamePage extends Component {
 
   componentDidMount() {
     this.interval();
+    this.setState({ answered: true });
   }
 
   componentWillUnmount() {
