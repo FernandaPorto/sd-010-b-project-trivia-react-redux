@@ -25,7 +25,7 @@ class GamePage extends Component {
       categories: [{}],
       indexState: 0,
       loading: false,
-      seconds: 30,
+      seconds: 28,
       answered: true,
       button: false,
       timeIsOut: false,
