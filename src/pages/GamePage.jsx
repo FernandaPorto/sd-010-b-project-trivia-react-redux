@@ -109,6 +109,7 @@ class GamePage extends Component {
 
   questionAndAnswer() {
     const { categories, indexState, loading } = this.state;
+    console.log(categories);
     return (
       <div>
         <select>
@@ -159,13 +160,13 @@ class GamePage extends Component {
 
   render() {
     const { seconds, answered } = this.state;
-    const { totalScore } = this.props;
+    // const { totalScore } = this.props;
     return (
       <div>
         <Header />
         { this.questionAndAnswer() }
         { seconds > 0 ? `${seconds}` : '' }
-        { totalScore }
+        {/* { totalScore } */}
         <ButtonFeedback />
         <ButtonLogin />
         <ButtonNextQuestion
