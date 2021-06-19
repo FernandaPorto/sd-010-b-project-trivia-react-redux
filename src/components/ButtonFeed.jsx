@@ -25,10 +25,10 @@ class ButtonFeed extends Component {
         <button
           type="button"
           data-testid="btn-play-again"
-          className="main-div main-div2"
           onClick={ this.redirectLogin }
+          className="gloom gloomEffect"
         >
-          Jogar novamente
+          Play Again
         </button>
         { redirect && <Redirect /> }
       </div>

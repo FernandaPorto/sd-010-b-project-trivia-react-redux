@@ -5,6 +5,7 @@ import Header from '../components/Header';
 import BtnRanking from '../components/Buttons';
 import FeedbackMessage from '../components/FeedbackMessage';
 import ButtonFeed from '../components/ButtonFeed';
+import '../style/Feedback.css'
 class Feedback extends Component {
   constructor(props) {
     super(props);
@@ -15,23 +16,25 @@ class Feedback extends Component {
     const { assertions } = this.props;
     const minimumScore = 3;
     return (assertions >= minimumScore)
-      ? 'Mandou bem!'
-      : 'Podia ser melhor...';
+      ? 'Very Well!'
+      : 'Could be better...';
   }
-
+  // 
+  // flex flex-col items-center mt-36 text-white bg-secundary_color min-w-600 max-h-80 rounded-2xl shadow-lg
   render() {
     return (
       <>
         <Header />
-        <div>
-          <h1 data-testid="feedback-text" className="flex flex-col items-center bg-primary_color
-          shadow-lg min-w-1/4 min-h-1/4 rounded-lg">
-            {this.renderFinalMessage()}
-          </h1>
-           <FeedbackMessage />
-          <div className="flex justify-center ">
-          <BtnRanking />
-          <ButtonFeed />
+          <div className="flex justify-center bg-light_gray_color h-screen feedback__body">
+            <div className="flex flex-col items-center mt-36 text-white bg-secundary_color min-w-600 max-h-80 rounded-2xl shadow-lg">
+            <h1 data-testid="feedback-text" className="mt-8 font-bold text-xl">
+              {this.renderFinalMessage()}
+            </h1>
+            <FeedbackMessage />
+            <div className="flex justify-center">
+              <BtnRanking />
+              <ButtonFeed />
+            </div>
           </div>
         </div>
       </>

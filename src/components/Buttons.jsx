@@ -6,7 +6,7 @@ export default class BtnRanking extends Component {
     return (
       <Link to="/ranking">
         <button type="button" data-testid="btn-ranking" className="main-div main-div2">
-          Ver Ranking
+          Show Ranking
         </button>
       </Link>
     );

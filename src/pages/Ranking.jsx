@@ -17,7 +17,7 @@ class Ranking extends Component {
 
   render() {
     return (
-      <div>
+      <div className="bg-light_gray_color">
         <section data-testid="ranking-title">
           Titulo
         </section>
@@ -30,12 +30,12 @@ class Ranking extends Component {
           {this.handlesort().map((element, index) => {
             const { name, score, picture } = element;
             return (
-              <li key={ index } className="flex-nowrap">
-                <span data-testid={ `player-score-${index}` }>{score}</span>
+              <li key={ index } className="flex bg-primary_color justify-around py-5">
+                <img src={ picture } alt={ name } />
+                {' '}
+                <span data-testid={ `player-score-${index}` } className="flex justify-around">{score}</span>
                 {' '}
                 <span data-testid={ `player-name-${index}` }>{name}</span>
-                {' '}
-                <img src={ picture } alt={ name } />
               </li>);
           })}
         </ul>

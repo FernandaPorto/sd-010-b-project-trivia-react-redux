@@ -107,7 +107,7 @@ class Game extends Component {
         type="button"
         onClick={ () => this.checkAnswer(true) }
         data-testid="correct-answer"
-        className={ `w-1/3 m-2 bg-yellow_dead_color rounded focus:outline-none main-div1::before ${answered && 'correctAnswer'}` }
+        className={ `w-1/3 m-2 bg-yellow_dead_color rounded focus:outline-none ${answered && 'correctAnswer'}` }
         disabled={ isDisabled }
       >
         {atob(correct)}

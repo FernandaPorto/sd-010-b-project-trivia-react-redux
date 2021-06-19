@@ -94,19 +94,15 @@ class Config extends Component {
 
   render() {
     return (
-      <>
-      <div>
-        <section>
-          <title data-testid="settings-title">
-            CONFIGURAÇÕES
-          </title>
+      <div className="flex h-screen bg-secundary_color">
+        <section className="flex flex-col items-center m-56 bg-primary_color min-w-600 max-h-80 rounded-2xl">
+          <title data-testid="settings-title">CONFIGURAÇÕES</title>
           {this.renderCategories()}
           {this.renderDifficulty()}
           {this.renderType()}
+        <Link to="/">Back</Link>
         </section>
-        <Link to="/"> Voltar</Link>
       </div>
-     </>
     );
   }
 }
