@@ -18,9 +18,7 @@ class Header extends Component {
       <header>
         <img src={ gravatar } alt="imege" data-testid="header-profile-picture" />
         <span data-testid="header-player-name">{nome}</span>
-        <span data-testid="header-score">
-          {totalScore}
-        </span>
+        <span data-testid="header-score">{totalScore}</span>
       </header>
     );
   }
@@ -28,9 +26,9 @@ class Header extends Component {
 
 const mapStateToProps = (state) => ({
   email: state.user.email,
-  nome: state.user.name,
-  gravatar: state.user.gravatar,
-  totalScore: state.user.userScore,
+  nome: state.user.player.name,
+  gravatar: state.user.player.gravatarEmail,
+  totalScore: state.user.ranking.score,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import '../GamePageCss.css';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Header from '../components/Header';
 import fetchURL from '../services/API';
+import Header from '../components/Header';
 import ButtonNextQuestion from '../components/ButtonNextQuestion';
 import ButtonFeedback from '../components/ButtonFeedback';
 import ButtonLogin from '../components/ButtonLogin';
 import { scoreAction } from '../actions';
+import '../GamePageCss.css';
 
 export const setToken = async () => {
   const token = await fetchURL();
@@ -25,7 +25,7 @@ class GamePage extends Component {
       categories: [{}],
       indexState: 0,
       loading: false,
-      seconds: 28,
+      seconds: 30,
       answered: true,
       button: false,
       timeIsOut: false,
@@ -105,6 +105,7 @@ class GamePage extends Component {
     this.setState({ loading: true });
     this.setState({ answered: false });
     this.setState({ button: true });
+    localStorage.setItem('score', JSON.stringify(playerScore));
     this.componentWillUnmount();
   }
 
@@ -170,22 +171,26 @@ class GamePage extends Component {
   }
 
   render() {
-    const { seconds, answered, button } = this.state;
+    const { seconds, answered, button, loading } = this.state;
     return (
-      <div>
+      <div className="App">
         <Header />
-        { this.questionAndAnswer() }
-        { seconds > 0 ? `Timer:${seconds}` : '' }
-        <ButtonFeedback />
-        <ButtonLogin />
-
-        { button ? <ButtonNextQuestion
-          answered={ answered }
-          handleChange={ this.handleChange }
-          nextQuestion={ this.nextQuestion }
-          interval={ this.interval }
-        />
-          : ''}
+        <div className="Gamepage">
+          { this.questionAndAnswer() }
+        </div>
+        <div className="Buttons">
+          { seconds > 0 ? `Timer:${seconds}` : '' }
+          <ButtonLogin />
+          <ButtonFeedback />
+          {console.log(loading)}
+          { button ? <ButtonNextQuestion
+            answered={ answered }
+            handleChange={ this.handleChange }
+            nextQuestion={ this.nextQuestion }
+            interval={ this.interval }
+          />
+            : ''}
+        </div>
       </div>
     );
   }
