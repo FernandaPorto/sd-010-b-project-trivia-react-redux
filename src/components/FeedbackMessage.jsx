@@ -64,9 +64,6 @@ class FeedbackMessage extends Component {
 
   RenderFeedbackMessage() {
     const { assertions, summedScore } = this.props;
-    console.log(assertions);
-    // const scoreMessage = this.messageScore(score);
-    // const assertionMessage = this.messageFeedback(assertions);
     return (
       <div className="flex justify-center ">
         <p data-testid="feedback-total-score" className="p-16">{` Score ${summedScore}`}</p>
@@ -99,10 +96,5 @@ FeedbackMessage.defaultProps = {
   summedScore: 0,
   assertions: 0,
 };
-
-// Esperando existir
-// const mapDispatchToProps = (dispatch) => ({
-//   algo: () => dispatch(algo())
-// })
 
 export default connect(mapStateToProps)(FeedbackMessage);

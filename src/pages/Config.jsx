@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { changeConfig } from '../redux/actions';
-import '../style/Moustache.css';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import { changeConfig } from "../redux/actions";
+import triviaBigodesLogo from "../assets/images/headerBigodes.png";
+import "../style/Moustache.css";
 
 const INITIAL_STATE = {
   categories: [],
@@ -21,7 +22,7 @@ class Config extends Component {
   }
 
   async componentDidMount() {
-    const res = await (await fetch('https://opentdb.com/api_category.php')).json();
+    const res = await (await fetch("https://opentdb.com/api_category.php")).json();
     this.updateCategories(res.trivia_categories);
   }
 
@@ -38,73 +39,102 @@ class Config extends Component {
     const { categories } = this.state;
     const { category } = this.props;
     return (
-      <label htmlFor="categoryId">
-        Select Category
+      <div className="w-100 mb-5 flex flex-col items-center">
+        <div className="flex mb-3 justify-center items-center font-medium">
+          <label htmlFor="categoryId">Select Category</label>
+        </div>
         <select
-          value={ category }
-          onChange={ this.handleChange }
+          className="w-3/4 h-8 pl-3 pr-6 text-base placeholder-secundary_color border rounded-lg appearance-none focus:shadow-outline"
+          value={category}
+          onChange={this.handleChange}
           name="category"
           id="categoryId"
         >
-          <option value="any">Any Category</option>
-          { categories.map((currentCategory) => {
+          <option className="" value="any">
+            Any Category
+          </option>
+          {categories.map((currentCategory) => {
             const { name, id } = currentCategory;
             return (
-              <option key={ name } value={ id }>{name}</option>
+              <option key={name} value={id}>
+                {name}
+              </option>
             );
           })}
         </select>
-      </label>
+      </div>
     );
   }
 
   renderDifficulty() {
     const { difficulty } = this.props;
     return (
-      <label htmlFor="difficulty">
-        Select Difficulty
+      <div className="w-100 my-2 mr-3">
+        <div className="flex justify-center items-center mb-3 font-medium">
+          <label htmlFor="difficulty">Select Difficulty</label>
+        </div>
         <select
-          value={ difficulty }
-          onChange={ this.handleChange }
+          className="w-full h-8 pl-3 pr-6 text-base placeholder-secundary_color border rounded-lg appearance-none focus:shadow-outline"
+          value={difficulty}
+          onChange={this.handleChange}
           name="difficulty"
           id="difficulty"
         >
-          <option name="difficulty" value="any">Any Difficulty</option>
-          <option name="difficulty" value="easy">easy</option>
-          <option name="difficulty" value="medium">medium</option>
-          <option name="difficulty" value="hard">hard</option>
+          <option name="difficulty" value="any">
+            Any Difficulty
+          </option>
+          <option name="difficulty" value="easy">
+            easy
+          </option>
+          <option name="difficulty" value="medium">
+            medium
+          </option>
+          <option name="difficulty" value="hard">
+            hard
+          </option>
         </select>
-      </label>
+      </div>
     );
   }
 
   renderType() {
     const { type } = this.props;
     return (
-      <div>
-        <label htmlFor="type">
-          Select Type
-          <select value={ type } onChange={ this.handleChange } name="type" id="type">
-            <option value="any">Any Type</option>
-            <option value="multiple">Multiple Choice</option>
-            <option value="boolean">True or False</option>
-          </select>
-        </label>
+      <div className="w-100 my-2 ml-3">
+        <div className="flex justify-center items-center mb-3 font-medium">
+          <label htmlFor="type">Select Type</label>
+        </div>
+        <select
+          className="w-full h-8 pl-3 pr-6 text-base placeholder-secundary_color border rounded-lg appearance-none focus:shadow-outline"
+          value={type}
+          onChange={this.handleChange}
+          name="type"
+          id="type"
+        >
+          <option value="any">Any Type</option>
+          <option value="multiple">Multiple Choice</option>
+          <option value="boolean">True or False</option>
+        </select>
       </div>
     );
   }
 
   render() {
     return (
-      <div className="flex justify-center items-center w-screen h-screen bg-secundary_color">
+      <div className="flex flex-col justify-center items-center w-screen h-screen bg-secundary_color">
         <section className="flex flex-col items-center bg-primary_color min-w-800 min-h-1/4 rounded-2xl">
-          <title data-testid="settings-title">CONFIGURAÇÕES</title>
+          <img className="w-60 my-3" src={triviaBigodesLogo} alt="Logo trivia Bigodes" />
+          <h1 className="text-2xl my-8" data-testid="settings-title">
+            <strong>SETTINGS</strong>
+          </h1>
           {this.renderCategories()}
-          {this.renderDifficulty()}
-          {this.renderType()}
-        <button className="text-1xl text-white mt-40 mb-10 bg-secundary_color px-4 py-1 rounded ">
-        <Link to="/">SAVE</Link>
-        </button>
+          <div className="flex flex-row">
+            {this.renderDifficulty()}
+            {this.renderType()}
+          </div>
+          <button className="text-1xl text-white mt-8 mb-8 bg-secundary_color px-4 py-1 rounded ">
+            <Link to="/">SAVE</Link>
+          </button>
         </section>
       </div>
     );

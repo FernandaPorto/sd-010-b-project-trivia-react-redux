@@ -5,7 +5,6 @@ import getAvatar from '../services/helpers/getAvatar';
 import { addImage } from '../redux/actions';
 import triviaBigodesLogo from '../assets/images/headerBigodes.png';
 import '../style/Header.css';
-// import { getFromLocalStorage } from '../services/helpers/localStorage';
 
 class Header extends Component {
   // Recebe um email como props do estado global e pega o avatar desse email

@@ -80,7 +80,7 @@ class Login extends Component {
               placeholder="."
               onChange={ this.handleChange }
             />
-            <label className="login__label" htmlFor="name">Seu Nome</label>
+            <label className="login__label" htmlFor="name">Your Name</label>
           </div>
           <div className="flex flex-col mb-4 w-2/3 login__control">
           <input
@@ -93,7 +93,7 @@ class Login extends Component {
             placeholder="."
             onChange={ this.handleChange }
           />
-          <label className="login__label" htmlFor="email">Seu Email</label>
+          <label className="login__label" htmlFor="email">Your Email</label>
           </div>
           
           <div className="w-2/3 flex justify-between mb-10">
@@ -104,7 +104,7 @@ class Login extends Component {
             disabled={ this.verifyLogin() }
             onClick={ () => this.saveInLocalStorage() }
           >
-            Jogar
+            Play
           </button>
           <Link to="/config">
             <button
@@ -112,7 +112,7 @@ class Login extends Component {
               className="bg-secundary_color text-white px-4 py-1 rounded login__button-effects"
               data-testid="btn-settings"
             >
-              Configurações
+              Settings
             </button>
           </Link>
           </div>
@@ -137,7 +137,7 @@ Login.propTypes = {
     push: PropTypes.func,
   }).isRequired,
   setUserInfo: PropTypes.func.isRequired,
-  tokenUser: PropTypes.func.isRequired,
+  tokenUser: PropTypes.string.isRequired,
   tokenAPI: PropTypes.func.isRequired,
   somethingReset: PropTypes.func.isRequired,
 };

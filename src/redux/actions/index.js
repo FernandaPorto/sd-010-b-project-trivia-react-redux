@@ -85,7 +85,6 @@ export function fetchQuestions({ category, difficulty, type }) {
   const catConfig = category === 'any' ? '' : `category=${category}&`;
   const difConfig = difficulty === 'any' ? '' : `difficulty=${difficulty}&`;
   const typeConfig = type === 'any' ? '' : `type=${type}&`;
-  console.log(category, difficulty, type);
   return async (dispatch) => {
     try {
       dispatch(requestAPI());
