@@ -1,0 +1,144 @@
+/* 
+Authors: Bruna, Diego, Lara, Raphael
+Authors: URLs:
+*/
+
+#root {
+  background-color: #282c34;
+  box-shadow: 0 10px 30px 0 rgba(17, 17, 17, 0.09);
+  margin: 0 auto;
+  max-width: 430px;
+  text-align: center;
+  border-radius: 30px 6px 30px 6px;
+  padding: 30px 0;
+}
+
+#root label {
+  color: #61dafb;
+}
+
+#root input {
+  font-size: 16px;
+  width: 80%;
+  padding: 15px 15px;
+  margin-bottom: 12px;
+  border: 1px solid #dededd;
+  outline: none;
+  background-color: transparent;
+  color: white;
+  border-radius: 50px;
+}
+
+#root button {
+  border: 1px solid green;
+  width: auto;
+  margin-left: 15px;
+  padding: 15px 28px;
+  color: white;
+  font-size: 15px;
+  display: inline-block;
+  text-align: center;
+  font-weight: 600;
+  line-height: 24px;
+  text-transform: uppercase;
+  border: none;
+  background-color: #e76a10;
+  border-radius: 6px;
+  margin-top: 12px;
+}
+
+#root button:hover {
+  background: #BD783A;
+  color: #2B2022;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+#root button:disabled {
+  border: 1px solid green;
+  width: auto;
+  margin-left: 15px;
+  padding: 15px 28px;
+  color: white;
+  font-size: 15px;
+  display: inline-block;
+  text-align: center;
+  font-weight: 600;
+  line-height: 24px;
+  text-transform: uppercase;
+  border: none;
+  background-color: #311705;
+  border-radius: 6px;
+  margin-top: 12px;
+}
+
+#root button:hover:disabled {
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+#root a button {
+  border: 1px solid green;
+  width: auto;
+  margin-right: 15px;
+  padding: 15px 28px;
+  color: white;
+  font-size: 15px;
+  display: inline-block;
+  text-align: center;
+  font-weight: 600;
+  line-height: 24px;
+  text-transform: uppercase;
+  border: none;
+  background-color: #bd5109;
+  border-radius: 6px;
+  margin-top: 12px;
+}
+
+#root a button:hover {
+  background: #BD783A;
+  color: #2B2022;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+@media ( prefers-reduced-motion : no-preference ) {
+
+  .App-logo {
+    animation: shake infinite 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  }
+}
+
+.App-header {
+  align-items: center;
+  background-color: #282c34;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  font-size: calc(10px + 2vmin);
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes shake {
+
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
