@@ -24,16 +24,17 @@
   top: 0.1em;
   font-size: 1em;
   cursor: text;
+  color: #A9A9A9;
 }
 
 .login__label {
   position:absolute;
-  top: 0.1em;
+  top: -1.3em;
   left: 0.4em;
   display: block;
   transition: 0.2s;
-  font-size: 1em;
-  color: #A9A9A9;
+  font-size: 0.8em;
+  color: black;
 }
 
 .login__input:focus + .login__label {
