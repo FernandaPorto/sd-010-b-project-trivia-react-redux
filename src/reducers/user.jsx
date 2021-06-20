@@ -7,6 +7,7 @@ const INITIAL_STATE = {
   player: {
     name: '',
     assertions: 0,
+    total_Assertions: 0,
     score: 0,
     eachScore: 0,
     gravatarEmail: '',
@@ -26,10 +27,6 @@ export default function user(state = INITIAL_STATE, action) {
       ...state,
       name: action.payload.name,
       email: action.payload.email,
-    //   player: {
-    //     name: action.payload.name,
-    //     gravatarEmail: action.payload.email,
-    //   },
     };
   case GRAVATAR:
     return {
@@ -47,14 +44,20 @@ export default function user(state = INITIAL_STATE, action) {
   case EACH_SCORE:
     return {
       ...state,
-      player: { eachScore: parseInt(action.payload, 10) },
-
+      player: {
+        ...state.player,
+        eachScore: parseInt(action.payload, 10),
+      },
     };
   case ASSERTIONS:
     return {
       ...state,
-      assertions: parseInt(action.assertions.score, 10)
-      + parseInt(action.payload.player.assertions, 10),
+      player: {
+        ...state.player,
+        assertions:
+        state.player.assertions
+        + parseInt(action.payload, 10),
+      },
     };
   default:
     return state;

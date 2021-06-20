@@ -10,8 +10,7 @@ class ButtonNextQuestion extends React.Component {
   }
 
   functionsGamePage() {
-    const { handleChange, nextQuestion, interval } = this.props;
-    handleChange();
+    const { nextQuestion, interval } = this.props;
     nextQuestion();
     interval();
   }
@@ -34,7 +33,7 @@ class ButtonNextQuestion extends React.Component {
 }
 
 ButtonNextQuestion.propTypes = {
-  handleChange: PropTypes.func.isRequired,
+  // handleChange: PropTypes.func.isRequired,
   answered: PropTypes.bool.isRequired,
   nextQuestion: PropTypes.func.isRequired,
   interval: PropTypes.func.isRequired,

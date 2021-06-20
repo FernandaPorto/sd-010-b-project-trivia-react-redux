@@ -47,10 +47,10 @@ export function eachScoreAction(eachScore) {
   });
 }
 
-export function assertionsAction(rightAnswers) {
+export function assertionsAction(rightAnswer) {
   return ({
     type: ASSERTIONS,
-    payload: rightAnswers,
+    payload: rightAnswer,
   });
 }
 

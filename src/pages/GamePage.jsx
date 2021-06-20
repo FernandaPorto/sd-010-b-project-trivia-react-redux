@@ -34,7 +34,6 @@ class GamePage extends Component {
     };
 
     this.getToken = this.getToken.bind(this);
-    this.handleChange = this.handleChange.bind(this);
     this.interval = this.interval.bind(this);
     this.questionAndAnswer = this.questionAndAnswer.bind(this);
     this.correctAnswer = this.correctAnswer.bind(this);
@@ -44,7 +43,6 @@ class GamePage extends Component {
   }
 
   componentDidMount() {
-    console.log('foi chamado');
     this.interval();
   }
 
@@ -82,18 +80,18 @@ class GamePage extends Component {
     }, A_SECOND);
   }
 
-  handleChange() {
-    const { indexState, categories } = this.state;
-    const maxQuestionsNumber = 6;
-    if (indexState < maxQuestionsNumber) {
-      return categories[indexState].question;
-    }
-    this.setState({ finalQuestion: true });
-  }
+  // finalQuestion() {
+  //   const { indexState, categories } = this.state;
+  //   const maxQuestionsNumber = 5;
+  //   if (indexState <= maxQuestionsNumber) {
+  //     return categories[indexState].question;
+  //   }
+  //   this.setState({ finalQuestion: true });
+  // }
 
   correctAnswer() {
     const { categories, indexState, seconds } = this.state;
-    const { eachQuestionScore } = this.props;
+    const { eachQuestionScore, totalAssertions } = this.props;
     const level = categories[indexState].difficulty;
     const hard = 3;
     const standardNumber = 10;
@@ -110,7 +108,7 @@ class GamePage extends Component {
     console.log(eachQuestionScore);
     // localStorage.setItem('score', JSON.stringify(playerScore));
     this.componentWillUnmount();
-    assertionsAction(1);
+    totalAssertions(1);
   }
 
   wrongAnswer() {
@@ -121,14 +119,20 @@ class GamePage extends Component {
   }
 
   nextQuestion() {
+    const { indexState } = this.state;
     this.setState({ loading: false });
     this.setState({ answered: true });
-    this.setState((previousState) => ({ indexState: previousState.indexState + 1 }));
+    const maxQuestionsNumber = 5;
+    if (indexState <= maxQuestionsNumber) {
+      this.setState((previousState) => ({ indexState: previousState.indexState + 1 }));
+    }
   }
 
   questionAndAnswer() {
     const { categories, indexState, loading, timeIsOut } = this.state;
-    console.log(categories);
+    if (typeof (categories[indexState]) === 'undefined') {
+      return <Redirect to="/feedback" />;
+    }
     return (
       <div>
         <select>
@@ -140,7 +144,6 @@ class GamePage extends Component {
               {item.category}
             </option>))}
         </select>
-
         <section>
           <div
             role="button"
@@ -157,9 +160,10 @@ class GamePage extends Component {
           onKeyDown={ timeIsOut ? '' : this.correctAnswer }
           onClick={ timeIsOut ? '' : this.correctAnswer }
         >
-          {categories[indexState].correct_answer}
+          {categories[indexState] === 'undefined' ? <Redirect to="/feedback" />
+            : categories[indexState].correct_answer}
         </option>
-        {categories[indexState].incorrect_answers
+        {categories[indexState] ? categories[indexState].incorrect_answers
         && categories[indexState].incorrect_answers.map((item, index) => (
           <option
             className={ loading ? 'incorrect-answers' : '' }
@@ -169,27 +173,28 @@ class GamePage extends Component {
           >
             {item}
           </option>
-        ))}
+        )) : ''}
       </div>
     );
   }
 
   render() {
-    const { seconds, answered, button, loading, finalQuestion } = this.state;
+    const { seconds, answered, button } = this.state;
+    const { finalQuestion, categories, indexState } = this.state;
     return (
       <div>
         <Header />
         <div>
+          {categories[indexState] === 'undefined' ? <Redirect to="/feedback" /> : '' }
           { this.questionAndAnswer() }
         </div>
         <div>
           { seconds > 0 ? `Timer:${seconds}` : '' }
           <ButtonLogin />
           <ButtonFeedback />
-          {console.log(loading)}
           { button ? <ButtonNextQuestion
             answered={ answered }
-            handleChange={ this.handleChange }
+            // handleChange={ this.handleChange }
             nextQuestion={ this.nextQuestion }
             interval={ this.interval }
           />
@@ -203,18 +208,15 @@ class GamePage extends Component {
 
 GamePage.propTypes = {
   eachQuestionScore: PropTypes.func.isRequired,
+  totalAssertions: PropTypes.func.isRequired,
   // totalScore: PropTypes.number.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   playerScore: (score) => dispatch(scoreAction([score])),
   eachQuestionScore: (eachScore) => dispatch(eachScoreAction(eachScore)),
-  totalAssertions: (score) => dispatch(assertionsAction([score])),
+  totalAssertions: (rightAnswer) => dispatch(assertionsAction(rightAnswer)),
 });
 
-const mapStateToProps = () => ({
-  // totalScore: state.user.userScore,
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(GamePage);
+export default connect(null, mapDispatchToProps)(GamePage);
 // https://betterprogramming.pub/building-a-simple-countdown-timer-with-react-4ca32763dda7
