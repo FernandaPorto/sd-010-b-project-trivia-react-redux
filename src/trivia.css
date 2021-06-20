@@ -1,42 +1,36 @@
+:root {
+
+  --crl-light-grey: rgb(223, 220, 220);
+
+  --crl-graphite-333: rgb(51, 51, 51);
+
+  --crl-graphite-353535: rgb(53, 53, 53);
+
+  --crl-light-blue-a8f9f3: rgb(169, 249, 244);
+
+  --crl-light-purple-624291: rgb(97, 66, 143);
+
+  --crl-purple-290c61: rgb(40, 12, 95);
+
+  --crl-white: white;
+
+}
+
 header {
   align-items: center;
-  background-color: rgb(223, 220, 220);
-  color: rgb(51, 51, 51);
+  background-color: var(--crl-light-grey);
+  color: var(--crl-graphite-333);
   display: flex;
   font-weight: 600;
-  justify-content: space-around;
+  height: 3.8em;
+  justify-content: space-between;
   letter-spacing: 2px;
-}
-
-p {
-  margin-left: 10px;
-}
-
-.regress {
-  background-color: rgb(223, 220, 220);
-  height: 0.5em;
-  position: relative;
-  transition: width 500ms ease-out;
-}
-
-.bar {
-  background-color: #a8f9f3;
-  height: 100%;
-  position: absolute;
-}
-
-.main {
-  align-items: center;
-  display: flex;
-  flex-flow: column wrap;
-  font-size: 1.4em;
-  height: 100vh;
-  justify-content: center;
 }
 
 .player-info {
   align-items: center;
   display: flex;
+  margin-left: 10px;
 }
 
 .player-info img {
@@ -48,20 +42,59 @@ p {
 .score-container {
   align-items: center;
   display: flex;
+  margin-right: 5px;
+}
+
+.timer {
+  background-color: var(--crl-light-blue-a8f9f3);
+  border: 3px solid var(--crl-purple-290c61);
+  border-radius: 100%;
+  color: var(--crl-purple-290c61);
+  display: block;
+  font-weight: 600;
+  height: 25px;
+  padding: 5px;
+  position: absolute;
+  text-align: center;
+  top: 10px;
+  width: 25px;
+}
+
+.regress {
+  background-color: var(--crl-light-grey);
+  height: 0.5em;
+  position: relative;
+  transition: width 500ms ease-out;
+}
+
+.bar {
+  background-color: var(--crl-light-blue-a8f9f3);
+  height: 100%;
+  position: absolute;
+}
+
+.main {
+  align-items: center;
+  display: flex;
+  font-size: 1.4em;
+  height: 100vh;
+  justify-content: center;
+  width: 100vw;
 }
 
 .question-container {
   align-items: center;
-  background-color: white;
+  background-color: var(--crl-white);
   border-radius: 15px;
-  box-shadow: 0 0.3em 1.5em rgb(53, 53, 53);
-  color: rgb(51, 51, 51);
+  box-shadow: 0 0.3em 1.5em --crl-graphite-353535;
+  color: var(--crl-graphite-333);
   display: flex;
   flex-flow: column wrap;
   font-weight: 600;
+  margin-top: 10px;
   padding: 1em;
   text-align: center;
-  width: 40%;
+  width: 12em;
 }
 
 .alternatives {
@@ -71,11 +104,11 @@ p {
 }
 
 .btn-alternative {
-  background-color: #a8f9f3;
+  background-color: var(--crl-light-blue-a8f9f3);
   border: none;
   border-radius: 10px;
-  box-shadow: 0 0.1em 1.5em rgb(53, 53, 53);
-  color: rgb(41, 12, 97);
+  box-shadow: 0 0.1em 1.5em var(--crl-graphite-333);
+  color: var(--crl-purple-290c61);
   font-size: 22px;
   font-weight: 600;
   margin: 1em;
@@ -89,27 +122,12 @@ p {
   transform: scale(1.3);
 }
 
-.timer {
-  background-color: #a8f9f3;
-  border: 3px solid #624291;
-  border-radius: 100%;
-  color: #624291;
-  display: block;
-  font-weight: 600;
-  height: 25px;
-  padding: 5px;
-  position: absolute;
-  text-align: center;
-  top: -17px;
-  width: 25px;
-}
-
 .btn-next {
   background-color: rgba(10, 245, 155, 0.8);
   border: none;
   border-radius: 5px;
   box-shadow: 0 15px 25px -4px rgba(30, 30, 60, 0.25);
-  color: white;
+  color: var(--crl-white);
   font-weight: 700;
   margin: 0.5em 0;
   padding: 15px;
@@ -124,36 +142,22 @@ p {
 
 @media ( max-width : 767px ) {
 
-  header {
-    justify-content: space-between;
-  }
-
-  p {
-    margin-left: 0;
-  }
-
-  .player-name-container {
-    display: flex;
-    flex-flow: column wrap;
+  * {
+    margin: 0;
+    padding: 0;
   }
 
   .main {
-    height: 100%;
-    margin: 20px 0;
-    width: 100vw;
-  }
-
-  .question-container {
-    width: 17em;
-  }
-
-  .alternatives {
-    align-items: center;
-    display: flex;
-    flex-flow: column wrap;
+    flex-direction: column;
+    margin-top: 50px;
   }
 
   .btn-alternative {
-    width: 15em;
+    width: 12em;
+  }
+
+  .btn-next {
+    font-size: inherit;
+    margin-bottom: 10px;
   }
 }
