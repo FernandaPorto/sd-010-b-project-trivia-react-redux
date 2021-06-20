@@ -4,9 +4,11 @@ import { Link } from 'react-router-dom';
 import CardList from '../components/CardList';
 import { restoreFromLocalStorage } from '../functions';
 
-export default class Ranking extends Component {
+class Ranking extends Component {
   render() {
     const ranking = restoreFromLocalStorage('ranking');
+    // ordena decrescentemente o ranking
+    ranking.sort((player1, player2) => player2.score - player1.score);
     return (
       <main>
         <h1 data-testid="ranking-title">Ranking</h1>
@@ -24,4 +26,4 @@ export default class Ranking extends Component {
   }
 }
 
-// test to merge in group 33
+export default Ranking;

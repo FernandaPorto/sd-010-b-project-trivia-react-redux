@@ -7,10 +7,11 @@ class CardList extends Component {
     const { ranking } = this.props;
     return (
       <section>
-        {ranking.forEach(
+        {ranking.map(
           (player, index) => (
             <Card
               key={ index }
+              index={ index }
               player={ player }
             />
           ),

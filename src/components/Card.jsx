@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 
 class Card extends Component {
   render() {
-    const { key: index, player: { name, score, picture } } = this.props;
+    const { index, player: { name, score, picture } } = this.props;
     return (
       <article>
-        <h1 data-testid={ `player-name-${index}` }>{name}</h1>
+        <h3 data-testid={ `player-name-${index}` }>{name}</h3>
         <img src={ picture } alt={ `Avatar de ${name}` } />
         <p>
           Score:
@@ -19,7 +19,7 @@ class Card extends Component {
 }
 
 Card.propTypes = {
-  key: PropTypes.number.isRequired,
+  index: PropTypes.number.isRequired,
   player: PropTypes.shape({
     name: PropTypes.string.isRequired,
     score: PropTypes.number.isRequired,

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { fetchToken, saveNameEmailPlayer } from '../redux/actions/player';
-import { fetchQuestions } from '../redux/actions/game';
+import { fetchQuestions, setQuestionsNumber } from '../redux/actions/game';
 import { saveLocalStorage, toHash } from '../functions';
 import { GRAVATAR_API } from '../services/api';
 
@@ -44,14 +44,15 @@ class Login extends React.Component {
 
   async handleClick(name, email) {
     const {
-      getToken, saveNameEmail, token, getQuestions, history,
+      getToken, saveNameEmail, token, getQuestions,
+      history, questionsNumber, setQuestionsNum,
     } = this.props;
 
     await getToken();
     const hash = toHash(email);
     const picture = `${GRAVATAR_API}${hash}`;
     saveNameEmail(name, email, picture);
-    const questionsNumber = 5;
+    setQuestionsNum(); // mover para Config.jsx
     await getQuestions(token, questionsNumber);
     const key = 'state';
     saveLocalStorage(key, { player: { name, score: 0, gravatarEmail: email, picture } });
@@ -110,10 +111,13 @@ Login.propTypes = {
   getToken: PropTypes.func.isRequired,
   getQuestions: PropTypes.func.isRequired,
   saveNameEmail: PropTypes.func.isRequired,
+  questionsNumber: PropTypes.number.isRequired,
+  setQuestionsNum: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = ({ player: { token } }) => ({
+const mapStateToProps = ({ player: { token }, game: { questionsNumber } }) => ({
   token,
+  questionsNumber,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -121,7 +125,11 @@ const mapDispatchToProps = (dispatch) => ({
   getQuestions: (token, questionsNumber) => dispatch(
     fetchQuestions(token, questionsNumber),
   ),
-  saveNameEmail: (name, email) => dispatch(saveNameEmailPlayer(name, email)),
+  saveNameEmail: (name, email, picture) => dispatch(
+    saveNameEmailPlayer(name, email, picture),
+  ),
+  setQuestionsNum: (questionsNumber) => dispatch(setQuestionsNumber(questionsNumber)),
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
