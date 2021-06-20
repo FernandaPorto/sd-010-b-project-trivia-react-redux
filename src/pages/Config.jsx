@@ -81,26 +81,30 @@ class Config extends Component {
   renderType() {
     const { type } = this.props;
     return (
-      <label htmlFor="type">
-        Select Type
-        <select value={ type } onChange={ this.handleChange } name="type" id="type">
-          <option value="any">Any Type</option>
-          <option value="multiple">Multiple Choice</option>
-          <option value="boolean">True or False</option>
-        </select>
-      </label>
+      <div>
+        <label htmlFor="type">
+          Select Type
+          <select value={ type } onChange={ this.handleChange } name="type" id="type">
+            <option value="any">Any Type</option>
+            <option value="multiple">Multiple Choice</option>
+            <option value="boolean">True or False</option>
+          </select>
+        </label>
+      </div>
     );
   }
 
   render() {
     return (
-      <div className="flex h-screen bg-secundary_color">
-        <section className="flex flex-col items-center m-56 bg-primary_color min-w-600 max-h-80 rounded-2xl">
+      <div className="flex justify-center items-center w-screen h-screen bg-secundary_color">
+        <section className="flex flex-col items-center bg-primary_color min-w-800 min-h-1/4 rounded-2xl">
           <title data-testid="settings-title">CONFIGURAÇÕES</title>
           {this.renderCategories()}
           {this.renderDifficulty()}
           {this.renderType()}
-        <Link to="/">Back</Link>
+        <button className="text-1xl text-white mt-40 mb-10 bg-secundary_color px-4 py-1 rounded ">
+        <Link to="/">SAVE</Link>
+        </button>
         </section>
       </div>
     );
