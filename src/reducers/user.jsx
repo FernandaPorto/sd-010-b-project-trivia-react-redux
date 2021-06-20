@@ -1,4 +1,4 @@
-import { LOGIN, GRAVATAR, SCORE, EACH_SCORE, ASSERTIONS } from '../actions';
+import { LOGIN, GRAVATAR, EACH_SCORE, ASSERTIONS } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -34,19 +34,13 @@ export default function user(state = INITIAL_STATE, action) {
       gravatar: action.gravatar,
 
     };
-  case SCORE:
-    return {
-      ...state,
-      player: { score: parseInt(state.player.score, 10)
-        + parseInt(action.player.eachScore, 10) },
-
-    };
   case EACH_SCORE:
     return {
       ...state,
       player: {
         ...state.player,
         eachScore: parseInt(action.payload, 10),
+        score: parseInt(state.player.score, 10) + parseInt(action.payload, 10),
       },
     };
   case ASSERTIONS:

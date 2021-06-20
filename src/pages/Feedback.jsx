@@ -5,24 +5,21 @@ import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 
 class Feedback extends Component {
-  endingMessage() {
-    const { totalAssertions } = this.props;
-    const gotitRightQuestions = 3;
-    if (totalAssertions < gotitRightQuestions) {
-      return 'Podia ser melhor...';
-    } return 'Mandou bem!';
-  }
-
   render() {
-    const { eachPoints } = this.props;
+    const { totalAssertions, totalScore } = this.props;
+    const gotitRightQuestions = 3;
     return (
       <>
         <Header />
-        <h1 data-testid="feedback-text">Página de FeedBacks</h1>
-        {this.endingMessage()}
+        <h1>Página de FeedBacks</h1>
+        <h2 data-testid="feedback-text">
+          {totalAssertions < gotitRightQuestions
+            ? 'Podia ser melhor...' : 'Mandou bem!'}
+        </h2>
+        <h3 data-testid="feedback-total-score">{totalScore}</h3>
+        <h4 data-testid="feedback-total-question">{totalAssertions}</h4>
         <Link to="/">
           Voltar
-          {eachPoints}
         </Link>
       </>
     );
@@ -31,12 +28,12 @@ class Feedback extends Component {
 
 const mapStateToProps = (state) => ({
   totalAssertions: state.user.player.assertions,
-  eachPoints: state.user.player.eachScore,
+  totalScore: state.user.player.score,
 });
 
 Feedback.propTypes = ({
   totalAssertions: PropTypes.number.isRequired,
-  eachPoints: PropTypes.number.isRequired,
+  totalScore: PropTypes.number.isRequired,
 });
 
 export default connect(mapStateToProps, null)(Feedback);

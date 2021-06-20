@@ -62,9 +62,8 @@ class GamePage extends Component {
   async interval() {
     await this.getToken();
     const A_SECOND = 1000;
-    const number = 28;
     this.myInterval = setInterval(() => {
-      const { seconds = number } = this.state;
+      const { seconds } = this.state;
       if (seconds > 0) {
         this.setState((previousState) => ({
           seconds: previousState.seconds - 1,
@@ -80,14 +79,14 @@ class GamePage extends Component {
     }, A_SECOND);
   }
 
-  // finalQuestion() {
-  //   const { indexState, categories } = this.state;
-  //   const maxQuestionsNumber = 5;
-  //   if (indexState <= maxQuestionsNumber) {
-  //     return categories[indexState].question;
-  //   }
-  //   this.setState({ finalQuestion: true });
-  // }
+  inter() {
+    const { indexState, categories } = this.state;
+    const maxQuestionsNumber = 5;
+    if (indexState <= maxQuestionsNumber) {
+      return categories[indexState].question;
+    }
+    this.setState({ finalQuestion: true });
+  }
 
   correctAnswer() {
     const { categories, indexState, seconds } = this.state;
@@ -130,6 +129,7 @@ class GamePage extends Component {
 
   questionAndAnswer() {
     const { categories, indexState, loading, timeIsOut } = this.state;
+    console.log(categories);
     if (typeof (categories[indexState]) === 'undefined') {
       return <Redirect to="/feedback" />;
     }
