@@ -15,8 +15,12 @@ class Login extends Component {
     this.startGame = this.startGame.bind(this);
 
     this.state = {
-      name: '',
-      email: '',
+      player: {
+        name: '',
+        assertions: 0,
+        score: 0,
+        gravatarEmail: '',
+      },
       disabled: true,
       redirect: false,
     };
@@ -40,18 +44,20 @@ class Login extends Component {
   }
 
   handleChange({ target: { id, value } }) {
-    this.setState({ [id]: value }, () => {
-      const { name, email } = this.state;
-      const regex = /\S+@\S+\.\S+/;
-      if (name && regex.test(email)) {
-        this.setState({ disabled: false });
-      } else this.setState({ disabled: true });
-    });
+    this.setState((prev) => ({ player: { ...prev.player, [id]: value } }),
+      () => {
+        const { player: { name, gravatarEmail } } = this.state;
+        console.log(name, gravatarEmail);
+        const regex = /\S+@\S+\.\S+/;
+        if (name && regex.test(gravatarEmail)) {
+          this.setState({ disabled: false });
+        } else this.setState({ disabled: true });
+      });
   }
 
   async startGame() {
     const { propFetchGameData, propSetPlayerInfo } = this.props;
-    const { name, email } = this.state;
+    const { player } = this.state;
     const localToken = localStorage.getItem('token');
     if (!localToken) {
       const tokenObj = await getToken();
@@ -60,7 +66,8 @@ class Login extends Component {
     } else {
       propFetchGameData({ numAnswer: 5, token: localStorage.getItem('token') });
     }
-    propSetPlayerInfo({ name, email });
+    propSetPlayerInfo(player);
+    localStorage.setItem('state', JSON.stringify({ player }));
     this.setState({ redirect: true });
   }
 
@@ -77,11 +84,11 @@ class Login extends Component {
             onChange={ this.handleChange }
           />
         </label>
-        <label htmlFor="email">
+        <label htmlFor="gravatarEmail">
           E-mail
           <input
             type="email"
-            id="email"
+            id="gravatarEmail"
             value={ email }
             data-testid="input-gravatar-email"
             onChange={ this.handleChange }
@@ -108,12 +115,12 @@ class Login extends Component {
   }
 
   render() {
-    const { name, email, disabled, redirect } = this.state;
+    const { player: { name, gravatarEmail }, disabled, redirect } = this.state;
     return redirect ? <Redirect to="/game" /> : (
       <div className="App">
         <header className="App-header">
           <img src={ logo } className="App-logo" alt="logo" />
-          { this.loginForm(name, email, disabled) }
+          { this.loginForm(name, gravatarEmail, disabled) }
         </header>
       </div>
     );

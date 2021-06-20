@@ -1,7 +1,7 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
-import { isAnswered, setPlayerScore } from '../actions';
+import { isAnswered } from '../actions';
 import '../pages/CSS/game.css';
 
 class QuestionCard extends React.Component {
@@ -21,18 +21,25 @@ class QuestionCard extends React.Component {
     if (prev.answered && !answered) this.changeBtn(false);
   }
 
+  componentWillUnmount() {
+    const { propIsAnswered } = this.props;
+    propIsAnswered(false);
+  }
+
   changeBtn(disabled) {
     this.setState({ disabled });
   }
 
   handleClick(dif, correct) {
-    const { propIsAnswered, propSetPlayerScore, time } = this.props;
+    const { propIsAnswered, time } = this.props;
     propIsAnswered(true);
     if (correct) {
       const mult = { hard: 3, medium: 2, easy: 1 };
       const acc = 10;
-      propSetPlayerScore({ score: acc + (time * mult[dif]),
-        assertions: 1 });
+      const { player } = JSON.parse(localStorage.getItem('state'));
+      player.assertions += 1;
+      player.score += acc + (time * mult[dif]);
+      localStorage.setItem('state', JSON.stringify({ player }));
     }
   }
 
@@ -85,7 +92,6 @@ const mapStateToProps = ({ timerReducer: { time, answered } }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   propIsAnswered: (payload) => dispatch(isAnswered(payload)),
-  propSetPlayerScore: (payload) => dispatch(setPlayerScore(payload)),
 });
 
 QuestionCard.propTypes = {

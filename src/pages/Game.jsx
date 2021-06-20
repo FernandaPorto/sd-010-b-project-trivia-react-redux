@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import { startTimer, downTimer, resetTimer, isAnswered } from '../actions';
+import getGravatarImg from '../services/gravatarEmail';
 import GameHeader from '../components/GameHeader';
 import QuestionCard from '../components/QuestionCard';
 import Timer from '../components/Timer';
@@ -12,6 +13,7 @@ class Game extends Component {
     super();
     this.nextAnswer = this.nextAnswer.bind(this);
     this.goFeedback = this.goFeedback.bind(this);
+    this.addToRanking = this.addToRanking.bind(this);
     this.state = {
       index: 0,
       numQ: 4,
@@ -38,7 +40,19 @@ class Game extends Component {
     propStartTimer();
   }
 
+  addToRanking() {
+    const { player:
+      { name, score, gravatarEmail } } = JSON.parse(localStorage.getItem('state'));
+    let ranking = [];
+    if (localStorage.getItem('ranking')) {
+      ranking = JSON.parse(localStorage.getItem('ranking'));
+    }
+    ranking.push({ name, score, picture: getGravatarImg(gravatarEmail) });
+    localStorage.setItem('ranking', JSON.stringify(ranking));
+  }
+
   goFeedback() {
+    this.addToRanking();
     this.setState({ redirect: true });
   }
 
