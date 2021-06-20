@@ -2,6 +2,7 @@ import React from 'react';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import history from '../history';
 
 class Feedback extends React.Component {
   getScore() {
@@ -35,6 +36,15 @@ class Feedback extends React.Component {
 
           <span data-testid="header-score">{ this.getScore() }</span>
         </header>
+        <main>
+          <button
+            type="button"
+            data-testid="btn-play-again"
+            onClick={ () => history.push('/') }
+          >
+            Jogar novamente
+          </button>
+        </main>
       </>
     );
   }
