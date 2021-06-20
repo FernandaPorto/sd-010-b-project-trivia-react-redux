@@ -37,9 +37,11 @@ class QuestionCard extends React.Component {
       const mult = { hard: 3, medium: 2, easy: 1 };
       const acc = 10;
       const { player } = JSON.parse(localStorage.getItem('state'));
-      player.assertions += 1;
-      player.score += acc + (time * mult[dif]);
-      localStorage.setItem('state', JSON.stringify({ player }));
+      localStorage.setItem('state', JSON.stringify({
+        player: {
+          ...player,
+          assertions: player.assertions + 1,
+          score: player.score + acc + (time * mult[dif]) } }));
     }
   }
 

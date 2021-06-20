@@ -4,10 +4,10 @@ const initialState = {
   data: {},
 };
 
-const gameReducer = (state = initialState, action) => {
-  switch (action.type) {
+const gameReducer = (state = initialState, { type, payload }) => {
+  switch (type) {
   case ADD_GAME_DATA:
-    return { ...state, data: action.payload };
+    return { ...state, data: payload };
   default:
     return state;
   }

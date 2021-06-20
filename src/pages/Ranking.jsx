@@ -2,8 +2,31 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 class Ranking extends Component {
+  constructor() {
+    super();
+    this.order = this.order.bind(this);
+    this.state = {
+      rankList: [],
+    };
+  }
+
+  componentDidMount() {
+    this.order();
+  }
+
+  order() {
+    const negativeOne = -1;
+    const rankList = JSON.parse(localStorage.getItem('ranking'))
+      .sort((a, b) => {
+        if (a.score < b.score) return 1;
+        if (a.score > b.score) return negativeOne;
+        return 0;
+      });
+    this.setState({ rankList });
+  }
+
   render() {
-    const rankList = JSON.parse(localStorage.getItem('ranking'));
+    const { rankList } = this.state;
     return (
       <div>
         <h1 data-testid="ranking-title">
