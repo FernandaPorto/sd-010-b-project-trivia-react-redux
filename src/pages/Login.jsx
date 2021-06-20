@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import PropTypes from 'prop-types';
-import { setToken } from './GamePage';
+// import { setToken } from './GamePage';
 import ButtonSettings from '../components/ButtonSettings';
-import { loginAction } from '../actions';
+import { loginAction, fetchAction } from '../actions';
 import logo from '../trivia.png';
 
 class LoginPage extends Component {
@@ -22,7 +22,6 @@ class LoginPage extends Component {
     // this.setToken = this.setToken.bind(this);
     // this.settingsButton = this.settingsButton.bind(this);
   }
-
   // componentDidMount() {
   //   const { name, emailAdress } = this.state;
   //   const { userPlay } = this.props;
@@ -39,8 +38,17 @@ class LoginPage extends Component {
     // firstDispatch(emailAdress, passwordData);
     this.setState({ shouldRedirect: true });
     localStorage.setItem('name', JSON.stringify(name));
-    await setToken();
+    const { sendFetchToStore } = this.props;
+    sendFetchToStore();
   }
+
+  // async getToken() {
+  //   const { sendFetchToStore } = this.props;
+  //   const resultFetchTrivia = await setToken();
+  //   const map = resultFetchTrivia.results
+  //     .map((result) => result);
+  //   sendFetchToStore(map);
+  // }
 
   validationFields() {
     const { emailAdress, name } = this.state;
@@ -105,10 +113,12 @@ class LoginPage extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   userPlay: (name, email) => dispatch(loginAction({ name, email })),
+  sendFetchToStore: (fetch) => dispatch(fetchAction({ fetch })),
 });
 
 LoginPage.propTypes = ({
   userPlay: PropTypes.func.isRequired,
+  sendFetchToStore: PropTypes.func.isRequired,
   emailPlay: PropTypes.shape({
     email: PropTypes.string,
   }).isRequired,

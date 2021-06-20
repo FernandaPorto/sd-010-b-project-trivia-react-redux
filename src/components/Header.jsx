@@ -18,8 +18,17 @@ class Header extends Component {
     return (
       <header>
         <img src={ gravatar } alt="imageGravatar" data-testid="header-profile-picture" />
-        <span data-testid="header-player-name">{nome}</span>
-        <span data-testid="header-score">{eachPoints}</span>
+        <span data-testid="header-player-name">
+          User:
+          { }
+          {nome}
+          { }
+        </span>
+        <span data-testid="header-score">
+          Score:
+          { }
+          {eachPoints}
+        </span>
       </header>
     );
   }
