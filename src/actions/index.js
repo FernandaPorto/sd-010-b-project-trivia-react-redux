@@ -1,6 +1,8 @@
 export const LOGIN = 'login';
 export const GRAVATAR = 'gravatar';
 export const SCORE = 'score';
+export const EACH_SCORE = 'each_score';
+export const ASSERTIONS = 'assertions';
 
 export function loginAction({ name, email }) {
   return ({
@@ -8,6 +10,18 @@ export function loginAction({ name, email }) {
     payload: {
       name,
       email,
+      player: {
+        name: '',
+        assertions: 0,
+        score: 0,
+        gravatarEmail: '',
+      },
+      ranking: [
+        { name: '',
+          score: 0,
+          picture: '',
+        },
+      ],
     },
   });
 }
@@ -23,6 +37,20 @@ export function scoreAction(score) {
   return ({
     type: SCORE,
     payload: score,
+  });
+}
+
+export function eachScoreAction(eachScore) {
+  return ({
+    type: EACH_SCORE,
+    payload: eachScore,
+  });
+}
+
+export function assertionsAction(rightAnswer) {
+  return ({
+    type: ASSERTIONS,
+    payload: rightAnswer,
   });
 }
 

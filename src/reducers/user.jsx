@@ -1,4 +1,4 @@
-import { LOGIN, GRAVATAR, SCORE } from '../actions';
+import { LOGIN, GRAVATAR, EACH_SCORE, ASSERTIONS } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
@@ -7,13 +7,17 @@ const INITIAL_STATE = {
   player: {
     name: '',
     assertions: 0,
+    total_Assertions: 0,
     score: 0,
+    eachScore: 0,
     gravatarEmail: '',
   },
-  ranking:
-  [
-    { name: '', score: 0, picture: '' },
-  ],
+  // ranking: [
+  //   { name: '',
+  //     score: 0,
+  //     picture: '',
+  //   },
+  // ],
 };
 
 export default function user(state = INITIAL_STATE, action) {
@@ -21,18 +25,8 @@ export default function user(state = INITIAL_STATE, action) {
   case LOGIN:
     return {
       ...state,
-      player: {
-        name: action.payload.name,
-        assertions: action.payload.assertions,
-        score: action.payload.score,
-        gravatarEmail: action.payload.email,
-      },
+      name: action.payload.name,
       email: action.payload.email,
-      ranking: {
-        name: action.payload.name,
-        score: action.payload.score,
-        picture: action.payload.gravatarEmail,
-      },
     };
   case GRAVATAR:
     return {
@@ -40,11 +34,24 @@ export default function user(state = INITIAL_STATE, action) {
       gravatar: action.gravatar,
 
     };
-  case SCORE:
+  case EACH_SCORE:
     return {
       ...state,
-      score: parseInt(state.ranking.score, 10) + parseInt(action.ranking.score, 10),
-
+      player: {
+        ...state.player,
+        eachScore: parseInt(action.payload, 10),
+        score: parseInt(state.player.score, 10) + parseInt(action.payload, 10),
+      },
+    };
+  case ASSERTIONS:
+    return {
+      ...state,
+      player: {
+        ...state.player,
+        assertions:
+        state.player.assertions
+        + parseInt(action.payload, 10),
+      },
     };
   default:
     return state;
