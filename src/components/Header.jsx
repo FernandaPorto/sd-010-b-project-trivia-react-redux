@@ -10,7 +10,11 @@ class Header extends Component {
       <header>
         <img src={ picture } alt="avatar" data-testid="header-profile-picture" />
         <p data-testid="header-player-name">{ name }</p>
-        <p data-testid="header-score">{ score }</p>
+        <p>
+          <span data-testid="header-score">{ score }</span>
+          {' '}
+          Pontos
+        </p>
       </header>
     );
   }
