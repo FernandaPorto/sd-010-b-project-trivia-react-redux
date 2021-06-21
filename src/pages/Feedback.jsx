@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import Header from '../components/Header';
+import HeaderFeedback from '../components/Header_FeedBack';
 
 class Feedback extends Component {
   constructor(props) {
@@ -30,7 +30,7 @@ class Feedback extends Component {
 
     return (
       <>
-        <Header />
+        <HeaderFeedback />
         {homePage ? <Redirect to="/" /> : ''}
         {ranking ? <Redirect to="/ranking" /> : ''}
         <h1>Página de FeedBacks</h1>

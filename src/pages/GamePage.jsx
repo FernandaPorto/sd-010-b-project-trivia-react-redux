@@ -40,6 +40,7 @@ class GamePage extends Component {
 
   componentWillUnmount() {
     clearInterval(this.myInterval);
+    console.log('WillUnmount');
   }
 
   async getApiData() {
@@ -71,6 +72,8 @@ class GamePage extends Component {
         this.setState({ loading: true });
         this.setState({ button: true });
         this.setState({ answered: false });
+        console.log('interval');
+        this.componentWillUnmount();
       }
     }, A_SECOND);
   }
@@ -93,6 +96,7 @@ class GamePage extends Component {
     this.setState({ button: true });
     this.componentWillUnmount();
     totalAssertions(1);
+    console.log('interval');
   }
 
   wrongAnswer() {
@@ -112,12 +116,14 @@ class GamePage extends Component {
     if (indexState <= maxQuestionsNumber) {
       this.setState((previousState) => ({ indexState: previousState.indexState + 1 }));
     } else { this.setState({ finalQuestion: true }); }
+    console.log(indexState);
   }
 
   questionAndAnswer() {
     const { indexState, loading, timeIsOut, categories } = this.state;
     // const { resultOfFetch } = this.props;
     // this.setState({ categories: resultOfFetch });
+    console.log(indexState);
     return (
       <div>
         <select>
