@@ -67,7 +67,6 @@ class GamePage extends Component {
         }));
       }
       if (seconds === 0) {
-        this.nextQuestion();
         this.setState({ timeIsOut: true });
         this.setState({ loading: true });
         this.setState({ button: true });
@@ -106,7 +105,9 @@ class GamePage extends Component {
   nextQuestion() {
     const { indexState } = this.state;
     this.setState({ loading: false });
+    this.setState({ seconds: 30 });
     this.setState({ answered: true });
+    this.setState({ timeIsOut: false });
     const maxQuestionsNumber = 5;
     if (indexState <= maxQuestionsNumber) {
       this.setState((previousState) => ({ indexState: previousState.indexState + 1 }));
@@ -163,9 +164,8 @@ class GamePage extends Component {
   }
 
   render() {
-    const { seconds, answered, button, finalQuestion } = this.state;
+    const { seconds, answered, button, finalQuestion, timeIsOut } = this.state;
     const { categories, indexState } = this.state;
-    console.log(categories[indexState]);
     return (
       <div>
         <Header />
