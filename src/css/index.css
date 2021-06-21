@@ -7,7 +7,7 @@ html {
 body, html {
   background: url('https://i.ytimg.com/vi/kJkQFVqySUw/maxresdefault.jpg') no-repeat center;
   background-color: black;
-  font-family: -apple-system,BlinkMacSystemFont,Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;
+  font-family: -apple-system , BlinkMacSystemFont , Roboto , Oxygen , Ubuntu , Cantarell , sans-serif;
   margin: 0;
   padding: 0;
 }
