@@ -2,6 +2,7 @@ import React from 'react';
 import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import '../css/Header.css';
 
 class Header extends React.Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class Header extends React.Component {
         <h3 data-testid="header-player-name">
           { name }
         </h3>
-
+        <p>Pontuação:</p>
         <span data-testid="header-score">0</span>
       </header>
     );

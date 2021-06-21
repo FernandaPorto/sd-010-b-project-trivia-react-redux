@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { saveNumQuestion, saveCorrectAnswer } from '../actions/index';
-import './styleQuestion.css';
+import '../css/Question.css';
 import history from '../history';
 
 class Question extends React.Component {
@@ -128,15 +128,15 @@ class Question extends React.Component {
     const { props: { result },
       state: { arrRandom, isClicked, timer, isDisabled } } = this;
     return (
-      <>
-        <span data-testid="question-category">
-          {`Category: 
-          ${result.category}`}
+      <div className="questoes">
+        <span className="time">{timer}</span>
+        <span data-testid="question-category" className="question-category">
+          {`Category: ${result.category}`}
         </span>
 
         <br />
 
-        <span data-testid="question-text">
+        <span data-testid="question-text" className="question-text">
           {`Question:  
           ${result.question}`}
         </span>
@@ -162,12 +162,12 @@ class Question extends React.Component {
           <button
             type="button"
             data-testid="btn-next"
+            className="btn-next"
             onClick={ () => { this.add1ToNQ(); } }
           >
             Próxima
           </button>) }
-        <span>{timer}</span>
-      </>
+      </div>
     );
   }
 }

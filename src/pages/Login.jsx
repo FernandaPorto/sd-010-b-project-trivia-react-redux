@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { saveUserInfo } from '../actions/index';
 import history from '../history';
+import logo from '../trivia.png';
 
 class Login extends React.Component {
   constructor(props) {
@@ -56,22 +57,24 @@ class Login extends React.Component {
   render() {
     const { state: { isDisabled, email, name }, props: { saveInfo } } = this;
     return (
-      <>
+      <form>
+        <img src={ logo } className="App-logo" alt="logo" />
+        <h6>Vamos Joga!</h6>
         <label htmlFor="name">
-          Nome:
           <input
             type="text"
             name="name"
+            placeholder="Seu Nome"
             data-testid="input-player-name"
             onChange={ this.handleChange }
           />
         </label>
 
         <label htmlFor="email">
-          Email:
           <input
             type="email"
             name="email"
+            placeholder="Seu Email"
             data-testid="input-gravatar-email"
             onChange={ this.handleChange }
           />
@@ -96,7 +99,7 @@ class Login extends React.Component {
             Configurações
           </button>
         </Link>
-      </>
+      </form>
     );
   }
 }
