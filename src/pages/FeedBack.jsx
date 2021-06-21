@@ -11,7 +11,7 @@ class FeedBack extends Component {
     super();
 
     this.feedBackQuestions = this.feedBackQuestions.bind(this);
-    this.feedBackPoints = this.feedBackPoints.bind.call(this);
+    this.feedBackPoints = this.feedBackPoints.bind(this);
   }
 
   componentDidMount() {

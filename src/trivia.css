@@ -161,3 +161,46 @@ header {
     margin-bottom: 10px;
   }
 }
+
+@media ( min-width : 768px ) {
+
+  header {
+    justify-content: space-around;
+  }
+
+  .player-info img {
+    width: 3em;
+  }
+
+  .player-name-container {
+    align-items: center;
+    display: flex;
+    letter-spacing: 2px;
+    width: 18em;
+  }
+
+  .question-container {
+    align-items: center;
+    margin: 16px;
+    min-height: 12em;
+    padding: 1em;
+    text-align: center;
+    width: 18em;
+  }
+
+  .alternatives button:hover {
+    transform: scale(1.1);
+  }
+
+  .btn-next {
+    margin-left: 20px;
+  }
+
+  .btn-next:hover {
+    transform: scale(1.1);
+  }
+
+  .timer {
+    top: -10px;
+  }
+}

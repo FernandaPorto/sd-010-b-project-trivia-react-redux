@@ -16,6 +16,19 @@
 
 }
 
+.header-ranking {
+  align-items: center;
+  background-color: var(--crl-light-grey);
+  color: var(--crl-graphite-515151);
+  display: flex;
+  font-weight: 600;
+  height: 3.8em;
+  justify-content: center;
+  letter-spacing: 2px;
+  margin-bottom: 1em;
+  width: 100vw;
+}
+
 .feedback-container {
   align-items: center;
   display: flex;
@@ -63,5 +76,26 @@
   .fb-btn-container {
     display: flex;
     flex-flow: column;
+  }
+
+}
+
+@media ( min-width : 768px ) {
+
+  .feedback-message {
+    height: 8em;
+    justify-content: center;
+    line-height: 2em;
+    width: 20em;
+  }
+
+  .fb-btn-container {
+    display: flex;
+    flex-flow: column wrap;
+  }
+
+  .fb-btn-container button {
+    font-size: inherit;
+    width: 18em;
   }
 }

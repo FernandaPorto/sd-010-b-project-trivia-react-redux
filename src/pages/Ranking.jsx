@@ -59,7 +59,9 @@ class Ranking extends Component {
     const { history, reset } = this.props;
     return (
       <section className="ranking-content ">
-        <h1 data-testid="ranking-title">Ranking</h1>
+        <section className="header-ranking">
+          <h1 data-testid="ranking-title">Ranking</h1>
+        </section>
 
         <Transition
           items={ showComp }
