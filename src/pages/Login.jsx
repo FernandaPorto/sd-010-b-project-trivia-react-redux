@@ -47,7 +47,6 @@ class Login extends Component {
     this.setState((prev) => ({ player: { ...prev.player, [id]: value } }),
       () => {
         const { player: { name, gravatarEmail } } = this.state;
-        console.log(name, gravatarEmail);
         const regex = /\S+@\S+\.\S+/;
         if (name && regex.test(gravatarEmail)) {
           this.setState({ disabled: false });

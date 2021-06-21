@@ -5,8 +5,7 @@ import getGravatarImg from '../services/gravatarEmail';
 
 class GameHeader extends Component {
   render() {
-    const { name, gravatarEmail } = this.props;
-    const { player: { score } } = JSON.parse(localStorage.getItem('state'));
+    const { name, gravatarEmail, score } = this.props;
     return (
       <header>
         <img
@@ -31,8 +30,9 @@ const mapStateToProps = ({ loginReducer: { name, gravatarEmail } }) => ({
 });
 
 GameHeader.propTypes = {
-  name: PropTypes.string.isRequired,
-  gravatarEmail: PropTypes.string.isRequired,
-};
+  name: PropTypes.string,
+  gravatarEmail: PropTypes.string,
+  score: PropTypes.number,
+}.isRequired;
 
 export default connect(mapStateToProps, null)(GameHeader);

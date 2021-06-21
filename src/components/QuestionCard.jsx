@@ -7,33 +7,41 @@ import '../pages/CSS/game.css';
 class QuestionCard extends React.Component {
   constructor() {
     super();
+    this.fetchAnswers = this.fetchAnswers.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.options = this.options.bind(this);
     this.changeBtn = this.changeBtn.bind(this);
     this.state = {
       disabled: false,
+      answers: null,
     };
   }
 
+  componentDidMount() {
+    this.fetchAnswers();
+  }
+
   componentDidUpdate(prev) {
-    const { answered } = this.props;
+    const { answered, question } = this.props;
     if (!prev.answered && answered) this.changeBtn(true);
     if (prev.answered && !answered) this.changeBtn(false);
+    if (prev.question.correct_answer !== question.correct_answer) this.fetchAnswers();
   }
 
   componentWillUnmount() {
     const { propIsAnswered } = this.props;
     propIsAnswered(false);
+    this.setState({ answers: null });
   }
 
   changeBtn(disabled) {
     this.setState({ disabled });
   }
 
-  handleClick(dif, correct) {
-    const { propIsAnswered, time } = this.props;
+  handleClick(correct) {
+    const { propIsAnswered, question: { difficulty }, time } = this.props;
     propIsAnswered(true);
-    if (correct) {
+    if (correct === 'correct-answer') {
       const mult = { hard: 3, medium: 2, easy: 1 };
       const acc = 10;
       const { player } = JSON.parse(localStorage.getItem('state'));
@@ -41,37 +49,42 @@ class QuestionCard extends React.Component {
         player: {
           ...player,
           assertions: player.assertions + 1,
-          score: player.score + acc + (time * mult[dif]) } }));
+          score: player.score + acc + (time * mult[difficulty]) } }));
     }
   }
 
-  options(answered) {
-    const { disabled } = this.state;
-    const correct = 'correct-answer';
+  fetchAnswers() {
     const { question:
-      { difficulty, incorrect_answers: iAnswers, correct_answer: cAnswers },
+      { incorrect_answers: iAnswers, correct_answer: cAnswers },
     } = this.props;
-    const answers = [...iAnswers, cAnswers];
-    const changeClasse = (option) => (
-      option !== cAnswers ? 'wrong-answer' : correct);
+    const ten = 10;
+    const obj = { [cAnswers]: 'correct-answer' };
+    iAnswers.forEach((opt, i) => { obj[opt] = `wrong-answer-${i}`; });
+    const answers = Object.entries(obj)
+      .sort(() => 2 - Math.floor(Math.random() * ten));
+    this.setState({ answers });
+  }
 
+  options(answers) {
+    const { disabled } = this.state;
+    const { answered } = this.props;
     return answers.map((option, i) => (
       <button
         type="button"
-        data-testid={ option !== cAnswers ? `wrong-answer-${i}` : correct }
-        className={ answered ? changeClasse(option) : null }
+        data-testid={ option[1] }
+        className={ answered ? `${option[1].split('answer')[0]}answer` : null }
         disabled={ disabled }
-        onClick={ () => this.handleClick(difficulty, option === cAnswers) }
+        onClick={ () => this.handleClick(option[1]) }
         key={ i }
       >
-        { option }
+        { option[0] }
       </button>
     ));
   }
 
   render() {
-    const { question, answered } = this.props;
-    const optionsList = this.options(answered);
+    const { question } = this.props;
+    const { answers } = this.state;
     return (
       <div className="card-container">
         <h4 data-testid="question-category">
@@ -81,7 +94,7 @@ class QuestionCard extends React.Component {
           { question.question }
         </h3>
         <div className="answer-options">
-          { optionsList }
+          { answers && this.options(answers) }
         </div>
       </div>
     );

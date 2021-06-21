@@ -22,8 +22,8 @@ class Game extends Component {
   }
 
   componentDidMount() {
-    const { propStartTimer } = this.props;
-    propStartTimer();
+    const { propStartTimer, gravatarEmail } = this.props;
+    if (gravatarEmail) propStartTimer();
   }
 
   componentDidUpdate(prev) {
@@ -59,10 +59,11 @@ class Game extends Component {
   render() {
     const { questions, answered, gravatarEmail } = this.props;
     const { index, numQ, redirect } = this.state;
+    const { player: { score } } = JSON.parse(localStorage.getItem('state'));
     if (questions) {
       return redirect ? <Redirect to="/feedback" /> : (
         <>
-          <GameHeader />
+          <GameHeader score={ score } />
           <Timer />
           <QuestionCard question={ questions[index] } />
           <button

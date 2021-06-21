@@ -9,7 +9,7 @@ class Feedback extends Component {
     const MIN_CORRECT_ANSWERS = 3;
     return (
       <>
-        <GameHeader />
+        <GameHeader score={ score } />
         <main>
           {
             assertions < MIN_CORRECT_ANSWERS
