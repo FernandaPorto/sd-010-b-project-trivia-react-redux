@@ -110,7 +110,7 @@ class GamePage extends Component {
     const maxQuestionsNumber = 5;
     if (indexState <= maxQuestionsNumber) {
       this.setState((previousState) => ({ indexState: previousState.indexState + 1 }));
-    }
+    } else { this.setState({ finalQuestion: true }); }
   }
 
   questionAndAnswer() {
@@ -165,10 +165,11 @@ class GamePage extends Component {
   render() {
     const { seconds, answered, button, finalQuestion } = this.state;
     const { categories, indexState } = this.state;
+    console.log(categories[indexState]);
     return (
       <div>
         <Header />
-        {categories[indexState] ? this.questionAndAnswer() : <Redirect to="/feeback" /> }
+        {categories[indexState] ? this.questionAndAnswer() : <Redirect to="/feedback" /> }
         <div>
           { seconds > 0 ? `Timer:${seconds}` : '' }
           <ButtonLogin />
