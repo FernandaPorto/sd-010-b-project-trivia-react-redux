@@ -1,5 +1,6 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Settings from './components/Settings';
 import Trivia from './pages/Trivia';
 import Feedback from './pages/Feedback';

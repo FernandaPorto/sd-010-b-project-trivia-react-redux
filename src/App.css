@@ -1,1 +1,8 @@
 /* CSS GLOBAL */
+body {
+  /* font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; */
+  /* color: white; */
+  background-image: url(https://wallpaperaccess.com/full/2384075.jpg);
+  background-size: 1920px;  
+  background-color: #ececec;
+}

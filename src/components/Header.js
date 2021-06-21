@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Container, Row, Col, Image } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import '../style/header.css';
 import md5 from 'crypto-js/md5';
 
 class Header extends Component {
@@ -18,10 +20,17 @@ class Header extends Component {
       <header>
 
         <h1 data-testid="header-player-name">{name}</h1>
-        <img data-testid="header-profile-picture" alt="" src={ gravatar } />
-        <p>Placar:</p>
-        <span data-testid="header-score">{pontos}</span>
-
+        <Container>
+          <Row>
+            <Col xs={ 6 } md={ 4 }>
+              <Image data-testid="header-profile-picture" src={ gravatar } rounded />
+            </Col>
+          </Row>
+        </Container>
+        <div className="score">
+          <h3>Placar</h3>
+          <span data-testid="header-score">{pontos}</span>
+        </div>
       </header>
     );
   }
