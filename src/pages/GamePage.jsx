@@ -164,7 +164,7 @@ class GamePage extends Component {
   }
 
   render() {
-    const { seconds, answered, button, finalQuestion, timeIsOut } = this.state;
+    const { seconds, answered, button, finalQuestion } = this.state;
     const { categories, indexState } = this.state;
     return (
       <div>
