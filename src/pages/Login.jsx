@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import './css/Login.css';
+import logo from '../trivia.png';
 
 import { fetchToken, saveNameEmailPlayer } from '../redux/actions/player';
 import { fetchQuestions, setQuestionsNumber } from '../redux/actions/game';
@@ -64,10 +66,12 @@ class Login extends React.Component {
     const { name, email, disabledButton } = this.state;
 
     return (
-      <form>
+      <form id="login-form">
+        <img id="logo" src={ logo } alt="trivia logo" />
         <label htmlFor="input-player-name">
           Nome:
           <input
+            id="input-name"
             value={ name }
             type="text"
             name="name"
@@ -78,6 +82,7 @@ class Login extends React.Component {
         <label htmlFor="input-gravatar-email">
           E-mail:
           <input
+            id="input-email"
             value={ email }
             type="email"
             name="email"
@@ -86,6 +91,7 @@ class Login extends React.Component {
           />
         </label>
         <button
+          id="play-button"
           type="button"
           data-testid="btn-play"
           disabled={ disabledButton }
@@ -95,6 +101,7 @@ class Login extends React.Component {
         </button>
         <Link to="/config">
           <button
+            id="config-button"
             type="button"
             data-testid="btn-settings"
           >

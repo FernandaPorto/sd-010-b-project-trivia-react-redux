@@ -1,0 +1,30 @@
+#login-form {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 5px;
+  width: 100%;
+}
+
+#input-name {
+  margin: 10px;
+}
+
+#input-email {
+  margin: 10px;
+}
+
+#play-button {
+  margin: 10px;
+}
+
+#config-button {
+  margin: 10px;
+}
+
+#logo {
+  margin: 35px;
+  width: 500px;
+}
+
