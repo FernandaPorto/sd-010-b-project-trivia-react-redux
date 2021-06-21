@@ -7,6 +7,13 @@ import { resetState } from '../action';
 import '../feedback.css';
 
 class FeedBack extends Component {
+  constructor() {
+    super();
+
+    this.feedBackQuestions = this.feedBackQuestions.bind(this);
+    this.feedBackPoints = this.feedBackPoints.bind.call(this);
+  }
+
   componentDidMount() {
     const { score, name, urlAvatar, gravatarEmail } = this.props;
     const ranking = JSON.parse(localStorage.getItem('ranking'));
@@ -19,8 +26,38 @@ class FeedBack extends Component {
     localStorage.setItem('ranking', JSON.stringify(ranking));
   }
 
+  feedBackQuestions() {
+    const { assertions } = this.props;
+    return (
+      <span>
+        Você acertou
+        {' '}
+        <span data-testid="feedback-total-question">
+          {assertions}
+        </span>
+        {' '}
+        questões!
+      </span>
+    );
+  }
+
+  feedBackPoints() {
+    const { score } = this.props;
+    return (
+      <span>
+        Um total de
+        {' '}
+        <span data-testid="feedback-total-score">
+          {score}
+        </span>
+        {' '}
+        pontos
+      </span>
+    );
+  }
+
   render() {
-    const { score, assertions, history, reset } = this.props;
+    const { assertions, history, reset } = this.props;
 
     const THREE = 3;
     return (
@@ -33,14 +70,8 @@ class FeedBack extends Component {
                 ? <span data-testid="feedback-text">Mandou bem!</span>
                 : <span data-testid="feedback-text">Podia ser melhor...</span>
             }
-            <span data-testid="feedback-total-question">
-              {/* {`Você acertou ${} questões!`} */}
-              {assertions}
-            </span>
-            <span data-testid="feedback-total-score">
-              {/* {`Um total de ${score} pontos`} */}
-              {score}
-            </span>
+            {this.feedBackQuestions()}
+            {this.feedBackPoints()}
           </section>
           <section className="fb-btn-container">
             <button

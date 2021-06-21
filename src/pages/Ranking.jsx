@@ -4,12 +4,17 @@ import { connect } from 'react-redux';
 import { Transition, animated, config } from 'react-spring';
 import { resetState } from '../action';
 
+import '../ranking.css';
+
 class Ranking extends Component {
   constructor() {
     super();
     this.state = {
       showComp: false,
     };
+
+    this.showComp = this.showComp.bind(this);
+    this.rowRanking = this.rowRanking.bind(this);
   }
 
   componentDidMount() {
@@ -25,13 +30,35 @@ class Ranking extends Component {
     this.setState({ showComp: !showComp });
   }
 
-  render() {
-    const { showComp } = this.state;
+  rowRanking() {
     const ranking = JSON.parse(localStorage.getItem('ranking'));
     const arr = ranking.sort((a, b) => b.score - a.score);
+    return (
+      <section className="ranking-container">
+        {
+          arr.map((player, index) => (
+            <tr className="row-ranking" key={ index }>
+              <th>
+                <img src={ player.picture } alt="avatar" />
+              </th>
+              <th className="ranking-name">
+                <span data-testid={ `player-name-${index}` }>{player.name}</span>
+              </th>
+              <th>
+                <span data-testid={ `player-score-${index}` }>{player.score}</span>
+              </th>
+            </tr>
+          ))
+        }
+      </section>
+    );
+  }
+
+  render() {
+    const { showComp } = this.state;
     const { history, reset } = this.props;
     return (
-      <section>
+      <section className="ranking-content ">
         <h1 data-testid="ranking-title">Ranking</h1>
 
         <Transition
@@ -46,13 +73,7 @@ class Ranking extends Component {
             && (
               <animated.div style={ styles }>
                 {
-                  arr.map((player, index) => (
-                    <section key={ index }>
-                      <img src={ player.picture } alt="avatar" />
-                      <span data-testid={ `player-name-${index}` }>{player.name}</span>
-                      <span data-testid={ `player-score-${index}` }>{player.score}</span>
-                    </section>
-                  ))
+                  this.rowRanking()
                 }
               </animated.div>
             )}
@@ -60,6 +81,7 @@ class Ranking extends Component {
 
         <button
           type="button"
+          className="btn-go-home"
           data-testid="btn-go-home"
           onClick={ () => {
             history.replace('/');
