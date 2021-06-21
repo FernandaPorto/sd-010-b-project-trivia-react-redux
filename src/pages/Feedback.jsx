@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import GameHeader from '../components/GameHeader';
 
 class Feedback extends Component {
   render() {
-    const { assertions, score } = this.props;
+    const { player: { assertions, score } } = JSON.parse(localStorage.getItem('state'));
     const MIN_CORRECT_ANSWERS = 3;
     return (
       <>
@@ -45,10 +44,5 @@ const mapStateToProps = (state) => ({
   assertions: state.loginReducer.assertions,
   score: state.loginReducer.score,
 });
-
-Feedback.propTypes = {
-  score: PropTypes.number.isRequired,
-  assertions: PropTypes.number.isRequired,
-};
 
 export default connect(mapStateToProps, null)(Feedback);

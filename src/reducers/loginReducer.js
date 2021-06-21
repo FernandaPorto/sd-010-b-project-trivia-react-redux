@@ -2,17 +2,13 @@ import { ADD_PLAYER_INFO } from '../actions';
 
 const initialState = {
   name: '',
-  assertions: 0,
-  score: 0,
   gravatarEmail: '',
 };
 
-const loginReducer = (state = initialState, action) => {
-  switch (action.type) {
+const loginReducer = (state = initialState, { type, payload }) => {
+  switch (type) {
   case ADD_PLAYER_INFO:
-    return { ...state,
-      name: action.payload.name,
-      gravatarEmail: action.payload.email };
+    return { ...payload };
   default:
     return state;
   }

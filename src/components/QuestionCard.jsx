@@ -1,56 +1,75 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import { connect } from 'react-redux';
+import { isAnswered } from '../actions';
 import '../pages/CSS/game.css';
 
 class QuestionCard extends React.Component {
   constructor() {
     super();
-
     this.handleClick = this.handleClick.bind(this);
-
+    this.options = this.options.bind(this);
+    this.changeBtn = this.changeBtn.bind(this);
     this.state = {
-      score: 0,
+      disabled: false,
     };
   }
 
-  handleClick(e) {
-    const button = e.target;
-    if (button.className === 'correct-answer') {
-      this.setState((prev) => ({ score: prev.score + 1 }));
+  componentDidUpdate(prev) {
+    const { answered } = this.props;
+    if (!prev.answered && answered) this.changeBtn(true);
+    if (prev.answered && !answered) this.changeBtn(false);
+  }
+
+  componentWillUnmount() {
+    const { propIsAnswered } = this.props;
+    propIsAnswered(false);
+  }
+
+  changeBtn(disabled) {
+    this.setState({ disabled });
+  }
+
+  handleClick(dif, correct) {
+    const { propIsAnswered, time } = this.props;
+    propIsAnswered(true);
+    if (correct) {
+      const mult = { hard: 3, medium: 2, easy: 1 };
+      const acc = 10;
+      const { player } = JSON.parse(localStorage.getItem('state'));
+      player.assertions += 1;
+      player.score += acc + (time * mult[dif]);
+      localStorage.setItem('state', JSON.stringify({ player }));
     }
-    const wrongs = document.querySelectorAll('.wrong-answer');
-    const correct = document.getElementsByClassName('correct-answer');
-    console.log(wrongs, correct);
-    wrongs.forEach((item) => {
-      item.style.border = '3px solid rgb(255, 0, 0)';
-    });
-    correct[0].style.border = '3px solid rgb(6, 240, 15)';
+  }
+
+  options(answered) {
+    const { disabled } = this.state;
+    const correct = 'correct-answer';
+    const { question:
+      { difficulty, incorrect_answers: iAnswers, correct_answer: cAnswers },
+    } = this.props;
+    const answers = [...iAnswers, cAnswers];
+    const changeClasse = (option) => (
+      option !== cAnswers ? 'wrong-answer' : correct);
+
+    return answers.map((option, i) => (
+      <button
+        type="button"
+        data-testid={ option !== cAnswers ? `wrong-answer-${i}` : correct }
+        className={ answered ? changeClasse(option) : null }
+        disabled={ disabled }
+        onClick={ () => this.handleClick(difficulty, option === cAnswers) }
+        key={ i }
+      >
+        { option }
+      </button>
+    ));
   }
 
   render() {
-    const { question } = this.props;
-    const wrongList = question.incorrect_answers.map((ans, i) => (
-      <button
-        type="button"
-        className="wrong-answer"
-        data-testid={ `wrong-answer-${i}` }
-        onClick={ (e) => this.handleClick(e) }
-        key={ i }
-      >
-        {ans}
-      </button>));
-    const optionsList = [
-      <button
-        type="button"
-        className="correct-answer"
-        data-testid="correct-answer"
-        onClick={ (e) => this.handleClick(e) }
-        key="correct"
-      >
-        {question.correct_answer}
-      </button>,
-      ...wrongList,
-    ];
+    const { question, answered } = this.props;
+    const optionsList = this.options(answered);
     return (
       <div className="card-container">
         <h4 data-testid="question-category">
@@ -67,8 +86,16 @@ class QuestionCard extends React.Component {
   }
 }
 
+const mapStateToProps = ({ timerReducer: { time, answered } }) => ({
+  time, answered,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  propIsAnswered: (payload) => dispatch(isAnswered(payload)),
+});
+
 QuestionCard.propTypes = {
   question: PropTypes.array,
 }.isRequired;
 
-export default QuestionCard;
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionCard);
