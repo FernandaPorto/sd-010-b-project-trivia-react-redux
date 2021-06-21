@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import './css/Feedback.css';
 
 import Header from '../components/Header';
 import { saveLocalStorage } from '../functions';
@@ -71,13 +72,13 @@ class Feedback extends Component {
     return (
       <div>
         <Header />
-        <div>
-          <p>
+        <div id="feedback-container">
+          <p id="msg-placar">
             Placar final:
             {' '}
             <span data-testid="feedback-total-score">{ score }</span>
           </p>
-          <p>
+          <p id="msg-score">
             Você acertou:
             {' '}
             <span

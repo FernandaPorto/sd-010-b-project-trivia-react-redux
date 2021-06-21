@@ -3,24 +3,24 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  margin: 5px;
+  margin: 5px 5px 5px 5px;
   width: 100%;
 }
 
 #input-name {
-  margin: 10px;
+  margin: 10px 10px 10px 10px;
 }
 
 #input-email {
-  margin: 10px;
+  margin: 10px 10px 10px 10px;
 }
 
 #play-button {
-  margin: 10px;
+  margin: 10px 10px 10px 10px;
 }
 
 #config-button {
-  margin: 10px;
+  margin: 10px 10px 10px 10px;
 }
 
 #logo {
