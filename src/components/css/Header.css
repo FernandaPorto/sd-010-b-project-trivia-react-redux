@@ -1,0 +1,22 @@
+#header {
+  align-items: center;
+  display: flex;
+  height: 100px;
+  width: 100%;
+}
+
+#avatar-img {
+  margin-left: 40px;
+  border-radius: 100%;
+  width: 50px;
+}
+
+#avatar-name {
+  font-size: 1.4rem;
+  margin: 5px;
+}
+
+#avatar-score {
+  font-size: 1.4rem;
+  margin: 5px;
+}
