@@ -40,6 +40,23 @@ Authors: URLs:
   width: auto;
 }
 
+:root a button {
+  background-color: #bd5109;
+  border: 1px solid green;
+  border-radius: 6px;
+  color: white;
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 24px;
+  margin-right: 15px;
+  margin-top: 12px;
+  padding: 15px 28px;
+  text-align: center;
+  text-transform: uppercase;
+  width: auto;
+}
+
 :root button:hover {
   background: #bd783a;
   color: #2b2022;
@@ -65,31 +82,14 @@ Authors: URLs:
   width: auto;
 }
 
-:root button:hover:disabled {
+:root a button:hover {
+  background: #bd783a;
+  color: #2b2022;
   text-decoration: none;
   transition: all 0.2s ease;
 }
 
-:root a button {
-  background-color: #bd5109;
-  border: 1px solid green;
-  border-radius: 6px;
-  color: white;
-  display: inline-block;
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 24px;
-  margin-right: 15px;
-  margin-top: 12px;
-  padding: 15px 28px;
-  text-align: center;
-  text-transform: uppercase;
-  width: auto;
-}
-
-:root a button:hover {
-  background: #bd783a;
-  color: #2b2022;
+:root button:hover:disabled {
   text-decoration: none;
   transition: all 0.2s ease;
 }
