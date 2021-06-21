@@ -1,62 +1,60 @@
-#root .questoes button {
+:root .questoes button {
   width: 75%;
 }
 
-#root .questoes .correctButton {
-  border: 3px solid rgb(6, 240, 15);
+:root .questoes .correctButton {
   background-color: rgb(6, 240, 15);
-  width: 75%;
+  border: 3px solid rgb(6, 240, 15);
   color: #282c34;
-}
-
-#root .questoes .wrongButton {
-  border: 3px solid red;
-  background-color: red;
   width: 75%;
 }
 
-#root .questoes .btn-next {
+:root .questoes .wrongButton {
+  background-color: red;
+  border: 3px solid red;
+  width: 75%;
+}
+
+:root .questoes .btn-next {
   background-color: rgb(38, 110, 245);
+  border-radius: 0 3%;
   width: 150px;
-  border-radius: 0 3% 0 3%;
 }
 
 .questoes, .ranking-title, main {
   background-color: #282c34;
+  border-radius: 30px 6px;
   box-shadow: 0 10px 30px 0 rgba(17, 17, 17, 0.09);
-  border-radius: 6px 20px 6px 20px;
   margin: 0 auto;
-  max-width: 430px;
   max-height: 545px;
+  max-width: 430px;
   min-height: 500px;
-  text-align: center;
-  border-radius: 30px 6px 30px 6px;
-  padding: 30px 0;
   opacity: 90%;
+  padding: 30px 0;
+  text-align: center;
 }
 
 .questoes .question-category {
   background-color: aliceblue;
+  border-radius: 10px 0;
   float: left;
   padding: 10px;
-  border-radius: 10px 0;
 }
 
 .questoes .question-text {
   background-color: rgb(177, 212, 243);
-  float: left;
-  padding: 10px;
   border-radius: 10px;
+  float: left;
   margin-top: 12px;
+  padding: 10px;
 }
 
 .questoes .time {
   background-color: rgb(51, 248, 11);
-  width: 50px;
-  padding: 10px;
   border-radius: 50%;
-  margin-bottom: 10px;
   float: right;
+  margin-bottom: 10px;
   margin-right: 10px;
+  padding: 10px;
+  width: 50px;
 }
-  

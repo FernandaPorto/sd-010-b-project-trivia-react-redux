@@ -1,32 +1,32 @@
 header {
   background-color: aquamarine;
+  height: 150px;
   margin-top: -150px;
   width: 300px;
-  height: 150px;
 }
 
 header img {
-  max-width: 120px;
   border-radius: 5px;
   margin-top: -50px;
+  max-width: 120px;
 }
 
 header h3 {
   font-size: 24px;
-  padding: 0 0 0 10px;
   margin-top: -30px;
+  padding: 0 0 0 10px;
 }
 
 header p {
-  font-size: 24px;
-  padding: 0 0 10px 10px;
-  margin-top: 0px;
   float: left;
+  font-size: 24px;
+  margin-top: 0;
+  padding: 0 0 10px 10px;
 }
 
 header span {
-  font-size: 24px;
-  padding: 0 50px 0 0;
-  margin-top: 0px;
   float: right;
+  font-size: 24px;
+  margin-top: 0;
+  padding: 0 50px 0 0;
 }
