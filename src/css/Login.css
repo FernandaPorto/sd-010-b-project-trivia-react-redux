@@ -22,12 +22,12 @@ Authors: URLs:
   width: 80%;
 }
 
-:root button:disabled {
-  background-color: #311705;
-  border: 1px solid green;
+:root button {
+  background-color: #e76a10;
+  border: none;
   border-radius: 6px;
   color: white;
-  cursor: auto;
+  cursor: pointer;
   display: inline-block;
   font-size: 15px;
   font-weight: 600;
@@ -47,12 +47,12 @@ Authors: URLs:
   transition: all 0.2s ease;
 }
 
-:root button {
-  background-color: #e76a10;
-  border: none;
+:root button:disabled {
+  background-color: #311705;
+  border: 1px solid green;
   border-radius: 6px;
   color: white;
-  cursor: pointer;
+  cursor: auto;
   display: inline-block;
   font-size: 15px;
   font-weight: 600;
@@ -66,13 +66,6 @@ Authors: URLs:
 }
 
 :root button:hover:disabled {
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-:root a button:hover {
-  background: #bd783a;
-  color: #2b2022;
   text-decoration: none;
   transition: all 0.2s ease;
 }
@@ -92,6 +85,13 @@ Authors: URLs:
   text-align: center;
   text-transform: uppercase;
   width: auto;
+}
+
+:root a button:hover {
+  background: #bd783a;
+  color: #2b2022;
+  text-decoration: none;
+  transition: all 0.2s ease;
 }
 
 h2, h1 {
