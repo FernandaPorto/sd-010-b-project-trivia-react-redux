@@ -14,7 +14,6 @@ class Header extends Component {
 
   render() {
     const { nome, gravatar, eachPoints } = this.props;
-    console.log(eachPoints, nome, gravatar);
     return (
       <header>
         <img src={ gravatar } alt="imageGravatar" data-testid="header-profile-picture" />

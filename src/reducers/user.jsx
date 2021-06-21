@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   name: '',
   email: '',
   gravatar: '',
-  fetchArray: {},
+  fetchArray: [],
   player: {
     name: '',
     assertions: 0,

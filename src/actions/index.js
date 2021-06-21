@@ -60,10 +60,12 @@ export function fetchAction() {
   return async (dispatch) => {
     const resultOfFetch = await setToken();
     const categories = resultOfFetch.results
+
       .map((result) => result);
     dispatch({
       type: FETCH,
-      payload: categories,
+      payload: [categories],
+
     });
   };
 }
