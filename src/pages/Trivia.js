@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 import Header from '../components/Header';
 import { fetchApiQuestions, fetchAPI, saveAssertions, saveScore } from '../actions/index';
 import '../style/trivia.css';
@@ -147,7 +148,6 @@ class Trivia extends React.Component {
     const { score, assertion } = this.props;
     score(pontosState);
     assertion(assertions);
-    // console.log(assertions);
     this.storange();
     this.colorAnswers();
   }
@@ -166,12 +166,16 @@ class Trivia extends React.Component {
       return <Redirect to="/feedback" />;
     }
     return (
-      <div>
-        <p data-testid="question-category">{category}</p>
-        <p data-testid="question-text">{question}</p>
+      <div className="question">
+        <div className="category-question">
+          <p data-testid="question-category">{category}</p>
+          <p data-testid="question-text">{question}</p>
+        </div>
         {
           CERTA && (
-            <button
+            <Button
+              id="button"
+              variant="secondary"
               disabled={ disable }
               className={ correct }
               data-testid="correct-answer"
@@ -179,11 +183,13 @@ class Trivia extends React.Component {
               onClick={ () => this.handleClick() }
             >
               {CERTA}
-            </button>)
+            </Button>)
         }
         {ERRA
         && ERRA.map((erradas, index) => (
-          <button
+          <Button
+            id="button"
+            variant="secondary"
             className={ reject }
             disabled={ disable }
             data-testid={ `wrong-answer-${index}` }
@@ -192,7 +198,7 @@ class Trivia extends React.Component {
             onClick={ this.errou }
           >
             {erradas}
-          </button>))}
+          </Button>))}
       </div>
     );
   }
@@ -200,7 +206,7 @@ class Trivia extends React.Component {
   render() {
     const { seconds, pontosState, next } = this.state;
     return (
-      <div>
+      <div className="flex">
         <Header />
         <h3>
           Contador:
@@ -210,14 +216,15 @@ class Trivia extends React.Component {
           {pontosState}
         </h3>
         {this.renderQuestion()}
-        <button
+        <Button
+          variant="warning"
           type="button"
           data-testid="btn-next"
           hidden={ next }
           onClick={ this.getQuestions }
         >
           Próxima
-        </button>
+        </Button>
       </div>
     );
   }
@@ -245,5 +252,4 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Trivia);
-
 /* para criação do cronômetro, utilizamos como referência o exercício do bloco 13.1 feito pelo instrutor Ícaro <https://github1s.com/tryber/sd-10b-live-lectures/tree/lecture/13.1> */

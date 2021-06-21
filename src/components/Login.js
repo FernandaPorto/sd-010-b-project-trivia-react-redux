@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchAPI, saveName, saveEmail } from '../actions/index';
@@ -36,27 +37,29 @@ class Login extends React.Component {
     const { name, email } = this.state;
     // if (redirect) return <Redirect to="/settings" />;
     return (
-      <form>
-        <label htmlFor="name">
+      <Form>
+        <Form.Label htmlFor="name">
           Nome de jogador
-          <input
+          <Form.Control
+            placeholder="Insira seu nome ou nickname"
             data-testid="input-player-name"
             type="text"
             name="name"
             value={ name }
             onChange={ this.handleChange }
           />
-        </label>
-        <label htmlFor="email">
+        </Form.Label>
+        <Form.Label htmlFor="email">
           Email:
-          <input
+          <Form.Control
+            placeholder="email@email.com"
             data-testid="input-gravatar-email"
             type="email"
             name="email"
             value={ email }
             onChange={ this.handleChange }
           />
-        </label>
+        </Form.Label>
         <Link to="/gameplay">
           <button
             data-testid="btn-play"
@@ -75,7 +78,7 @@ class Login extends React.Component {
             Configurações
           </button>
         </Link>
-      </form>
+      </Form>
     );
   }
 }
