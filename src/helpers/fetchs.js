@@ -9,7 +9,7 @@ export async function fetchCategories() {
     .then((data) => data.json());
   return response;
 }
-export const fetchQuestions = (token) => async (amount, difficulty, type, category) => {
+export const fetchAPIData = (token) => async (amount, difficulty, type, category) => {
   const response = await fetch(`https://opentdb.com/api.php?amount=${amount}&type=${type}&difficulty=${difficulty}&category=${category}&token=${token}`)
     .then((data) => data.json());
   return response;

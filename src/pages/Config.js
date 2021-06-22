@@ -9,7 +9,7 @@ import { selectedCategory,
   questionDifficulty }
   from '../Redux/action/actionsConfig';
 import { fetchCategories } from '../helpers/fetchs';
-import Loading from '../images/config-load(2).gif';
+import Loading from '../images/blue-triangle.gif';
 
 const SET_TIME_LOADING = 1000;
 
@@ -32,9 +32,10 @@ class Config extends React.Component {
     const response = await fetchCategories().then((res) => (
       res.trivia_categories.concat([{ id: 0, name: 'Any Category' }])
     ));
+    this.setState({ category: response });
     response.sort((a, b) => a.id - b.id);
     setTimeout(() => {
-      this.setState({ category: response }, () => this.setState({ loading: false }));
+      this.setState({ loading: false });
     }, SET_TIME_LOADING);
   }
 
@@ -85,43 +86,49 @@ class Config extends React.Component {
     const { loading } = this.state;
     return (
       !loading ? (
-        <div className="config-container">
-          <h1 data-testid="settings-title">Settings:</h1>
-          <label htmlFor="amount">
-            Number of Questions:
-            <input
-              id="amount"
-              type="number"
-              min="5"
-              onChange={ this.handleNumerChange }
-            />
-          </label>
-          <label htmlFor="difficulty" onChange={ this.handleDifficultyChange }>
-            Select Difficulty:
-            <select id="difficulty">
-              <option value="0">Any Difficulty</option>
-              <option value="easy">Easy</option>
-              <option value="medium">Medium</option>
-              <option value="hard">Hard</option>
-            </select>
-          </label>
-          <label htmlFor="type-anwser" onChange={ this.handleTypeChange }>
-            Select Type:
-            <select id="type-anwser">
-              <option value="0">Any Type</option>
-              <option value="boolean">True or False</option>
-              <option value="multiple">Multiple Choise</option>
-            </select>
-          </label>
-          {this.handleCategorySelect()}
-          <button type="button" onClick={ () => history.push('/') }>
-            <img src={ GetBack } alt="Get back to home page" />
-          </button>
-        </div>)
-        : (
+        <div className="container-padding-top">
           <div className="config-container">
-            <img src={ Loading } width="100%" height="100%" alt="Other loading" />
-          </div>)
+            <h1 data-testid="settings-title">Settings:</h1>
+            <label htmlFor="amount">
+              Number of Questions:
+              <input
+                id="amount"
+                type="number"
+                min="5"
+                onChange={ this.handleNumerChange }
+              />
+            </label>
+            <label htmlFor="difficulty" onChange={ this.handleDifficultyChange }>
+              Select Difficulty:
+              <select id="difficulty">
+                <option value="0">Any Difficulty</option>
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+              </select>
+            </label>
+            <label htmlFor="type-anwser" onChange={ this.handleTypeChange }>
+              Select Type:
+              <select id="type-anwser">
+                <option value="0">Any Type</option>
+                <option value="boolean">True or False</option>
+                <option value="multiple">Multiple Choise</option>
+              </select>
+            </label>
+            {this.handleCategorySelect()}
+            <button type="button" onClick={ () => history.push('/') }>
+              <img src={ GetBack } alt="Get back to home page" />
+            </button>
+          </div>
+        </div>
+      )
+        : (
+          <div className="container-padding-top">
+            <div className="config-container">
+              <img src={ Loading } width="100%" height="100%" alt="Other loading" />
+            </div>
+          </div>
+        )
     );
   }
 }

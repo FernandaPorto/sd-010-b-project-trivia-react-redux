@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
-import { fetchQuestions } from '../helpers/fetchs';
-import { getToken, savePlayer, saveRanking } from '../helpers/store';
+import { fetchAPIData } from '../helpers/fetchs';
+import { getTokenFromStorage, savePlayer, saveRanking } from '../helpers/store';
 import actionAddAssertion from '../Redux/action/actionAddAssertion';
 import actionScore from '../Redux/action/actionScore';
 import '../css/Game.css';
@@ -35,7 +35,7 @@ class GamePlayer extends React.Component {
       boolean: false,
       test: 'test',
     };
-    this.fetchAPIQuestions = this.fetchAPIQuestions.bind(this);
+    this.fetchQuestions = this.fetchQuestions.bind(this);
     this.handleNextQuestion = this.handleNextQuestion.bind(this);
     this.handleAnswersRender = this.handleAnswersRender.bind(this);
     this.handleCorrectClick = this.handleCorrectClick.bind(this);
@@ -44,7 +44,7 @@ class GamePlayer extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchAPIQuestions().then(() => this.setTimerState());
+    this.fetchQuestions().then(() => this.setTimerState());
   }
 
   setTimerState() {
@@ -67,17 +67,17 @@ class GamePlayer extends React.Component {
     }, ONE_SECOND);
   }
 
-  async fetchAPIQuestions() {
+  async fetchQuestions() {
     const { getReduxState: { config: { amount, diff, type, category } } } = this.props;
-    const token = getToken();
-    const { results } = await fetchQuestions(token)(amount, diff, type, category, token);
+    const token = getTokenFromStorage();
+    const { results } = await fetchAPIData(token)(amount, diff, type, category);
     results.forEach((el) => {
       el.sorted = el.incorrect_answers.concat(el.correct_answer)
         .sort(() => Math.random() - ZERO_POINT_FIVE);
     });
+    this.setState({ results });
     setTimeout(() => {
-      this.setState({ results },
-        () => this.setState({ loading: false }));
+      this.setState({ loading: false });
     }, SET_TIME_LOADING);
     console.log(results);
   }

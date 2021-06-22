@@ -2,7 +2,7 @@ export function saveToken(token) {
   localStorage.setItem('token', token);
 }
 
-export function getToken() {
+export function getTokenFromStorage() {
   return localStorage.getItem('token');
 }
 

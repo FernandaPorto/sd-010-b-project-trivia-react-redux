@@ -18,6 +18,10 @@
   text-align: center;
 }
 
+.login-container img {
+  max-width: 400px;
+}
+
 .login-container label {
   width: 90%;
 }
@@ -55,6 +59,7 @@
   filter: saturate(200%) contrast(150%);
   width: 100%;
 }
+
 
 .login-container section {
   display: flex;

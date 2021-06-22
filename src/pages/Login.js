@@ -104,7 +104,7 @@ class Login extends React.Component {
     return (
       <div className="container-padding-top">
         <div className="login-container">
-          <img src={ LoginImg } alt="Trivia" width="400px" />
+          <img src={ LoginImg } alt="Trivia" />
 
           {this.renderInputs()}
           <section>
