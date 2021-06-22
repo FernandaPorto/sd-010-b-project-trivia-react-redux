@@ -3,7 +3,7 @@ import Typist from 'react-typist';
 import { playerData, questionsData } from '../actions';
 import Button from '../components/Button';
 import Input from '../components/Input';
-import './pages.css';
+import '../css/login.css';
 
 import Albert from '../img/albertEinstein.gif';
 
@@ -77,11 +77,11 @@ class Login extends React.Component {
     const { isButtonDisabled } = this.state;
     const { history } = this.props;
     return (
-      <main>
+      <main className="layout">
+
         <form>
           <fieldset>
-            <legend><Typist ms={ 10000 }>Einstein Trivia</Typist></legend>
-
+            <Typist ms={ 10000 }><legend> Einstein Trivia</legend></Typist>
             <Input
               test="input-player-name"
               onChange={ this.handleChange }
@@ -119,6 +119,7 @@ class Login extends React.Component {
             <h1 className="Inicial">Gerenciamento de estado com Redux</h1>
           </Typist>
         </form>
+
       </main>
     );
   }

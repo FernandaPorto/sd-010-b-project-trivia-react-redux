@@ -1,0 +1,48 @@
+.SetCentral {
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  height: 550px;
+  justify-content: baseline;
+  margin: auto;
+  max-width: 500px;
+  padding: 20px;
+  text-transform: uppercase;
+  width: 700px;
+}
+
+select {
+  appearance: none;
+  background: #2c3e50;
+  background-image: none;
+  border: none;
+  box-shadow: none;
+  color: white;
+  cursor: pointer;
+  flex: 1;
+  height: 20px;
+  margin: 10px 0.1px;
+  outline: 1;
+  padding: 0.1 0.5em;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+.pSettings {
+  font-size: 20px;
+  font-weight: 900;
+  margin: 5px;
+}
+
+.h1_setting {
+  font-size: 18px;
+}
+
+.save {
+  height: 40px;
+  margin: 1px;
+  margin-top: 20px;
+}

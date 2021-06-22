@@ -176,35 +176,36 @@ class Questions extends Component {
     const { questions } = this.props;
 
     return (
+      <article className="questions">
+        <section className="central">
+          <Typist ms={ 6000 }>
+            <h1 className="hborder" data-testid="question-category">
+              { unescape(questions[index].category) }
+            </h1>
+          </Typist>
 
-      <div>
-        <Typist ms={ 6000 }>
-          <h1 className="hborder" data-testid="question-category">
-            { unescape(questions[index].category) }
-          </h1>
-        </Typist>
+          <span className="question" data-testid="question-text">
+            { unescape(questions[index].question) }
+          </span>
+          <div>
+            {this.handleAnswers()}
 
-        <span className="question" data-testid="question-text">
-          { unescape(questions[index].question) }
-        </span>
-        <div>
-          {this.handleAnswers()}
-
-          { isClicked
-            ? (
-              <Button
-                className="buttonQuestion"
-                test="btn-next"
-                clickable={ this.nextQuestion }
-                value="Próxima"
-              />)
-            : null }
-        </div>
-        <div className="temp">
-          <img src={ Amp } alt="Ampulheta" />
-          <p>{ timer }</p>
-        </div>
-      </div>
+            { isClicked
+              ? (
+                <Button
+                  className="buttonQuestion"
+                  test="btn-next"
+                  clickable={ this.nextQuestion }
+                  value="Próxima"
+                />)
+              : null }
+          </div>
+          <div className="temp">
+            <img src={ Amp } alt="Ampulheta" />
+            <p>{ timer }</p>
+          </div>
+        </section>
+      </article>
     );
   }
 }

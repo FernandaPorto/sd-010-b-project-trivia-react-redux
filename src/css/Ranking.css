@@ -1,0 +1,48 @@
+.rcentral {
+  display: flex;
+  justify-content: center;
+}
+
+.rancking {
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-self: start;
+  max-width: 500px;
+  overflow: hidden;
+  padding: 20px;
+  width: 700px;
+}
+
+.h1_title {
+  color: rgb(169, 116, 5);
+  font-size: 40px;
+  margin: 5px 20px;
+  text-transform: uppercase;
+}
+
+ol {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+}
+
+ol li {
+  align-content: flex-end;
+  align-items: center;
+  border: groove 3px rgb(155, 226, 179);
+  display: flex;
+  margin: 10px;
+  margin-top: 10px;
+}
+
+ol li h1 {
+  font-size: 30px;
+}
+
+ol li img {
+  margin: 5px;
+  margin-right: 40px;
+}

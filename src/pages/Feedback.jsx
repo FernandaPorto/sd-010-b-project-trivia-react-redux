@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import Button from '../components/Button';
 import Header from '../components/Header';
 
+import '../css/Feedback.css';
+
 const React = require('react');
 
 class Feedback extends React.Component {
@@ -30,17 +32,25 @@ class Feedback extends React.Component {
       <>
         <Header />
         <h1 data-testid="feedback-text">{ this.feedbackText() }</h1>
-        <h2 data-testid="feedback-total-score">{ score }</h2>
-        <h2 data-testid="feedback-total-question">{ assertions }</h2>
+        <h2>Total de Pontos:</h2>
+        <h2 data-testid="feedback-total-score">
+          { score }
+        </h2>
+        <h2>Total de Acertos:</h2>
+        <h2 data-testid="feedback-total-question">
+          { assertions }
+        </h2>
         <Button
           test="btn-play-again"
           clickable={ () => history.push('/') }
           value="Jogar Novamente"
+          className="btn_feedb"
         />
         <Button
           test="btn-ranking"
           clickable={ () => history.push('/ranking') }
           value="Ver Ranking"
+          className="btn_feedb"
         />
       </>
     );

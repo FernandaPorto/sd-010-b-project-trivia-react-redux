@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchData } from '../actions';
 
+import '../css/Settings.css';
+
 const PropTypes = require('prop-types');
 
 class Settings extends Component {
@@ -49,10 +51,10 @@ class Settings extends Component {
   render() {
     const { categories, params } = this.state;
     return (
-      <div>
-        <p data-testid="settings-title">Settings</p>
+      <div className="SetCentral">
+        <p className="pSettings" data-testid="settings-title">Settings</p>
         <label htmlFor="difficulty">
-          Choose a difficulty
+          <h1 className="h1_setting">Choose a difficulty </h1>
           <select
             value={ params.difficulty }
             id="difficulty"
@@ -65,7 +67,7 @@ class Settings extends Component {
           </select>
         </label>
         <label htmlFor="category">
-          Choose a category
+          <h1 className="h1_setting">Choose a category</h1>
           <select
             value={ params.category }
             id="category"
@@ -73,16 +75,13 @@ class Settings extends Component {
           >
             <option value={ 0 }>ANY</option>
             {categories.map((category) => (
-              <option
-                key={ category.id }
-                value={ category.id }
-              >
+              <option key={ category.id } value={ category.id }>
                 {category.name}
               </option>))}
           </select>
         </label>
         <label htmlFor="type">
-          Choice type
+          <h1 className="h1_setting">Choose a type</h1>
           <select
             value={ params.type }
             id="type"
@@ -93,10 +92,7 @@ class Settings extends Component {
             <option value="boolean">True / False </option>
           </select>
         </label>
-        <button
-          type="button"
-          onClick={ this.saveOptions }
-        >
+        <button className="save" type="button" onClick={ this.saveOptions }>
           Salvar
         </button>
       </div>
