@@ -36,8 +36,7 @@ class Feedback extends React.Component {
         </header>
         <main>
           { correctAnswer < three
-            && <h2 data-testid="feedback-text">Podia ser melhor...</h2>
-          }
+            && <h2 data-testid="feedback-text">Podia ser melhor...</h2> }
           {
             correctAnswer >= three && <h2 data-testid="feedback-text">Mandou bem!</h2>
           }
