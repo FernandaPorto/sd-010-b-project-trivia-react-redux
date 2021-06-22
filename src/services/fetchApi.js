@@ -1,17 +1,17 @@
-async function FetchApiResolved(perguntas, token) {
-  const response = await
-  fetch(`https://opentdb.com/api.php?amount=${perguntas}&token=${token}`);
-  const data = await response.json();
+const NUMBER_OF_QUESTIONS = 5;
+
+async function fetchApiResolved(token) {
+  return fetch(`https://opentdb.com/api.php?amount=${NUMBER_OF_QUESTIONS}&token=${token}`)
+    .then((response) => response.json());
   // console.log(data);
   // localStorage.setItem('questions', JSON.stringify(data));
-  return data;
+  // return data;
 }
 
-export default async function FetchApi() {
+export default async function fetchApi() {
   const response = await fetch('https://opentdb.com/api_token.php?command=request');
   const data = await response.json();
-  const NUMBER_OF_QUESTIONS = 5;
   // console.log(typeof (data.token));
   localStorage.setItem('token', data.token);
-  return FetchApiResolved(NUMBER_OF_QUESTIONS, data.token);
+  return fetchApiResolved(data.token);
 }

@@ -1,17 +1,13 @@
+export const BUTTON_READY = 'BUTTON_READY';
 export const ENABLE_CONTROL = 'ENABLE_CONTROL';
-export const UPDATE_TIMER = 'UPDATE_TIMER';
+export const QUESTION_INDEX = 'QUESTION_INDEX';
+export const REDIRECT = 'REDIRECT';
+export const RESET_DATA = 'RESET_DATA';
 export const RESTART_TIMER = 'RESTART_TIMER';
-
-export const enableDisable = (disable) => ({
-  type: ENABLE_CONTROL,
-  payload: disable,
-});
-
-export const updateTimer = (value) => ({
-  type: UPDATE_TIMER,
-  payload: value,
-});
-
-export const timerRestart = () => ({
-  type: RESTART_TIMER,
-});
+export const UPDATE_ASSERTIONS = 'UPDATE_ASSERTIONS';
+export const UPDATE_GRAVATAR_EMAIL = 'UPDATE_GRAVATAR_EMAIL';
+export const UPDATE_NAME = 'UPDATE_NAME';
+export const UPDATE_SCORE = 'UPDATE_SCORE';
+export const UPDATE_STYLE = 'UPDATE_STYLE';
+export const UPDATE_TIMER = 'UPDATE_TIMER';
+export const UPDATE_URL_GRAVATAR = 'UPDATE_URL_GRAVATAR';

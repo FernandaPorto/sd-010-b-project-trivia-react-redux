@@ -1,119 +1,83 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import FetchImageGravatar from '../services/fetchImageGravatar';
+import Header from '../components/Header';
+import { resetData } from '../actions/player';
+import { enableDisable } from '../actions/controls';
+
+const ASSERTIONS_AVG = 3;
 
 class Feedback extends Component {
-  constructor() {
-    super();
-    this.state = {
-      url: '',
-      score: 0,
-      name: '',
-      assertions: 0,
-    };
-    this.updateState = this.updateState.bind(this);
-    this.header = this.header.bind(this);
-    this.scoreFeedback = this.scoreFeedback.bind(this);
-    this.createRanking = this.createRanking.bind(this);
-  }
-
   componentDidMount() {
-    const name = JSON.parse(localStorage.getItem('state'));
-    // console.log(name);
-    this.updateState(name);
-  }
+    const { player: { urlGravatar, score, name },
+      toggleEnable } = this.props;
+    const players = JSON.parse(localStorage.getItem('ranking')) || [];
 
-  createRanking() {
-    const { url, score, name } = this.state;
-    const recovery = JSON.parse(localStorage.getItem('ranking')) || [];
-
-    const ranking = {
+    const player = {
       name,
       score,
-      picture: url,
+      picture: urlGravatar,
     };
 
-    recovery.push(ranking);
-    recovery.sort((a, b) => b.score - a.score);
-    localStorage.setItem('ranking', JSON.stringify(recovery));
+    players.push(player);
+    players.sort((a, b) => b.score - a.score);
+    localStorage.setItem('ranking', JSON.stringify(players));
+    toggleEnable(false);
   }
 
-  async updateState(name) {
-    await FetchImageGravatar(name.player.gravatarEmail)
-      .then((data) => this.setState({ url: data }));
-    this.setState({ score: name.player.score });
-    this.setState({ name: name.player.name });
-    this.setState({ assertions: name.player.assertions });
-  }
-
-  scoreFeedback() {
-    const { assertions } = this.state;
-    const THREE = 3;
-    if (assertions < THREE) {
-      return (
-        <p data-testid="feedback-text">
-          Podia ser melhor...
-        </p>
-      );
-    }
-    return (
-      <p data-testid="feedback-text">
-        Mandou bem!
-      </p>
-    );
-  }
-
-  header() {
-    const { url, score, name } = this.state;
-    return (
-      <header>
-        <img
-          src={ url }
-          alt="player.jpeg"
-          data-testid="header-profile-picture"
-        />
-        <p
-          data-testid="header-player-name"
-        >
-          {name}
-
-        </p>
-        <p
-          data-testid="header-score"
-
-        >
-          {score}
-
-        </p>
-      </header>
-    );
+  componentWillUnmount() {
+    const { dataReset } = this.props;
+    dataReset();
   }
 
   render() {
-    const { assertions, score } = this.state;
+    const { player: { assertions, score } } = this.props;
+    const feedbackMessage = assertions < ASSERTIONS_AVG
+      ? 'Podia ser melhor...' : 'Mandou bem!';
     return (
       <div>
-        { this.header() }
-        { this.scoreFeedback() }
-        <p>Questões corretas:</p>
-        <p data-testid="feedback-total-question">{ assertions }</p>
-        <p data-testid="feedback-total-score">{ score }</p>
+        <Header />
+        <p data-testid="feedback-text">
+          {feedbackMessage}
+        </p>
+        <p>
+          {'Acertos: '}
+          <span data-testid="feedback-total-question">{ assertions }</span>
+        </p>
+        <p>
+          {'Score: '}
+          <span data-testid="feedback-total-score">{ score }</span>
+        </p>
         <Link to="/">
           <button data-testid="btn-play-again" type="button">Jogar novamente</button>
         </Link>
         <Link to="/ranking">
-          <button
-            data-testid="btn-ranking"
-            onClick={ this.createRanking }
-            type="button"
-          >
-            Ver Ranking
-
-          </button>
+          <button type="button" data-testid="btn-ranking">Ranking</button>
         </Link>
       </div>
     );
   }
 }
 
-export default Feedback;
+Feedback.propTypes = {
+  player: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+  ).isRequired,
+  dataReset: PropTypes.func.isRequired,
+  toggleEnable: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = ({ player }) => ({
+  player,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  dataReset: (value) => dispatch(resetData(value)),
+  toggleEnable: (value) => dispatch(enableDisable(value)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);

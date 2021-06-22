@@ -1,101 +1,113 @@
 import React, { Component } from 'react';
-import { Redirect, Link } from 'react-router-dom';
-// import logo from './trivia.png';
-// import '../';
-
-import FetchApi from '../services/fetchApi';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import fetchImageGravatar from '../services/fetchImageGravatar';
+import { updateGravatarEmail, updateName, updateUrlGravatar } from '../actions/player';
+import { setBtnReady } from '../actions/controls';
 
 class Home extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      name: '',
+      userName: '',
       email: '',
-      buttonReady: false,
-      isRedirect: false,
     };
     this.handleChange = this.handleChange.bind(this);
-    this.emailVerify = this.emailVerify.bind(this);
-    this.onClick = this.onClick.bind(this);
+    this.inputsFilledCorrectly = this.inputsFilledCorrectly.bind(this);
+    this.setGravatarEmail = this.setGravatarEmail.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  onClick() {
-    // console.log('batata');
-    const { name, email } = this.state;
-    FetchApi();
-    const player = { player: {
-      name,
-      assertions: 0,
-      score: 0,
-      gravatarEmail: email,
-    } };
-
-    this.setState({ isRedirect: true });
-    localStorage.setItem('state', JSON.stringify(player));
-    // localStorage.setItem('email', email);
+  async setGravatarEmail() {
+    const { state: { player: { gravatarEmail } }, urlGravatarUpdate } = this.props;
+    await fetchImageGravatar(gravatarEmail)
+      .then((data) => urlGravatarUpdate(data));
   }
 
-  emailVerify() {
-    const { name, email } = this.state;
+  handleClick() {
+    const { state: { player }, readyBtnUpdate } = this.props;
 
-    if (name.length > 0 && email.length > 0) {
-      return this.setState({ buttonReady: true });
+    readyBtnUpdate(false);
+    localStorage.setItem('state', JSON.stringify({ player }));
+  }
+
+  inputsFilledCorrectly() {
+    const { userName, email } = this.state;
+    const { readyBtnUpdate, gravatarEmailUpdate, nameUpdate } = this.props;
+    if (userName.length > 0 && email.match(/^\S+@\S+\.\S+$/i)) {
+      gravatarEmailUpdate(email);
+      nameUpdate(userName);
+      this.setGravatarEmail();
+      return readyBtnUpdate(true);
     }
-    return this.setState({ buttonReady: false });
+    readyBtnUpdate(false);
   }
 
-  handleChange({ target: { value, name } }) {
-    this.emailVerify();
-    this.setState({ [name]: value });
+  handleChange({ target: { name, value } }) {
+    this.setState({
+      [name]: value,
+    }, () => this.inputsFilledCorrectly());
   }
 
   render() {
-    const { handleChange } = this;
-    const { buttonReady, isRedirect } = this.state;
+    const { state: { controls: { buttonReady } } } = this.props;
     return (
       <>
-        <p> Bem vindo : página inicial </p>
+        <p> Bem vindo </p>
+        <p> Trybe Quiz </p>
 
-        <label htmlFor="name">
-          Nome
-          <input
-            id="name"
-            name="name"
-            onChange={ handleChange }
-            data-testid="input-player-name"
-            type="text"
-          />
-        </label>
-        <label htmlFor="email">
-          Email
-          <input
-            id="email"
-            name="email"
-            data-testid="input-gravatar-email"
-            onChange={ handleChange }
-            type="email"
-          />
-        </label>
-        <button
-          type="button"
-          disabled={ !buttonReady }
-          data-testid="btn-play"
-          onClick={ this.onClick }
-        >
-          {' '}
-          Jogar
-          {' '}
-
-        </button>
-        {isRedirect && <Redirect to="/game" />}
-
+        <input
+          type="text"
+          name="userName"
+          onChange={ this.handleChange }
+          placeholder="Digite seu nome"
+          data-testid="input-player-name"
+        />
+        <input
+          type="email"
+          name="email"
+          onChange={ this.handleChange }
+          placeholder="email@example.com"
+          data-testid="input-gravatar-email"
+        />
+        <Link to="/game">
+          <button
+            type="button"
+            disabled={ !buttonReady }
+            onClick={ this.handleClick }
+            data-testid="btn-play"
+          >
+            Jogar
+          </button>
+        </Link>
         <Link to="/settings">
-          <button type="button" data-testid="btn-settings"> Configurações</button>
+          <button type="button" data-testid="btn-settings">Configurações</button>
         </Link>
 
       </>
     );
   }
 }
-export default Home;
+
+Home.propTypes = {
+  state: PropTypes.objectOf(
+    PropTypes.any,
+  ).isRequired,
+  nameUpdate: PropTypes.func.isRequired,
+  gravatarEmailUpdate: PropTypes.func.isRequired,
+  readyBtnUpdate: PropTypes.func.isRequired,
+  urlGravatarUpdate: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({ state });
+
+const mapDispatchToProps = (dispatch) => ({
+  nameUpdate: (name) => dispatch(updateName(name)),
+  gravatarEmailUpdate: (email) => dispatch(updateGravatarEmail(email)),
+  readyBtnUpdate: (value) => dispatch(setBtnReady(value)),
+  urlGravatarUpdate: (urlGravatar) => dispatch(updateUrlGravatar(urlGravatar)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

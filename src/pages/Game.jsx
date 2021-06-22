@@ -1,66 +1,62 @@
 import React, { Component } from 'react';
-import FetchImageGravatar from '../services/fetchImageGravatar';
-import Questions from '../components/Questions';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import fetchApi from '../services/fetchApi';
+import Question from '../components/Question';
+import Header from '../components/Header';
+import Timer from '../components/Timer';
+import { setRedirect } from '../actions/controls';
 
-export default class Game extends Component {
-  constructor() {
-    super();
-    this.state = {
-      url: '',
-      score: 0,
-      name: '',
-    };
-    this.updateState = this.updateState.bind(this);
-    this.header = this.header.bind(this);
+class Game extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
   }
 
   componentDidMount() {
-    const name = JSON.parse(localStorage.getItem('state'));
-    // console.log(name);
-    this.updateState(name);
+    fetchApi().then((data) => this.updtadeQuestions(data));
   }
 
-  async updateState(name) {
-    await FetchImageGravatar(name.player.gravatarEmail)
-      .then((data) => this.setState({ url: data }));
-    this.setState({ score: name.player.score });
-    this.setState({ name: name.player.name });
+  componentWillUnmount() {
+    const { redirectUpdate } = this.props;
+    redirectUpdate(false);
   }
 
-  header() {
-    const { url, score, name } = this.state;
-    return (
-      <header>
-        <img
-          src={ url }
-          alt="player.jpeg"
-          data-testid="header-profile-picture"
-        />
-        <p
-          data-testid="header-player-name"
-        >
-          {name}
-
-        </p>
-        <p
-          data-testid="header-score"
-
-        >
-          {score}
-
-        </p>
-      </header>
-    );
+  updtadeQuestions({ results: questions }) {
+    this.setState({ questions });
   }
 
   render() {
+    const { questions } = this.state;
+    const { controls: { disable, redirect, timer } } = this.props;
     return (
       <div>
-        {this.header()}
-        <Questions />
+        { redirect && <Redirect to="/feedback" /> }
+        <Header />
+        { !disable ? <Timer /> : <p>{ timer }</p> }
+        {questions && <Question questions={ questions } />}
       </div>
     );
   }
 }
 
-// export default game;
+Game.propTypes = {
+  controls: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.bool,
+      PropTypes.number,
+    ]),
+  ).isRequired,
+  redirectUpdate: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = ({ controls }) => ({
+  controls,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  redirectUpdate: (value) => dispatch(setRedirect(value)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
