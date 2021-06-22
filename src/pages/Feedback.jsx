@@ -3,6 +3,7 @@ import md5 from 'crypto-js/md5';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import history from '../history';
+import '../css/Login.css';
 
 class Feedback extends React.Component {
   getScore() {
@@ -21,9 +22,6 @@ class Feedback extends React.Component {
     const three = 3;
     return (
       <>
-        { correctAnswer < three
-        && <span data-testid="feedback-text">Podia ser melhor...</span>}
-        { correctAnswer >= three && <span data-testid="feedback-text">Mandou bem!</span>}
         <header>
           <img
             src={ this.convert() }
@@ -33,10 +31,15 @@ class Feedback extends React.Component {
           <h3 data-testid="header-player-name">
             { name }
           </h3>
-
+          <p>Pontuação:</p>
           <span data-testid="header-score">{ this.getScore() }</span>
         </header>
         <main>
+          { correctAnswer < three
+            && <h2 data-testid="feedback-text">Podia ser melhor...</h2> }
+          {
+            correctAnswer >= three && <h2 data-testid="feedback-text">Mandou bem!</h2>
+          }
           <button
             type="button"
             data-testid="btn-play-again"
