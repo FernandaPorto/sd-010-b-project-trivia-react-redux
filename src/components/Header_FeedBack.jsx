@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import md5 from 'crypto-js/md5';
 import { gravatarAction } from '../actions';
 
-class Header extends Component {
+class HeaderFeedBack extends Component {
   componentDidMount() {
     const { getGravatar, email } = this.props;
     const hashEmail = md5(email).toString();
@@ -13,7 +13,7 @@ class Header extends Component {
   }
 
   render() {
-    const { nome, gravatar, eachPoints } = this.props;
+    const { nome, gravatar, totalScore } = this.props;
     return (
       <header>
         <img src={ gravatar } alt="imageGravatar" data-testid="header-profile-picture" />
@@ -26,7 +26,7 @@ class Header extends Component {
         <span data-testid="header-score">
           Score:
           { }
-          {eachPoints}
+          {totalScore}
         </span>
       </header>
     );
@@ -37,19 +37,19 @@ const mapStateToProps = (state) => ({
   email: state.user.email,
   nome: state.user.name,
   gravatar: state.user.gravatar,
-  eachPoints: state.user.player.eachScore,
+  totalScore: state.user.player.score,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   getGravatar: (gravatar) => dispatch(gravatarAction(gravatar)),
 });
 
-Header.propTypes = ({
+HeaderFeedBack.propTypes = ({
   email: PropTypes.string.isRequired,
   nome: PropTypes.string.isRequired,
   gravatar: PropTypes.string.isRequired,
   getGravatar: PropTypes.func.isRequired,
-  eachPoints: PropTypes.number.isRequired,
+  totalScore: PropTypes.number.isRequired,
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderFeedBack);

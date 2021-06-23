@@ -2,22 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import fetchURL from '../services/API';
+// import fetchURL from '../services/API';
 import Header from '../components/Header';
 import ButtonNextQuestion from '../components/ButtonNextQuestion';
 import ButtonFeedback from '../components/ButtonFeedback';
 import ButtonLogin from '../components/ButtonLogin';
 import { scoreAction, eachScoreAction, assertionsAction } from '../actions';
 import '../GamePageCss.css';
-
-export const setToken = async () => {
-  const token = await fetchURL();
-  localStorage.setItem('token', JSON.stringify(token));
-  const fetchTrivia = await fetch(`https://opentdb.com/api.php?amount=5&token=${token.token}`);
-  const resposta = await fetchTrivia.json();
-  const result = await resposta;
-  return result;
-};
+import { setToken } from '../services/API';
 
 class GamePage extends Component {
   constructor(props) {
@@ -32,35 +24,41 @@ class GamePage extends Component {
       timeIsOut: false,
       finalQuestion: false,
     };
-
-    this.getToken = this.getToken.bind(this);
     this.interval = this.interval.bind(this);
     this.questionAndAnswer = this.questionAndAnswer.bind(this);
     this.correctAnswer = this.correctAnswer.bind(this);
     this.wrongAnswer = this.wrongAnswer.bind(this);
     this.componentWillUnmount = this.componentWillUnmount.bind(this);
     this.nextQuestion = this.nextQuestion.bind(this);
+    this.getApiData = this.getApiData.bind(this);
   }
 
   componentDidMount() {
     this.interval();
+    this.getApiData();
   }
 
   componentWillUnmount() {
     clearInterval(this.myInterval);
+    console.log('WillUnmount');
   }
 
-  async getToken() {
-    const resultFetchTrivia = await setToken();
-    const map = resultFetchTrivia.results
-      .map((result) => result);
-    this.setState({
-      categories: map,
-    });
+  async getApiData() {
+    const resultOfFetch1 = await setToken();
+    const categories = resultOfFetch1.results.map((result) => result);
+    this.setState({ categories });
   }
+
+  // getToken = async () => {
+  //   const resultFetchTrivia = await setToken();
+  //   const map = resultFetchTrivia.results
+  //     .map((result) => result);
+  //   this.setState({
+  //     resultOfFetch: map,
+  //   });
+  // }
 
   async interval() {
-    await this.getToken();
     const A_SECOND = 1000;
     this.myInterval = setInterval(() => {
       const { seconds } = this.state;
@@ -70,26 +68,18 @@ class GamePage extends Component {
         }));
       }
       if (seconds === 0) {
-        this.nextQuestion();
         this.setState({ timeIsOut: true });
         this.setState({ loading: true });
         this.setState({ button: true });
         this.setState({ answered: false });
+        console.log('interval');
+        this.componentWillUnmount();
       }
     }, A_SECOND);
   }
 
-  inter() {
-    const { indexState, categories } = this.state;
-    const maxQuestionsNumber = 5;
-    if (indexState <= maxQuestionsNumber) {
-      return categories[indexState].question;
-    }
-    this.setState({ finalQuestion: true });
-  }
-
   correctAnswer() {
-    const { categories, indexState, seconds } = this.state;
+    const { indexState, seconds, categories } = this.state;
     const { eachQuestionScore, totalAssertions } = this.props;
     const level = categories[indexState].difficulty;
     const hard = 3;
@@ -104,10 +94,9 @@ class GamePage extends Component {
     this.setState({ loading: true });
     this.setState({ answered: false });
     this.setState({ button: true });
-    console.log(eachQuestionScore);
-    // localStorage.setItem('score', JSON.stringify(playerScore));
     this.componentWillUnmount();
     totalAssertions(1);
+    console.log('interval');
   }
 
   wrongAnswer() {
@@ -120,19 +109,21 @@ class GamePage extends Component {
   nextQuestion() {
     const { indexState } = this.state;
     this.setState({ loading: false });
+    this.setState({ seconds: 30 });
     this.setState({ answered: true });
+    this.setState({ timeIsOut: false });
     const maxQuestionsNumber = 5;
     if (indexState <= maxQuestionsNumber) {
       this.setState((previousState) => ({ indexState: previousState.indexState + 1 }));
-    }
+    } else { this.setState({ finalQuestion: true }); }
+    console.log(indexState);
   }
 
   questionAndAnswer() {
-    const { categories, indexState, loading, timeIsOut } = this.state;
-    console.log(categories);
-    if (typeof (categories[indexState]) === 'undefined') {
-      return <Redirect to="/feedback" />;
-    }
+    const { indexState, loading, timeIsOut, categories } = this.state;
+    // const { resultOfFetch } = this.props;
+    // this.setState({ categories: resultOfFetch });
+    console.log(indexState);
     return (
       <div>
         <select>
@@ -151,7 +142,7 @@ class GamePage extends Component {
             data-testid="question-text"
             key={ indexState }
           >
-            {categories[indexState].question}
+            {categories[indexState].question ? categories[indexState].question : ''}
           </div>
         </section>
         <option
@@ -179,15 +170,12 @@ class GamePage extends Component {
   }
 
   render() {
-    const { seconds, answered, button } = this.state;
-    const { finalQuestion, categories, indexState } = this.state;
+    const { seconds, answered, button, finalQuestion } = this.state;
+    const { categories, indexState } = this.state;
     return (
       <div>
         <Header />
-        <div>
-          {categories[indexState] === 'undefined' ? <Redirect to="/feedback" /> : '' }
-          { this.questionAndAnswer() }
-        </div>
+        {categories[indexState] ? this.questionAndAnswer() : <Redirect to="/feedback" /> }
         <div>
           { seconds > 0 ? `Timer:${seconds}` : '' }
           <ButtonLogin />
@@ -199,8 +187,8 @@ class GamePage extends Component {
             interval={ this.interval }
           />
             : ''}
+          {finalQuestion ? <Redirect to="/feedback" /> : ''}
         </div>
-        {finalQuestion ? <Redirect to="/feedback" /> : '' }
       </div>
     );
   }
@@ -209,7 +197,7 @@ class GamePage extends Component {
 GamePage.propTypes = {
   eachQuestionScore: PropTypes.func.isRequired,
   totalAssertions: PropTypes.func.isRequired,
-  // totalScore: PropTypes.number.isRequired,
+  // resultOfFetch: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -217,6 +205,10 @@ const mapDispatchToProps = (dispatch) => ({
   eachQuestionScore: (eachScore) => dispatch(eachScoreAction(eachScore)),
   totalAssertions: (rightAnswer) => dispatch(assertionsAction(rightAnswer)),
 });
+
+// const mapStateToProps = () => ({
+//   resultOfFetch: state.user.fetchArray[0],
+// });
 
 export default connect(null, mapDispatchToProps)(GamePage);
 // https://betterprogramming.pub/building-a-simple-countdown-timer-with-react-4ca32763dda7
