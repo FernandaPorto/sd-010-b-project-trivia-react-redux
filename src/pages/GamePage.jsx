@@ -150,8 +150,7 @@ class GamePage extends Component {
           onClick={ this.correctAnswer }
           disabled={ disabledCorrectIncorrect }
         >
-          {categories[indexState] === 'undefined' ? <Redirect to="/feedback" />
-            : categories[indexState].correct_answer}
+          { categories[indexState].correct_answer}
         </option>
         {categories[indexState] ? categories[indexState].incorrect_answers
         && categories[indexState].incorrect_answers.map((item, index) => (
