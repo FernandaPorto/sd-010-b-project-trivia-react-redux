@@ -211,3 +211,4 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default connect(null, mapDispatchToProps)(GamePage);
 // https://betterprogramming.pub/building-a-simple-countdown-timer-with-react-4ca32763dda7
+// new try on the tests
