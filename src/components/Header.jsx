@@ -25,8 +25,7 @@ class Header extends Component {
         </span>
         <span data-testid="header-score">
           Score:
-          { }
-          {eachPoints}
+          { eachPoints }
         </span>
       </header>
     );

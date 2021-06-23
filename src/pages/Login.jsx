@@ -19,6 +19,7 @@ class LoginPage extends Component {
 
     this.validationFields = this.validationFields.bind(this);
     this.onClick = this.onClick.bind(this);
+    this.setLocalStorage = this.setLocalStorage.bind(this);
     // this.setToken = this.setToken.bind(this);
     // this.settingsButton = this.settingsButton.bind(this);
   }
@@ -37,11 +38,18 @@ class LoginPage extends Component {
     // const { firstDispatch } = this.props;
     // firstDispatch(emailAdress, passwordData);
     this.setState({ shouldRedirect: true });
-    localStorage.setItem('name', JSON.stringify(name));
     const { sendFetchToStore } = this.props;
     sendFetchToStore();
+    this.setLocalStorage();
   }
 
+  async setLocalStorage() {
+    const { name } = this.state;
+    const player = {
+      name,
+    };
+    localStorage.setItem('state', JSON.stringify(player));
+  }
   // async getToken() {
   //   const { sendFetchToStore } = this.props;
   //   const resultFetchTrivia = await setToken();

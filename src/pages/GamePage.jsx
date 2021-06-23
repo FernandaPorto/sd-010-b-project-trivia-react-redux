@@ -96,7 +96,6 @@ class GamePage extends Component {
     this.setState({ button: true });
     this.componentWillUnmount();
     totalAssertions(1);
-    console.log('interval');
   }
 
   wrongAnswer() {
