@@ -2,15 +2,12 @@
   margin-top: 25vh;
 }
 
-#login-page h1 {
+h1 {
   margin-bottom: 20px;
   text-transform: uppercase;
 }
 
 #login {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
   margin-bottom: 20px;
   padding-top: 80px;
   width: 500px;

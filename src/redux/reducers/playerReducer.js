@@ -13,7 +13,7 @@ function playerReducer(state = INITIAL_STATE, { type, payload }) {
   case LOGIN:
     return {
       ...state,
-      email: payload.email,
+      email: payload.inputEmail,
       gravatarURL: payload.gravatarURL,
       name: payload.inputName,
     };

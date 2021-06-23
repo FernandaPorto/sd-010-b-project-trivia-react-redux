@@ -10,6 +10,7 @@ export const ANSWER_QUESTION = 'ANSWER_QUESTION';
 export const GET_QUESTIONS = 'GET_QUESTIONS';
 export const LOGIN = 'LOGIN';
 export const NEXT_QUESTION = 'NEXT_QUESTION';
+export const SAVE_SETTINGS = 'SAVE_SETTINGS';
 export const START_GAME = 'START_GAME';
 export const UPDATE_SCORE = 'UPDATE_SCORE';
 export const UPDATE_SECONDS = 'UPDATE_SECONDS';
@@ -33,6 +34,11 @@ export const nextQuestionActionCreator = (payload) => ({
   payload,
 });
 
+export const saveSettingsActionCreator = (payload) => ({
+  type: SAVE_SETTINGS,
+  payload,
+});
+
 export const startGameActionCreator = () => ({
   type: START_GAME,
 });
@@ -47,25 +53,24 @@ export const updateSecondsActionCreator = (payload) => ({
   payload,
 });
 
-export const getQuestionsThunk = () => async (dispatch) => {
+export const getQuestionsThunk = ({ settings }) => async (dispatch) => {
   try {
     const { token } = localStorage;
-    const { results } = await fetchQuestions(token);
+    const { results } = await fetchQuestions(token, settings);
     // console.log(results);
     const questions = results.map((result) => {
-      result.question = decode(result.question);
-      result.correct_answer = decode(result.correct_answer);
-      result.incorrect_answers.forEach((answer, index) => {
-        result.incorrect_answers[index] = decode(answer);
-      });
+      const question = decode(result.question);
+      const correctAnswer = decode(result.correct_answer);
+      const incorrectAnswers = result.incorrect_answers.map((answer) => decode(answer));
+      const answerOptions = randomizer([correctAnswer, ...incorrectAnswers]);
 
       return ({
         category: result.category,
         difficulty: result.difficulty,
         type: result.type,
-        question: result.question,
-        answerOptions: randomizer([...result.incorrect_answers, result.correct_answer]),
-        correctAnswer: result.correct_answer,
+        question,
+        answerOptions,
+        correctAnswer,
       });
     });
     dispatch(getQuestionsActionCreator({ questions }));

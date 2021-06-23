@@ -2,6 +2,7 @@ import {
   ANSWER_QUESTION,
   GET_QUESTIONS,
   NEXT_QUESTION,
+  SAVE_SETTINGS,
   START_GAME,
   UPDATE_SECONDS,
 } from '../actions';
@@ -12,6 +13,12 @@ const INITIAL_STATE = {
   questionIndex: 0,
   questions: [],
   secondsLeft: 30,
+  settings: {
+    amount: 5,
+    category: '',
+    difficulty: '',
+    type: '',
+  },
 };
 
 function gameReducer(state = INITIAL_STATE, { type, payload }) {
@@ -33,6 +40,11 @@ function gameReducer(state = INITIAL_STATE, { type, payload }) {
       isResolved: false,
       questionIndex: payload.nextIndex,
       secondsLeft: 30,
+    };
+  case SAVE_SETTINGS:
+    return {
+      ...state,
+      settings: payload.inputSettings,
     };
   case START_GAME:
     return {

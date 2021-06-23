@@ -27,8 +27,8 @@ class TriviaGame extends React.Component {
   }
 
   componentDidMount() {
-    const { getQuestions } = this.props;
-    getQuestions();
+    const { getQuestions, settings } = this.props;
+    getQuestions({ settings });
   }
 
   componentWillUnmount() {
@@ -132,11 +132,12 @@ const mapStateToProps = ({ game, player }) => ({
   questionIndex: game.questionIndex,
   score: player.score,
   secondsLeft: game.secondsLeft,
+  settings: game.settings,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   answerQuestion: () => dispatch(answerQuestionActionCreator()),
-  getQuestions: () => dispatch(getQuestionsThunk()),
+  getQuestions: (payload) => dispatch(getQuestionsThunk(payload)),
   nextQuestion: (payload) => dispatch(nextQuestionActionCreator(payload)),
   updateScore: (payload) => dispatch(updateScoreThunk(payload)),
   updateSeconds: (payload) => dispatch(updateSecondsActionCreator(payload)),
