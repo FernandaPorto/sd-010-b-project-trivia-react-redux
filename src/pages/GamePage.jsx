@@ -21,7 +21,7 @@ class GamePage extends Component {
       seconds: 30,
       answered: true,
       button: false,
-      disabledCorrectIncorrect: false,
+      timeIsOut: false,
       finalQuestion: false,
     };
     this.interval = this.interval.bind(this);
@@ -68,7 +68,7 @@ class GamePage extends Component {
         }));
       }
       if (seconds === 0) {
-        this.setState({ disabledCorrectIncorrect: true });
+        this.setState({ timeIsOut: true });
         this.setState({ loading: true });
         this.setState({ button: true });
         this.setState({ answered: false });
@@ -111,7 +111,7 @@ class GamePage extends Component {
     this.setState({ loading: false });
     this.setState({ seconds: 30 });
     this.setState({ answered: true });
-    this.setState({ disabledCorrectIncorrect: false });
+    this.setState({ timeIsOut: false });
     const maxQuestionsNumber = 5;
     if (indexState <= maxQuestionsNumber) {
       this.setState((previousState) => ({ indexState: previousState.indexState + 1 }));
@@ -120,7 +120,9 @@ class GamePage extends Component {
   }
 
   questionAndAnswer() {
-    const { indexState, loading, disabledCorrectIncorrect, categories } = this.state;
+    const { indexState, loading, timeIsOut, categories } = this.state;
+    // const { resultOfFetch } = this.props;
+    // this.setState({ categories: resultOfFetch });
     console.log(indexState);
     return (
       <div>
@@ -146,9 +148,8 @@ class GamePage extends Component {
         <option
           className={ loading ? 'correct-answer' : '' }
           data-testid="correct-answer"
-          onKeyDown={ this.correctAnswer }
-          onClick={ this.correctAnswer }
-          disabled={ disabledCorrectIncorrect }
+          onKeyDown={ timeIsOut ? '' : this.correctAnswer }
+          onClick={ timeIsOut ? '' : this.correctAnswer }
         >
           {categories[indexState] === 'undefined' ? <Redirect to="/feedback" />
             : categories[indexState].correct_answer}
@@ -157,10 +158,9 @@ class GamePage extends Component {
         && categories[indexState].incorrect_answers.map((item, index) => (
           <option
             className={ loading ? 'incorrect-answers' : '' }
-            onClick={ this.wrongAnswer }
+            onClick={ timeIsOut ? '' : this.wrongAnswer }
             data-testid={ `wrong-answer-${index}` }
             key={ index }
-            disabled={ disabledCorrectIncorrect }
           >
             {item}
           </option>
