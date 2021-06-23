@@ -96,7 +96,6 @@ class GamePage extends Component {
     this.setState({ button: true });
     this.componentWillUnmount();
     totalAssertions(1);
-    console.log('interval');
   }
 
   wrongAnswer() {
@@ -107,16 +106,20 @@ class GamePage extends Component {
   }
 
   nextQuestion() {
-    const { indexState } = this.state;
+    const { indexState, finalQuestion } = this.state;
     this.setState({ loading: false });
     this.setState({ seconds: 30 });
     this.setState({ answered: true });
     this.setState({ disabledCorrectIncorrect: false });
-    const maxQuestionsNumber = 5;
-    if (indexState <= maxQuestionsNumber) {
+    const maxQuestionsNumber = 4;
+    if (indexState < maxQuestionsNumber) {
       this.setState((previousState) => ({ indexState: previousState.indexState + 1 }));
-    } else { this.setState({ finalQuestion: true }); }
+    } else if (indexState === maxQuestionsNumber) {
+      this
+        .setState({ finalQuestion: true });
+    }
     console.log(indexState);
+    console.log(finalQuestion);
   }
 
   questionAndAnswer() {
@@ -150,7 +153,8 @@ class GamePage extends Component {
           onClick={ this.correctAnswer }
           disabled={ disabledCorrectIncorrect }
         >
-          { categories[indexState].correct_answer}
+          {categories[indexState] === 'undefined' ? <Redirect to="/feedback" />
+            : categories[indexState].correct_answer}
         </option>
         {categories[indexState] ? categories[indexState].incorrect_answers
         && categories[indexState].incorrect_answers.map((item, index) => (
@@ -171,10 +175,11 @@ class GamePage extends Component {
   render() {
     const { seconds, answered, button, finalQuestion } = this.state;
     const { categories, indexState } = this.state;
+    console.log(finalQuestion);
     return (
       <div>
         <Header />
-        {categories[indexState] ? this.questionAndAnswer() : <Redirect to="/feedback" /> }
+        {categories[indexState] ? this.questionAndAnswer() : '' }
         <div>
           { seconds > 0 ? `Timer:${seconds}` : '' }
           <ButtonLogin />
@@ -211,4 +216,4 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default connect(null, mapDispatchToProps)(GamePage);
 // https://betterprogramming.pub/building-a-simple-countdown-timer-with-react-4ca32763dda7
-// new try
+// new try on the tests
