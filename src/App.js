@@ -6,7 +6,6 @@ import store from './store';
 import Login from './pages/Login';
 import GamePage from './pages/GamePage';
 import Settings from './pages/Settings';
-import Ranking from './pages/Ranking';
 import Feedback from './pages/Feedback';
 
 export default function App() {
@@ -14,10 +13,9 @@ export default function App() {
     <BrowserRouter>
       <Provider store={ store }>
         <Switch>
-          <Route path="/feedback" component={ Feedback } />
-          <Route path="/ranking" component={ Ranking } />
           <Route path="/gamepage" component={ GamePage } />
           <Route path="/settings" component={ Settings } />
+          <Route path="/feedback" component={ Feedback } />
           <Route exact path="/" component={ Login } />
         </Switch>
       </Provider>

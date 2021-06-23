@@ -13,11 +13,3 @@ export default fetchURL;
 //   const result = await fetch(APITRIVIA);
 //   return result.json();
 // };
-export const setToken = async () => {
-  const token = await fetchURL();
-  localStorage.setItem('token', JSON.stringify(token));
-  const fetchTrivia = await fetch(`https://opentdb.com/api.php?amount=5&token=${token.token}`);
-  const resposta = await fetchTrivia.json();
-  const result = await resposta;
-  return result;
-};

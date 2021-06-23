@@ -1,10 +1,9 @@
-import { LOGIN, GRAVATAR, EACH_SCORE, ASSERTIONS, FETCH } from '../actions';
+import { LOGIN, GRAVATAR, EACH_SCORE, ASSERTIONS } from '../actions';
 
 const INITIAL_STATE = {
   name: '',
   email: '',
   gravatar: '',
-  fetchArray: [],
   player: {
     name: '',
     assertions: 0,
@@ -53,11 +52,6 @@ export default function user(state = INITIAL_STATE, action) {
         state.player.assertions
         + parseInt(action.payload, 10),
       },
-    };
-  case FETCH:
-    return {
-      ...state,
-      fetchArray: action.payload,
     };
   default:
     return state;
