@@ -5,6 +5,11 @@ import md5 from 'crypto-js/md5';
 import { gravatarAction } from '../actions';
 
 class Header extends Component {
+  constructor(props) {
+    super(props);
+    this.useLocalStorage = this.useLocalStorage.bind(this);
+  }
+
   componentDidMount() {
     const { getGravatar, email } = this.props;
     const hashEmail = md5(email).toString();
@@ -12,8 +17,19 @@ class Header extends Component {
     fetch(url).then(({ url: URL }) => getGravatar(URL));
   }
 
+  async useLocalStorage() {
+    const { eachPoints } = this.props;
+    const player = {
+      score: eachPoints,
+    };
+    localStorage.setItem('state', JSON.stringify(player));
+    if (JSON.parse(localStorage.getItem('state')).length > 0) {
+      await (JSON.parse(localStorage.getItem('state')).score);
+    }
+  }
+
   render() {
-    const { nome, gravatar, eachPoints } = this.props;
+    const { nome, gravatar } = this.props;
     return (
       <header>
         <img src={ gravatar } alt="imageGravatar" data-testid="header-profile-picture" />
@@ -26,7 +42,8 @@ class Header extends Component {
         <span data-testid="header-score">
           Score:
           { }
-          {eachPoints}
+          {this.useLocalStorage()}
+          {Object.values(JSON.parse(localStorage.getItem('state')))}
         </span>
       </header>
     );
