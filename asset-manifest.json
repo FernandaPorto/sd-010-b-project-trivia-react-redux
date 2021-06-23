@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/Trivia/static/css/main.05f93a71.chunk.css",
+    "main.js": "/Trivia/static/js/main.2e878115.chunk.js",
+    "main.js.map": "/Trivia/static/js/main.2e878115.chunk.js.map",
+    "runtime-main.js": "/Trivia/static/js/runtime-main.f0d2c5ec.js",
+    "runtime-main.js.map": "/Trivia/static/js/runtime-main.f0d2c5ec.js.map",
+    "static/js/2.2af888dc.chunk.js": "/Trivia/static/js/2.2af888dc.chunk.js",
+    "static/js/2.2af888dc.chunk.js.map": "/Trivia/static/js/2.2af888dc.chunk.js.map",
+    "index.html": "/Trivia/index.html",
+    "precache-manifest.3db8b7c04f78eee491aff3aae3adf082.js": "/Trivia/precache-manifest.3db8b7c04f78eee491aff3aae3adf082.js",
+    "service-worker.js": "/Trivia/service-worker.js",
+    "static/css/main.05f93a71.chunk.css.map": "/Trivia/static/css/main.05f93a71.chunk.css.map",
+    "static/js/2.2af888dc.chunk.js.LICENSE": "/Trivia/static/js/2.2af888dc.chunk.js.LICENSE",
+    "static/media/game.css": "/Trivia/static/media/star-wars-wallpaper-9.140c790c.jpeg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.f0d2c5ec.js",
+    "static/js/2.2af888dc.chunk.js",
+    "static/css/main.05f93a71.chunk.css",
+    "static/js/main.2e878115.chunk.js"
+  ]
+}
