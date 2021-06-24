@@ -1,12 +1,12 @@
 import { decode } from 'he';
 
-import { fetchQuestions } from '../../services/api';
+import { fetchCategories, fetchQuestions } from '../../services/api';
 
-const PROBABILITY_BASE = 0.5;
 const BASE_POINTS = 10;
-const randomizer = (array) => array.sort(() => Math.random() - PROBABILITY_BASE);
+const PROBABILITY_BASE = 0.5;
 
 export const ANSWER_QUESTION = 'ANSWER_QUESTION';
+export const GET_CATEGORIES = 'GET_CATEGORIES';
 export const GET_QUESTIONS = 'GET_QUESTIONS';
 export const LOGIN = 'LOGIN';
 export const NEXT_QUESTION = 'NEXT_QUESTION';
@@ -15,8 +15,15 @@ export const START_GAME = 'START_GAME';
 export const UPDATE_SCORE = 'UPDATE_SCORE';
 export const UPDATE_SECONDS = 'UPDATE_SECONDS';
 
+const randomizer = (array) => array.sort(() => Math.random() - PROBABILITY_BASE);
+
 export const answerQuestionActionCreator = () => ({
   type: ANSWER_QUESTION,
+});
+
+export const getCategoriesActionCreator = (payload) => ({
+  type: GET_CATEGORIES,
+  payload,
 });
 
 export const getQuestionsActionCreator = (payload) => ({
@@ -52,6 +59,24 @@ export const updateSecondsActionCreator = (payload) => ({
   type: UPDATE_SECONDS,
   payload,
 });
+
+export const getCategoriesThunk = () => async (dispatch) => {
+  try {
+    const categories = await fetchCategories();
+    categories.sort((a, b) => {
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+      return 0;
+    });
+    dispatch(getCategoriesActionCreator({ categories }));
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const getQuestionsThunk = ({ settings }) => async (dispatch) => {
   try {

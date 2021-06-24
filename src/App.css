@@ -26,7 +26,6 @@ h1 {
 
 input[type='text'],
 input[type='email'] {
-  background-color: #efeff1;
   border: 1px solid #efeff1;
   border-radius: 3px;
   font-family: inherit;
@@ -35,6 +34,20 @@ input[type='email'] {
   text-align: center;
   text-transform: uppercase;
   width: 90%;
+}
+
+label {
+  display: block;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+select {
+  background-color: white;
+  border: 1px solid #efeff1;
+  font-family: inherit;
+  font-size: 16px;
+  margin-top: 10px;
 }
 
 .button-alt {
@@ -53,8 +66,9 @@ input[type='email'] {
   border: 1px solid #6052e7;
   color: inherit;
   cursor: pointer;
+  font-size: 14px;
   font-weight: bold;
-  height: 25px;
+  height: 30px;
   text-transform: uppercase;
   width: 200px;
 }
