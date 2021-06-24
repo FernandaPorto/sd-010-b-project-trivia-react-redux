@@ -6,7 +6,6 @@ import { Redirect } from 'react-router';
 
 import {
   answerQuestionActionCreator,
-  getQuestionsThunk,
   nextQuestionActionCreator,
   updateSecondsActionCreator,
   updateScoreThunk,
@@ -24,23 +23,6 @@ class TriviaGame extends React.Component {
     this.state = {
       redirect: false,
     };
-  }
-
-  componentDidMount() {
-    const { getQuestions, settings } = this.props;
-    getQuestions({ settings });
-  }
-
-  componentWillUnmount() {
-    const { gravatarURL, name, score } = this.props;
-    const newRanking = {
-      gravatarURL,
-      name,
-      score,
-    };
-    const ranking = JSON.parse(localStorage.getItem('ranking'));
-    ranking.push(newRanking);
-    localStorage.setItem('ranking', JSON.stringify(ranking));
   }
 
   renderQuestion() {
@@ -109,10 +91,9 @@ class TriviaGame extends React.Component {
 
   render() {
     const { redirect } = this.state;
-    const { isLoading, isResolved } = this.props;
+    const { isResolved } = this.props;
 
     if (redirect) return <Redirect to="/feedback" />;
-    if (isLoading) return <h2>Loading...</h2>;
 
     return (
       <section>
@@ -123,21 +104,15 @@ class TriviaGame extends React.Component {
   }
 }
 
-const mapStateToProps = ({ game, player, settings }) => ({
-  gravatarURL: player.gravatarURL,
-  isLoading: game.isLoading,
+const mapStateToProps = ({ game }) => ({
   isResolved: game.isResolved,
-  name: player.name,
   questions: game.questions,
   questionIndex: game.questionIndex,
-  score: player.score,
   secondsLeft: game.secondsLeft,
-  settings,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   answerQuestion: () => dispatch(answerQuestionActionCreator()),
-  getQuestions: (payload) => dispatch(getQuestionsThunk(payload)),
   nextQuestion: (payload) => dispatch(nextQuestionActionCreator(payload)),
   updateScore: (payload) => dispatch(updateScoreThunk(payload)),
   updateSeconds: (payload) => dispatch(updateSecondsActionCreator(payload)),

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 
 import { getCategoriesThunk, saveSettingsActionCreator } from '../redux/actions';
+import Loading from '../components/Loading';
 
 class Settings extends React.Component {
   constructor(props) {
@@ -14,7 +15,6 @@ class Settings extends React.Component {
         categoryId: props.categoryId,
         difficulty: props.difficulty,
       },
-      questionsNumber: 1000,
       redirect: false,
     };
 
@@ -24,6 +24,29 @@ class Settings extends React.Component {
   componentDidMount() {
     const { allCategories, getCategories } = this.props;
     if (allCategories.length === 0) getCategories();
+  }
+
+  getQuestionsCount() {
+    const { allCategories } = this.props;
+    const { inputSettings: { categoryId, difficulty } } = this.state;
+
+    if (categoryId === '') {
+      if (difficulty === '') {
+        return allCategories.reduce(
+          (acc, curr) => acc + curr.questionsCount.total,
+          0,
+        );
+      }
+      return allCategories.reduce(
+        (acc, curr) => acc + curr.questionsCount[difficulty],
+        0,
+      );
+    }
+    const category = allCategories.find(({ id }) => id === Number(categoryId));
+    if (difficulty === '') {
+      return category.questionsCount.total;
+    }
+    return category.questionsCount[difficulty];
   }
 
   handleChange({ target: { name, value } }) {
@@ -77,17 +100,17 @@ class Settings extends React.Component {
   }
 
   render() {
-    const { inputSettings, questionsNumber, redirect } = this.state;
+    const { inputSettings, redirect } = this.state;
     const { isLoading, saveSettings } = this.props;
 
-    if (isLoading) return <h2>Loading...</h2>;
     if (redirect) return <Redirect to="/" />;
+    if (isLoading) return <Loading />;
 
     return (
       <main>
         <h1>Settings</h1>
         <div>
-          <span>{ `Available Questions: ${questionsNumber}` }</span>
+          <span>{ `Available Questions: ${this.getQuestionsCount()}` }</span>
         </div>
         <div id="settings" className="container">
           {this.renderOptions()}
