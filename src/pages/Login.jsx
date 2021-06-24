@@ -4,9 +4,11 @@ import { Redirect } from 'react-router';
 import md5 from 'crypto-js/md5';
 
 import { fetchToken } from '../services/api';
-import { loginActionCreator, startGameActionCreator } from '../redux/actions';
+import { startGameActionCreator } from '../redux/actions';
 import SettingsButton from '../components/SettingsButton';
 import './Login.css';
+
+const SIX_HOURS = 21600000;
 
 class Login extends React.Component {
   constructor(props) {
@@ -16,19 +18,23 @@ class Login extends React.Component {
     this.handleClick = this.handleClick.bind(this);
 
     this.state = {
-      inputName: '',
-      inputEmail: '',
+      inputName: props.name,
+      inputEmail: props.email,
       redirect: false,
     };
   }
 
   async componentDidMount() {
     const ranking = JSON.parse(localStorage.getItem('ranking'));
-    let token = localStorage.getItem('token');
     if (!ranking) localStorage.setItem('ranking', JSON.stringify([]));
-    if (!token) {
-      token = await fetchToken();
-      localStorage.setItem('token', token);
+
+    let token = JSON.parse(localStorage.getItem('token'));
+    const now = new Date().getTime();
+    if (!token || now > token.expirationTime) {
+      const expirationTime = now + SIX_HOURS;
+      const value = await fetchToken();
+      token = { expirationTime, value };
+      localStorage.setItem('token', JSON.stringify(token));
     }
   }
 
@@ -40,15 +46,15 @@ class Login extends React.Component {
 
   handleClick() {
     const { inputName, inputEmail } = this.state;
-    const { login, startGame } = this.props;
+    const { startGame } = this.props;
     const hash = md5(inputEmail).toString();
     const gravatarURL = `https://www.gravatar.com/avatar/${hash}`;
-    login({ inputName, inputEmail, gravatarURL });
-    startGame();
+    startGame({ inputName, inputEmail, gravatarURL });
     this.setState({ redirect: true });
   }
 
   render() {
+    const { name, email } = this.props;
     const { inputName, inputEmail, redirect } = this.state;
 
     if (redirect) return <Redirect to="/game" />;
@@ -63,12 +69,14 @@ class Login extends React.Component {
             type="text"
             name="inputName"
             placeholder="Name"
+            defaultValue={ name }
             onChange={ this.handleChange }
           />
           <input
             type="email"
             name="inputEmail"
             placeholder="E-mail"
+            defaultValue={ email }
             onChange={ this.handleChange }
           />
           <input
@@ -87,9 +95,13 @@ class Login extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  login: (payload) => dispatch(loginActionCreator(payload)),
-  startGame: () => dispatch(startGameActionCreator()),
+const mapStateToProps = ({ player }) => ({
+  name: player.name,
+  email: player.email,
 });
 
-export default connect(undefined, mapDispatchToProps)(Login);
+const mapDispatchToProps = (dispatch) => ({
+  startGame: (payload) => dispatch(startGameActionCreator(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -12,7 +12,6 @@ const PROBABILITY_BASE = 0.5;
 export const ANSWER_QUESTION = 'ANSWER_QUESTION';
 export const GET_CATEGORIES = 'GET_CATEGORIES';
 export const GET_QUESTIONS = 'GET_QUESTIONS';
-export const LOGIN = 'LOGIN';
 export const NEXT_QUESTION = 'NEXT_QUESTION';
 export const SAVE_SETTINGS = 'SAVE_SETTINGS';
 export const START_GAME = 'START_GAME';
@@ -35,11 +34,6 @@ export const getQuestionsActionCreator = (payload) => ({
   payload,
 });
 
-export const loginActionCreator = (payload) => ({
-  type: LOGIN,
-  payload,
-});
-
 export const nextQuestionActionCreator = (payload) => ({
   type: NEXT_QUESTION,
   payload,
@@ -50,8 +44,9 @@ export const saveSettingsActionCreator = (payload) => ({
   payload,
 });
 
-export const startGameActionCreator = () => ({
+export const startGameActionCreator = (payload) => ({
   type: START_GAME,
+  payload,
 });
 
 export const updateScoreActionCreator = (payload) => ({
@@ -97,8 +92,8 @@ export const getCategoriesThunk = () => async (dispatch) => {
 
 export const getQuestionsThunk = ({ settings }) => async (dispatch) => {
   try {
-    const { token } = localStorage;
-    const { results } = await fetchQuestions(token, settings);
+    const token = JSON.parse(localStorage.getItem('token'));
+    const { results } = await fetchQuestions(token.value, settings);
 
     const questions = results.map((result) => {
       const question = decode(result.question);

@@ -42,7 +42,8 @@ label {
   font-size: 18px;
 }
 
-select {
+select,
+input[type='number'] {
   background-color: white;
   border: 1px solid #efeff1;
   font-family: inherit;

@@ -8,7 +8,7 @@ const INITIAL_STATE = {
   amount: 5,
   categoryId: '',
   difficulty: '',
-  isLoading: true,
+  isLoading: false,
 };
 
 function settingsReducer(state = INITIAL_STATE, { type, payload }) {

@@ -2,7 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 
-import { getCategoriesThunk, saveSettingsActionCreator } from '../redux/actions';
+import {
+  getCategoriesThunk,
+  saveSettingsActionCreator,
+} from '../redux/actions';
 import Loading from '../components/Loading';
 
 class Settings extends React.Component {
@@ -21,31 +24,29 @@ class Settings extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidMount() {
-    const { allCategories, getCategories } = this.props;
-    if (allCategories.length === 0) getCategories();
-  }
+  // componentDidMount() {
+  //   const { allCategories, getCategories } = this.props;
+  //   if (allCategories.length === 0) getCategories();
+  // }
 
   getQuestionsCount() {
     const { allCategories } = this.props;
-    const { inputSettings: { categoryId, difficulty } } = this.state;
+    const {
+      inputSettings: { categoryId, difficulty },
+    } = this.state;
 
     if (categoryId === '') {
       if (difficulty === '') {
         return allCategories.reduce(
           (acc, curr) => acc + curr.questionsCount.total,
-          0,
         );
       }
       return allCategories.reduce(
         (acc, curr) => acc + curr.questionsCount[difficulty],
-        0,
       );
     }
     const category = allCategories.find(({ id }) => id === Number(categoryId));
-    if (difficulty === '') {
-      return category.questionsCount.total;
-    }
+    if (difficulty === '') return category.questionsCount.total;
     return category.questionsCount[difficulty];
   }
 
@@ -63,6 +64,11 @@ class Settings extends React.Component {
     const { inputSettings } = this.state;
     return (
       <div>
+        <label htmlFor="amount">
+          Number of Questions:
+          <br />
+          <input type="number" id="amout" />
+        </label>
         <label htmlFor="category">
           Select Category:
           <br />
@@ -73,11 +79,11 @@ class Settings extends React.Component {
             onChange={ this.handleChange }
           >
             <option value="">Any Category</option>
-            {allCategories.map((category) => (
+            {/* {allCategories.map((category) => (
               <option key={ category.id } value={ category.id }>
                 {category.name}
               </option>
-            ))}
+            ))} */}
           </select>
         </label>
         <label htmlFor="difficulty">
@@ -110,7 +116,7 @@ class Settings extends React.Component {
       <main>
         <h1>Settings</h1>
         <div>
-          <span>{ `Available Questions: ${this.getQuestionsCount()}` }</span>
+          {/* <span>{`Available Questions: ${this.getQuestionsCount()}`}</span> */}
         </div>
         <div id="settings" className="container">
           {this.renderOptions()}
