@@ -1,43 +1,28 @@
 import React, { Component } from 'react';
+import { getPlayerDataLocalStorage } from '../helpers/localStorage';
+
+const THREE = 3;
 
 class Feedback extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      score: 100,
-      name: 'Matheus Gabriel',
-      finalScore: 500,
-      questions: 10,
-    };
-  }
-
   render() {
-    const { score, name, finalScore, questions } = this.state;
+    // const { score, finalScore, questions } = this.props;
+    const name = getPlayerDataLocalStorage('name');
+    const score = getPlayerDataLocalStorage('score');
+    const assertions = getPlayerDataLocalStorage('assertions');
     // trazer os dados do localStorage, importar a função getPlayerDataLocalStorage() em helpers/localStorage.js
     return (
       <>
-        <div data-testid="feedback-text">Parabéns ou não</div>
-        {/* Trazer a imagem do player */}
-        <img src="" data-testid="header-profile-picture" alt="" />
-        {/* Trazer o nome do player */}
-        <p>Nome</p>
-        <h1 data-testid="header-player-name">{name}</h1>
-        {/* Trazer o score do player */}
-        <p>Score</p>
-        <h2 data-testid="header-score">{score}</h2>
-
+        <header>
+          <img src="https://www.gravatar.com/avatar/" data-testid="header-profile-picture" alt="Gravatar" />
+          <p>Nome</p>
+          <h1 data-testid="header-player-name">{name}</h1>
+          <p>Score</p>
+          <h2 data-testid="header-score">{score}</h2>
+        </header>
         <div>
-          {/* Placar final */}
-          <p>Score final</p>
-          <p data-testid="feedback-total-score">{finalScore}</p>
-          {/* Numero de perguntas que o player acertou */}
-          <p>Questões acertadas</p>
-          <p data-testid="feedback-total-question">
-            {questions === 0
-              ? 'Não acertou nenhuma pergunta'
-              : `Acertou ${questions} perguntas`}
-          </p>
+          <div data-testid="feedback-text">
+            { ((assertions < THREE) ? 'Podia ser melhor...' : 'Mandou bem!') }
+          </div>
         </div>
       </>
     );
