@@ -5,10 +5,10 @@ import md5 from 'crypto-js/md5';
 import { gravatarAction } from '../actions';
 
 class HeaderFeedBack extends Component {
-  constructor(props) {
-    super(props);
-    this.useLocalStorage = this.useLocalStorage.bind(this);
-  }
+  // constructor(props) {
+  //   super(props);
+  //   // this.useLocalStorage = this.useLocalStorage.bind(this);
+  // }
 
   componentDidMount() {
     const { getGravatar, email } = this.props;
@@ -17,19 +17,20 @@ class HeaderFeedBack extends Component {
     fetch(url).then(({ url: URL }) => getGravatar(URL));
   }
 
-  useLocalStorage() {
-    const { totalScore } = this.props;
-    const player = {
-      score: totalScore,
-    };
-    localStorage.setItem('state', JSON.stringify(player));
-    if (JSON.parse(localStorage.getItem('state')).length > 0) {
-      return (JSON.parse(localStorage.getItem('state')).score);
-    }
-  }
+  // useLocalStorage() {
+  //   const { totalScore } = this.props;
+  //   const state = { player: {
+  //     score: totalScore,
+  //   } };
+  //   localStorage.setItem('state', JSON.stringify(state));
+  //   if (JSON.parse(localStorage.getItem('state')).length > 0) {
+  //     return (JSON.parse(localStorage.getItem('state')).score);
+  //   }
+  // }
 
   render() {
-    const { nome, gravatar, totalScore } = this.props;
+    const { nome, gravatar } = this.props;
+    const number = JSON.parse(localStorage.getItem('state')).score;
     return (
       <header>
         <img src={ gravatar } alt="imageGravatar" data-testid="header-profile-picture" />
@@ -41,12 +42,11 @@ class HeaderFeedBack extends Component {
         </span>
         <span data-testid="header-score">
           Score:
-          { }
-          {totalScore}
+          {/* { this.useLocalStorage()} */}
           {' '}
-          {Object.values(JSON.parse(localStorage.getItem('state')))}
+          {/* {Object.values(JSON.parse(localStorage.getItem('state')))} */}
           {' '}
-          {(JSON.parse(localStorage.getItem('state')).score)}
+          {number}
         </span>
       </header>
     );
@@ -70,7 +70,7 @@ HeaderFeedBack.propTypes = ({
   nome: PropTypes.string.isRequired,
   gravatar: PropTypes.string.isRequired,
   getGravatar: PropTypes.func.isRequired,
-  totalScore: PropTypes.number.isRequired,
+  // totalScore: PropTypes.number.isRequired,
   // eachPoints: PropTypes.number.isRequired,
 });
 

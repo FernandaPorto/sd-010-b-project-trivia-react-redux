@@ -17,19 +17,23 @@ class Header extends Component {
     fetch(url).then(({ url: URL }) => getGravatar(URL));
   }
 
-  async useLocalStorage() {
-    const { eachPoints } = this.props;
-    const player = {
-      score: eachPoints,
-    };
-    localStorage.setItem('state', JSON.stringify(player));
-    if (JSON.parse(localStorage.getItem('state')).length > 0) {
-      await (JSON.parse(localStorage.getItem('state')).score);
-    }
+  useLocalStorage() {
+    const { totalScore, totalAssertions } = this.props;
+    const state = { player: {
+      score: totalScore,
+      assertions: totalAssertions,
+
+    } };
+    localStorage.setItem('state', JSON.stringify(state));
+    // if (JSON.parse(localStorage.getItem('state')).length > 0) {
+    //   return (JSON.parse(localStorage.getItem('state')).score);
+    // }
   }
 
   render() {
     const { nome, gravatar } = this.props;
+    console.log(JSON.parse(localStorage.getItem('state')));
+    // const { player: { score } } = JSON.parse(localStorage.getItem('state'));
     return (
       <header>
         <img src={ gravatar } alt="imageGravatar" data-testid="header-profile-picture" />
@@ -40,10 +44,10 @@ class Header extends Component {
           { }
         </span>
         <span data-testid="header-score">
-          Score:
-          { }
+          {0}
           {this.useLocalStorage()}
-          {Object.values(JSON.parse(localStorage.getItem('state')))}
+          {Object.values(JSON.parse(localStorage.getItem('state'))).score}
+          {/* {score} */}
         </span>
       </header>
     );
@@ -54,7 +58,8 @@ const mapStateToProps = (state) => ({
   email: state.user.email,
   nome: state.user.name,
   gravatar: state.user.gravatar,
-  eachPoints: state.user.player.eachScore,
+  totalScore: state.user.player.score,
+  totalAssertions: state.user.player.assertions,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -66,7 +71,8 @@ Header.propTypes = ({
   nome: PropTypes.string.isRequired,
   gravatar: PropTypes.string.isRequired,
   getGravatar: PropTypes.func.isRequired,
-  eachPoints: PropTypes.number.isRequired,
+  totalScore: PropTypes.number.isRequired,
+  totalAssertions: PropTypes.number.isRequired,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);
