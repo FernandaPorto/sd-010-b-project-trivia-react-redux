@@ -23,10 +23,26 @@ class Feedback extends Component {
     this.setState({ ranking: true });
   }
 
+  // useLocalStorage() {
+  //   const { totalScore, totalAssertions } = this.props;
+  //   const state = { player: {
+  //     assertions: totalAssertions,
+
+  //   } };
+  //   localStorage.setItem('state', JSON.stringify(state));
+  //   if (JSON.parse(localStorage.getItem('state')).length > 0) {
+  //     return (JSON.parse(localStorage.getItem('state')).score);
+  //   }
+  // }
+
   render() {
-    const { totalAssertions, totalScore } = this.props;
+    const { totalAssertions } = this.props;
     const { homePage, ranking } = this.state;
     const gotitRightQuestions = 3;
+    // const finalScore = JSON.parse(localStorage.getItem('state')).score;
+    // const finalAssertions = JSON.parse(localStorage.getItem('state')).assertions;
+    const { player: { score } } = JSON.parse(localStorage.getItem('state'));
+    const { player: { assertions } } = JSON.parse(localStorage.getItem('state'));
 
     return (
       <>
@@ -38,8 +54,9 @@ class Feedback extends Component {
           {totalAssertions < gotitRightQuestions
             ? 'Podia ser melhor...' : 'Mandou bem!'}
         </h2>
-        <h3 data-testid="feedback-total-score">{totalScore}</h3>
-        <h4 data-testid="feedback-total-question">{totalAssertions}</h4>
+        <h3 data-testid="feedback-total-score">{score}</h3>
+        {' '}
+        <h4 data-testid="feedback-total-question">{assertions}</h4>
         <button
           link
           to="/"
@@ -70,7 +87,7 @@ const mapStateToProps = (state) => ({
 
 Feedback.propTypes = ({
   totalAssertions: PropTypes.number.isRequired,
-  totalScore: PropTypes.number.isRequired,
+  // totalScore: PropTypes.number.isRequired,
 });
 
 export default connect(mapStateToProps, null)(Feedback);
