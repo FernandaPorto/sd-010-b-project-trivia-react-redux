@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 * {
   box-sizing: border-box;
@@ -44,6 +44,7 @@ label {
 
 select,
 input[type='number'] {
+  width: 100%;
   background-color: white;
   border: 1px solid #efeff1;
   font-family: inherit;
@@ -106,4 +107,4 @@ input[type='number'] {
   to {
     transform: rotate(360deg);
   }
-}
+} */

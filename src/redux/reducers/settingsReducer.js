@@ -5,10 +5,10 @@ import {
 
 const INITIAL_STATE = {
   allCategories: [],
-  amount: 5,
+  amount: 10,
   categoryId: '',
   difficulty: '',
-  isLoading: false,
+  isLoading: true,
 };
 
 function settingsReducer(state = INITIAL_STATE, { type, payload }) {
