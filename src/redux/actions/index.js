@@ -1,6 +1,10 @@
 import { decode } from 'he';
 
-import { fetchCategories, fetchQuestions } from '../../services/api';
+import {
+  fetchCategories,
+  fetchCategoryQuestionCount,
+  fetchQuestions,
+} from '../../services/api';
 
 const BASE_POINTS = 10;
 const PROBABILITY_BASE = 0.5;
@@ -63,6 +67,7 @@ export const updateSecondsActionCreator = (payload) => ({
 export const getCategoriesThunk = () => async (dispatch) => {
   try {
     const categories = await fetchCategories();
+
     categories.sort((a, b) => {
       if (a.name < b.name) {
         return -1;
@@ -71,6 +76,18 @@ export const getCategoriesThunk = () => async (dispatch) => {
         return 1;
       }
       return 0;
+    });
+
+    const promises = categories.map(({ id }) => fetchCategoryQuestionCount(id));
+    const questionsCount = await Promise.all(promises);
+
+    categories.forEach((category, index) => {
+      category.questionsCount = {
+        total: questionsCount[index].category_question_count.total_question_count,
+        easy: questionsCount[index].category_question_count.total_easy_question_count,
+        medium: questionsCount[index].category_question_count.total_medium_question_count,
+        hard: questionsCount[index].category_question_count.total_hard_question_count,
+      };
     });
     dispatch(getCategoriesActionCreator({ categories }));
   } catch (error) {
@@ -82,21 +99,21 @@ export const getQuestionsThunk = ({ settings }) => async (dispatch) => {
   try {
     const { token } = localStorage;
     const { results } = await fetchQuestions(token, settings);
-    // console.log(results);
+
     const questions = results.map((result) => {
       const question = decode(result.question);
       const correctAnswer = decode(result.correct_answer);
       const incorrectAnswers = result.incorrect_answers.map((answer) => decode(answer));
       const answerOptions = randomizer([correctAnswer, ...incorrectAnswers]);
 
-      return ({
+      return {
         category: result.category,
         difficulty: result.difficulty,
         type: result.type,
         question,
         answerOptions,
         correctAnswer,
-      });
+      };
     });
     dispatch(getQuestionsActionCreator({ questions }));
   } catch (error) {

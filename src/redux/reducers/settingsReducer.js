@@ -11,7 +11,7 @@ const INITIAL_STATE = {
   isLoading: true,
 };
 
-function gameReducer(state = INITIAL_STATE, { type, payload }) {
+function settingsReducer(state = INITIAL_STATE, { type, payload }) {
   switch (type) {
   case GET_CATEGORIES:
     return {
@@ -29,4 +29,4 @@ function gameReducer(state = INITIAL_STATE, { type, payload }) {
   }
 }
 
-export default gameReducer;
+export default settingsReducer;

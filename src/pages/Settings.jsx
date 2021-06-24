@@ -14,6 +14,7 @@ class Settings extends React.Component {
         categoryId: props.categoryId,
         difficulty: props.difficulty,
       },
+      questionsNumber: 1000,
       redirect: false,
     };
 
@@ -76,7 +77,7 @@ class Settings extends React.Component {
   }
 
   render() {
-    const { inputSettings, redirect } = this.state;
+    const { inputSettings, questionsNumber, redirect } = this.state;
     const { isLoading, saveSettings } = this.props;
 
     if (isLoading) return <h2>Loading...</h2>;
@@ -85,6 +86,9 @@ class Settings extends React.Component {
     return (
       <main>
         <h1>Settings</h1>
+        <div>
+          <span>{ `Available Questions: ${questionsNumber}` }</span>
+        </div>
         <div id="settings" className="container">
           {this.renderOptions()}
           <input
