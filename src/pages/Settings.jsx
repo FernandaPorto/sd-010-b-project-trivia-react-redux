@@ -35,8 +35,8 @@ class Settings extends React.Component {
     const { allCategories } = this.props;
     const { inputSettings: { categoryId, difficulty } } = this.state;
 
-    if (categoryId === '') {
-      if (difficulty === '') {
+    if (!categoryId) {
+      if (!difficulty) {
         return allCategories.reduce(
           (acc, curr) => acc + curr.questionCount.total,
           0,
@@ -48,7 +48,7 @@ class Settings extends React.Component {
       );
     }
     const category = allCategories.find(({ id }) => id === Number(categoryId));
-    if (difficulty === '') return category.questionCount.total;
+    if (!difficulty) return category.questionCount.total;
     return category.questionCount[difficulty];
   }
 

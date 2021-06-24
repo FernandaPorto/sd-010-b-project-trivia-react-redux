@@ -6,7 +6,7 @@ import {
 const INITIAL_STATE = {
   allCategories: [],
   amount: 10,
-  categoryId: '',
+  categoryId: 0,
   difficulty: '',
   isLoading: true,
 };
