@@ -50,42 +50,46 @@ class Login extends React.Component {
     }
 
     return (
-      <form>
-        <label htmlFor="name">
-          NAME
-          <input
-            type="text"
-            data-testid="input-player-name"
-            id="name"
-          />
-        </label>
-        <label htmlFor="email">
-          EMAIL
-          <input
-            type="text"
-            data-testid="input-gravatar-email"
-            id="email"
-            onChange={ ({ target: { value } }) => this.validateEmail(value) }
-          />
-        </label>
-        <button
-          type="button"
-          data-testid="btn-settings"
-          onClick={ () => this.redirect() }
-        >
-          Configurações
-        </button>
-        <Link to="/jogar">
+      <div className="container-login">
+        <h1 className="trivia-title">Trivia</h1>
+        <form className="login-form">
+          <label htmlFor="name">
+            NAME
+            <input
+              type="text"
+              data-testid="input-player-name"
+              id="name"
+            />
+          </label>
+          <label htmlFor="email">
+            EMAIL
+            <input
+              type="text"
+              data-testid="input-gravatar-email"
+              id="email"
+              onChange={ ({ target: { value } }) => this.validateEmail(value) }
+            />
+          </label>
+          <Link to="/jogar">
+            <button
+              type="submit"
+              data-testid="btn-play"
+              disabled={ validForm }
+              onClick={ this.clickBtnJogar }
+            >
+              Jogar
+            </button>
+          </Link>
           <button
-            type="submit"
-            data-testid="btn-play"
-            disabled={ validForm }
-            onClick={ this.clickBtnJogar }
+            className="button"
+            type="button"
+            data-testid="btn-settings"
+            onClick={ () => this.redirect() }
           >
-            Jogar
+            Configurações
           </button>
-        </Link>
-      </form>
+        </form>
+      </div>
     );
   }
 }

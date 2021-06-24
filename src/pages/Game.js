@@ -191,7 +191,7 @@ class Game extends React.Component {
         <section className="sectionPerguntas">
           <Header />
           <article>
-            <p data-testid="question-category">{ perguntas[questao].category }</p>
+            <h2 data-testid="question-category">{ perguntas[questao].category }</h2>
             <p data-testid="question-text">{ perguntas[questao].question }</p>
             {perguntas[questao].incorrect_answers.map((alternativas, index) => (
               <button
@@ -216,10 +216,12 @@ class Game extends React.Component {
               { perguntas[questao].correct_answer }
             </button>
           </article>
-          {this.buttonNext()}
-          <p>
-            { `Tempo restante: ${currentCount}` }
-          </p>
+          <article>
+            <p>
+              { `Tempo restante: ${currentCount}` }
+            </p>
+            {this.buttonNext()}
+          </article>
         </section>
       );
     }
