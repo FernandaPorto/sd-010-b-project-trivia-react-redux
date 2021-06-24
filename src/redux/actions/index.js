@@ -70,14 +70,14 @@ export const getCategoriesThunk = () => async (dispatch) => {
     });
 
     const promises = categories.map(({ id }) => fetchCategoryQuestionCount(id));
-    const questionsCount = await Promise.all(promises);
+    const questionCount = await Promise.all(promises);
 
     categories.forEach((category, index) => {
-      category.questionsCount = {
-        total: questionsCount[index].category_question_count.total_question_count,
-        easy: questionsCount[index].category_question_count.total_easy_question_count,
-        medium: questionsCount[index].category_question_count.total_medium_question_count,
-        hard: questionsCount[index].category_question_count.total_hard_question_count,
+      category.questionCount = {
+        total: questionCount[index].category_question_count.total_question_count,
+        easy: questionCount[index].category_question_count.total_easy_question_count,
+        medium: questionCount[index].category_question_count.total_medium_question_count,
+        hard: questionCount[index].category_question_count.total_hard_question_count,
       };
     });
     dispatch(getCategoriesActionCreator({ categories }));

@@ -31,25 +31,25 @@ class Settings extends React.Component {
     if (allCategories.length === 0) getCategories();
   }
 
-  getQuestionsCount() {
+  getQuestionCount() {
     const { allCategories } = this.props;
     const { inputSettings: { categoryId, difficulty } } = this.state;
 
     if (categoryId === '') {
       if (difficulty === '') {
         return allCategories.reduce(
-          (acc, curr) => acc + curr.questionsCount.total,
+          (acc, curr) => acc + curr.questionCount.total,
           0,
         );
       }
       return allCategories.reduce(
-        (acc, curr) => acc + curr.questionsCount[difficulty],
+        (acc, curr) => acc + curr.questionCount[difficulty],
         0,
       );
     }
     const category = allCategories.find(({ id }) => id === Number(categoryId));
-    if (difficulty === '') return category.questionsCount.total;
-    return category.questionsCount[difficulty];
+    if (difficulty === '') return category.questionCount.total;
+    return category.questionCount[difficulty];
   }
 
   handleChange({ target: { name, value } }) {
@@ -131,8 +131,8 @@ class Settings extends React.Component {
     const { inputSettings, redirect } = this.state;
     const { isLoading, saveSettings } = this.props;
 
-    const questionsCount = this.getQuestionsCount();
-    const isHigher = inputSettings.amount > questionsCount;
+    const questionCount = this.getQuestionCount();
+    const isHigher = inputSettings.amount > questionCount;
     const warningMessage = isHigher ? 'Insufficient questions' : '';
 
     if (redirect) return <Redirect to="/" />;
@@ -142,7 +142,7 @@ class Settings extends React.Component {
       <main>
         <h1>Settings</h1>
         <div>
-          <span>{`Available Questions: ${this.getQuestionsCount()}`}</span>
+          <span>{`Available Questions: ${questionCount}`}</span>
         </div>
         <div id="settings" className="container">
           {this.renderSelectCategory()}
