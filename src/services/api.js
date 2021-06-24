@@ -27,6 +27,7 @@ export async function fetchQuestions(token, { amount, categoryId, difficulty }) 
     const URL = `https://opentdb.com/api.php?token=${token}&amount=${amount}&category=${categoryId}&difficulty=${difficulty}`;
     const response = await fetch(URL);
     const data = await response.json();
+    console.log(data);
     return data;
   } catch (error) {
     console.log(error);

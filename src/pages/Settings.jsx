@@ -61,39 +61,13 @@ class Settings extends React.Component {
     }));
   }
 
-  renderNumberOfQuestions() {
-    const { inputSettings: { amount } } = this.state;
-    const questionsCount = this.getQuestionsCount();
-
-    const numberOptions = [];
-    for (let i = 5; i <= questionsCount; i += 5) {
-      numberOptions.push(i);
-      if (i === QUESTIONS_LIMIT) break;
-    }
-
-    return (
-      <label htmlFor="amount">
-        Number of Questions:
-        <select
-          id="amount"
-          name="amount"
-          defaultValue={ amount }
-          onChange={ this.handleChange }
-        >
-          {numberOptions.map((option) => (
-            <option key={ option } value={ option }>{ option }</option>
-          ))}
-        </select>
-      </label>
-    );
-  }
-
   renderSelectCategory() {
     const { allCategories } = this.props;
     const { inputSettings: { categoryId } } = this.state;
     return (
       <label htmlFor="category">
         Select Category:
+        <br />
         <select
           id="category"
           name="categoryId"
@@ -116,6 +90,7 @@ class Settings extends React.Component {
     return (
       <label htmlFor="difficulty">
         Select Difficulty:
+        <br />
         <select
           id="difficulty"
           name="difficulty"
@@ -131,9 +106,34 @@ class Settings extends React.Component {
     );
   }
 
+  renderNumberOfQuestions() {
+    const { inputSettings: { amount } } = this.state;
+
+    return (
+      <label htmlFor="amount">
+        Number of Questions:
+        { amount }
+        <br />
+        <input
+          type="range"
+          id="amount"
+          name="amount"
+          min="5"
+          max={ QUESTIONS_LIMIT }
+          defaultValue={ amount }
+          onChange={ this.handleChange }
+        />
+      </label>
+    );
+  }
+
   render() {
     const { inputSettings, redirect } = this.state;
     const { isLoading, saveSettings } = this.props;
+
+    const questionsCount = this.getQuestionsCount();
+    const isHigher = inputSettings.amount > questionsCount;
+    const warningMessage = isHigher ? 'Insufficient questions' : '';
 
     if (redirect) return <Redirect to="/" />;
     if (isLoading) return <Loading />;
@@ -146,18 +146,23 @@ class Settings extends React.Component {
         </div>
         <div id="settings" className="container">
           {this.renderSelectCategory()}
+          <br />
           {this.renderSelectDifficulty()}
+          <br />
           {this.renderNumberOfQuestions()}
+          <br />
           <input
             type="button"
             className="button-main"
             value="Save"
+            disabled={ isHigher }
             onClick={ () => {
               saveSettings({ inputSettings });
               this.setState({ redirect: true });
             } }
           />
         </div>
+        <div>{ warningMessage }</div>
       </main>
     );
   }

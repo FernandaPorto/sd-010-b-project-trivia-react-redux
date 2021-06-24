@@ -17,9 +17,6 @@ class TriviaGame extends React.Component {
   constructor(props) {
     super(props);
 
-    this.renderQuestion = this.renderQuestion.bind(this);
-    this.renderNextButton = this.renderNextButton.bind(this);
-
     this.state = {
       redirect: false,
     };
