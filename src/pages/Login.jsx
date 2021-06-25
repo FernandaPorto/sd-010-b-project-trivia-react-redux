@@ -53,13 +53,14 @@ class Login extends React.Component {
     const data = await result.json(); localStorage.setItem('token', data.token);
     if (data.token) { history.push('/game'); }
   }
+  // comentário pra subir pro github
 
   render() {
     const { state: { isDisabled, email, name }, props: { saveInfo } } = this;
     return (
       <form>
         <img src={ logo } className="App-logo" alt="logo" />
-        <h6>Vamos Joga!</h6>
+        <h6>Vamos Jogar!</h6>
         <label htmlFor="name">
           <input
             type="text"
