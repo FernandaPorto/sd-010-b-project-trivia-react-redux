@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { getPlayerDataLocalStorage } from '../helpers/localStorage';
 
 const THREE = 3;
@@ -25,6 +26,11 @@ class Feedback extends Component {
           </div>
           <h3 data-testid="feedback-total-question">{ assertions}</h3>
           <h3 data-testid="feedback-total-score">{ score }</h3>
+          <Link to="/">
+            <button type="button" data-testid="btn-play-again">
+              Jogar Novamente
+            </button>
+          </Link>
         </div>
       </>
     );
