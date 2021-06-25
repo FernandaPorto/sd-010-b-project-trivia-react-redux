@@ -1,30 +1,36 @@
 import { decode } from 'he';
 
-import { fetchQuestions } from '../../services/api';
+import {
+  fetchCategories,
+  fetchCategoryQuestionCount,
+  fetchQuestions,
+} from '../../services/api';
 
-const PROBABILITY_BASE = 0.5;
 const BASE_POINTS = 10;
-const randomizer = (array) => array.sort(() => Math.random() - PROBABILITY_BASE);
+const PROBABILITY_BASE = 0.5;
 
 export const ANSWER_QUESTION = 'ANSWER_QUESTION';
+export const GET_CATEGORIES = 'GET_CATEGORIES';
 export const GET_QUESTIONS = 'GET_QUESTIONS';
-export const LOGIN = 'LOGIN';
 export const NEXT_QUESTION = 'NEXT_QUESTION';
+export const SAVE_SETTINGS = 'SAVE_SETTINGS';
 export const START_GAME = 'START_GAME';
 export const UPDATE_SCORE = 'UPDATE_SCORE';
 export const UPDATE_SECONDS = 'UPDATE_SECONDS';
+
+const randomizer = (array) => array.sort(() => Math.random() - PROBABILITY_BASE);
 
 export const answerQuestionActionCreator = () => ({
   type: ANSWER_QUESTION,
 });
 
-export const getQuestionsActionCreator = (payload) => ({
-  type: GET_QUESTIONS,
+export const getCategoriesActionCreator = (payload) => ({
+  type: GET_CATEGORIES,
   payload,
 });
 
-export const loginActionCreator = (payload) => ({
-  type: LOGIN,
+export const getQuestionsActionCreator = (payload) => ({
+  type: GET_QUESTIONS,
   payload,
 });
 
@@ -33,8 +39,14 @@ export const nextQuestionActionCreator = (payload) => ({
   payload,
 });
 
-export const startGameActionCreator = () => ({
+export const saveSettingsActionCreator = (payload) => ({
+  type: SAVE_SETTINGS,
+  payload,
+});
+
+export const startGameActionCreator = (payload) => ({
   type: START_GAME,
+  payload,
 });
 
 export const updateScoreActionCreator = (payload) => ({
@@ -47,27 +59,55 @@ export const updateSecondsActionCreator = (payload) => ({
   payload,
 });
 
-export const getQuestionsThunk = () => async (dispatch) => {
+export const getCategoriesThunk = () => async (dispatch) => {
   try {
-    const { token } = localStorage;
-    const { results } = await fetchQuestions(token);
-    // console.log(results);
-    const questions = results.map((result) => {
-      result.question = decode(result.question);
-      result.correct_answer = decode(result.correct_answer);
-      result.incorrect_answers.forEach((answer, index) => {
-        result.incorrect_answers[index] = decode(answer);
-      });
+    const categories = await fetchCategories();
 
-      return ({
+    categories.sort((a, b) => {
+      if (a.name < b.name) return -1;
+      if (a.name > b.name) return 1;
+      return 0;
+    });
+
+    const promises = categories.map(({ id }) => fetchCategoryQuestionCount(id));
+    const questionCount = await Promise.all(promises);
+
+    categories.forEach((category, index) => {
+      category.questionCount = {
+        total: questionCount[index].category_question_count.total_question_count,
+        easy: questionCount[index].category_question_count.total_easy_question_count,
+        medium: questionCount[index].category_question_count.total_medium_question_count,
+        hard: questionCount[index].category_question_count.total_hard_question_count,
+      };
+    });
+
+    dispatch(getCategoriesActionCreator({ categories }));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getQuestionsThunk = ({ settings }) => async (dispatch) => {
+  try {
+    const token = JSON.parse(localStorage.getItem('token'));
+    const { results } = await fetchQuestions(token.value, settings);
+
+    const questions = results.map((result) => {
+      const question = decode(result.question);
+      const correctAnswer = decode(result.correct_answer);
+      const incorrectAnswers = result.incorrect_answers.map((answer) => decode(answer));
+      const answerOptions = randomizer([correctAnswer, ...incorrectAnswers]);
+
+      return {
         category: result.category,
         difficulty: result.difficulty,
         type: result.type,
-        question: result.question,
-        answerOptions: randomizer([...result.incorrect_answers, result.correct_answer]),
-        correctAnswer: result.correct_answer,
-      });
+        question,
+        answerOptions,
+        correctAnswer,
+      };
     });
+
     dispatch(getQuestionsActionCreator({ questions }));
   } catch (error) {
     console.log(error);
@@ -82,5 +122,6 @@ export const updateScoreThunk = ({ secondsLeft, difficulty }) => (dispatch) => {
   };
   const level = difficultyPoints[difficulty];
   const newScore = BASE_POINTS + secondsLeft * level;
+
   dispatch(updateScoreActionCreator({ newScore }));
 };

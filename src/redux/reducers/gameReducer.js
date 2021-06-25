@@ -7,7 +7,7 @@ import {
 } from '../actions';
 
 const INITIAL_STATE = {
-  isLoading: false,
+  isLoading: true,
   isResolved: false,
   questionIndex: 0,
   questions: [],

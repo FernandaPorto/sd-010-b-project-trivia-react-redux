@@ -1,4 +1,7 @@
-import { LOGIN, START_GAME, UPDATE_SCORE } from '../actions';
+import {
+  START_GAME,
+  UPDATE_SCORE,
+} from '../actions';
 
 const INITIAL_STATE = {
   assertions: 0,
@@ -10,17 +13,13 @@ const INITIAL_STATE = {
 
 function playerReducer(state = INITIAL_STATE, { type, payload }) {
   switch (type) {
-  case LOGIN:
-    return {
-      ...state,
-      email: payload.email,
-      gravatarURL: payload.gravatarURL,
-      name: payload.inputName,
-    };
   case START_GAME:
     return {
       ...state,
       assertions: 0,
+      email: payload.inputEmail,
+      gravatarURL: payload.gravatarURL,
+      name: payload.inputName,
       score: 0,
     };
   case UPDATE_SCORE:

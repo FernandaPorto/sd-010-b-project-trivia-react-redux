@@ -6,13 +6,14 @@ import './Header.css';
 class Header extends React.Component {
   render() {
     const { gravatarURL, name, score } = this.props;
+
     return (
       <header>
         <div>
           <img className="gravatar-img" src={ gravatarURL } alt="player" />
-          <h4>{name}</h4>
+          <span>{name}</span>
         </div>
-        <div>{`Score: ${score}`}</div>
+        <span>{`Score: ${score}`}</span>
       </header>
     );
   }

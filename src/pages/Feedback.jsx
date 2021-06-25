@@ -7,19 +7,14 @@ import Header from '../components/Header';
 class Feedback extends React.Component {
   render() {
     const { assertions, score } = this.props;
+
     return (
       <main>
         <Header />
         <section>
           <p>{ assertions <= 2 ? 'Podia ser melhor...' : 'Mandou bem!'}</p>
-          <div>
-            <span>Número de acertos: </span>
-            <span>{assertions}</span>
-          </div>
-          <div>
-            <span>Pontuação final: </span>
-            <span>{score}</span>
-          </div>
+          <p>{ `Número de acertos: ${assertions}` }</p>
+          <p>{ `Pontuação final: ${score}` }</p>
           <button type="button">
             <Link to="/">Jogar novamente</Link>
           </button>
