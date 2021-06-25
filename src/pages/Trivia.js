@@ -2,13 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
+// import { Button } from 'react-bootstrap';
 import Header from '../components/Header';
 import { fetchApiQuestions, fetchAPI, saveAssertions, saveScore } from '../actions/index';
 import '../style/trivia.css';
 
 let pontosRender = 0;
-
 class Trivia extends React.Component {
   constructor(props) {
     super(props);
@@ -142,6 +141,7 @@ class Trivia extends React.Component {
   }
 
   async handleClick() {
+    await this.colorAnswers();
     await this.acertou();
     await this.countAssertions();
     const { pontosState, assertions } = this.state;
@@ -149,7 +149,6 @@ class Trivia extends React.Component {
     score(pontosState);
     assertion(assertions);
     this.storange();
-    this.colorAnswers();
   }
 
   renderQuestion() {
@@ -173,7 +172,7 @@ class Trivia extends React.Component {
         </div>
         {
           CERTA && (
-            <Button
+            <button
               id="button"
               variant="secondary"
               disabled={ disable }
@@ -183,11 +182,11 @@ class Trivia extends React.Component {
               onClick={ () => this.handleClick() }
             >
               {CERTA}
-            </Button>)
+            </button>)
         }
         {ERRA
         && ERRA.map((erradas, index) => (
-          <Button
+          <button
             id="button"
             variant="secondary"
             className={ reject }
@@ -198,7 +197,7 @@ class Trivia extends React.Component {
             onClick={ this.errou }
           >
             {erradas}
-          </Button>))}
+          </button>))}
       </div>
     );
   }
@@ -216,7 +215,7 @@ class Trivia extends React.Component {
           {pontosState}
         </h3>
         {this.renderQuestion()}
-        <Button
+        <button
           variant="warning"
           type="button"
           data-testid="btn-next"
@@ -224,12 +223,11 @@ class Trivia extends React.Component {
           onClick={ this.getQuestions }
         >
           Próxima
-        </Button>
+        </button>
       </div>
     );
   }
 }
-
 Trivia.propTypes = {
   apiQuestions: PropTypes.func.isRequired,
   thunkToken: PropTypes.string.isRequired,
@@ -238,18 +236,14 @@ Trivia.propTypes = {
   assertion: PropTypes.func.isRequired,
   score: PropTypes.number.isRequired,
 };
-
 const mapStateToProps = (state) => ({
   name: state.reducerName.name,
   email: state.reducerName.email,
 });
-
 const mapDispatchToProps = (dispatch) => ({
   apiQuestions: (token, perguntas) => dispatch(fetchApiQuestions(token, perguntas)),
   thunkToken: () => dispatch(fetchAPI()),
   assertion: (acertos) => dispatch(saveAssertions(acertos)),
   score: (state) => dispatch(saveScore(state)),
 });
-
 export default connect(mapStateToProps, mapDispatchToProps)(Trivia);
-/* para criação do cronômetro, utilizamos como referência o exercício do bloco 13.1 feito pelo instrutor Ícaro <https://github1s.com/tryber/sd-10b-live-lectures/tree/lecture/13.1> */

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container, Row, Col, Image } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import '../style/header.css';
 import md5 from 'crypto-js/md5';
 
 class Header extends Component {
