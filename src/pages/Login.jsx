@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { getGravatarAction, fetchQuestionsAction } from '../actions';
 
 class Login extends Component {
   constructor() {
@@ -12,6 +14,7 @@ class Login extends Component {
   }
 
   getToken() {
+    const { getGravatar } = this.props;
     fetch('https://opentdb.com/api_token.php?command=request')
       .then((response) => response.json())
       .then((responseToken) => {
@@ -20,6 +23,8 @@ class Login extends Component {
           console.log(localStorage.getItem('token'));
         }
       });
+    const { email } = this.state;
+    getGravatar(email);
   }
 
   handle(event) {
@@ -27,6 +32,12 @@ class Login extends Component {
     this.setState({
       [name]: value,
     });
+  }
+
+  submit(name, email) {
+    const { getGravatar, fetchQuestions } = this.props;
+    getGravatar(name, email);
+    fetchQuestions();
   }
 
   render() {
@@ -58,7 +69,7 @@ class Login extends Component {
             />
           </label>
         </form>
-        <Link onClick={ this.getToken() } to="/game">
+        <Link onClick={ () => this.submit(name, email) } to="/game">
           <button
             data-testid="btn-play"
             type="submit"
@@ -73,8 +84,13 @@ class Login extends Component {
         </Link>
       </>
     );
-  } 
+  }
 }
-/*  */
-/*  */
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  getGravatar: (name, email) => {
+    console.log(email);
+    return dispatch(getGravatarAction(name, email));
+  },
+  fetchQuestions: () => dispatch(fetchQuestionsAction()),
+});
+export default connect(null, mapDispatchToProps)(Login);
