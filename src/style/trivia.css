@@ -6,29 +6,27 @@
   border: solid 3px rgb(255 0 0);
 }
 
-#button {
+.button {
   margin: 0 1em 0 0;
   margin-bottom: 5px;
 }
 
-.flex{
-  display: flex;
+.flex {
   align-content: center;
   align-items: center;
-  flex-direction: column;
   background-color: rgb(147, 207, 221);
+  border: solid 2px black;
+  display: flex;
+  flex-direction: column;
+  margin: 150px auto;
   padding: 90px;
   width: 55%;
-  border: solid 2px black;
-  margin: 150px auto;
 }
 
 .question {
-  margin-top: 100px;  
+  margin-top: 100px;
 }
 
 .category-question, p {
   font-size: 20px;
 }
-
-
