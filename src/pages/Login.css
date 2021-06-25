@@ -1,14 +1,8 @@
-/* #login-page {
-  margin-top: 25vh;
-}
-
-h1 {
-  margin-bottom: 20px;
-  text-transform: uppercase;
+#login-page {
+  justify-content: center;
 }
 
 #login {
-  margin-bottom: 20px;
   padding-top: 80px;
   width: 500px;
-} */
+}

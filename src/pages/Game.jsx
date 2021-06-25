@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import Header from '../components/Header';
 import TriviaGame from '../components/TriviaGame';
 import Loading from '../components/Loading';
-
 import { getQuestionsThunk } from '../redux/actions';
 
 class Game extends React.Component {
@@ -15,6 +14,7 @@ class Game extends React.Component {
 
   componentWillUnmount() {
     const { gravatarURL, name, score } = this.props;
+
     const newRanking = {
       gravatarURL,
       name,

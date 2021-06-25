@@ -80,6 +80,7 @@ export const getCategoriesThunk = () => async (dispatch) => {
         hard: questionCount[index].category_question_count.total_hard_question_count,
       };
     });
+
     dispatch(getCategoriesActionCreator({ categories }));
   } catch (error) {
     console.log(error);
@@ -106,6 +107,7 @@ export const getQuestionsThunk = ({ settings }) => async (dispatch) => {
         correctAnswer,
       };
     });
+
     dispatch(getQuestionsActionCreator({ questions }));
   } catch (error) {
     console.log(error);
@@ -120,5 +122,6 @@ export const updateScoreThunk = ({ secondsLeft, difficulty }) => (dispatch) => {
   };
   const level = difficultyPoints[difficulty];
   const newScore = BASE_POINTS + secondsLeft * level;
+
   dispatch(updateScoreActionCreator({ newScore }));
 };

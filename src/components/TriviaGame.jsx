@@ -1,17 +1,15 @@
-import './TriviaGame.css';
-
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 
+import Timer from './Timer';
 import {
   answerQuestionActionCreator,
   nextQuestionActionCreator,
   updateSecondsActionCreator,
   updateScoreThunk,
 } from '../redux/actions';
-
-import Timer from './Timer';
+import './TriviaGame.css';
 
 class TriviaGame extends React.Component {
   constructor(props) {
@@ -49,18 +47,18 @@ class TriviaGame extends React.Component {
           const coloredStyle = isCorrect ? 'green-border' : 'red-border';
 
           return (
-            <button
-              type="button"
-              key={ index }
-              onClick={ () => {
-                answerQuestion();
-                if (isCorrect) updateScore({ secondsLeft, difficulty });
-              } }
-              className={ isResolved ? coloredStyle : 'default-button' }
-              disabled={ isResolved }
-            >
-              {answer}
-            </button>
+            <div key={ index }>
+              <input
+                type="button"
+                className={ isResolved ? coloredStyle : 'default-button' }
+                value={ answer }
+                onClick={ () => {
+                  answerQuestion();
+                  if (isCorrect) updateScore({ secondsLeft, difficulty });
+                } }
+                disabled={ isResolved }
+              />
+            </div>
           );
         })}
       </div>
@@ -69,6 +67,7 @@ class TriviaGame extends React.Component {
 
   renderNextButton() {
     const { questionIndex, questions, nextQuestion } = this.props;
+
     const isLast = questionIndex === questions.length - 1;
     let nextIndex = questionIndex + 1;
     if (isLast) nextIndex = 0;
@@ -94,7 +93,7 @@ class TriviaGame extends React.Component {
 
     return (
       <section>
-        <div>{this.renderQuestion()}</div>
+        {this.renderQuestion()}
         <div>{isResolved ? this.renderNextButton() : <Timer />}</div>
       </section>
     );

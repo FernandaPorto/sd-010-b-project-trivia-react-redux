@@ -1,4 +1,7 @@
-import { START_GAME, UPDATE_SCORE } from '../actions';
+import {
+  START_GAME,
+  UPDATE_SCORE,
+} from '../actions';
 
 const INITIAL_STATE = {
   assertions: 0,

@@ -1,0 +1,21 @@
+#settings-page {
+  margin-top: 10vh;
+}
+
+#settings {
+  margin: 10px 0;
+  padding-top: 40px;
+  position: relative;
+  width: 500px;
+}
+
+#avaible-questions {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 40px
+}
+
+#avaible-questions > span:last-child {
+  font-size: 36px;
+}

@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import md5 from 'crypto-js/md5';
 
+import SettingsButton from '../components/SettingsButton';
 import { fetchToken } from '../services/api';
 import { startGameActionCreator } from '../redux/actions';
-import SettingsButton from '../components/SettingsButton';
 import './Login.css';
 
 const SIX_HOURS = 21600000;
@@ -14,14 +14,14 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-
     this.state = {
       inputName: props.name,
       inputEmail: props.email,
       redirect: false,
     };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   async componentDidMount() {
@@ -30,6 +30,7 @@ class Login extends React.Component {
 
     let token = JSON.parse(localStorage.getItem('token'));
     const now = new Date().getTime();
+
     if (!token || now > token.expirationTime) {
       const expirationTime = now + SIX_HOURS;
       const value = await fetchToken();
@@ -47,8 +48,10 @@ class Login extends React.Component {
   handleClick() {
     const { inputName, inputEmail } = this.state;
     const { startGame } = this.props;
+
     const hash = md5(inputEmail).toString();
-    const gravatarURL = `https://www.gravatar.com/avatar/${hash}`;
+    const gravatarURL = `https://www.gravatar.com/avatar/${hash}?s=120`;
+
     startGame({ inputName, inputEmail, gravatarURL });
     this.setState({ redirect: true });
   }
@@ -61,9 +64,7 @@ class Login extends React.Component {
 
     return (
       <main id="login-page">
-        <div>
-          <h1>Trivia Game</h1>
-        </div>
+        <h1>Trivia Game</h1>
         <div id="login" className="container">
           <input
             type="text"

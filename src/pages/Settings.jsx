@@ -2,11 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 
+import Loading from '../components/Loading';
 import {
   getCategoriesThunk,
   saveSettingsActionCreator,
 } from '../redux/actions';
-import Loading from '../components/Loading';
+import './Settings.css';
 
 const QUESTIONS_LIMIT = 50;
 
@@ -47,7 +48,9 @@ class Settings extends React.Component {
         0,
       );
     }
+
     const category = allCategories.find(({ id }) => id === Number(categoryId));
+
     if (!difficulty) return category.questionCount.total;
     return category.questionCount[difficulty];
   }
@@ -64,10 +67,10 @@ class Settings extends React.Component {
   renderSelectCategory() {
     const { allCategories } = this.props;
     const { inputSettings: { categoryId } } = this.state;
+
     return (
       <label htmlFor="category">
         Select Category:
-        <br />
         <select
           id="category"
           name="categoryId"
@@ -87,10 +90,10 @@ class Settings extends React.Component {
 
   renderSelectDifficulty() {
     const { inputSettings: { difficulty } } = this.state;
+
     return (
       <label htmlFor="difficulty">
         Select Difficulty:
-        <br />
         <select
           id="difficulty"
           name="difficulty"
@@ -111,12 +114,11 @@ class Settings extends React.Component {
 
     return (
       <label htmlFor="amount">
-        Number of Questions:
-        { amount }
-        <br />
+        { `Number of Questions: ${amount}` }
         <input
           type="range"
           id="amount"
+          className="slider"
           name="amount"
           min="5"
           max={ QUESTIONS_LIMIT }
@@ -133,36 +135,36 @@ class Settings extends React.Component {
 
     const questionCount = this.getQuestionCount();
     const isHigher = inputSettings.amount > questionCount;
-    const warningMessage = isHigher ? 'Insufficient questions' : '';
+    const warningMessage = isHigher ? 'Insufficient questions!' : '';
 
     if (redirect) return <Redirect to="/" />;
     if (isLoading) return <Loading />;
 
     return (
-      <main>
+      <main id="settings-page">
         <h1>Settings</h1>
-        <div>
-          <span>{`Available Questions: ${questionCount}`}</span>
-        </div>
-        <div id="settings" className="container">
-          {this.renderSelectCategory()}
-          <br />
-          {this.renderSelectDifficulty()}
-          <br />
-          {this.renderNumberOfQuestions()}
-          <br />
-          <input
-            type="button"
-            className="button-main"
-            value="Save"
-            disabled={ isHigher }
-            onClick={ () => {
-              saveSettings({ inputSettings });
-              this.setState({ redirect: true });
-            } }
-          />
-        </div>
-        <div>{ warningMessage }</div>
+        <section>
+          <div id="avaible-questions">
+            <span>Total available Questions:</span>
+            <span>{questionCount}</span>
+          </div>
+          <div id="settings" className="container">
+            {this.renderSelectCategory()}
+            {this.renderSelectDifficulty()}
+            {this.renderNumberOfQuestions()}
+            <input
+              type="button"
+              className="button-main"
+              value="Save"
+              onClick={ () => {
+                saveSettings({ inputSettings });
+                this.setState({ redirect: true });
+              } }
+              disabled={ isHigher }
+            />
+          </div>
+        </section>
+        <span className="warning-message">{ warningMessage }</span>
       </main>
     );
   }
