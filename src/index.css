@@ -5,9 +5,17 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* background-image: url('./images/parede-de-tijolo.jpg');
+  background-size: cover; */
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+#root {
+  background-color: rgba(0, 0, 0, 0.781);
+  box-shadow: inset 0 0 200px #000000de, inset 0 0 505px #000000cb;
+  height: 100%;
 }
